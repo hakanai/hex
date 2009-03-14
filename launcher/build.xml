@@ -16,10 +16,26 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project name="launcher" default="executable-jar">
+<project name="launcher" default="default">
     <property name="app.name" value="Hex"/>
     <property name="app.version" value="0.1"/>
     <property name="app.copyright" value="Copyright (C) 2009  Trejkaz, Hex Project"/>
+
+    <target name="default" depends="-determine-platform, -build-mac-app-bundle-if-mac, -build-executable-jar-if-other"
+            description="Builds whichever launcher is deemed to fit your platform best"/>
+
+    <target name="-determine-platform">
+        <condition property="is-mac" value="true">
+             <os family="mac"/>
+        </condition>
+        <condition property="is-other" value="true">
+            <not><isset property="is-mac"/></not>
+        </condition>
+    </target>
+
+    <target name="-build-executable-jar-if-other" if="is-other">
+        <antcall target="executable-jar"/>
+    </target>
 
     <target name="executable-jar" description="Builds a cross-platform executable JAR file">
         <mkdir dir="build"/>
@@ -31,6 +47,10 @@
                 <attribute name="Main-Class" value="org.trypticon.hex.Main"/>
             </manifest>
         </jar>
+    </target>
+
+    <target name="-build-mac-app-bundle-if-mac" if="is-mac">
+        <antcall target="mac-app-bundle"/>
     </target>
 
     <target name="mac-app-bundle" description="Builds an app bundle for running on Mac OS X">
