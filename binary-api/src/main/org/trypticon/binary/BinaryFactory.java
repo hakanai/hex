@@ -40,6 +40,16 @@ public class BinaryFactory {
     }
 
     /**
+     * Wraps a byte array, returning it as a binary.
+     *
+     * @param array the byte array.
+     * @return the binary.
+     */
+    public static Binary wrap(byte[] array) {
+        return new ByteBufferBinary(ByteBuffer.wrap(array));
+    }
+
+    /**
      * Opens a file, returning it as a binary.
      *
      * @param file the file.

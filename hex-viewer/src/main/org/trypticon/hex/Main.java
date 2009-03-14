@@ -18,8 +18,15 @@
 
 package org.trypticon.hex;
 
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+
+import org.trypticon.binary.Binary;
+import org.trypticon.binary.BinaryFactory;
 
 /**
  * Main entry point.
@@ -28,6 +35,10 @@ import javax.swing.UIManager;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
+        new Main().execute(args);
+    }
+
+    public void execute(Object[] args) throws Exception {
         // Look and feel tweaks for Apple's runtime.
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Hex");
         System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -40,5 +51,29 @@ public class Main {
         HexFrame frame = new HexFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
+
+        if (args.length == 1 && args[0] instanceof String) {
+            File file = new File((String) args[0]);
+            frame.loadFile(file);
+        } else {
+            frame.loadBinary(loadSample());
+        }
+    }
+
+    private Binary loadSample() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("org/trypticon/hex/Sample.class");
+        try {
+            byte[] buf = new byte[16*1024];
+            int bytesRead;
+            while ((bytesRead = stream.read(buf)) != -1) {
+                out.write(buf, 0, bytesRead);
+            }
+        } finally {
+            stream.close();
+        }
+
+        return BinaryFactory.wrap(out.toByteArray());
     }
 }

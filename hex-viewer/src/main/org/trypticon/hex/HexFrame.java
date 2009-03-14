@@ -76,11 +76,19 @@ public class HexFrame extends JFrame {
     public void loadFile(File file) {
         try {
             Binary binary = BinaryFactory.open(file);
-            viewer.setBinary(binary);
-            pack();
+            loadBinary(binary);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(getRootPane(), "There was an error opening the file.");
         }
+    }
+
+    /**
+     * Loads the specified binary into the viewer within this frame.
+     *
+     * @param binary the binary to open.
+     */
+    public void loadBinary(Binary binary) {
+        viewer.setBinary(binary);
     }
 
     private JMenuBar buildMenuBar() {
