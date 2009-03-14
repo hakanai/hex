@@ -18,8 +18,6 @@
 
 package org.trypticon.hex;
 
-import java.io.UnsupportedEncodingException;
-
 import org.trypticon.binary.Binary;
 
 /**
@@ -32,17 +30,15 @@ public class HexUtils {
     private static final char[] ascii;
 
     static {
-        byte[] b = new byte[256];
+        ascii = new char[256];
         for (int i = 0; i < 32; i++) {
-            b[i] = '.';
+            ascii[i] = '.';
         }
-        for (int i = 32; i < b.length; i++) {
-            b[i] = (byte) i;
+        for (int i = 32; i < 128; i++) {
+            ascii[i] = (char) i;
         }
-        try {
-            ascii = new String(b, "US-ASCII").toCharArray();
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("US-ASCII encoding missing from JRE", e);
+        for (int i = 128; i < 256; i++) {
+            ascii[i] = '.';
         }
     }
 
@@ -66,8 +62,8 @@ public class HexUtils {
      */
     private static void toHex(byte b, StringBuilder builder) {
         int tmp = (int) b & 0xFF;
-        builder.append(digits[(tmp >> 4) % 0x0f]);
-        builder.append(digits[(tmp % 0x0f)]);
+        builder.append(digits[(tmp >> 4) & 0x0f]);
+        builder.append(digits[(tmp & 0x0f)]);
     }
 
     /**
