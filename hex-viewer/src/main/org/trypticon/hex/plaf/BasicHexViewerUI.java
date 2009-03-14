@@ -233,10 +233,12 @@ public class BasicHexViewerUI extends HexViewerUI {
             if (atCursor) {
                 g.setColor(cursorBackground);
                 g.fillRect(hexX - hexColWidth / 6, y - rowHeight, hexColWidth, rowHeight);
+                g.fillRect(asciiX, y - rowHeight, asciiColWidth, rowHeight);
                 g.setColor(cursorForeground);
             } else if (insideSelection) {
                 g.setColor(selectionBackground);
                 g.fillRect(hexX - hexColWidth / 6, y - rowHeight, hexColWidth, rowHeight);
+                g.fillRect(asciiX, y - rowHeight, asciiColWidth, rowHeight);
                 g.setColor(selectionForeground);
             } else {
                 g.setColor(foreground);
