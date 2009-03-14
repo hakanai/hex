@@ -1,0 +1,42 @@
+<project name="hex">
+    <path id="classpath.run">
+        <pathelement location="build/classes"/>
+    </path>
+
+    <path id="classpath.test">
+         <pathelement location="build/testclasses"/>
+         <pathelement location="lib/junit.jar"/>
+         <path refid="classpath.run"/>
+    </path>
+    
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src/main" destdir="build/classes" debug="on"/>
+    </target>
+
+    <target name="compile-test" depends="compile">
+        <mkdir dir="build/testclasses"/>
+        <javac srcdir="src/test" destdir="build/testclasses" debug="on" classpath="build/classes;lib/junit.jar"/>
+    </target>
+    
+    <target name="package" depends="compile">
+        <jar jarfile="build/trypticon-${ant.project.name}.jar">
+            <fileset dir="build/classes"/>
+        </jar>
+    </target>
+
+    <target name="test" depends="compile-test">
+        <mkdir dir="build/testreports"/>
+        <junit printsummary="withOutAndErr" haltonfailure="yes">
+            <classpath refid="classpath.test"/>
+            <formatter type="plain"/>
+            <batchtest todir="build/testreports">
+                <fileset dir="src/test" includes="**/*.java"/>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+</project>
