@@ -71,22 +71,39 @@ public class BasicHexViewerUI extends HexViewerUI {
         int charWidth = viewer.getFontMetrics(viewer.getFont()).charWidth('D');
         int rowHeight = viewer.getRowHeight();
 
-        // Recompute X and Y values relative to where we actually paint the
-        // highlight.
         long binaryLength = viewer.getBinary().length();
-        int xFixed = point.x - (13 * charWidth);
-        int yFixed = point.y - rowHeight;
-
-        int bytesX = xFixed / (3 * charWidth);
-        int bytesY = yFixed / rowHeight;
-
+        int bytesPerRow = viewer.getBytesPerRow();
         int maxBytesX = viewer.getBytesPerRow() - 1;
         long maxBytesY = (int) (binaryLength / viewer.getBytesPerRow());
+
+        // Threshold for detecting that the user clicked in the ASCII column is half way between the two columns.
+        int hexLeftX = 13 * charWidth;
+        int hexRightX = hexLeftX + 3 * charWidth * bytesPerRow;
+        int asciiLeftX = hexRightX + 2 * charWidth;
+
+        int leftX;
+        int cellWidth;
+
+        if (point.x < (hexRightX + asciiLeftX) / 2) {
+            // Clicked on the hex side.
+            leftX = hexLeftX;
+            cellWidth = 3 * charWidth;
+        } else {
+            // Clicked on the ASCII side.
+            leftX = asciiLeftX;
+            cellWidth = charWidth;
+        }
+
+        int xFixed = point.x - leftX;
+        int yFixed = point.y - rowHeight;
+
+        int bytesX = xFixed / cellWidth;
+        int bytesY = yFixed / rowHeight;
 
         bytesX = Math.max(0, Math.min(maxBytesX, bytesX));
         bytesY = Math.max(0, (int) Math.min(maxBytesY, bytesY));
 
-        long pos = (long) bytesY * viewer.getBytesPerRow() + bytesX;
+        long pos = (long) bytesY * bytesPerRow + bytesX;
         assert pos >= 0;
         if (pos >= binaryLength) {
             pos = binaryLength - 1;
