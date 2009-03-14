@@ -60,7 +60,7 @@ public class BasicHexViewerUI extends HexViewerUI {
         int yFixed = bytesY * rowHeight;
 
         // Now adjust for the margins again...
-        return new Rectangle(xFixed + (12 * charWidth + charWidth / 2),
+        return new Rectangle(xFixed + 13 * charWidth,
                              yFixed + rowHeight,
                              3 * charWidth,
                              rowHeight);
@@ -74,7 +74,7 @@ public class BasicHexViewerUI extends HexViewerUI {
         // Recompute X and Y values relative to where we actually paint the
         // highlight.
         long binaryLength = viewer.getBinary().length();
-        int xFixed = point.x - (12 * charWidth + charWidth / 2);
+        int xFixed = point.x - (13 * charWidth);
         int yFixed = point.y - rowHeight;
 
         int bytesX = xFixed / (3 * charWidth);
@@ -226,25 +226,21 @@ public class BasicHexViewerUI extends HexViewerUI {
             boolean insideSelection = selectionStart <= position && selectionEnd >= position;
             boolean atCursor = position == cursor;
 
-
-            // XXX: I would like to shift the x offset so that the cell starts at an even multiple
-            // and the text is centred in that, instead of shifting the cell half a character back.
-
             if (atCursor) {
                 g.setColor(cursorBackground);
-                g.fillRect(hexX - hexColWidth / 6, y - rowHeight, hexColWidth, rowHeight);
+                g.fillRect(hexX, y - rowHeight, hexColWidth, rowHeight);
                 g.fillRect(asciiX, y - rowHeight, asciiColWidth, rowHeight);
                 g.setColor(cursorForeground);
             } else if (insideSelection) {
                 g.setColor(selectionBackground);
-                g.fillRect(hexX - hexColWidth / 6, y - rowHeight, hexColWidth, rowHeight);
+                g.fillRect(hexX, y - rowHeight, hexColWidth, rowHeight);
                 g.fillRect(asciiX, y - rowHeight, asciiColWidth, rowHeight);
                 g.setColor(selectionForeground);
             } else {
                 g.setColor(foreground);
             }
 
-            g.drawString(HexUtils.toHex(b), hexX, y - charYOffset);
+            g.drawString(HexUtils.toHex(b), hexX + asciiColWidth / 2, y - charYOffset);
             g.drawString(HexUtils.toAscii(b), asciiX, y - charYOffset);
 
             position++;
