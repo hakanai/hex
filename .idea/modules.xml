@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/binary-api/Binary API.iml" filepath="$PROJECT_DIR$/binary-api/Binary API.iml" />
       <module fileurl="file://$PROJECT_DIR$/hex-viewer/Hex Viewer.iml" filepath="$PROJECT_DIR$/hex-viewer/Hex Viewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/launcher/Launcher.iml" filepath="$PROJECT_DIR$/launcher/Launcher.iml" />
     </modules>
   </component>
 </project>
