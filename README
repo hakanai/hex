@@ -1,7 +1,14 @@
 
 Hex - A simple hex viewer written in Java.
 
-No time to write a README just yet.  If you have IDEA then this can be set up
-to run fairly easily.  The build process cannot yet produce a runnable file
-but that is coming soon.
+No time to write a real README just yet.  This will contain the bare basics.
+
+
+BUILDING
+--------
+
+Execute 'ant' in the top directory.  A file you can run will appear in
+the launcher/build directory.  If you are a Mac user you will get a proper
+.app bundle, everyone else will currently get a .jar file.
+
 
