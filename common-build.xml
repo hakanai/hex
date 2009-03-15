@@ -20,6 +20,8 @@
     <property file="${basedir}/build.properties"/>
     <property name="common.classpath.compile" value=""/>
 
+    <dirname property="common.basedir" file="${ant.file.common}"/>
+
     <path id="classpath.compile">
         <pathelement path="${common.classpath.compile}"/>
     </path>
@@ -30,8 +32,10 @@
     </path>
 
     <path id="classpath.compile-test">
+        <pathelement path="${common.classpath.compile-test}"/>
+        <pathelement location="build/classes"/>
         <path refid="classpath.compile"/>
-        <pathelement location="lib/junit.jar"/>
+        <pathelement location="${common.basedir}/lib/junit.jar"/>
     </path>
 
     <path id="classpath.test">
@@ -42,7 +46,6 @@
     
     <target name="compile" description="Compiles classes">
         <mkdir dir="build/classes"/>
-        <echo message="Using compile classpath: ${common.classpath.compile}"/>
         <javac srcdir="src/main" destdir="build/classes" debug="on" deprecation="on" classpathref="classpath.compile"/>
     </target>
 
