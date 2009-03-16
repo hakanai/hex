@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="JvYAML">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jvyaml.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
