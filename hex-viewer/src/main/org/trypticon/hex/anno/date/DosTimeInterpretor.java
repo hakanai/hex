@@ -38,7 +38,7 @@ public class DosTimeInterpretor implements Interpretor<Time> {
         return Time.class;
     }
 
-    public Time interpret(Binary binary, long position, int length) {
+    public Time interpret(Binary binary, long position) {
         return new DosTime(LittleEndian.getShort(binary, position));
     }
 

@@ -18,21 +18,26 @@
 
 package org.trypticon.hex.anno.primitive;
 
+import org.trypticon.binary.Binary;
+
 /**
- * Utilities for building primitives from bytes.
+ * Little Endian utilities.
  *
  * @author trejkaz
  */
-public class Primitives {
-    static short getShort(byte b1, byte b2) {
-        return (short) getUShort(b1, b2);
+public class BigEndian {
+    private BigEndian() {
     }
 
-    static int getUShort(byte b1, byte b2) {
-        return ((b1 & 0xFF) << 8) | (b2 & 0xFF);
+    public static short getShort(Binary binary, long position) {
+        return Primitives.getShort(binary.read(position),
+                                   binary.read(position + 1));
     }
 
-    static int getInt(byte b1, byte b2, byte b3, byte b4) {
-        return ((b1 & 0xFF) << 24) | ((b2 & 0xFF) << 16) | ((b3 & 0xFF) << 8) | (b4 & 0xFF);
+    public static int getInt(Binary binary, long position) {
+        return Primitives.getInt(binary.read(position),
+                                 binary.read(position + 1),
+                                 binary.read(position + 2),
+                                 binary.read(position + 3));
     }
 }

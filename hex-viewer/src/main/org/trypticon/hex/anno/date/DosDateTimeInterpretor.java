@@ -34,8 +34,8 @@ public class DosDateTimeInterpretor implements Interpretor<DateTime> {
         return DateTime.class;
     }
 
-    public DateTime interpret(Binary binary, long position, int length) {
-        return new SimpleDateTime(dateInterp.interpret(binary, position + 2, 2),
-                                  timeInterp.interpret(binary, position, 2));
+    public DateTime interpret(Binary binary, long position) {
+        return new SimpleDateTime(dateInterp.interpret(binary, position + 2),
+                                  timeInterp.interpret(binary, position));
     }
 }

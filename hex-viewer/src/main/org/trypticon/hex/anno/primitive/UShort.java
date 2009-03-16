@@ -18,21 +18,25 @@
 
 package org.trypticon.hex.anno.primitive;
 
+import org.trypticon.hex.anno.Value;
+
 /**
- * Utilities for building primitives from bytes.
+ * An unsigned short value.
  *
  * @author trejkaz
  */
-public class Primitives {
-    static short getShort(byte b1, byte b2) {
-        return (short) getUShort(b1, b2);
+public class UShort implements Value {
+    private short value;
+
+    public UShort(short value) {
+        this.value = value;
     }
 
-    static int getUShort(byte b1, byte b2) {
-        return ((b1 & 0xFF) << 8) | (b2 & 0xFF);
+    public short getValue() {
+        return value;
     }
 
-    static int getInt(byte b1, byte b2, byte b3, byte b4) {
-        return ((b1 & 0xFF) << 24) | ((b2 & 0xFF) << 16) | ((b3 & 0xFF) << 8) | (b4 & 0xFF);
+    public int length() {
+        return 2;
     }
 }

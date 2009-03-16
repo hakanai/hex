@@ -38,7 +38,7 @@ public class DosDateInterpretor implements Interpretor<Date> {
         return Date.class;
     }
 
-    public Date interpret(Binary binary, long position, int length) {
+    public Date interpret(Binary binary, long position) {
         return new DosDate(LittleEndian.getShort(binary, position));
     }
 

@@ -18,21 +18,20 @@
 
 package org.trypticon.hex.anno.primitive;
 
+import org.trypticon.hex.anno.Interpretor;
+import org.trypticon.binary.Binary;
+
 /**
- * Utilities for building primitives from bytes.
+ * Interpretor for unsigned short values.
  *
  * @author trejkaz
  */
-public class Primitives {
-    static short getShort(byte b1, byte b2) {
-        return (short) getUShort(b1, b2);
+public class UShortInterpretorBE implements Interpretor<UShort> {
+    public Class<UShort> getType() {
+        return UShort.class;
     }
 
-    static int getUShort(byte b1, byte b2) {
-        return ((b1 & 0xFF) << 8) | (b2 & 0xFF);
-    }
-
-    static int getInt(byte b1, byte b2, byte b3, byte b4) {
-        return ((b1 & 0xFF) << 24) | ((b2 & 0xFF) << 16) | ((b3 & 0xFF) << 8) | (b4 & 0xFF);
+    public UShort interpret(Binary binary, long position) {
+        return new UShort(BigEndian.getShort(binary, position));
     }
 }

@@ -26,7 +26,7 @@ import org.trypticon.binary.Binary;
  * @param <V> the value type.
  * @author trejkaz
  */
-public interface Interpretor<V> {
+public interface Interpretor<V extends Value> {
 
     /**
      * Gets the type of the interpreted values.
@@ -40,8 +40,7 @@ public interface Interpretor<V> {
      *
      * @param binary the binary.
      * @param position the position of the start of the value.
-     * @param length the length of the value.
      * @return the value.
      */
-    V interpret(Binary binary, long position, int length);
+    V interpret(Binary binary, long position);
 }
