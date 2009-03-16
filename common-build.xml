@@ -19,6 +19,7 @@
 <project name="common">
     <property file="${basedir}/build.properties"/>
     <property name="common.classpath.compile" value=""/>
+    <property name="common.classpath.compile-test" value=""/>
 
     <dirname property="common.basedir" file="${ant.file.common}"/>
 
