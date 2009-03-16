@@ -36,9 +36,20 @@ public class TestDosDateTimeInterpretor {
 
         byte[] data = { 0x67, 0x64, (byte) 0xAC, (byte) 0x2E };
 
-        assertEquals("Wrong date value", new SimpleDateTime(new SimpleDate(2003, 5, 12),
-                                                            new SimpleTime(12, 35, 14)),
-                     interp.interpret(BinaryFactory.wrap(data), 0, 0));
+        assertDateTimeEquals("Wrong date value", 2003, 5, 12, 12, 35, 14,
+                             interp.interpret(BinaryFactory.wrap(data), 0, 0));
 
+    }
+
+    private static void assertDateTimeEquals(String message, int year, int month, int day,
+                                             int hour, int minute, int second,
+                                             DateTime value) {
+
+        assertEquals(message + " (year)", year, value.getDate().getYear());
+        assertEquals(message + " (month)", month, value.getDate().getMonth());
+        assertEquals(message + " (day)", day, value.getDate().getDay());
+        assertEquals(message + " (hour)", hour, value.getTime().getHour());
+        assertEquals(message + " (minute)", minute, value.getTime().getMinute());
+        assertEquals(message + " (second)", second, value.getTime().getSecond());
     }
 }

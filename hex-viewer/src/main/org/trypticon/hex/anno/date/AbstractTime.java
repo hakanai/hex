@@ -18,32 +18,17 @@
 
 package org.trypticon.hex.anno.date;
 
+import java.util.Formatter;
+
 /**
- * Simple immutable date type.
+ * Helper abstract class for defining new types of time.
  *
  * @author trejkaz
  */
-public class SimpleDate implements Date {
-    private final int year;
-    private final int month;
-    private final int day;
+public abstract class AbstractTime implements Time {
 
-    public SimpleDate(int year, int month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public int getDay() {
-        return day;
+    public int getNanos() {
+        return 0;
     }
 
     @Override
@@ -52,26 +37,34 @@ public class SimpleDate implements Date {
         {
             return true;
         }
-        if (!(o instanceof Date))
+        if (!(o instanceof Time))
         {
             return false;
         }
 
-        Date that = (Date) o;
+        Time that = (Time) o;
 
-        return day == that.getDay() && month == that.getMonth() && year == that.getYear();
+        return getHour() == that.getHour() && getMinute() == that.getMinute() &&
+               getSecond() == that.getSecond() && getNanos() == that.getNanos();
     }
 
     @Override
     public int hashCode() {
-        int result = year;
-        result = 31 * result + month;
-        result = 31 * result + day;
+        int result = getHour();
+        result = 31 * result + getMinute();
+        result = 31 * result + getSecond();
+        result = 31 * result + getNanos();
         return result;
     }
 
     @Override
     public String toString() {
-        return String.format("%04d/%02d/%02d", year, month, day);
+        StringBuilder builder = new StringBuilder(18);
+        builder.append(String.format("%02d:%02d:%02d", getHour(), getMinute(), getSecond()));
+        if (getNanos() != 0) {
+            // XXX: Really it should print only as many decimal places as are present.
+            builder.append(String.format("%09d", getNanos()));
+        }
+        return builder.toString();
     }
 }

@@ -44,6 +44,10 @@ public class SimpleDateTime implements DateTime {
         throw new UnsupportedOperationException("TODO: Haven't decided to keep this method yet");
     }
 
+    public int length() {
+        return date.length() + time.length();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)

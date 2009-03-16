@@ -18,13 +18,33 @@
 
 package org.trypticon.hex.anno.date;
 
+import org.trypticon.hex.anno.Value;
+
 /**
  * A value carrying a date (and not a time.)
  *
  * @author trejkaz
  */
-public interface Date {
+public interface Date extends Value {
+
+    /**
+     * Gets the year.
+     *
+     * @return the year.
+     */
     int getYear();
+
+    /**
+     * Gets the month.
+     *
+     * @return the month.
+     */
     int getMonth();
+
+    /**
+     * Gets the day.
+     *
+     * @return the day.
+     */
     int getDay();
 }

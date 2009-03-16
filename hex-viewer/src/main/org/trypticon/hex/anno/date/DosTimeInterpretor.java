@@ -39,9 +39,29 @@ public class DosTimeInterpretor implements Interpretor<Time> {
     }
 
     public Time interpret(Binary binary, long position, int length) {
-        int value = LittleEndian.getUShort(binary, position);
+        return new DosTime(LittleEndian.getShort(binary, position));
+    }
 
-        return new SimpleTime(hour.evaluate(value), minute.evaluate(value),
-                              second.evaluate(value) * SECOND_RESOLUTION);
+    private static class DosTime extends AbstractTime {
+        private final short value;
+        private DosTime(short value) {
+            this.value = value;
+        }
+
+        public int getHour() {
+            return hour.evaluate(value);
+        }
+
+        public int getMinute() {
+            return minute.evaluate(value);
+        }
+
+        public int getSecond() {
+            return second.evaluate(value) * SECOND_RESOLUTION;
+        }
+
+        public int length() {
+            return 2;
+        }
     }
 }

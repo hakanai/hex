@@ -39,8 +39,29 @@ public class DosDateInterpretor implements Interpretor<Date> {
     }
 
     public Date interpret(Binary binary, long position, int length) {
-        int value = LittleEndian.getUShort(binary, position);
+        return new DosDate(LittleEndian.getShort(binary, position));
+    }
 
-        return new SimpleDate(year.evaluate(value) + YEAR_OFFSET, month.evaluate(value), day.evaluate(value));
+    private static class DosDate extends AbstractDate {
+        private final short value;
+        private DosDate(short value) {
+            this.value = value;
+        }
+
+        public int getYear() {
+            return year.evaluate(value) + YEAR_OFFSET;
+        }
+
+        public int getMonth() {
+            return month.evaluate(value);
+        }
+
+        public int getDay() {
+            return day.evaluate(value);
+        }
+
+        public int length() {
+            return 2;
+        }
     }
 }

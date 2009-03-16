@@ -16,28 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.date;
-
-import org.trypticon.hex.anno.Value;
+package org.trypticon.hex.anno;
 
 /**
- * An interface carrying a date and a time.
+ * An interpreted value.
  *
  * @author trejkaz
  */
-public interface DateTime extends Value {
+public interface Value {
 
     /**
-     * Gets the date.
+     * Gets the length of the value, in bytes.
      *
-     * @return the date.
+     * @return the length of the value.
      */
-    Date getDate();
-
-    /**
-     * Gets the time.
-     *
-     * @return the time.
-     */
-    Time getTime();
+    int length();
 }

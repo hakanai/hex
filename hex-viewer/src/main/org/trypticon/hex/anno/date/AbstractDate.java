@@ -18,26 +18,38 @@
 
 package org.trypticon.hex.anno.date;
 
-import org.trypticon.hex.anno.Value;
-
 /**
- * An interface carrying a date and a time.
+ * Helper abstract class for defining new types of date.
  *
  * @author trejkaz
  */
-public interface DateTime extends Value {
+public abstract class AbstractDate implements Date {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof Date))
+        {
+            return false;
+        }
 
-    /**
-     * Gets the date.
-     *
-     * @return the date.
-     */
-    Date getDate();
+        Date that = (Date) o;
 
-    /**
-     * Gets the time.
-     *
-     * @return the time.
-     */
-    Time getTime();
+        return getDay() == that.getDay() && getMonth() == that.getMonth() && getYear() == that.getYear();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getYear();
+        result = 31 * result + getMonth();
+        result = 31 * result + getDay();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%04d/%02d/%02d", getYear(), getMonth(), getDay());
+    }
 }

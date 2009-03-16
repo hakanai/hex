@@ -18,14 +18,39 @@
 
 package org.trypticon.hex.anno.date;
 
+import org.trypticon.hex.anno.Value;
+
 /**
  * A value carrying a time (and not a date.)
  *
  * @author trejkaz
  */
-public interface Time {
+public interface Time extends Value {
+    /**
+     * Gets the hour.
+     *
+     * @return the hour.
+     */
     int getHour();
+
+    /**
+     * Gets the minute.
+     *
+     * @return the minute.
+     */
     int getMinute();
+
+    /**
+     * Gets the second.
+     *
+     * @return the second.
+     */
     int getSecond();
+
+    /**
+     * Gets the nanosecond (0 to 999,999,999)
+     *
+     * @return the nanosecond.
+     */
     int getNanos();
 }

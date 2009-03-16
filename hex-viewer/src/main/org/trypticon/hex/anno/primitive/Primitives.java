@@ -24,6 +24,10 @@ package org.trypticon.hex.anno.primitive;
  * @author trejkaz
  */
 public class Primitives {
+    static short getShort(byte b1, byte b2) {
+        return (short) getUShort(b1, b2);
+    }
+
     static int getUShort(byte b1, byte b2) {
         return ((b1 & 0xFF) << 8) | (b2 & 0xFF);
     }
