@@ -2,6 +2,7 @@
     <target name="build" description="Runs each build in series.">
         <ant dir="binary-api"/>
         <ant dir="hex-viewer"/>
+        <ant dir="hex"/>
         <ant dir="launcher"/>
     </target>
 
@@ -13,6 +14,7 @@
     <target name="clean" description="Cleans generated files from each build">
         <ant dir="binary-api" target="clean"/>
         <ant dir="hex-viewer" target="clean"/>
+        <ant dir="hex" target="clean"/>
         <ant dir="launcher" target="clean"/>
     </target>
 </project>

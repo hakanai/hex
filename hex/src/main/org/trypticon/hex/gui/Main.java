@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex;
+package org.trypticon.hex.gui;
 
 import java.io.InputStream;
 import java.io.IOException;

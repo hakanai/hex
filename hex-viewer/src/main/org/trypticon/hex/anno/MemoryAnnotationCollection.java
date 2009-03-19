@@ -16,15 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex;
+package org.trypticon.hex.anno;
+
+import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
 
 /**
- * This file's sole purpose is to provide some sample binary for the initial
- * file open in the application.
+ * A collection of annotations kept in memory.
  *
  * @author trejkaz
  */
-public class Sample {
-    private static final int SECRET_CODE = 42;
-    private static final String SECRET_MESSAGE = "I am in your application, hacking your bytes.";
+public class MemoryAnnotationCollection implements AnnotationCollection {
+    private final List<Annotation> annotations = new ArrayList<Annotation>(50);
+
+    public List<Annotation> getAll() {
+        return Collections.unmodifiableList(annotations);
+    }
 }

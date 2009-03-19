@@ -31,9 +31,9 @@ import org.trypticon.binary.BinaryFactory;
  */
 public class TestLittleEndian {
     @Test
-    public void testUnsignedShort() {
+    public void testGetShort() {
         Binary binary = BinaryFactory.wrap(new byte[] { 0x01, 0x02, (byte) 0xC1, (byte) 0xC2 });
-        assertEquals("Wrong value", 0x0201, LittleEndian.getUShort(binary, 0));
-        assertEquals("Wrong value", 0xC2C1, LittleEndian.getUShort(binary, 2));
+        assertEquals("Wrong value", (short) 0x0201, LittleEndian.getShort(binary, 0));
+        assertEquals("Wrong value", (short) 0xC2C1, LittleEndian.getShort(binary, 2));
     }
 }

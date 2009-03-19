@@ -2,6 +2,7 @@
 <project relativePaths="false" version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="" />
+    <mapping directory="$PROJECT_DIR$/hex" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/hex-viewer" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/launcher" vcs="Git" />
   </component>

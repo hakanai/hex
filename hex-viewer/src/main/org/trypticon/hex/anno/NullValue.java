@@ -19,24 +19,18 @@
 package org.trypticon.hex.anno;
 
 /**
- * Interface marking an annotation within the binary.
+ * A value with no meaning.
  *
  * @author trejkaz
  */
-public interface Annotation {
+public class NullValue implements Value {
+    private final int length;
 
-    /**
-     * Gets the interpretor used to interpret the value at the given position.
-     *
-     * @return the interpretor.  May be {@code null}, in which case no value is interpreted.
-     */
-    Interpretor getInterpretor();
+    NullValue(int length) {
+        this.length = length;
+    }
 
-    /**
-     * A note added by the user.
-     *
-     * @return the note added by the user.
-     */
-    String getNote();
-
+    public int length() {
+        return length;
+    }
 }

@@ -16,27 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno;
+package org.trypticon.hex.gui;
 
 /**
- * Interface marking an annotation within the binary.
+ * This file's sole purpose is to provide some sample binary for the initial
+ * file open in the application.
  *
  * @author trejkaz
  */
-public interface Annotation {
-
-    /**
-     * Gets the interpretor used to interpret the value at the given position.
-     *
-     * @return the interpretor.  May be {@code null}, in which case no value is interpreted.
-     */
-    Interpretor getInterpretor();
-
-    /**
-     * A note added by the user.
-     *
-     * @return the note added by the user.
-     */
-    String getNote();
-
+public class Sample {
+    private static final int SECRET_CODE = 42;
+    private static final String SECRET_MESSAGE = "I am in your application, hacking your bytes.";
 }

@@ -18,25 +18,27 @@
 
 package org.trypticon.hex.anno;
 
+import org.trypticon.binary.Binary;
+
 /**
- * Interface marking an annotation within the binary.
+ * An interpretor which can mark a range as meaning nothing.  Useful for
+ * when you have a non-semantic comment with no value, such as "reserved",
+ * or "I don't know what this is."
  *
  * @author trejkaz
  */
-public interface Annotation {
+public class NullInterpretor implements Interpretor<NullValue> {
+    private final int length;
 
-    /**
-     * Gets the interpretor used to interpret the value at the given position.
-     *
-     * @return the interpretor.  May be {@code null}, in which case no value is interpreted.
-     */
-    Interpretor getInterpretor();
+    public NullInterpretor(int length) {
+        this.length = length;
+    }
 
-    /**
-     * A note added by the user.
-     *
-     * @return the note added by the user.
-     */
-    String getNote();
+    public Class<NullValue> getType() {
+        return NullValue.class;
+    }
 
+    public NullValue interpret(Binary binary, long position) {
+        return new NullValue(length);
+    }
 }

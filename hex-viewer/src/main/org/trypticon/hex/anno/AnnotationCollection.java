@@ -18,25 +18,13 @@
 
 package org.trypticon.hex.anno;
 
+import java.util.List;
+
 /**
- * Interface marking an annotation within the binary.
+ * A collection of annotations.
  *
  * @author trejkaz
  */
-public interface Annotation {
-
-    /**
-     * Gets the interpretor used to interpret the value at the given position.
-     *
-     * @return the interpretor.  May be {@code null}, in which case no value is interpreted.
-     */
-    Interpretor getInterpretor();
-
-    /**
-     * A note added by the user.
-     *
-     * @return the note added by the user.
-     */
-    String getNote();
-
+public interface AnnotationCollection {
+    List<Annotation> getAll();
 }

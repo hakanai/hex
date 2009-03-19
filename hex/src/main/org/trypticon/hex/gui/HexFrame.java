@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex;
+package org.trypticon.hex.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
@@ -40,6 +40,9 @@ import javax.swing.TransferHandler;
 import org.trypticon.binary.Binary;
 import org.trypticon.binary.BinaryFactory;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
+import org.trypticon.hex.anno.AnnotationPane;
+import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.HexViewer;
 
 /**
  * A top-level application frame.
@@ -50,6 +53,7 @@ import org.trypticon.hex.datatransfer.DelegatingActionListener;
  */
 public class HexFrame extends JFrame {
     private final HexViewer viewer;
+    private AnnotationPane annoPane;
 
     /**
      * Constructs the top-level frame.
@@ -60,11 +64,14 @@ public class HexFrame extends JFrame {
         setJMenuBar(buildMenuBar());
 
         viewer = new HexViewer();
+        annoPane = new AnnotationPane();
+
 
         JScrollPane viewerScroll = new JScrollPane(viewer);
         viewerScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(viewerScroll, BorderLayout.CENTER);
+        getContentPane().add(annoPane, BorderLayout.WEST);
         pack();
     }
 
@@ -89,6 +96,7 @@ public class HexFrame extends JFrame {
      */
     public void loadBinary(Binary binary) {
         viewer.setBinary(binary);
+        annoPane.setAnnotations(new MemoryAnnotationCollection());
     }
 
     private JMenuBar buildMenuBar() {
