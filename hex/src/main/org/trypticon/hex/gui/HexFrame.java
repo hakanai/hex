@@ -139,6 +139,13 @@ public class HexFrame extends JFrame {
     }
 
     /**
+     * Sets initial focus, which is to move the focus to the viewer.
+     */
+    public void initialFocus() {
+        viewer.requestFocusInWindow();
+    }
+
+    /**
      * Action to open a new file for viewing.
      */
     private class OpenAction extends AbstractAction {
