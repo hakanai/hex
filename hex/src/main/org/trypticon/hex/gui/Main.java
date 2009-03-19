@@ -58,12 +58,14 @@ public class Main {
         } else {
             frame.loadBinary(loadSample());
         }
+
+        frame.initialFocus();
     }
 
     private Binary loadSample() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("org/trypticon/hex/Sample.class");
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("org/trypticon/hex/gui/Sample.class");
         try {
             byte[] buf = new byte[16*1024];
             int bytesRead;
