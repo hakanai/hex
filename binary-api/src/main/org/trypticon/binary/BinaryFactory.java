@@ -20,7 +20,13 @@ package org.trypticon.binary;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.net.URL;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Factory for creating binary implementations for common things.
@@ -28,6 +34,10 @@ import java.nio.ByteBuffer;
  * @author trejkaz
  */
 public class BinaryFactory {
+    private static final Logger logger = Logger.getLogger(BinaryFactory.class.getName());
+
+    private BinaryFactory() {
+    }
 
     /**
      * Wraps a byte buffer, returning it as a binary.
@@ -56,7 +66,44 @@ public class BinaryFactory {
      * @return the binary.
      * @throws IOException if the file could not be opened for reading.
      */
-    public static CloseableBinary open(File file) throws IOException {
+    public static Binary open(File file) throws IOException {
         return new MemoryMappedFileBinary(file);
+    }
+
+    /**
+     * Opens a URL, returning the content as a binary.  If the URL happens
+     * to be a {@code file} URL then it will memory map the file.  Otherwise
+     * it will read the entire stream into memory and expose that.
+     *
+     * @param location the location of the binary.
+     * @return the binary.
+     * @throws IOException if an error occurs opening the URL.
+     */
+    public static Binary open(URL location) throws IOException {
+        if ("file".equals(location.getProtocol())) {
+            File file;
+            try {
+                file = new File(location.toURI());
+            } catch (URISyntaxException e) {
+                // Tolerance for bad URLs, but should not happen.
+                logger.log(Level.WARNING, "Illegal URI syntax in URL somehow: " + location, e);
+                file = new File(location.getPath());
+            }
+            return open(file);
+        } else {
+            // TODO: This could be improved to load in the background.
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream in = location.openStream();
+            try {
+                byte[] buf = new byte[16*1024];
+                int bytesRead;
+                while ((bytesRead = in.read(buf)) != -1) {
+                    baos.write(buf, 0, bytesRead);
+                }
+            } finally {
+                in.close();
+            }
+            return wrap(baos.toByteArray());
+        }
     }
 }

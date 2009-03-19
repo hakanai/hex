@@ -21,6 +21,7 @@ package org.trypticon.binary;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Closeable;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel.MapMode;
 
@@ -29,12 +30,12 @@ import java.nio.channels.FileChannel.MapMode;
  *
  * @author trejkaz
  */
-class MemoryMappedFileBinary extends AbstractBinary implements CloseableBinary {
+class MemoryMappedFileBinary extends AbstractBinary implements Binary, Closeable {
 
     /**
      * Delegate binary implementation.
      */
-    private CloseableBinary delegate;
+    private Binary delegate;
 
     /**
      * Cosntructs the binary, mapping the provided file into memory.
@@ -46,7 +47,7 @@ class MemoryMappedFileBinary extends AbstractBinary implements CloseableBinary {
         FileInputStream stream = new FileInputStream(file);
         try {
             ByteBuffer mapped = stream.getChannel().map(MapMode.READ_ONLY, 0, file.length());
-            delegate = new CloseableByteBufferBinary(mapped);
+            delegate = new ByteBufferBinary(mapped);
         } finally {
             stream.close();
         }
@@ -64,7 +65,7 @@ class MemoryMappedFileBinary extends AbstractBinary implements CloseableBinary {
         delegate.read(position, buffer, length);
     }
 
-    public void close() throws IOException {
+    public void close() {
         delegate.close();
     }
 }

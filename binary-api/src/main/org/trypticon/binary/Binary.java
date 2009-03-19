@@ -19,13 +19,14 @@
 package org.trypticon.binary;
 
 import java.nio.ByteBuffer;
+import java.io.Closeable;
 
 /**
  * Generic interface to things which contain binary data.
  *
  * @author trejkaz
  */
-public interface Binary {
+public interface Binary extends Closeable {
 
     /**
      * Gets the length of the binary, in bytes.
@@ -69,4 +70,8 @@ public interface Binary {
      */
     public void read(long position, ByteBuffer buffer, int length);
 
+    /**
+     * Closes the binary.  Other methods SHOULD NOT be used after closing.
+     */
+    void close();
 }

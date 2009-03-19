@@ -19,6 +19,7 @@
 package org.trypticon.binary;
 
 import java.nio.ByteBuffer;
+import java.io.IOException;
 
 /**
  * Base class for new binary implementations.
@@ -35,5 +36,8 @@ public abstract class AbstractBinary implements Binary {
     public void read(long position, byte[] buffer, int offset, int length) {
         ByteBuffer wrapped = ByteBuffer.wrap(buffer, offset, length);
         read(position, wrapped, length);
+    }
+
+    public void close() {
     }
 }
