@@ -16,29 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno;
+package org.trypticon.hex.anno.primitive;
 
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.anno.Interpretor;
 
 /**
- * An interpretor which can mark a range as meaning nothing.  Useful for
- * when you have a non-semantic comment with no value, such as "reserved",
- * or "I don't know what this is."
+ * Convenience class holding a bunch of instances to primitive interpretors.
  *
  * @author trejkaz
  */
-public class NullInterpretor implements Interpretor<NullValue> {
-    private final int length;
+public class PrimitiveInterpretors {
+    // TODO: Many more.  Putting in the minimum to test I/O code for now.
 
-    public NullInterpretor(int length) {
-        this.length = length;
-    }
-
-    public Class<NullValue> getType() {
-        return NullValue.class;
-    }
-
-    public NullValue interpret(Binary binary, long position) {
-        return new NullValue(length);
-    }
+    public static final Interpretor<UInt> UINT32_LE = new UIntInterpretorLE();
 }

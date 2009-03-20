@@ -16,37 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.primitive;
-
-import org.trypticon.hex.anno.Interpretor;
-import org.trypticon.binary.Binary;
+package org.trypticon.hex.gui.notebook;
 
 /**
- * Interpretor for unsigned int values.
+ * Common place for YAML tag IDs.
  *
  * @author trejkaz
  */
-public class UIntInterpretorLE implements Interpretor<UInt> {
-    public Class<UInt> getType() {
-        return UInt.class;
-    }
-
-    public UInt interpret(Binary binary, long position) {
-        return new UInt(LittleEndian.getInt(binary, position));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return o == this || o instanceof UIntInterpretorLE;
-    }
-
-    @Override
-    public int hashCode() {
-        return 100322;
-    }
-
-    @Override
-    public String toString() {
-        return "uint4le";
-    }
+class YamlTags {
+    static final String NOTEBOOK_TAG = "!hex/notebook";
+    static final String ANNOTATION_TAG = "!hex/annotation";
+    static final String INTERPRETOR_TAG_PREFIX = "!hex/interpretor:";
 }

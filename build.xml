@@ -9,6 +9,7 @@
     <target name="test" description="Tests each build in series.">
         <ant dir="binary-api" target="test"/>
         <ant dir="hex-viewer" target="test"/>
+        <ant dir="hex" target="test"/>
     </target>
 
     <target name="clean" description="Cleans generated files from each build">

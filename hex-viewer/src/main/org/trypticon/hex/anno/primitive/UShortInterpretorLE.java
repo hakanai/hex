@@ -34,4 +34,19 @@ public class UShortInterpretorLE implements Interpretor<UShort> {
     public UShort interpret(Binary binary, long position) {
         return new UShort(LittleEndian.getShort(binary, position));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof UShortInterpretorLE;
+    }
+
+    @Override
+    public int hashCode() {
+        return 100322;
+    }
+
+    @Override
+    public String toString() {
+        return "uint2le";
+    }
 }

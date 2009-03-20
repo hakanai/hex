@@ -43,6 +43,7 @@
             <zipfileset src="../binary-api/build/trypticon-binary-api.jar"/>
             <zipfileset src="../hex-viewer/build/trypticon-hex-viewer.jar"/>
             <zipfileset src="../main-program/build/trypticon-hex.jar"/>
+            <zipfileset src="../lib/jvyaml.jar"/>
 
             <manifest>
                 <attribute name="Main-Class" value="org.trypticon.hex.gui.Main"/>
@@ -79,6 +80,7 @@
             <fileset dir="../binary-api/build" includes="trypticon-binary-api.jar"/>
             <fileset dir="../hex-viewer/build" includes="trypticon-hex-viewer.jar"/>
             <fileset dir="../hex/build" includes="trypticon-hex.jar"/>
+            <fileset dir="../lib" includes="jvyaml.jar"/>
         </copy>
     </target>
 

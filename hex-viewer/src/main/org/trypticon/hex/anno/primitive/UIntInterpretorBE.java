@@ -34,4 +34,19 @@ public class UIntInterpretorBE implements Interpretor<UInt> {
     public UInt interpret(Binary binary, long position) {
         return new UInt(BigEndian.getInt(binary, position));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof UIntInterpretorBE;
+    }
+
+    @Override
+    public int hashCode() {
+        return 100321;
+    }
+
+    @Override
+    public String toString() {
+        return "uint4be";
+    }
 }

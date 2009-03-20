@@ -16,37 +16,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.primitive;
+package org.trypticon.hex.anno;
 
-import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.binary.Binary;
 
 /**
- * Interpretor for unsigned int values.
+ * An interpretor which can mark a range as meaning nothing.  Useful for
+ * when you have a non-semantic comment with no value, such as "reserved",
+ * or "I don't know what this is."
  *
  * @author trejkaz
  */
-public class UIntInterpretorLE implements Interpretor<UInt> {
-    public Class<UInt> getType() {
-        return UInt.class;
+public class NullInterpretor implements Interpretor<NullValue> {
+    private final int length;
+
+    public NullInterpretor(int length) {
+        this.length = length;
     }
 
-    public UInt interpret(Binary binary, long position) {
-        return new UInt(LittleEndian.getInt(binary, position));
+    public Class<NullValue> getType() {
+        return NullValue.class;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public NullValue interpret(Binary binary, long position) {
+        return new NullValue(length);
     }
 
     @Override
     public boolean equals(Object o) {
-        return o == this || o instanceof UIntInterpretorLE;
+        return o == this || o instanceof NullInterpretor && getLength() == ((NullInterpretor) o).getLength();
     }
 
     @Override
     public int hashCode() {
-        return 100322;
+        return length * 71;
     }
 
     @Override
     public String toString() {
-        return "uint4le";
+        return String.format("null(%d)", length);
     }
 }

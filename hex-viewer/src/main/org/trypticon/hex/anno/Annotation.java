@@ -26,16 +26,23 @@ package org.trypticon.hex.anno;
 public interface Annotation {
 
     /**
+     * Gets the position in the binary of the first byte of the annotation.
+     *
+     * @return the position in the binary.
+     */
+    long getPosition();
+
+    /**
      * Gets the interpretor used to interpret the value at the given position.
      *
-     * @return the interpretor.  May be {@code null}, in which case no value is interpreted.
+     * @return the interpretor.  TODO: Decide on nullable vs. non-null.
      */
     Interpretor getInterpretor();
 
     /**
      * A note added by the user.
      *
-     * @return the note added by the user.
+     * @return the note added by the user, {@code null} if there is no note.
      */
     String getNote();
 

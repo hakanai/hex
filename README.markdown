@@ -4,6 +4,8 @@ Hex - A simple hex viewer written in Java.
 
 Copyright (C) 2009  Trejkaz, Hex Project
 
+Now accepting contributions for a Mac icon file for this project! ;-)
+
 
 WHAT IS IT AND WHY
 ------------------
@@ -52,18 +54,18 @@ WHAT I AM TRYING TO GET WORKING NOW
 Next step is annotation.  I'm trying to grow the editor to a point where
 I can start using it in its incomplete form.  So in order of need:
 
-1. A way to load/save annotation files (I'm going with YAML format here.
-   Most Java developers love XML but I'm not fond of it.  I might support
-   it later though...)
+1. A way to load/save annotation files in YAML - DONE!
 
-2. Annotation menu with options for:
+2. UI for load/save of Notebook
+
+3. Annotation menu with options for:
     * Creating new annotations at the current selection start.
     * Deleting annotations under the cursor.
 
-3. Have these annotations correctly render in the tree so that I can
+4. Have these annotations correctly render in the tree so that I can
    be assured they have been created.
 
-4. Work on the renderer to render the annotations somehow.  I already
+5. Work on the renderer to render the annotations somehow.  I already
    have an idea of what this will look like but I want to modify the
    renderer to break up the task of identifying what type of cell is
    being rendered, and rendering the cell.  It looks like the best
@@ -77,7 +79,7 @@ I can start using it in its incomplete form.  So in order of need:
      - Fill border color of annotation (if there is one)
      - Draw marker for annotation note (if there is one)
 
-5. Keep documents open from last session.  And then switch to opening
+6. Keep documents open from last session.  And then switch to opening
    nothing by default.  The first session I will still open the sample,
    but I will modify the sample to contain annotations as well.
 
