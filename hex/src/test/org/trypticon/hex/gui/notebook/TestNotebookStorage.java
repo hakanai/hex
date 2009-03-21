@@ -21,8 +21,13 @@ package org.trypticon.hex.gui.notebook;
 import java.net.URL;
 import java.io.StringWriter;
 import java.io.StringReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 
 import org.junit.Test;
+import org.junit.Ignore;
 import static org.junit.Assert.assertEquals;
 
 import org.trypticon.hex.anno.AnnotationCollection;
@@ -30,12 +35,15 @@ import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.NullInterpretor;
 import org.trypticon.hex.anno.primitive.PrimitiveInterpretors;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 /**
  * Tests for {@link NotebookStorage}.
  *
  * @author trejkaz
  */
 public class TestNotebookStorage {
+    private NotebookStorage storage = new NotebookStorage();
 
     @Test
     public void testRoundTrip() throws Exception {
@@ -43,8 +51,6 @@ public class TestNotebookStorage {
         AnnotationCollection annotations = notebook.getAnnotations();
         annotations.add(new SimpleMutableAnnotation(5, new NullInterpretor(4), "Test"));
         annotations.add(new SimpleMutableAnnotation(9, PrimitiveInterpretors.UINT32_LE, null));
-
-        NotebookStorage storage = new NotebookStorage();
 
         StringWriter writer = new StringWriter();
         storage.write(notebook, writer);
@@ -58,5 +64,59 @@ public class TestNotebookStorage {
 
         assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
         assertEquals("Wrong annotations", notebook.getAnnotations().getAll(), churned.getAnnotations().getAll());
+    }
+
+    @Test
+    public void testFileStorage() throws Exception {
+        File tmpFile = File.createTempFile("temp", ".xml");
+        try {
+            URL tmpFileURL = tmpFile.toURI().toURL();
+            Notebook notebook = new Notebook(new URL("http://example.com/biscuits.dat.xml"));
+
+            storage.write(notebook, tmpFileURL);
+
+            Notebook churned = storage.read(tmpFileURL);
+            assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
+        } finally {
+            if (!tmpFile.delete()) {
+                System.err.println("Error deleting temp file: " + tmpFile);
+            }
+        }
+    }
+
+    @Test(expected=IOException.class)
+    public void testIOExceptionOnReading() throws Exception {
+        storage.read(new BrokenReader());
+    }
+
+    @Test(expected=IOException.class)
+    @Ignore("requires a fix to JvYAML: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=15")
+    public void testIOExceptionOnWriting() throws Exception {
+        Notebook notebook = new Notebook(new URL("http://example.com/biscuits.dat.xml"));
+        storage.write(notebook, new BrokenWriter());
+    }
+
+    private static class BrokenReader extends Reader {
+        public int read(char[] chars, int i, int i1) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        public void close() throws IOException {
+            throw new IOException("Broken");
+        }
+    }
+
+    private static class BrokenWriter extends Writer {
+        public void write(char[] chars, int i, int i1) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        public void flush() throws IOException {
+            throw new IOException("Broken");
+        }
+
+        public void close() throws IOException {
+            throw new IOException("Broken");
+        }
     }
 }

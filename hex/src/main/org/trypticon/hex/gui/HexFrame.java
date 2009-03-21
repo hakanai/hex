@@ -22,28 +22,22 @@ import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.TransferHandler;
 
-import org.trypticon.binary.Binary;
-import org.trypticon.binary.BinaryFactory;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.anno.AnnotationPane;
-import org.trypticon.hex.anno.MemoryAnnotationCollection;
-import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.gui.notebook.Notebook;
 
 /**
  * A top-level application frame.
@@ -54,7 +48,8 @@ import org.trypticon.hex.HexViewer;
  */
 public class HexFrame extends JFrame {
     private final HexViewer viewer;
-    private AnnotationPane annoPane;
+    private final AnnotationPane annoPane;
+    private Notebook notebook;
 
     /**
      * Constructs the top-level frame.
@@ -77,34 +72,53 @@ public class HexFrame extends JFrame {
     }
 
     /**
-     * Loads a file into the viewer within this frame.
+     * Gets the notebook being viewed.
      *
-     * @param file the file to load.
+     * @return the notebook being viewed.
      */
-    public void loadFile(File file) {
-        try {
-            Binary binary = BinaryFactory.open(file);
-            loadBinary(binary);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(getRootPane(), "There was an error opening the file.");
-        }
+    public Notebook getNotebook() {
+        return notebook;
     }
 
     /**
-     * Loads the specified binary into the viewer within this frame.
+     * Sets the notebook to view.
      *
-     * @param binary the binary to open.
+     * @param notebook the notebook to view.
+     * @throws IOException if there was an error opening the notebook.
      */
-    public void loadBinary(Binary binary) {
-        viewer.setBinary(binary);
-        AnnotationCollection annotations = new MemoryAnnotationCollection();
-        annoPane.setAnnotations(annotations);
-        viewer.setAnnotations(annotations);
+    public void setNotebook(Notebook notebook) throws IOException {
+        if (this.notebook != null) {
+            this.notebook.close();
+
+            annoPane.setAnnotations(null);
+            viewer.setAnnotations(null);
+            viewer.setBinary(null);
+        }
+
+        this.notebook = notebook;
+
+        if (notebook != null) {
+            annoPane.setAnnotations(notebook.getAnnotations());
+            viewer.setAnnotations(notebook.getAnnotations());
+
+            notebook.open();
+
+            viewer.setBinary(notebook.getBinary());
+        }
     }
+
 
     private JMenuBar buildMenuBar() {
         JMenu fileMenu = new JMenu("File");
-        fileMenu.add(new OpenAction());
+        fileMenu.add(new NewNotebookAction());
+        fileMenu.add(new OpenNotebookAction());
+        // TODO: Open Recent
+
+        fileMenu.addSeparator();
+        // TODO: Close Notebook - not useful for me until we maintain state.
+        fileMenu.add(new SaveNotebookAction(false));
+        fileMenu.add(new SaveNotebookAction(true));
+        // TODO: Revert to Saved
 
         if (!System.getProperty("os.name").toLowerCase().startsWith("mac")) {
             fileMenu.addSeparator();
@@ -149,26 +163,6 @@ public class HexFrame extends JFrame {
      */
     public void initialFocus() {
         viewer.requestFocusInWindow();
-    }
-
-    /**
-     * Action to open a new file for viewing.
-     */
-    private class OpenAction extends AbstractAction {
-        private OpenAction() {
-            putValue(NAME, "Open...");
-            putValue(MNEMONIC_KEY, (int) 'o');
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
-                                                             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        }
-
-        public void actionPerformed(ActionEvent event) {
-            JFileChooser chooser = new JFileChooser();
-            if (chooser.showOpenDialog(getRootPane()) == JFileChooser.APPROVE_OPTION) {
-                File file = chooser.getSelectedFile();
-                loadFile(file);
-            }
-        }
     }
 
     /**

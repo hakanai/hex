@@ -16,34 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui;
+package org.trypticon.hex.gui.notebook;
 
-import javax.swing.JMenu;
-
-import org.trypticon.hex.anno.primitive.PrimitiveInterpretorStorage;
-import org.trypticon.hex.anno.InterpretorInfo;
+import java.io.File;
+import javax.swing.filechooser.FileFilter;
 
 /**
- * With with the list of annotations which can be added by the user.
+ * File filter matching notebook files (and directories...)
  *
  * @author trejkaz
  */
-class AddAnnotationMenu extends JMenu {
-    public AddAnnotationMenu() {
-        super("Add Annotation");
-
-        // TODO: This should go through the MasterInterpretorStorage once we have categories.
-
-        add(buildPrimitivesMenu());
+public class NotebookFileFilter extends FileFilter {
+    public boolean accept(File file) {
+        return file.isDirectory() || file.getName().endsWith(".xml");
     }
 
-    private JMenu buildPrimitivesMenu() {
-        JMenu menu = new JMenu("Primitive");
-        for (InterpretorInfo info : new PrimitiveInterpretorStorage().getInterpretorInfos()) {
-            menu.add(new AddAnnotationAction(info));
-        }
-        return menu;
+    public String getDescription() {
+        return "Notebook Files (*.xml)";
     }
-
-
 }

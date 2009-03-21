@@ -18,15 +18,12 @@
 
 package org.trypticon.hex.gui;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import org.trypticon.binary.Binary;
-import org.trypticon.binary.BinaryFactory;
+import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.NotebookStorage;
 
 /**
  * Main entry point.
@@ -53,29 +50,15 @@ public class Main {
         frame.setVisible(true);
 
         if (args.length == 1 && args[0] instanceof String) {
+            // TODO: Support a URL here too.
+            // TODO: Support binary here too. Find a way to distinguish this in this context.
             File file = new File((String) args[0]);
-            frame.loadFile(file);
+            frame.setNotebook(new NotebookStorage().read(file.toURI().toURL()));
         } else {
-            frame.loadBinary(loadSample());
+            frame.setNotebook(new Notebook(
+                    getClass().getClassLoader().getResource("org/trypticon/hex/gui/Sample.class")));
         }
 
         frame.initialFocus();
-    }
-
-    private Binary loadSample() throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("org/trypticon/hex/gui/Sample.class");
-        try {
-            byte[] buf = new byte[16*1024];
-            int bytesRead;
-            while ((bytesRead = stream.read(buf)) != -1) {
-                out.write(buf, 0, bytesRead);
-            }
-        } finally {
-            stream.close();
-        }
-
-        return BinaryFactory.wrap(out.toByteArray());
     }
 }

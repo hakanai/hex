@@ -37,6 +37,7 @@ import org.trypticon.hex.anno.MemoryAnnotationCollection;
  */
 public class Notebook {
     private static final Logger logger = Logger.getLogger(Notebook.class.getName());
+    private URL notebookLocation;
     private final URL binaryLocation;
     private final AnnotationCollection annotations;
     private Binary binary;
@@ -44,7 +45,7 @@ public class Notebook {
     private final Object openLock = new Object();
 
     /**
-     * Constructs a notebook with a default in-memory annotation collection.
+     * Constructs a new unsaved notebook with a default in-memory annotation collection.
      *
      * @param binaryLocation the location of the binary.
      */
@@ -73,6 +74,9 @@ public class Notebook {
      * @throws IOException if an I/O error prevents opening the binary.
      */
     public void open() throws IOException {
+
+        // TODO: Support relative path to binary file.
+
         synchronized (openLock) {
             if (binary != null) {
                 logger.warning("Already open when open() was called, doing nothing.");
@@ -93,6 +97,25 @@ public class Notebook {
                 binary.close();
             }
         }
+    }
+
+    /**
+     * Gets the location from which the notebook was opened, or to which it was last saved.
+     *
+     * @return the notebook location.
+     */
+    public URL getNotebookLocation() {
+        return notebookLocation;
+    }
+
+    /**
+     * Sets the location of the notebook.
+     *
+     * @param notebookLocation the new notebook location.
+     * @see #getNotebookLocation()
+     */
+    public void setNotebookLocation(URL notebookLocation) {
+        this.notebookLocation = notebookLocation;
     }
 
     public URL getBinaryLocation() {

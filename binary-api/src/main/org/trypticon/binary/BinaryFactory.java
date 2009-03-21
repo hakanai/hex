@@ -24,9 +24,8 @@ import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.net.URL;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.trypticon.hex.util.URLUtils;
 
 /**
  * Factory for creating binary implementations for common things.
@@ -34,7 +33,6 @@ import java.util.logging.Logger;
  * @author trejkaz
  */
 public class BinaryFactory {
-    private static final Logger logger = Logger.getLogger(BinaryFactory.class.getName());
 
     private BinaryFactory() {
     }
@@ -81,15 +79,7 @@ public class BinaryFactory {
      */
     public static Binary open(URL location) throws IOException {
         if ("file".equals(location.getProtocol())) {
-            File file;
-            try {
-                file = new File(location.toURI());
-            } catch (URISyntaxException e) {
-                // Tolerance for bad URLs, but should not happen.
-                logger.log(Level.WARNING, "Illegal URI syntax in URL somehow: " + location, e);
-                file = new File(location.getPath());
-            }
-            return open(file);
+            return open(URLUtils.toFile(location));
         } else {
             // TODO: This could be improved to load in the background.
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

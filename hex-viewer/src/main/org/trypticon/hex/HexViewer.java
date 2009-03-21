@@ -126,6 +126,10 @@ public class HexViewer extends JComponent implements Scrollable {
      */
     public void setBinary(Binary binary) {
         this.binary = binary;
+
+        selectionModel.setCursor(0);
+        selectionModel.setCursorAndExtendSelection(0);
+
         invalidate();
         repaint();
     }

@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/hex-viewer/Hex Viewer.iml" filepath="$PROJECT_DIR$/hex-viewer/Hex Viewer.iml" />
       <module fileurl="file://$PROJECT_DIR$/launcher/Launcher.iml" filepath="$PROJECT_DIR$/launcher/Launcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/hex/Main Program.iml" filepath="$PROJECT_DIR$/hex/Main Program.iml" />
+      <module fileurl="file://$PROJECT_DIR$/util/Utilities.iml" filepath="$PROJECT_DIR$/util/Utilities.iml" />
     </modules>
   </component>
 </project>

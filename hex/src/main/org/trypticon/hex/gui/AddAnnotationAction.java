@@ -24,7 +24,6 @@ import java.awt.Component;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -42,7 +41,7 @@ import org.trypticon.hex.anno.Interpretor;
  *
  * @author trejkaz
  */
-public class AddAnnotationAction extends BaseAction {
+class AddAnnotationAction extends BaseAction {
     private final InterpretorInfo info;
 
     public AddAnnotationAction(InterpretorInfo info) {

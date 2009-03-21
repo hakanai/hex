@@ -25,28 +25,26 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.jvyaml.DefaultYAMLConfig;
 import org.jvyaml.DefaultYAMLFactory;
 import org.jvyaml.Representer;
-import org.jvyaml.RepresenterImpl;
 import org.jvyaml.Serializer;
 import org.jvyaml.YAML;
 import org.jvyaml.YAMLConfig;
 import org.jvyaml.YAMLFactory;
-import org.jvyaml.YAMLNodeCreator;
 import org.jvyaml.Constructor;
 import org.jvyaml.Composer;
+import org.jvyaml.YAMLException;
 
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.hex.anno.InterpretorStorage;
 import org.trypticon.hex.anno.MasterInterpretorStorage;
+import org.trypticon.hex.util.URLUtils;
 
 /**
  * Support for reading and writing {@link Notebook}s to files.
@@ -55,8 +53,8 @@ import org.trypticon.hex.anno.MasterInterpretorStorage;
  */
 public class NotebookStorage {
     private final InterpretorStorage interpretorStorage = new MasterInterpretorStorage();
-    private YAMLConfig config;
-    private YAMLFactory factory;
+    private final YAMLConfig config;
+    private final YAMLFactory factory;
 
     public NotebookStorage() {
         config = new DefaultYAMLConfig();
@@ -75,33 +73,76 @@ public class NotebookStorage {
     }
 
     public Notebook read(Reader reader) throws IOException {
-        return (Notebook) YAML.load(reader, factory, config);
+        try {
+            return (Notebook) YAML.load(reader, factory, config);
+        } catch (YAMLException e) {
+            rethrow(e);
+            return null; // actually unreachable, compiler isn't smart enough.
+        }
     }
 
     public Notebook read(URL url) throws IOException {
         InputStream stream = url.openStream();
         try {
-            return read(new InputStreamReader(stream, "UTF-8"));
+            Notebook notebook = read(new InputStreamReader(stream, "UTF-8"));
+            notebook.setNotebookLocation(url);
+            return notebook;
         } finally {
             stream.close();
         }
     }
 
     public void write(Notebook notebook, Writer writer) throws IOException {
-        YAML.dump(notebook, writer, factory, config);
+        try {
+            YAML.dump(notebook, writer, factory, config);
+        } catch (YAMLException e) {
+            rethrow(e);
+        }
     }
 
-    public void write(Notebook notebook, URL url) throws IOException {
-        URLConnection connection = url.openConnection();
-        connection.setDoInput(false);
-        connection.setDoOutput(true);
-        connection.connect();
-
-        OutputStream stream = connection.getOutputStream();
+    private void write(Notebook notebook, File file) throws IOException {
+        OutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
         try {
             write(notebook, new OutputStreamWriter(stream, "UTF-8"));
         } finally {
             stream.close();
+        }
+    }
+
+    public void write(Notebook notebook, URL url) throws IOException {
+        // Workaround for Java Bug 4814217 - file protocol writing does not work.
+        // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4814217
+        if ("file".equals(url.getProtocol())) {
+            write(notebook, URLUtils.toFile(url));
+        } else {
+            URLConnection connection = url.openConnection();
+            connection.setDoInput(false);
+            connection.setDoOutput(true);
+            connection.connect();
+
+            OutputStream stream = connection.getOutputStream();
+            try {
+                write(notebook, new OutputStreamWriter(stream, "UTF-8"));
+            } finally {
+                stream.close();
+            }
+        }
+        notebook.setNotebookLocation(url);
+    }
+
+    /**
+     * The YAML library wraps a runtime exception around the real problem.
+     * We unwrap it because propagating the real exception is usually better.
+     *
+     * @param e the exception.
+     * @throws IOException if the cause is actually an IOException.
+     * @throws YAMLException otherwise.
+     */
+    private static void rethrow(YAMLException e) throws IOException {
+        if (e.getCause() instanceof IOException) {
+            throw (IOException) e.getCause();
+        } else {
+            throw e;
         }
     }
 }

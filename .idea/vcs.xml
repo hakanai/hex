@@ -5,6 +5,7 @@
     <mapping directory="$PROJECT_DIR$/hex" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/hex-viewer" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/launcher" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/util" vcs="Git" />
   </component>
 </project>
 
