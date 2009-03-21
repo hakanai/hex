@@ -32,10 +32,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.anno.NullInterpretor;
+import org.trypticon.hex.anno.nulls.NullInterpretor;
 import org.trypticon.hex.anno.primitive.PrimitiveInterpretors;
-
-import com.sun.xml.internal.bind.v2.TODO;
 
 /**
  * Tests for {@link NotebookStorage}.

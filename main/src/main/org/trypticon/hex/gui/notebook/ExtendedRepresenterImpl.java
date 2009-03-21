@@ -29,6 +29,7 @@ import org.jvyaml.RepresenterImpl;
 import org.jvyaml.Serializer;
 import org.jvyaml.YAMLConfig;
 import org.jvyaml.YAMLNodeCreator;
+import org.jvyaml.RepresenterException;
 import org.jvyaml.nodes.Node;
 
 import org.trypticon.hex.anno.Interpretor;
@@ -108,6 +109,10 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
 
         private InterpretorYAMLNodeCreator(Interpretor interpretor) {
             Map<String, Object> map = interpretorStorage.toMap(interpretor);
+            if (map == null) {
+                throw new RepresenterException("Unknown interpretor: " + interpretor);
+            }
+
             options = new LinkedHashMap<String, Object>(map);
             name = (String) options.remove("name");
         }
