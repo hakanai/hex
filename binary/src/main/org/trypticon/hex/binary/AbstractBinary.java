@@ -16,35 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.binary;
+package org.trypticon.hex.binary;
 
 import java.nio.ByteBuffer;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-
 /**
- * Tests for {@link ByteBufferBinary}.
+ * Base class for new binary implementations.
  *
  * @author trejkaz
  */
-public class TestByteBufferBinary {
+public abstract class AbstractBinary implements Binary {
 
-    @Test
-    public void testReading() {
-        byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        Binary binary = new ByteBufferBinary(buffer);
+    public void read(long position, byte[] buffer) {
+        ByteBuffer wrapped = ByteBuffer.wrap(buffer, 0, buffer.length);
+        read(position, wrapped, buffer.length);
+    }
 
-        assertEquals("Wrong result", 0, binary.read(0));
+    public void read(long position, byte[] buffer, int offset, int length) {
+        ByteBuffer wrapped = ByteBuffer.wrap(buffer, offset, length);
+        read(position, wrapped, length);
+    }
 
-        byte[] tmp = new byte[4];
-        binary.read(1, tmp);
-        assertArrayEquals("Wrong result", new byte[]{1, 2, 3, 4}, tmp);
-        binary.read(5, tmp);
-        assertArrayEquals("Wrong result", new byte[]{5, 6, 7, 8}, tmp);
-
-        assertEquals("Wrong result", 9, binary.read(9));
+    public void close() {
     }
 }

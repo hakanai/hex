@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.binary;
+package org.trypticon.hex.binary;
 
 import java.nio.ByteBuffer;
 import java.io.Closeable;

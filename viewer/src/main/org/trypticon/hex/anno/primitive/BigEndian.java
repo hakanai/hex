@@ -18,7 +18,7 @@
 
 package org.trypticon.hex.anno.primitive;
 
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
 
 /**
  * Little Endian utilities.

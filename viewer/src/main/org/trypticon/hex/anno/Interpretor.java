@@ -18,7 +18,7 @@
 
 package org.trypticon.hex.anno;
 
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
 
 /**
  * Interface for interpretation of a sequence of binary as some typed value.

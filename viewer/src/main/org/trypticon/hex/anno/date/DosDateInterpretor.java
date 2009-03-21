@@ -21,7 +21,7 @@ package org.trypticon.hex.anno.date;
 import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.hex.anno.primitive.LittleEndian;
 import org.trypticon.hex.anno.primitive.BitField;
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
 
 /**
  * Interpretor for MS-DOS date values, which are used in a number of other formats.

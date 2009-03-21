@@ -21,9 +21,8 @@ package org.trypticon.hex.anno.nulls;
 import java.util.Map;
 import java.util.HashMap;
 
-import org.trypticon.hex.anno.InterpretorStorage;
 import org.trypticon.hex.anno.Interpretor;
-import org.trypticon.hex.anno.NullInterpretor;
+import org.trypticon.hex.anno.InterpretorStorage;
 
 /**
  * Interpretor storage for null values.

@@ -23,7 +23,7 @@ import java.awt.datatransfer.Transferable;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.HexUtils;
 import org.trypticon.hex.HexViewer;
 

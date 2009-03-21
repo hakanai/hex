@@ -21,8 +21,8 @@ package org.trypticon.hex.anno.primitive;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-import org.trypticon.binary.Binary;
-import org.trypticon.binary.BinaryFactory;
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.binary.BinaryFactory;
 
 /**
  * Tests for {@link LittleEndian}.

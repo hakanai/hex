@@ -22,8 +22,8 @@ import java.net.URL;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.trypticon.binary.Binary;
-import org.trypticon.binary.BinaryFactory;
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 

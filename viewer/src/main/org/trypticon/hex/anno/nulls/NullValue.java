@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno;
+package org.trypticon.hex.anno.nulls;
+
+import org.trypticon.hex.anno.Value;
 
 /**
  * A value with no meaning.

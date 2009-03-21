@@ -19,7 +19,7 @@
 package org.trypticon.hex.anno.date;
 
 import org.trypticon.hex.anno.Interpretor;
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
 
 /**
  * Interprets a pair of DOS date and time.

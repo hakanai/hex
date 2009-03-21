@@ -22,7 +22,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 import org.trypticon.hex.anno.Interpretor;
-import org.trypticon.binary.BinaryFactory;
+import org.trypticon.hex.binary.BinaryFactory;
 
 /**
  * Tests for {@link DosDateTimeInterpretor}.

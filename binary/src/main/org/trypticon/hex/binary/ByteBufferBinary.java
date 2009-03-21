@@ -21,7 +21,7 @@
  * and open the template in the editor.
  */
 
-package org.trypticon.binary;
+package org.trypticon.hex.binary;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.locks.ReadWriteLock;

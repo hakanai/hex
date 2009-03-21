@@ -18,7 +18,7 @@
 
 package org.trypticon.hex;
 
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
 
 /**
  * Utilities for converting hex to text.

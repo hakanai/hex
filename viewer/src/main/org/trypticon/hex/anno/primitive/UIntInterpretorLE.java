@@ -19,7 +19,7 @@
 package org.trypticon.hex.anno.primitive;
 
 import org.trypticon.hex.anno.Interpretor;
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
 
 /**
  * Interpretor for unsigned int values.

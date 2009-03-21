@@ -32,7 +32,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.datatransfer.HexViewerTransferHandler;
 import org.trypticon.hex.plaf.BasicHexViewerUI;
 import org.trypticon.hex.plaf.HexViewerUI;

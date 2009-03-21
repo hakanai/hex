@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno;
+package org.trypticon.hex.anno.nulls;
 
-import org.trypticon.binary.Binary;
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.anno.Interpretor;
 
 /**
  * An interpretor which can mark a range as meaning nothing.  Useful for
