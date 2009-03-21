@@ -16,6 +16,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project name="hex-viewer" default="package">
+<project name="viewer" default="package">
     <import file="../common-build.xml"/>
 </project>

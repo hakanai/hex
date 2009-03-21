@@ -16,6 +16,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project name="hex" default="package">
+<project name="main" default="package">
     <import file="../common-build.xml"/>
 </project>

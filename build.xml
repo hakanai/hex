@@ -1,24 +1,24 @@
 <project name="hex" default="build">
     <target name="build" description="Runs each build in series.">
         <ant dir="util"/>
-        <ant dir="binary-api"/>
-        <ant dir="hex-viewer"/>
-        <ant dir="hex"/>
+        <ant dir="binary"/>
+        <ant dir="viewer"/>
+        <ant dir="main"/>
         <ant dir="launcher"/>
     </target>
 
     <target name="test" description="Tests each build in series.">
         <ant dir="util" target="test"/>
-        <ant dir="binary-api" target="test"/>
-        <ant dir="hex-viewer" target="test"/>
-        <ant dir="hex" target="test"/>
+        <ant dir="binary" target="test"/>
+        <ant dir="viewer" target="test"/>
+        <ant dir="main" target="test"/>
     </target>
 
     <target name="clean" description="Cleans generated files from each build">
         <ant dir="util" target="clean"/>
-        <ant dir="binary-api" target="clean"/>
-        <ant dir="hex-viewer" target="clean"/>
-        <ant dir="hex" target="clean"/>
+        <ant dir="binary" target="clean"/>
+        <ant dir="viewer" target="clean"/>
+        <ant dir="main" target="clean"/>
         <ant dir="launcher" target="clean"/>
     </target>
 </project>

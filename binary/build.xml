@@ -16,6 +16,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project name="binary-api" default="package">
+<project name="binary" default="package">
     <import file="../common-build.xml"/>
 </project>
