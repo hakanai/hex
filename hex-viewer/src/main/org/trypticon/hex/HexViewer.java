@@ -36,6 +36,7 @@ import org.trypticon.binary.Binary;
 import org.trypticon.hex.datatransfer.HexViewerTransferHandler;
 import org.trypticon.hex.plaf.BasicHexViewerUI;
 import org.trypticon.hex.plaf.HexViewerUI;
+import org.trypticon.hex.anno.AnnotationCollection;
 
 /**
  * Swing widget for viewing binary in hexadecimal form.
@@ -52,6 +53,11 @@ public class HexViewer extends JComponent implements Scrollable {
      * The binary being viewed.
      */
     private Binary binary;
+
+    /**
+     * The collection of annotations to show.
+     */
+    private AnnotationCollection annotations;
 
     /**
      * The selection model, tracks where the selection and cursor are.
@@ -121,6 +127,25 @@ public class HexViewer extends JComponent implements Scrollable {
     public void setBinary(Binary binary) {
         this.binary = binary;
         invalidate();
+        repaint();
+    }
+
+    /**
+     * Gets the collection of annotations to show.
+     *
+     * @return the annotations to show.
+     */
+    public AnnotationCollection getAnnotations() {
+        return annotations;
+    }
+
+    /**
+     * Sets the collection of annotations to show.
+     *
+     * @param annotations the annotations to show.
+     */
+    public void setAnnotations(AnnotationCollection annotations) {
+        this.annotations = annotations;
         repaint();
     }
 

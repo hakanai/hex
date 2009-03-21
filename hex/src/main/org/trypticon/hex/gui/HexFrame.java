@@ -42,6 +42,7 @@ import org.trypticon.binary.BinaryFactory;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.anno.AnnotationPane;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.HexViewer;
 
 /**
@@ -96,7 +97,9 @@ public class HexFrame extends JFrame {
      */
     public void loadBinary(Binary binary) {
         viewer.setBinary(binary);
-        annoPane.setAnnotations(new MemoryAnnotationCollection());
+        AnnotationCollection annotations = new MemoryAnnotationCollection();
+        annoPane.setAnnotations(annotations);
+        viewer.setAnnotations(annotations);
     }
 
     private JMenuBar buildMenuBar() {
@@ -131,6 +134,9 @@ public class HexFrame extends JFrame {
         selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
                                                                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         editMenu.add(selectAllMenuItem);
+
+        editMenu.addSeparator();
+        editMenu.add(new AddAnnotationMenu());
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);

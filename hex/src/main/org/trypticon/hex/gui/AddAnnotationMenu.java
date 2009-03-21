@@ -16,38 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno;
+package org.trypticon.hex.gui;
 
-import java.util.List;
+import javax.swing.JMenu;
+
+import org.trypticon.hex.anno.primitive.PrimitiveInterpretorStorage;
+import org.trypticon.hex.anno.InterpretorInfo;
 
 /**
- * A collection of annotations.
+ * With with the list of annotations which can be added by the user.
  *
  * @author trejkaz
  */
-public interface AnnotationCollection {
-    /**
-     * Gets a list of all annotations.
-     *
-     * @return the list of all annotations.
-     */
-    List<Annotation> getAll();
+public class AddAnnotationMenu extends JMenu {
+    public AddAnnotationMenu() {
+        super("Add Annotation");
 
-    /**
-     * Adds an annotation.
-     *
-     * @param annotation the annotation to add.
-     */
-    void add(Annotation annotation);
+        // TODO: This should go through the MasterInterpreterStorage once we have categories.
 
-    /**
-     * Removes an annotation.
-     *
-     * @param annotation the annotation to remove.
-     */
-    void remove(Annotation annotation);
+        add(buildPrimitivesMenu());
+    }
 
-    void addAnnotationCollectionListener(AnnotationCollectionListener listener);
+    private JMenu buildPrimitivesMenu() {
+        JMenu menu = new JMenu("Primitive");
+        for (InterpretorInfo info : new PrimitiveInterpretorStorage().getInterpretorInfos()) {
+            menu.add(new AddAnnotationAction(info));
+        }
+        return menu;
+    }
 
-    void removeAnnotationCollectionListener(AnnotationCollectionListener listener);
+
 }

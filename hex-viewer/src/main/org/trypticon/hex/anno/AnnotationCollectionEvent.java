@@ -18,36 +18,19 @@
 
 package org.trypticon.hex.anno;
 
-import java.util.List;
+import java.util.EventObject;
 
 /**
- * A collection of annotations.
+ * Event for changes in an annotation listener.
  *
  * @author trejkaz
  */
-public interface AnnotationCollection {
-    /**
-     * Gets a list of all annotations.
-     *
-     * @return the list of all annotations.
-     */
-    List<Annotation> getAll();
+public class AnnotationCollectionEvent extends EventObject {
+    public AnnotationCollectionEvent(AnnotationCollection collection) {
+        super(collection);
+    }
 
-    /**
-     * Adds an annotation.
-     *
-     * @param annotation the annotation to add.
-     */
-    void add(Annotation annotation);
-
-    /**
-     * Removes an annotation.
-     *
-     * @param annotation the annotation to remove.
-     */
-    void remove(Annotation annotation);
-
-    void addAnnotationCollectionListener(AnnotationCollectionListener listener);
-
-    void removeAnnotationCollectionListener(AnnotationCollectionListener listener);
+    public AnnotationCollection getSource() {
+        return (AnnotationCollection) super.getSource();
+    }
 }

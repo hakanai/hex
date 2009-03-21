@@ -19,6 +19,7 @@
 package org.trypticon.hex.anno;
 
 import javax.swing.tree.TreePath;
+import javax.swing.event.TreeModelEvent;
 
 import org.trypticon.hex.swingsupport.AbstractTreeModel;
 
@@ -27,11 +28,13 @@ import org.trypticon.hex.swingsupport.AbstractTreeModel;
  *
  * @author trejkaz
  */
-public class AnnotationTreeModel extends AbstractTreeModel {
+public class AnnotationTreeModel extends AbstractTreeModel implements AnnotationCollectionListener {
     private final AnnotationCollection annotations;
 
     public AnnotationTreeModel(AnnotationCollection annotations) {
         this.annotations = annotations;
+
+        annotations.addAnnotationCollectionListener(this);
     }
 
     private Object rootNode = new Object() {
@@ -80,5 +83,10 @@ public class AnnotationTreeModel extends AbstractTreeModel {
 
     public void valueForPathChanged(TreePath treePath, Object o) {
         // I don't think I will need this.
+    }
+
+    public void annotationsChanged(AnnotationCollectionEvent event) {
+        // TODO: This will change a bit once we have some more structure.
+        fireTreeStructureChanged(new TreeModelEvent(this, new Object[] { rootNode }));
     }
 }

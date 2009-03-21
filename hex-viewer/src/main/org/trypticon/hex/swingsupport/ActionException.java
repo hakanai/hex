@@ -16,38 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno;
-
-import java.util.List;
+package org.trypticon.hex.swingsupport;
 
 /**
- * A collection of annotations.
+ * A user exception thrown by subclasses of {@code BaseAction} to raise a
+ * simple error dialog.
  *
  * @author trejkaz
  */
-public interface AnnotationCollection {
-    /**
-     * Gets a list of all annotations.
-     *
-     * @return the list of all annotations.
-     */
-    List<Annotation> getAll();
-
-    /**
-     * Adds an annotation.
-     *
-     * @param annotation the annotation to add.
-     */
-    void add(Annotation annotation);
-
-    /**
-     * Removes an annotation.
-     *
-     * @param annotation the annotation to remove.
-     */
-    void remove(Annotation annotation);
-
-    void addAnnotationCollectionListener(AnnotationCollectionListener listener);
-
-    void removeAnnotationCollectionListener(AnnotationCollectionListener listener);
+public class ActionException extends Exception {
+    public ActionException(String message) {
+        super(message);
+    }
 }

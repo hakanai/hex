@@ -16,38 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno;
+package org.trypticon.hex.anno.primitive;
 
 import java.util.List;
+import java.util.Collections;
+import java.util.Map;
+
+import org.trypticon.hex.anno.InterpretorInfo;
+import org.trypticon.hex.anno.Interpretor;
 
 /**
- * A collection of annotations.
+ * Info for {@link org.trypticon.hex.anno.primitive.UIntInterpretorLE}.
  *
  * @author trejkaz
  */
-public interface AnnotationCollection {
-    /**
-     * Gets a list of all annotations.
-     *
-     * @return the list of all annotations.
-     */
-    List<Annotation> getAll();
+public class UIntInterpretorLEInfo implements InterpretorInfo {
 
-    /**
-     * Adds an annotation.
-     *
-     * @param annotation the annotation to add.
-     */
-    void add(Annotation annotation);
+    public String getHumanName() {
+        return "Unsigned 32-bit Integer (Little Endian)";
+    }
 
-    /**
-     * Removes an annotation.
-     *
-     * @param annotation the annotation to remove.
-     */
-    void remove(Annotation annotation);
+    public List<Option> getOptions() {
+        return Collections.emptyList();
+    }
 
-    void addAnnotationCollectionListener(AnnotationCollectionListener listener);
-
-    void removeAnnotationCollectionListener(AnnotationCollectionListener listener);
+    public Interpretor create(Map<String, Object> options) {
+        return new UIntInterpretorLE();
+    }
 }

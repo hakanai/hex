@@ -20,9 +20,12 @@ package org.trypticon.hex.anno.primitive;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Arrays;
 
 import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.hex.anno.InterpretorStorage;
+import org.trypticon.hex.anno.InterpretorInfo;
 
 /**
  * Storage support for primitive interpretors.
@@ -46,6 +49,16 @@ public class PrimitiveInterpretorStorage implements InterpretorStorage {
     private void register(String name, Class<? extends Interpretor> klass) {
         classToName.put(klass, name);
         nameToClass.put(name, klass);
+    }
+
+    public List<InterpretorInfo> getInterpretorInfos() {
+        // TODO: More types.
+        // TODO: Interpretor info should be structured to allow categorising them as well, for menus.
+
+        return Arrays.asList(new UShortInterpretorLEInfo(),
+                             new UShortInterpretorBEInfo(),
+                             new UIntInterpretorLEInfo(),
+                             new UIntInterpretorBEInfo());
     }
 
     // TODO: I think it would be nicer to separate the name from the map and have the name

@@ -28,7 +28,7 @@ import java.util.Comparator;
  *
  * @author trejkaz
  */
-public class MemoryAnnotationCollection implements AnnotationCollection {
+public class MemoryAnnotationCollection extends AbstractAnnotationCollection {
     private final List<Annotation> annotations;
 
     public MemoryAnnotationCollection() {
@@ -49,10 +49,12 @@ public class MemoryAnnotationCollection implements AnnotationCollection {
             pos = -pos - 1;
         }
         annotations.add(pos, annotation);
+        fireAnnotationsChanged();
     }
 
     public void remove(Annotation annotation) {
         annotations.remove(annotation);
+        fireAnnotationsChanged();
     }
 
     private class AnnotationPositionComparator implements Comparator<Annotation> {
