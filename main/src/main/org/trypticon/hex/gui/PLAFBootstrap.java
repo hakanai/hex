@@ -35,7 +35,7 @@ class PLAFBootstrap {
 
         try {
             if ("apple.laf.AquaLookAndFeel".equals(systemLAF)) {
-                initAqua();
+                MacPLAFBootstrap.init();
                 return;
             }
 
@@ -48,25 +48,6 @@ class PLAFBootstrap {
         initGeneric();
     }
 
-    /**
-     * Initialises look and feel for Aqua (Mac OS X.)
-     *
-     * @throws Exception if an error occurs.
-     */
-    private static void initAqua() throws Exception {
-
-        // Look and feel tweaks for Apple's runtime.
-        // These need to be done before setting the LAF.
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Hex");
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-
-        try {
-            UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "Unexpected error initialising Quaqua, falling back to Aqua", e);
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-    }
 
     /**
      * Initialises the generic look and feel.

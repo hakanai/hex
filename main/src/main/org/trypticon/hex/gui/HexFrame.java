@@ -24,12 +24,12 @@ import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -75,6 +75,14 @@ public class HexFrame extends JFrame {
         setLayout(new BorderLayout());
         add(tabbedPane, BorderLayout.CENTER);
         pack();
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                attemptClose();
+            }
+        });
     }
 
     /**
@@ -125,13 +133,16 @@ public class HexFrame extends JFrame {
             // need to worry quite so much about what to show when there isn't.
             if (tabbedPane.getTabCount() == 0) {
                 dispose();
-
-                // TODO: Now the menu isn't visible so we need a way to get it back. :-(
             }
         }
     }
 
-    private JMenuBar buildMenuBar() {
+    /**
+     * Builds the application menu bar.
+     *
+     * @return the menu bar.
+     */
+    static JMenuBar buildMenuBar() {
         JMenu fileMenu = new JMenu("File");
         fileMenu.add(new NewNotebookAction());
         fileMenu.add(new OpenNotebookAction());
@@ -175,10 +186,12 @@ public class HexFrame extends JFrame {
         editMenu.addSeparator();
         editMenu.add(new AddAnnotationMenu());
 
+        // TODO: Help / User Guide
+        // TODO: Help / About
+
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
-
         return menuBar;
     }
 
@@ -201,8 +214,6 @@ public class HexFrame extends JFrame {
 
         if (frame == null) {
             frame = new HexFrame(notebook);
-            // TODO: I suppose on Windows, this should also close the application if it's the last frame.
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setVisible(true);
         } else {
             frame.addTab(notebook);
@@ -220,26 +231,21 @@ public class HexFrame extends JFrame {
             return null;
         }
 
-        while (!(window instanceof HexFrame)) {
+        while (window != null && !(window instanceof HexFrame)) {
             window = window.getOwner();
         }
         return (HexFrame) window;
     }
 
     /**
-     * Action to exit the application.
+     * Attempts to close the frame.  Will be called when the user closes the window
+     * or quits the application.
      */
-    private class ExitAction extends AbstractAction {
-        private ExitAction() {
-            putValue(NAME, "Exit");
-            putValue(MNEMONIC_KEY, (int) 'x');
-        }
+    public void attemptClose() {
 
-        public void actionPerformed(ActionEvent event) {
-            dispose();
+        // TODO: Block if a document hasn't been saved!
 
-            // TODO: Other windows need to be taken into account too.
-        }
+        dispose();
     }
 
     /**

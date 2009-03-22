@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MRJAdapter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/mrjadapter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
