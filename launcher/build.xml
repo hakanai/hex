@@ -87,7 +87,7 @@
             <fileset dir="../lib" includes="jvyaml.jar"/>
 
             <!-- Mac-specific -->
-            <fileset dir="../lib" includes="quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>
+            <fileset dir="../lib" includes="mrjadapter.jar, quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>
         </copy>
     </target>
 
