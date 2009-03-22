@@ -2,6 +2,7 @@
     <target name="build" description="Runs each build in series.">
         <ant dir="util"/>
         <ant dir="binary"/>
+        <ant dir="anno"/>
         <ant dir="viewer"/>
         <ant dir="main"/>
         <ant dir="launcher"/>
@@ -10,6 +11,7 @@
     <target name="test" description="Tests each build in series.">
         <ant dir="util" target="test"/>
         <ant dir="binary" target="test"/>
+        <ant dir="anno" target="test"/>
         <ant dir="viewer" target="test"/>
         <ant dir="main" target="test"/>
     </target>
@@ -17,6 +19,7 @@
     <target name="clean" description="Cleans generated files from each build">
         <ant dir="util" target="clean"/>
         <ant dir="binary" target="clean"/>
+        <ant dir="anno" target="clean"/>
         <ant dir="viewer" target="clean"/>
         <ant dir="main" target="clean"/>
         <ant dir="launcher" target="clean"/>

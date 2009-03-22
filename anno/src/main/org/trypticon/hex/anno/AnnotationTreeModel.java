@@ -21,7 +21,7 @@ package org.trypticon.hex.anno;
 import javax.swing.tree.TreePath;
 import javax.swing.event.TreeModelEvent;
 
-import org.trypticon.hex.swingsupport.AbstractTreeModel;
+import org.trypticon.hex.util.swingsupport.AbstractTreeModel;
 
 /**
  * Tree model for annotations.

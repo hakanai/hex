@@ -28,8 +28,8 @@ import javax.swing.KeyStroke;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
-import org.trypticon.hex.swingsupport.BaseAction;
-import org.trypticon.hex.swingsupport.ActionException;
+import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 

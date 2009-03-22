@@ -27,8 +27,8 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.trypticon.hex.swingsupport.BaseAction;
-import org.trypticon.hex.swingsupport.ActionException;
+import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.InterpretorInfo;
 import org.trypticon.hex.anno.Annotation;

@@ -8,11 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Annotations" />
     <orderEntry type="module" module-name="Binary API" />
-    <orderEntry type="module" module-name="Hex Viewer" />
     <orderEntry type="module" module-name="Utilities" />
-    <orderEntry type="library" name="JvYAML" level="project" />
     <orderEntry type="library" name="JUnit" level="project" />
   </component>
 </module>

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.swingsupport;
+package org.trypticon.hex.util.swingsupport;
 
 /**
  * A user exception thrown by subclasses of {@code BaseAction} to raise a
