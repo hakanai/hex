@@ -56,16 +56,14 @@ I can start using it in its incomplete form.  So in order of need:
 
 1. A way to load/save annotation files in YAML - DONE!
 
-2. UI for load/save of Notebook
+2. UI for load/save of Notebook - DONE!
 
-3. Annotation menu with options for:
-    * Creating new annotations at the current selection start.
-    * Deleting annotations under the cursor.
+3. UI for creating new annotations at the current selection start. - PARTIAL
 
 4. Have these annotations correctly render in the tree so that I can
    be assured they have been created.
 
-5. Work on the renderer to render the annotations somehow.  I already
+5. Get the viewer UI to render the annotations somehow.  I already
    have an idea of what this will look like but I want to modify the
    renderer to break up the task of identifying what type of cell is
    being rendered, and rendering the cell.  It looks like the best
@@ -79,7 +77,9 @@ I can start using it in its incomplete form.  So in order of need:
      - Fill border color of annotation (if there is one)
      - Draw marker for annotation note (if there is one)
 
-6. Keep documents open from last session.  And then switch to opening
+6. UI for deleting annotations under the cursor.
+
+7. Keep documents open from last session.  And then switch to opening
    nothing by default.  The first session I will still open the sample,
    but I will modify the sample to contain annotations as well.
 
