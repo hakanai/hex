@@ -85,6 +85,9 @@
             <fileset dir="../viewer/build" includes="hex-viewer.jar"/>
             <fileset dir="../main/build" includes="hex-main.jar"/>
             <fileset dir="../lib" includes="jvyaml.jar"/>
+
+            <!-- Mac-specific -->
+            <fileset dir="../lib" includes="quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>
         </copy>
     </target>
 

@@ -40,7 +40,7 @@ public class AnnotationPane extends JPanel {
         setLayout(new BorderLayout());
         JScrollPane annoTreeScroll = new JScrollPane(annoTree);
         Dimension preferredSize = annoTreeScroll.getPreferredSize();
-        preferredSize.width = 300;
+        preferredSize.width = 250;
         annoTreeScroll.setPreferredSize(preferredSize);
         add(annoTreeScroll, BorderLayout.CENTER);
     }

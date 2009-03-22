@@ -18,14 +18,16 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.net.URL;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Logger;
 
-import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.binary.BinaryFactory;
 
 /**
  * Holds a set of annotations along with a reference to the file the user is working on.
@@ -37,7 +39,9 @@ import org.trypticon.hex.anno.MemoryAnnotationCollection;
  */
 public class Notebook {
     private static final Logger logger = Logger.getLogger(Notebook.class.getName());
+    private PropertyChangeSupport propertyChanges;
     private URL notebookLocation;
+    private String name;
     private final URL binaryLocation;
     private final AnnotationCollection annotations;
     private Binary binary;
@@ -62,6 +66,12 @@ public class Notebook {
     public Notebook(URL binaryLocation, AnnotationCollection annotations) {
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
+
+        String path = binaryLocation.getPath();
+        int lastSlash = path.lastIndexOf('/');
+        String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
+
+        this.name = "New: " + baseName;
     }
 
     /**
@@ -95,6 +105,7 @@ public class Notebook {
                 logger.warning("Already closed when close() was called, doing nothing.");
             } else {
                 binary.close();
+                binary = null;
             }
         }
     }
@@ -115,7 +126,19 @@ public class Notebook {
      * @see #getNotebookLocation()
      */
     public void setNotebookLocation(URL notebookLocation) {
-        this.notebookLocation = notebookLocation;
+        if (notebookLocation == null) {
+            throw new IllegalArgumentException("notebook location cannot be null");
+        }
+
+        if (!notebookLocation.equals(this.notebookLocation)) {
+            this.notebookLocation = notebookLocation;
+
+            String path = notebookLocation.getPath();
+            int lastSlash = path.lastIndexOf('/');
+            String lastPathComponent = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
+            int dot = lastPathComponent.indexOf('.');
+            setName(dot >= 0 ? lastPathComponent.substring(0, dot) : lastPathComponent);
+        }
     }
 
     public URL getBinaryLocation() {
@@ -128,5 +151,56 @@ public class Notebook {
 
     public Binary getBinary() {
         return binary;
+    }
+
+    /**
+     * Tests if the notebook is open.
+     *
+     * @return {@code true} if it is open, {@code false} if it is closed.
+     */
+    public boolean isOpen() {
+        return binary != null;
+    }
+
+    /**
+     * Gets the name of the notebook.  Currently this is derived from the location
+     * of the notebook but it might become custom metadata later.
+     *
+     * This is a bound JavaBeans property.
+     *
+     * @return the name of the notebook.
+     */
+    public String getName() {
+        return name;
+    }
+
+    private void setName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("name cannot be null");
+        }
+        if (!name.equals(this.name)) {
+            String oldName = this.name;
+            this.name = name;
+            firePropertyChange("name", oldName, name);
+        }
+    }
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        if (propertyChanges == null) {
+            propertyChanges = new PropertyChangeSupport(this);
+        }
+        propertyChanges.addPropertyChangeListener(propertyName, listener);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        if (propertyChanges != null) {
+            propertyChanges.removePropertyChangeListener(propertyName, listener);
+        }
+    }
+
+    private void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        if (propertyChanges != null) {
+            propertyChanges.firePropertyChange(propertyName, oldValue, newValue);
+        }
     }
 }

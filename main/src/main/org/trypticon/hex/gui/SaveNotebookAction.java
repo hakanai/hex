@@ -18,22 +18,19 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
-import java.awt.Component;
-import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.net.URL;
-
-import javax.swing.SwingUtilities;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
-import org.trypticon.hex.util.swingsupport.BaseAction;
-import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
+import org.trypticon.hex.util.swingsupport.ActionException;
+import org.trypticon.hex.util.swingsupport.BaseAction;
 
 /**
  * Action to save the notebook.
@@ -59,8 +56,11 @@ class SaveNotebookAction extends BaseAction {
     }
 
     protected void doAction(ActionEvent event) throws Exception {
-        Component owner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
-        HexFrame frame = (HexFrame) SwingUtilities.getWindowAncestor(owner);
+        HexFrame frame = HexFrame.findActiveFrame();
+        if (frame == null) {
+            throw new ActionException("Focus is not on a hex viewer window");
+        }
+
         Notebook notebook = frame.getNotebook();
 
         URL location;
@@ -80,5 +80,7 @@ class SaveNotebookAction extends BaseAction {
         }
 
         new NotebookStorage().write(notebook, location);
+
+        notebook.setNotebookLocation(location);
     }
 }

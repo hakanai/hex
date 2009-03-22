@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Quaqua">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/quaqua.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

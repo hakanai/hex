@@ -18,19 +18,16 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
-import java.awt.Component;
-import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
-import javax.swing.KeyStroke;
 import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
+import javax.swing.KeyStroke;
 
-import org.trypticon.hex.util.swingsupport.BaseAction;
-import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.util.swingsupport.ActionException;
+import org.trypticon.hex.util.swingsupport.BaseAction;
 
 /**
  * Action to open a new binary file, creating a new notebook for annotating it.
@@ -46,8 +43,7 @@ class NewNotebookAction extends BaseAction {
     }
 
     protected void doAction(ActionEvent event) throws Exception {
-        Component owner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
-        HexFrame frame = (HexFrame) SwingUtilities.getWindowAncestor(owner);
+        HexFrame frame = HexFrame.findActiveFrame();
 
         JFileChooser chooser = new JFileChooser();
         if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
@@ -56,7 +52,7 @@ class NewNotebookAction extends BaseAction {
                 throw new ActionException("Not a file: " + file);
             }
 
-            frame.setNotebook(new Notebook(file.toURI().toURL()));
+            HexFrame.openNotebook(new Notebook(file.toURI().toURL()));
         }
     }
 }

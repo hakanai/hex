@@ -21,41 +21,27 @@ package org.trypticon.hex.gui;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
-import org.trypticon.hex.gui.notebook.NotebookFileFilter;
-import org.trypticon.hex.gui.notebook.NotebookStorage;
-import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
 /**
- * Action to open an existing notebook.
+ * Action to close the current notebook.
  *
  * @author trejkaz
  */
-class OpenNotebookAction extends BaseAction {
-    public OpenNotebookAction() {
-        putValue(NAME, "Open...");
-        putValue(MNEMONIC_KEY, (int) 'o');
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
+class CloseNotebookAction extends BaseAction {
+    CloseNotebookAction() {
+        putValue(NAME, "Close");
+        putValue(MNEMONIC_KEY, (int) 'c');
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W,
                                                          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
     }
 
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
-
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileFilter(new NotebookFileFilter());
-
-        if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            if (!file.isFile()) {
-                throw new ActionException("Not a file: " + file);
-            }
-
-            HexFrame.openNotebook(new NotebookStorage().read(file.toURI().toURL()));
+        if (frame != null) {
+            frame.closeCurrentTab();
         }
     }
 }

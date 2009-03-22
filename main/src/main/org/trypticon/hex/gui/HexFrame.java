@@ -19,9 +19,15 @@
 package org.trypticon.hex.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -29,15 +35,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.TransferHandler;
 
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
-import org.trypticon.hex.anno.AnnotationPane;
-import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.NotebookPane;
 
 /**
  * A top-level application frame.
@@ -47,28 +52,38 @@ import org.trypticon.hex.gui.notebook.Notebook;
  * @author trejkaz
  */
 public class HexFrame extends JFrame {
-    private final HexViewer viewer;
-    private final AnnotationPane annoPane;
-    private Notebook notebook;
+    private final JTabbedPane tabbedPane;
+    private final TabTitleUpdater tabTitleUpdater = new TabTitleUpdater();
 
     /**
      * Constructs the top-level frame.
+     *
+     * @param firstNotebook the first notebook to open a tab for.
      */
-    public HexFrame() {
+    public HexFrame(Notebook firstNotebook) {
         super("Hex");
 
         setJMenuBar(buildMenuBar());
 
-        viewer = new HexViewer();
-        annoPane = new AnnotationPane();
+        tabbedPane = new JTabbedPane();
+        tabbedPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3,-3,-4,-3));
 
+        // TODO: We should track if any notepads need saving and set Window.documentModified to true/false for Mac.
 
-        JScrollPane viewerScroll = new JScrollPane(viewer);
-        viewerScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(viewerScroll, BorderLayout.CENTER);
-        getContentPane().add(annoPane, BorderLayout.WEST);
+        addTab(firstNotebook);
+
+        setLayout(new BorderLayout());
+        add(tabbedPane, BorderLayout.CENTER);
         pack();
+    }
+
+    /**
+     * Gets the currently-selected notebook pane.
+     *
+     * @return the notebook pane.
+     */
+    public NotebookPane getNotebookPane() {
+        return (NotebookPane) tabbedPane.getSelectedComponent();
     }
 
     /**
@@ -77,36 +92,44 @@ public class HexFrame extends JFrame {
      * @return the notebook being viewed.
      */
     public Notebook getNotebook() {
-        return notebook;
+        return getNotebookPane().getNotebook();
     }
 
     /**
-     * Sets the notebook to view.
+     * Opens a new tab for viewing a notebook.
      *
      * @param notebook the notebook to view.
-     * @throws IOException if there was an error opening the notebook.
      */
-    public void setNotebook(Notebook notebook) throws IOException {
-        if (this.notebook != null) {
-            this.notebook.close();
+    public void addTab(Notebook notebook) {
+        NotebookPane notebookPane = new NotebookPane(notebook);
+        tabbedPane.add(notebookPane);
+        tabbedPane.setSelectedComponent(notebookPane);
 
-            annoPane.setAnnotations(null);
-            viewer.setAnnotations(null);
-            viewer.setBinary(null);
-        }
-
-        this.notebook = notebook;
-
-        if (notebook != null) {
-            annoPane.setAnnotations(notebook.getAnnotations());
-            viewer.setAnnotations(notebook.getAnnotations());
-
-            notebook.open();
-
-            viewer.setBinary(notebook.getBinary());
-        }
+        notebookPane.addPropertyChangeListener("name", tabTitleUpdater);
     }
 
+    /**
+     * Closes the currently-viewed notebook.
+     */
+    public void closeCurrentTab() {
+        NotebookPane notebookPane = (NotebookPane) tabbedPane.getSelectedComponent();
+        if (notebookPane != null) {
+            notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
+
+            tabbedPane.remove(notebookPane);
+
+            notebookPane.getNotebook().close();
+
+            // Dispose the frame if there are no tabs left.  This maintains the invariant
+            // that there is always some notebook visible in the application, so we don't
+            // need to worry quite so much about what to show when there isn't.
+            if (tabbedPane.getTabCount() == 0) {
+                dispose();
+
+                // TODO: Now the menu isn't visible so we need a way to get it back. :-(
+            }
+        }
+    }
 
     private JMenuBar buildMenuBar() {
         JMenu fileMenu = new JMenu("File");
@@ -115,7 +138,7 @@ public class HexFrame extends JFrame {
         // TODO: Open Recent
 
         fileMenu.addSeparator();
-        // TODO: Close Notebook - not useful for me until we maintain state.
+        fileMenu.add(new CloseNotebookAction());
         fileMenu.add(new SaveNotebookAction(false));
         fileMenu.add(new SaveNotebookAction(true));
         // TODO: Revert to Saved
@@ -155,14 +178,52 @@ public class HexFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
+
         return menuBar;
     }
 
     /**
-     * Sets initial focus, which is to move the focus to the viewer.
+     * Helper method to open a notebook in the current active frame, or a new frame
+     * if there is no current frame.
+     *
+     * @param notebook the notebook.
      */
-    public void initialFocus() {
-        viewer.requestFocusInWindow();
+    static void openNotebook(Notebook notebook) {
+        HexFrame frame = findActiveFrame();
+
+        try {
+            notebook.open();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "There was a problem opening the notebook: " + e.getMessage(),
+                                          "Error Opening File", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (frame == null) {
+            frame = new HexFrame(notebook);
+            // TODO: I suppose on Windows, this should also close the application if it's the last frame.
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setVisible(true);
+        } else {
+            frame.addTab(notebook);
+        }
+    }
+
+    /**
+     * Finds the active hex viewer.
+     *
+     * @return the active hex viewer.
+     */
+    static HexFrame findActiveFrame() {
+        Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
+        if (window == null) {
+            return null;
+        }
+
+        while (!(window instanceof HexFrame)) {
+            window = window.getOwner();
+        }
+        return (HexFrame) window;
     }
 
     /**
@@ -176,6 +237,20 @@ public class HexFrame extends JFrame {
 
         public void actionPerformed(ActionEvent event) {
             dispose();
+
+            // TODO: Other windows need to be taken into account too.
+        }
+    }
+
+    /**
+     * Updates the tab title when the name of the component changes.  Should have been
+     * the responsibility of {@code JTabbedPane} but Sun forgot to implement it.
+     */
+    private class TabTitleUpdater implements PropertyChangeListener {
+        public void propertyChange(PropertyChangeEvent event) {
+            String name = (String) event.getNewValue();
+            int index = tabbedPane.indexOfComponent((Component) event.getSource());
+            tabbedPane.setTitleAt(index, name);
         }
     }
 }

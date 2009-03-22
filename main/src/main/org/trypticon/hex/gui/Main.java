@@ -19,8 +19,6 @@
 package org.trypticon.hex.gui;
 
 import java.io.File;
-import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
@@ -36,29 +34,18 @@ public class Main {
     }
 
     public void execute(Object[] args) throws Exception {
-        // Look and feel tweaks for Apple's runtime.
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Hex");
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        PLAFBootstrap.init();
 
-        // For whatever reason, Windows' Java doesn't set this automatically.
-        // And it seems it has to be done after setting Apple's properties, as they
-        // look at the properties on startup.
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-        HexFrame frame = new HexFrame();
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
-
+        Notebook notebook;
         if (args.length == 1 && args[0] instanceof String) {
             // TODO: Support a URL here too.
             // TODO: Support binary here too. Find a way to distinguish this in this context.
             File file = new File((String) args[0]);
-            frame.setNotebook(new NotebookStorage().read(file.toURI().toURL()));
+            notebook = new NotebookStorage().read(file.toURI().toURL());
         } else {
-            frame.setNotebook(new Notebook(
-                    getClass().getClassLoader().getResource("org/trypticon/hex/gui/Sample.class")));
+            notebook = new Notebook(getClass().getClassLoader().getResource("org/trypticon/hex/gui/Sample.class"));
         }
 
-        frame.initialFocus();
+        HexFrame.openNotebook(notebook);
     }
 }
