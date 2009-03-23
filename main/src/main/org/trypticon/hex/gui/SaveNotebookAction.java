@@ -22,8 +22,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.net.URL;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import org.trypticon.hex.gui.notebook.Notebook;
@@ -71,10 +73,22 @@ class SaveNotebookAction extends BaseAction {
             JFileChooser chooser = new ImprovedFileChooser();
             chooser.setFileFilter(new NotebookFileFilter());
 
-            if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
-                location = chooser.getSelectedFile().toURI().toURL();
-            } else {
-                return;
+            while (true) {
+                File chosenFile;
+                if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+                    chosenFile = chooser.getSelectedFile();
+                    if (chosenFile.exists()) {
+                        if (JOptionPane.showConfirmDialog(frame, "The file already exists.  Is it OK to overwrite it?",
+                                                         "File Exists",
+                                                         JOptionPane.YES_NO_OPTION,
+                                                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                            location = chosenFile.toURI().toURL();
+                            break;
+                        }
+                    }
+                } else {
+                    return;
+                }
             }
         }
 
