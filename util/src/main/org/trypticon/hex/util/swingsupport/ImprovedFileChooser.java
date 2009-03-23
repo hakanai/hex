@@ -16,21 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.notebook;
+package org.trypticon.hex.util.swingsupport;
 
-import org.trypticon.hex.util.swingsupport.FileExtensionFilter;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
- * File filter matching notebook files (and directories...)
+ * Workarounds for limitations in the real {@link JFileChooser}.
  *
  * @author trejkaz
  */
-public class NotebookFileFilter extends FileExtensionFilter {
-    protected String getExtension() {
-        return "hex";
-    }
+public class ImprovedFileChooser extends JFileChooser {
+    @Override
+    public File getSelectedFile() {
+        File file = super.getSelectedFile();
+        if (file == null || !(getFileFilter() instanceof FileExtensionFilter)) {
+            return file;
+        }
 
-    protected String getShortDescription() {
-        return "Hex Notebook Files (*.hex)";
+        FileExtensionFilter filter = (FileExtensionFilter) getFileFilter();
+
+        String name = file.getName();
+        if (!name.endsWith(filter.getExtension())) {
+            file = new File(file.getParentFile(), name + '.' + filter.getExtension());
+        }
+
+        return file;
     }
 }

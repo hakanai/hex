@@ -31,6 +31,7 @@ import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.util.swingsupport.ImprovedFileChooser;
 
 /**
  * Action to save the notebook.
@@ -67,13 +68,11 @@ class SaveNotebookAction extends BaseAction {
         if (!alwaysAsk && notebook.getNotebookLocation() != null) {
             location = notebook.getNotebookLocation();
         } else {
-            JFileChooser chooser = new JFileChooser();
+            JFileChooser chooser = new ImprovedFileChooser();
             chooser.setFileFilter(new NotebookFileFilter());
 
             if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
                 location = chooser.getSelectedFile().toURI().toURL();
-
-                // TODO: Should correct extension to .xml
             } else {
                 return;
             }
