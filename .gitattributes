@@ -1,2 +1,3 @@
-*.iml crlf
+/*/*.iml crlf
+/.idea/**/*.xml crlf
 
