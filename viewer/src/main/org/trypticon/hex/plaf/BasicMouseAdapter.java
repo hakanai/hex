@@ -32,9 +32,10 @@ class BasicMouseAdapter extends MouseInputAdapter {
 
     @Override
     public void mousePressed(MouseEvent event) {
-        if (javax.swing.SwingUtilities.isLeftMouseButton(event)) {
-            HexViewer viewer = (HexViewer) event.getSource();
+        HexViewer viewer = (HexViewer) event.getSource();
+        viewer.requestFocusInWindow();
 
+        if (javax.swing.SwingUtilities.isLeftMouseButton(event)) {
             // TODO: If it's within the address lines it might be better to select
             //       the row and then have dragging select further rows.
 
