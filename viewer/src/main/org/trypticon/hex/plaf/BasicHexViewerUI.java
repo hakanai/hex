@@ -19,7 +19,7 @@
 package org.trypticon.hex.plaf;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
+import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -36,9 +36,9 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.TransferHandler;
 
-import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.HexUtils;
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.renderer.CellRenderer;
 
 /**
  * Basic user interface for the hex viewer.
@@ -162,23 +162,11 @@ public class BasicHexViewerUI extends HexViewerUI {
         int firstVisibleRow = Math.max(0, clipBounds.y / rowHeight - 1);
         int lastVisibleRow = Math.max(firstVisibleRow,
                                       (clipBounds.y + clipBounds.height) / rowHeight - 1);
-        int charYOffset = (rowHeight - metrics.getAscent()) / 2;
 
         int y = rowHeight * (firstVisibleRow + 2);
         long position = firstVisibleRow * bytesPerRow;
 
-        Color foreground = viewer.getForeground();
-        Color offsetForeground = viewer.getOffsetForeground();
-        Color selectionForeground = viewer.getSelectionForeground();
-        if (selectionForeground == null) {
-            selectionForeground = foreground;
-        }
-        Color selectionBackground = viewer.getSelectionBackground();
-        Color cursorForeground = viewer.getCursorForeground();
-        if (cursorForeground == null) {
-            cursorForeground = foreground;
-        }
-        Color cursorBackground = viewer.getCursorBackground();
+        CellRenderer renderer = viewer.getCellRenderer();
         long cursor = viewer.getSelectionModel().getCursor();
         long selectionStart = viewer.getSelectionModel().getSelectionStart();
         long selectionEnd = viewer.getSelectionModel().getSelectionEnd();
@@ -199,18 +187,17 @@ public class BasicHexViewerUI extends HexViewerUI {
             int rowDataLength = (int) Math.min(bytesPerRow, binary.length() - position);
             binary.read(position, rowData, 0, rowDataLength);
 
-            paintRow(g, position, rowData, rowDataLength, selectionStart, selectionEnd, cursor,
-                     hexColWidth, charWidth, rowHeight, y, charYOffset,
+            paintRow(viewer, g, position, rowDataLength, selectionStart, selectionEnd, row == cursorRow, cursor,
+                     hexColWidth, charWidth, rowHeight, y,
                      firstDataColumnX, firstAsciiColumnX,
-                     foreground, offsetForeground, cursorBackground, cursorForeground,
-                     selectionBackground, selectionForeground);
+                     renderer);
 
             position += bytesPerRow;
             y += rowHeight;
         }
 
         // Address divider line.
-        g.setColor(offsetForeground);
+        g.setColor(viewer.getOffsetForeground());
         g.setStroke(new BasicStroke(1.0f));
         g.draw(new Line2D.Float(addressLineX, rowHeight * firstVisibleRow,
                                 addressLineX, rowHeight * (lastVisibleRow + 1)));
@@ -218,47 +205,57 @@ public class BasicHexViewerUI extends HexViewerUI {
 
     // Painting a row is split out to give IDEA a bit of a help with the inspection.
 
-    // TODO: Rather than doing this, I want to do some kind of two-step approach where cells are converted
-    // into drawing instruction objects and then rendered.  What I haven't solved yet is how to avoid
-    // allocating a large number of objects when doing this.  Maybe that doesn't matter so much anymore
-    // as Java seems to be calling paint fairly infrequently these days.
-
-    private void paintRow(Graphics2D g, long position, byte[] rowData, int rowDataLength,
-                          long selectionStart, long selectionEnd, long cursor,
-                          int hexColWidth, int asciiColWidth, int rowHeight, int y, int charYOffset,
+    private void paintRow(HexViewer viewer, Graphics2D g, long position, int rowDataLength,
+                          long selectionStart, long selectionEnd, boolean onCursorRow, long cursor,
+                          int hexColWidth, int asciiColWidth, int rowHeight, int y,
                           int firstDataColumnX, int firstAsciiColumnX,
-                          Color foreground, Color offsetForeground, Color cursorBackground, Color cursorForeground,
-                          Color selectionBackground, Color selectionForeground) {
+                          CellRenderer renderer) {
 
-        // Address
-        g.setColor(offsetForeground);
-        g.drawString(String.format("%08x", position), hexColWidth, y);
+        Component comp;
+
+        // Row offset
+        comp = renderer.getRendererComponent(viewer, false, onCursorRow, false,
+                                             position, CellRenderer.ROW_OFFSET);
+        Graphics g2 = g.create();
+        try {
+            comp.setBounds(asciiColWidth*2, y - rowHeight, asciiColWidth*8, rowHeight);
+            g2.translate(asciiColWidth*2, y - rowHeight);
+            comp.paint(g2);
+        } finally {
+            g2.dispose();
+        }
 
         // Hex digits for this row
         int hexX = firstDataColumnX;
         int asciiX = firstAsciiColumnX;
         for (int i = 0; i < rowDataLength; i++) {
-            byte b = rowData[i];
 
             boolean insideSelection = selectionStart <= position && selectionEnd >= position;
             boolean atCursor = position == cursor;
 
-            if (atCursor) {
-                g.setColor(cursorBackground);
-                g.fillRect(hexX, y - rowHeight, hexColWidth, rowHeight);
-                g.fillRect(asciiX, y - rowHeight, asciiColWidth, rowHeight);
-                g.setColor(cursorForeground);
-            } else if (insideSelection) {
-                g.setColor(selectionBackground);
-                g.fillRect(hexX, y - rowHeight, hexColWidth, rowHeight);
-                g.fillRect(asciiX, y - rowHeight, asciiColWidth, rowHeight);
-                g.setColor(selectionForeground);
-            } else {
-                g.setColor(foreground);
+            // Hex column
+            comp = renderer.getRendererComponent(viewer, insideSelection, onCursorRow, atCursor,
+                                                 position, CellRenderer.HEX);
+            g2 = g.create();
+            try {
+                comp.setBounds(hexX, y - rowHeight, hexColWidth, rowHeight);
+                g2.translate(hexX, y - rowHeight);
+                comp.paint(g2);
+            } finally {
+                g2.dispose();
             }
 
-            g.drawString(HexUtils.toHex(b), hexX + asciiColWidth / 2, y - charYOffset);
-            g.drawString(HexUtils.toAscii(b), asciiX, y - charYOffset);
+            // ASCII column
+            comp = renderer.getRendererComponent(viewer, insideSelection, onCursorRow, atCursor,
+                                                 position, CellRenderer.ASCII);
+            g2 = g.create();
+            try {
+                comp.setBounds(asciiX, y - rowHeight, asciiColWidth, rowHeight);
+                g2.translate(asciiX, y - rowHeight);
+                comp.paint(g2);
+            } finally {
+                g2.dispose();
+            }
 
             position++;
             hexX += hexColWidth;
