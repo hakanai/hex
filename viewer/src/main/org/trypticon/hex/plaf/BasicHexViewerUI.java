@@ -213,53 +213,46 @@ public class BasicHexViewerUI extends HexViewerUI {
 
         Component comp;
 
-        // Row offset
-        comp = renderer.getRendererComponent(viewer, false, onCursorRow, false,
-                                             position, CellRenderer.ROW_OFFSET);
         Graphics g2 = g.create();
         try {
+            // Row offset
+            comp = renderer.getRendererComponent(viewer, false, onCursorRow, false,
+                                                 position, CellRenderer.ROW_OFFSET);
             comp.setBounds(asciiColWidth*2, y - rowHeight, asciiColWidth*8, rowHeight);
             g2.translate(asciiColWidth*2, y - rowHeight);
             comp.paint(g2);
-        } finally {
-            g2.dispose();
-        }
+            g2.translate(-asciiColWidth*2, -y + rowHeight);
 
-        // Hex digits for this row
-        int hexX = firstDataColumnX;
-        int asciiX = firstAsciiColumnX;
-        for (int i = 0; i < rowDataLength; i++) {
+            // Hex digits for this row
+            int hexX = firstDataColumnX;
+            int asciiX = firstAsciiColumnX;
+            for (int i = 0; i < rowDataLength; i++) {
 
-            boolean insideSelection = selectionStart <= position && selectionEnd >= position;
-            boolean atCursor = position == cursor;
+                boolean insideSelection = selectionStart <= position && selectionEnd >= position;
+                boolean atCursor = position == cursor;
 
-            // Hex column
-            comp = renderer.getRendererComponent(viewer, insideSelection, onCursorRow, atCursor,
-                                                 position, CellRenderer.HEX);
-            g2 = g.create();
-            try {
+                // Hex column
+                comp = renderer.getRendererComponent(viewer, insideSelection, onCursorRow, atCursor,
+                                                     position, CellRenderer.HEX);
                 comp.setBounds(hexX, y - rowHeight, hexColWidth, rowHeight);
                 g2.translate(hexX, y - rowHeight);
                 comp.paint(g2);
-            } finally {
-                g2.dispose();
-            }
+                g2.translate(-hexX, -y + rowHeight);
 
-            // ASCII column
-            comp = renderer.getRendererComponent(viewer, insideSelection, onCursorRow, atCursor,
-                                                 position, CellRenderer.ASCII);
-            g2 = g.create();
-            try {
+                // ASCII column
+                comp = renderer.getRendererComponent(viewer, insideSelection, onCursorRow, atCursor,
+                                                     position, CellRenderer.ASCII);
                 comp.setBounds(asciiX, y - rowHeight, asciiColWidth, rowHeight);
                 g2.translate(asciiX, y - rowHeight);
                 comp.paint(g2);
-            } finally {
-                g2.dispose();
-            }
+                g2.translate(-asciiX, -y + rowHeight);
 
-            position++;
-            hexX += hexColWidth;
-            asciiX += asciiColWidth;
+                position++;
+                hexX += hexColWidth;
+                asciiX += asciiColWidth;
+            }
+        } finally {
+            g2.dispose();
         }
     }
 
