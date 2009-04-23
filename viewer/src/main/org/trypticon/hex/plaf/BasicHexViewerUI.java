@@ -172,7 +172,6 @@ public class BasicHexViewerUI extends HexViewerUI {
         long selectionEnd = viewer.getSelectionModel().getSelectionEnd();
 
         long cursorRow = cursor / bytesPerRow;
-        byte[] rowData = new byte[bytesPerRow];
 
         for (int row = firstVisibleRow;
              row <= lastVisibleRow && position < binary.length();
@@ -185,7 +184,6 @@ public class BasicHexViewerUI extends HexViewerUI {
             }
 
             int rowDataLength = (int) Math.min(bytesPerRow, binary.length() - position);
-            binary.read(position, rowData, 0, rowDataLength);
 
             paintRow(viewer, g, position, rowDataLength, selectionStart, selectionEnd, row == cursorRow, cursor,
                      hexColWidth, charWidth, rowHeight, y,
