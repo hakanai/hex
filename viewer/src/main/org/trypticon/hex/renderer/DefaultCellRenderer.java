@@ -18,16 +18,19 @@
 
 package org.trypticon.hex.renderer;
 
-import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.HexUtils;
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.JLabel;
 
-import javax.swing.*;
-import java.awt.*;
+import org.trypticon.hex.HexUtils;
+import org.trypticon.hex.HexViewer;
 
 /**
  * Default cell renderer implementation, using a Swing label as the component.
  */
 public class DefaultCellRenderer extends JLabel implements CellRenderer {
+    private static final Color transparent = new Color(0, 0, 0, 0);
+
     public DefaultCellRenderer() {
         setOpaque(true);
     }
@@ -42,17 +45,13 @@ public class DefaultCellRenderer extends JLabel implements CellRenderer {
 
         setHorizontalAlignment(valueDisplayMode == ROW_OFFSET ? RIGHT : CENTER);
 
-        Color background = viewer.getBackground();
+        Color background = transparent;
         Color foreground;
 
         if (valueDisplayMode == ROW_OFFSET) {
             foreground = viewer.getOffsetForeground();
         } else {
             foreground = viewer.getForeground();
-
-            if (onCursorRow && viewer.getCursorRowBackground() != null) {
-                background = viewer.getCursorRowBackground();
-            }
 
             if (selected && viewer.getSelectionBackground() != null) {
                 background = viewer.getSelectionBackground();

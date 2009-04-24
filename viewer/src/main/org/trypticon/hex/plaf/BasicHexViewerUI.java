@@ -152,7 +152,7 @@ public class BasicHexViewerUI extends HexViewerUI {
         // Width computations
         int charWidth = metrics.charWidth('D');
         int hexColWidth = charWidth * 3;
-        int addressLineX = hexColWidth + 9 * charWidth;
+        int addressLineX = 12 * charWidth;
         int firstDataColumnX = addressLineX + charWidth;
         int firstAsciiColumnX = firstDataColumnX +
                 (bytesPerRow * hexColWidth) + 2 * charWidth;
@@ -187,7 +187,7 @@ public class BasicHexViewerUI extends HexViewerUI {
 
             paintRow(viewer, g, position, rowDataLength, selectionStart, selectionEnd, row == cursorRow, cursor,
                      hexColWidth, charWidth, rowHeight, y,
-                     firstDataColumnX, firstAsciiColumnX,
+                     addressLineX, firstDataColumnX, firstAsciiColumnX,
                      renderer);
 
             position += bytesPerRow;
@@ -206,7 +206,7 @@ public class BasicHexViewerUI extends HexViewerUI {
     private void paintRow(HexViewer viewer, Graphics2D g, long position, int rowDataLength,
                           long selectionStart, long selectionEnd, boolean onCursorRow, long cursor,
                           int hexColWidth, int asciiColWidth, int rowHeight, int y,
-                          int firstDataColumnX, int firstAsciiColumnX,
+                          int addressLineX, int firstDataColumnX, int firstAsciiColumnX,
                           CellRenderer renderer) {
 
         Component comp;
@@ -216,10 +216,10 @@ public class BasicHexViewerUI extends HexViewerUI {
             // Row offset
             comp = renderer.getRendererComponent(viewer, false, onCursorRow, false,
                                                  position, CellRenderer.ROW_OFFSET);
-            comp.setBounds(asciiColWidth*2, y - rowHeight, asciiColWidth*8, rowHeight);
-            g2.translate(asciiColWidth*2, y - rowHeight);
+            comp.setBounds(asciiColWidth, y - rowHeight, addressLineX - asciiColWidth*2, rowHeight);
+            g2.translate(asciiColWidth, y - rowHeight);
             comp.paint(g2);
-            g2.translate(-asciiColWidth*2, -y + rowHeight);
+            g2.translate(-asciiColWidth, -y + rowHeight);
 
             // Hex digits for this row
             int hexX = firstDataColumnX;
