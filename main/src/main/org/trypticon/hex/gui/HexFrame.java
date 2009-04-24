@@ -43,6 +43,7 @@ import javax.swing.TransferHandler;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
+import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 
 /**
  * A top-level application frame.
@@ -186,12 +187,15 @@ public class HexFrame extends JFrame {
         editMenu.addSeparator();
         editMenu.add(new AddAnnotationMenu());
 
+        JMenu helpMenu = new JMenu("Help");
         // TODO: Help / User Guide
-        // TODO: Help / About
+        helpMenu.add(new OpenSampleNotebookAction());
+        // TODO: Help / About (non-Mac only.  Mac needs to hook into the app menu.)
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
+        menuBar.add(helpMenu);
         return menuBar;
     }
 
@@ -201,7 +205,7 @@ public class HexFrame extends JFrame {
      *
      * @param notebook the notebook.
      */
-    static void openNotebook(Notebook notebook) {
+    public static void openNotebook(Notebook notebook) {
         HexFrame frame = findActiveFrame();
 
         try {

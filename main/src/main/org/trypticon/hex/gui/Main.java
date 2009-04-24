@@ -18,10 +18,12 @@
 
 package org.trypticon.hex.gui;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
+import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 
 /**
  * Main entry point.
@@ -36,16 +38,18 @@ public class Main {
     public void execute(Object[] args) throws Exception {
         PLAFBootstrap.init();
 
-        Notebook notebook;
+        // TODO: Load previously-open notebooks from preferences.
+
         if (args.length == 1 && args[0] instanceof String) {
             // TODO: Support a URL here too.
             // TODO: Support binary here too. Find a way to distinguish this in this context.
             File file = new File((String) args[0]);
-            notebook = new NotebookStorage().read(file.toURI().toURL());
+            Notebook notebook = new NotebookStorage().read(file.toURI().toURL());
+            HexFrame.openNotebook(notebook);
         } else {
-            notebook = new Notebook(getClass().getClassLoader().getResource("org/trypticon/hex/gui/Sample.class"));
+            new OpenSampleNotebookAction().actionPerformed(
+                    new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Open Sample Notebook"));
         }
 
-        HexFrame.openNotebook(notebook);
     }
 }
