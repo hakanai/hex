@@ -37,6 +37,8 @@ import org.trypticon.hex.datatransfer.HexViewerTransferHandler;
 import org.trypticon.hex.plaf.BasicHexViewerUI;
 import org.trypticon.hex.plaf.HexViewerUI;
 import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.renderer.CellRenderer;
+import org.trypticon.hex.renderer.DefaultCellRenderer;
 
 /**
  * Swing widget for viewing binary in hexadecimal form.
@@ -63,6 +65,11 @@ public class HexViewer extends JComponent implements Scrollable {
      * The selection model, tracks where the selection and cursor are.
      */
     private final HexViewerSelectionModel selectionModel = new HexViewerSelectionModel();
+
+    /**
+     * The cell renderer.
+     */
+    private CellRenderer cellRenderer = new DefaultCellRenderer();
 
     // Colours.
     // XXX: These should probably come from UIDefaults.
@@ -300,6 +307,15 @@ public class HexViewer extends JComponent implements Scrollable {
      */
     public HexViewerSelectionModel getSelectionModel() {
         return selectionModel;
+    }
+
+    /**
+     * Gets the cell renderer.
+     *
+     * @return the cell renderer.
+     */
+    public CellRenderer getCellRenderer() {
+        return cellRenderer;
     }
 
     /**
