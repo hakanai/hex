@@ -22,7 +22,9 @@ import java.awt.event.ActionEvent;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
+import org.trypticon.hex.anno.nulls.NullInterpretor;
 import org.trypticon.hex.anno.primitive.UIntInterpretorBE;
+import org.trypticon.hex.binary.BinaryUtils;
 import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.util.swingsupport.BaseAction;
@@ -42,9 +44,17 @@ public class OpenSampleNotebookAction extends BaseAction {
         String resourcePath = Sample.class.getName().replace('.', '/') + ".class";
         Notebook notebook = new Notebook(getClass().getClassLoader().getResource(resourcePath));
 
-        AnnotationCollection annotations = notebook.getAnnotations();
-        annotations.add(new SimpleMutableAnnotation(0, new UIntInterpretorBE(), "magic number"));
-
         HexFrame.openNotebook(notebook);
+
+        AnnotationCollection annotations = notebook.getAnnotations();
+        annotations.add(new SimpleMutableAnnotation(0, new UIntInterpretorBE(), "magic number", 4));
+
+        byte[] hiddenString = { 0x49, 0x20, 0x61, 0x6D, 0x20, 0x69, 0x6E, 0x20, 0x79, 0x6F, 0x75, 0x72,
+                                0x20, 0x61, 0x70, 0x70, 0x6C, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6F, 0x6E,
+                                0x2C, 0x20, 0x68, 0x61, 0x63, 0x6B, 0x69, 0x6E, 0x67, 0x20, 0x79, 0x6F,
+                                0x75, 0x72, 0x20, 0x62, 0x79, 0x74, 0x65, 0x73, 0x2E };
+        long hiddenStringPos = BinaryUtils.positionOf(notebook.getBinary(), hiddenString);
+        annotations.add(new SimpleMutableAnnotation(hiddenStringPos, new NullInterpretor(hiddenString.length),
+                                                    null, hiddenString.length));
     }
 }

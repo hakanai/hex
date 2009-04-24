@@ -34,6 +34,17 @@ public interface AnnotationCollection {
     List<Annotation> getAll();
 
     /**
+     * <p>Gets the annotation at the given position, if any.</p>
+     *
+     * <p>This is currently limited to a single result, and it is up to the collection
+     *    to decide which to return in the case of two residing at the same location.</p>
+     *
+     * @param position the position to look up.
+     * @return the annotation at that position, or {@code null} if there are none.
+     */
+    Annotation getAnnotationAt(long position);
+
+    /**
      * Adds an annotation.
      *
      * @param annotation the annotation to add.
@@ -47,7 +58,17 @@ public interface AnnotationCollection {
      */
     void remove(Annotation annotation);
 
+    /**
+     * Adds a listener for changes in the collection.
+     *
+     * @param listener the listener to add.
+     */
     void addAnnotationCollectionListener(AnnotationCollectionListener listener);
 
+    /**
+     * Removes a listener for changes in the collection.
+     *
+     * @param listener the listener to remove.
+     */
     void removeAnnotationCollectionListener(AnnotationCollectionListener listener);
 }

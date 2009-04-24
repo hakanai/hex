@@ -33,6 +33,14 @@ public interface Annotation {
     long getPosition();
 
     /**
+     * Gets the length of the annotation.  This is purely for convenience, the
+     * authoritative length should be obtained via the interpretor.
+     *
+     * @return the length of the annotation.
+     */
+    int getLength();
+
+    /**
      * Gets the interpretor used to interpret the value at the given position.
      *
      * @return the interpretor.  TODO: Decide on nullable vs. non-null.

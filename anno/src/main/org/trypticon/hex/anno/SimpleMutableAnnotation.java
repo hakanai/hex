@@ -25,21 +25,31 @@ package org.trypticon.hex.anno;
  */
 public class SimpleMutableAnnotation implements Annotation {
     private long position;
+    private int length;
     private Interpretor interpretor;
     private String note;
 
-    public SimpleMutableAnnotation(long position) {
-        this(position, null, null);
+    public SimpleMutableAnnotation(long position, Interpretor interpretor, String note) {
+        this(position, interpretor, note, 0);
     }
 
-    public SimpleMutableAnnotation(long position, Interpretor interpretor, String note) {
+    public SimpleMutableAnnotation(long position, Interpretor interpretor, String note, int length) {
         if (interpretor == null) {
             throw new IllegalArgumentException("interpretor cannot be null");
+        }
+
+        if (position < 0) {
+            throw new IllegalArgumentException("position cannot be negative");
+        }
+
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative");
         }
 
         this.position = position;
         this.interpretor = interpretor;
         this.note = note;
+        this.length = length;
     }
 
     public long getPosition() {
@@ -48,6 +58,14 @@ public class SimpleMutableAnnotation implements Annotation {
 
     public void setPosition(long position) {
         this.position = position;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
     }
 
     public Interpretor getInterpretor() {

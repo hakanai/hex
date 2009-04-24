@@ -24,12 +24,19 @@ import javax.swing.JLabel;
 
 import org.trypticon.hex.HexUtils;
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 
 /**
  * Default cell renderer implementation, using a Swing label as the component.
  */
 public class DefaultCellRenderer extends JLabel implements CellRenderer {
     private static final Color transparent = new Color(0, 0, 0, 0);
+
+    // TODO: These should be based on what kind of annotation is being coloured,
+    //       and there should be a policy to choose which to use.
+    private static final Color annotationBorder = Color.RED;
+    private static final Color annotationBackground = new Color(255, 240, 240);
 
     public DefaultCellRenderer() {
         setOpaque(true);
@@ -42,6 +49,7 @@ public class DefaultCellRenderer extends JLabel implements CellRenderer {
         //int charYOffset = (rowHeight - metrics.getAscent()) / 2;
 
         setFont(viewer.getFont());
+        setBorder(null);
 
         setHorizontalAlignment(valueDisplayMode == ROW_OFFSET ? RIGHT : CENTER);
 
@@ -52,6 +60,20 @@ public class DefaultCellRenderer extends JLabel implements CellRenderer {
             foreground = viewer.getOffsetForeground();
         } else {
             foreground = viewer.getForeground();
+
+            AnnotationCollection annotations = viewer.getAnnotations();
+            Annotation annotation = annotations.getAnnotationAt(position);
+            if (annotation != null) {
+                // TODO: This 16 is technically a magic number, we should pass in the row length.
+                boolean top = annotation != annotations.getAnnotationAt(position - 16);
+                boolean right = annotation != annotations.getAnnotationAt(position + 1);
+                boolean bottom = annotation != annotations.getAnnotationAt(position + 16);
+                boolean left = annotation != annotations.getAnnotationAt(position - 1);
+
+                setBorder(new JointedLineBorder(annotationBorder, top, right, bottom, left));
+
+                background = annotationBackground;
+            }
 
             if (selected && viewer.getSelectionBackground() != null) {
                 background = viewer.getSelectionBackground();

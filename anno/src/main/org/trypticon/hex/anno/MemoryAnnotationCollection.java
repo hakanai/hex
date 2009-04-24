@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import org.trypticon.hex.anno.nulls.NullInterpretor;
+
 /**
  * A collection of annotations kept in memory.
  *
@@ -41,6 +43,38 @@ public class MemoryAnnotationCollection extends AbstractAnnotationCollection {
 
     public List<Annotation> getAll() {
         return Collections.unmodifiableList(annotations);
+    }
+
+    public Annotation getAnnotationAt(long position) {
+        if (position < 0) {
+            return null;
+        }
+
+        Annotation template = new SimpleMutableAnnotation(position, new NullInterpretor(1), null);
+
+        int pos = Collections.binarySearch(annotations, template, new AnnotationPositionComparator());
+        if (pos >= 0) {
+            // Direct hit on the first position for an annotation.
+            return annotations.get(pos);
+        } else {
+            // Find the nearest to the left.
+            // -pos - 1 is the insertion point, so -pos - 2 would be the annotation before it.
+            pos = -pos - 2;
+            if (pos == -1) {
+                // No annotations to the left, so impossible for one to cross the position we searched for.
+                return null;
+            }
+
+            Annotation annotation = annotations.get(pos);
+
+            // If it ends at the position passed in, or some point after it, then it's a match.
+            long annotationEndPosition = annotation.getPosition() + annotation.getLength() - 1;
+            if (annotationEndPosition >= position) {
+                return annotation;
+            } else {
+                return null;
+            }
+        }
     }
 
     public void add(Annotation annotation) {

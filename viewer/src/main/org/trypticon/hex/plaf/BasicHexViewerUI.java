@@ -20,7 +20,6 @@ package org.trypticon.hex.plaf;
 
 import java.awt.BasicStroke;
 import java.awt.Component;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -47,10 +46,14 @@ import org.trypticon.hex.renderer.CellRenderer;
  */
 public class BasicHexViewerUI extends HexViewerUI {
 
+    private int computeCharWidth(HexViewer viewer) {
+        return viewer.getFontMetrics(viewer.getFont()).charWidth('D');
+    }
+
     @Override
     public Rectangle modelToView(HexViewer viewer, long pos) {
         int bytesPerRow = viewer.getBytesPerRow();
-        int charWidth = viewer.getFontMetrics(viewer.getFont()).charWidth('D');
+        int charWidth = computeCharWidth(viewer);
         int rowHeight = viewer.getRowHeight();
 
         int bytesY = (int) (pos / bytesPerRow);
@@ -68,7 +71,7 @@ public class BasicHexViewerUI extends HexViewerUI {
 
     @Override
     public long viewToModel(HexViewer viewer, Point point) {
-        int charWidth = viewer.getFontMetrics(viewer.getFont()).charWidth('D');
+        int charWidth = computeCharWidth(viewer);
         int rowHeight = viewer.getRowHeight();
 
         long binaryLength = viewer.getBinary().length();
@@ -144,13 +147,12 @@ public class BasicHexViewerUI extends HexViewerUI {
         }
 
         g.setFont(viewer.getFont());
-        FontMetrics metrics = g.getFontMetrics();
         Rectangle clipBounds = g.getClipBounds();
 
         int bytesPerRow = viewer.getBytesPerRow();
 
         // Width computations
-        int charWidth = metrics.charWidth('D');
+        int charWidth = computeCharWidth(viewer);
         int hexColWidth = charWidth * 3;
         int addressLineX = 12 * charWidth;
         int firstDataColumnX = addressLineX + charWidth;

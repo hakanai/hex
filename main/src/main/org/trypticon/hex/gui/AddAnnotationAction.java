@@ -26,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.hex.anno.InterpretorInfo;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
@@ -93,7 +92,8 @@ class AddAnnotationAction extends BaseAction {
 
         Interpretor interpretor = info.create(optionMap);
 
-        Annotation annotation = new SimpleMutableAnnotation(position, interpretor, null);
+        SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, interpretor, null);
+        annotation.setLength(interpretor.interpret(viewer.getBinary(), position).length());
 
         viewer.getAnnotations().add(annotation);
     }
