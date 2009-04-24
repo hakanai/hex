@@ -32,11 +32,13 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.AnnotationCollectionListener;
+import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.datatransfer.HexViewerTransferHandler;
 import org.trypticon.hex.plaf.BasicHexViewerUI;
 import org.trypticon.hex.plaf.HexViewerUI;
-import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.renderer.CellRenderer;
 import org.trypticon.hex.renderer.DefaultCellRenderer;
 
@@ -82,6 +84,11 @@ public class HexViewer extends JComponent implements Scrollable {
 
     // Cached dimensions
     private int rowHeight;
+
+    /**
+     * This listener will repaint the viewer when the annotations change.
+     */
+    private AnnotationCollectionListener repaintListener;
 
     /**
      * Constructs the hex viewer.
@@ -156,8 +163,24 @@ public class HexViewer extends JComponent implements Scrollable {
      * @param annotations the annotations to show.
      */
     public void setAnnotations(AnnotationCollection annotations) {
+        if (this.annotations != null) {
+            this.annotations.removeAnnotationCollectionListener(repaintListener);
+        }
+
         this.annotations = annotations;
         repaint();
+
+        if (annotations != null) {
+            if (repaintListener == null) {
+                repaintListener = new AnnotationCollectionListener() {
+                    public void annotationsChanged(AnnotationCollectionEvent event) {
+                        repaint();
+                    }
+                };
+            }
+
+            annotations.addAnnotationCollectionListener(repaintListener);
+        }
     }
 
     /**
