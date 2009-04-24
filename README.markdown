@@ -58,24 +58,13 @@ I can start using it in its incomplete form.  So in order of need:
 
 2. UI for load/save of Notebook - DONE!
 
-3. UI for creating new annotations at the current selection start. - PARTIAL
+3. UI for creating new annotations at the current selection start.
+   - PARTIAL - primitive annotations work, variable length does not yet.
 
 4. Have these annotations correctly render in the tree so that I can
-   be assured they have been created.
+   be assured they have been created. - DONE!
 
-5. Get the viewer UI to render the annotations somehow.  I already
-   have an idea of what this will look like but I want to modify the
-   renderer to break up the task of identifying what type of cell is
-   being rendered, and rendering the cell.  It looks like the best
-   plan might be to follow a stacked style where cells can have
-   multiple renders which render in the following order:
-
-     - Fill background color of component
-     - Fill background color of annotation (if there is one)
-     - Fill background color of selection (if selected)
-     - Fill background color of cursor (if at cursor)
-     - Fill border color of annotation (if there is one)
-     - Draw marker for annotation note (if there is one)
+5. Get the viewer UI to render the annotations. - DONE!
 
 6. UI for deleting annotations under the cursor.
 
