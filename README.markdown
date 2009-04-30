@@ -66,11 +66,9 @@ I can start using it in its incomplete form.  So in order of need:
 
 5. Get the viewer UI to render the annotations. - DONE!
 
-6. UI for deleting annotations under the cursor.
+6. UI for deleting annotations under the cursor. - DONE!
 
-7. Keep documents open from last session.  And then switch to opening
-   nothing by default.  The first session I will still open the sample,
-   but I will modify the sample to contain annotations as well.
+7. Keep documents open from last session. - DONE!
 
 TODO comments scattered throughout the code will generally give an
 indication of what is currently bothering me. ;-)
