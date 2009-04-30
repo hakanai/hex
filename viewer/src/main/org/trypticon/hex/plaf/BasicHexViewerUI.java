@@ -149,6 +149,11 @@ public class BasicHexViewerUI extends HexViewerUI {
         g.setFont(viewer.getFont());
         Rectangle clipBounds = g.getClipBounds();
 
+        if (viewer.isOpaque()) {
+            g.setColor(viewer.getBackground());
+            g.fillRect(clipBounds.x, clipBounds.y, clipBounds.width, clipBounds.height);
+        }
+
         int bytesPerRow = viewer.getBytesPerRow();
 
         // Width computations

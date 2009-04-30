@@ -18,9 +18,9 @@
 
 package org.trypticon.hex.renderer;
 
-import org.trypticon.hex.HexViewer;
-
 import java.awt.Component;
+
+import org.trypticon.hex.HexViewer;
 
 /**
  * Interface for rendering cells in the viewer.

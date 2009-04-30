@@ -25,16 +25,18 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+
 import javax.swing.JComponent;
 import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
+import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.datatransfer.HexViewerTransferHandler;
 import org.trypticon.hex.plaf.BasicHexViewerUI;
@@ -104,6 +106,9 @@ public class HexViewer extends JComponent implements Scrollable {
                 repaint();
             }
         });
+
+        setOpaque(true);
+        updateUI();
     }
 
     /**
@@ -122,6 +127,12 @@ public class HexViewer extends JComponent implements Scrollable {
      */
     public void setUI(HexViewerUI ui) {
         super.setUI(ui);
+    }
+
+    @Override
+    public void updateUI()
+    {
+        setBackground(UIManager.getColor("TextArea.background"));
     }
 
     /**
