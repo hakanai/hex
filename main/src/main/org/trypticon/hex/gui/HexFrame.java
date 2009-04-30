@@ -214,6 +214,7 @@ public class HexFrame extends JFrame {
 
         editMenu.addSeparator();
         editMenu.add(new AddAnnotationMenu());
+        editMenu.add(new RemoveAnnotationAction());
 
         JMenu helpMenu = new JMenu("Help");
         // TODO: Help / User Guide
