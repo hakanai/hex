@@ -25,7 +25,9 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 
@@ -49,6 +51,11 @@ public class Notebook {
     private final Object openLock = new Object();
 
     /**
+     * Dirty flag.  Set to {@code true} while the notebook has unsaved changes.
+     */
+    private boolean dirty;
+
+    /**
      * Constructs a new unsaved notebook with a default in-memory annotation collection.
      *
      * @param binaryLocation the location of the binary.
@@ -67,11 +74,21 @@ public class Notebook {
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
 
+        // New annotations appearing mean we need to be saved.
+        annotations.addAnnotationCollectionListener(new AnnotationCollectionListener() {
+            public void annotationsChanged(AnnotationCollectionEvent event) {
+                setDirty(true);
+            }
+        });
+
         String path = binaryLocation.getPath();
         int lastSlash = path.lastIndexOf('/');
         String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
 
         this.name = "New: " + baseName;
+
+        // Presumed dirty until someone sets the location.
+        setDirty(true);
     }
 
     /**
@@ -120,7 +137,10 @@ public class Notebook {
     }
 
     /**
-     * Sets the location of the notebook.
+     * <p>Sets the location of the notebook.</p>
+     *
+     * <p>Also indicates that the notebook was just saved to that location, thus
+     *    sets the dirty flag to {@code false}.</p>
      *
      * @param notebookLocation the new notebook location.
      * @see #getNotebookLocation()
@@ -139,6 +159,8 @@ public class Notebook {
             int dot = lastPathComponent.indexOf('.');
             setName(dot >= 0 ? lastPathComponent.substring(0, dot) : lastPathComponent);
         }
+
+        setDirty(false);
     }
 
     public URL getBinaryLocation() {
@@ -182,6 +204,24 @@ public class Notebook {
             String oldName = this.name;
             this.name = name;
             firePropertyChange("name", oldName, name);
+            setDirty(true);
+        }
+    }
+
+    /**
+     * Tests if the notebook in this pane has unsaved changes.
+     *
+     * @return {@code true} if the notebook has unsaved changes.
+     */
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    private void setDirty(boolean dirty) {
+        if (this.dirty != dirty) {
+            boolean oldDirty = this.dirty;
+            this.dirty = dirty;
+            firePropertyChange("dirty", oldDirty, dirty);
         }
     }
 

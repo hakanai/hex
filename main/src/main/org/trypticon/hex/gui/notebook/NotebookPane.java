@@ -40,7 +40,6 @@ public class NotebookPane extends JPanel {
     private final HexViewer viewer;
     private final AnnotationPane annoPane;
 
-
     /**
      * Constructs the notebook pane.
      *

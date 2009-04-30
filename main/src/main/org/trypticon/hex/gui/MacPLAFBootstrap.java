@@ -60,7 +60,7 @@ public class MacPLAFBootstrap {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
 
         // And then a different menu when there are no frames visible:
-        application.setFramelessJMenuBar(HexFrame.buildMenuBar());
+        application.setFramelessJMenuBar(HexFrame.buildMenuBar(null));
 
         try {
             UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");

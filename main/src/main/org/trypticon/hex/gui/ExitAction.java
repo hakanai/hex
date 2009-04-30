@@ -20,6 +20,8 @@ package org.trypticon.hex.gui;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.AbstractAction;
 
 /**
@@ -32,12 +34,24 @@ class ExitAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent event) {
+        List<Frame> closeLater = new ArrayList<Frame>(2);
         for (Frame frame : Frame.getFrames()) {
             if (frame instanceof HexFrame) {
-                ((HexFrame) frame).attemptClose();
+                if (((HexFrame) frame).prepareForClose()) {
+                    closeLater.add(frame);
+                } else {
+                    // User decided it wasn't OK to close after all.
+                    return;
+                }
             } else {
                 frame.dispose();
             }
+        }
+
+        new WorkspaceStateTracker().save();
+
+        for (Frame frame : closeLater) {
+            frame.dispose();
         }
     }
 }

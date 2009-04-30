@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui;
 
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -59,6 +60,10 @@ class SaveNotebookAction extends BaseAction {
     }
 
     protected void doAction(ActionEvent event) throws Exception {
+        doSave();
+    }
+
+    private void doSave() throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame == null) {
             throw new ActionException("Focus is not on a hex viewer window");
@@ -81,11 +86,12 @@ class SaveNotebookAction extends BaseAction {
                         if (JOptionPane.showConfirmDialog(frame, "The file already exists.  Is it OK to overwrite it?",
                                                          "File Exists",
                                                          JOptionPane.YES_NO_OPTION,
-                                                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                            location = chosenFile.toURI().toURL();
-                            break;
+                                                         JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
+                            continue;
                         }
                     }
+                    location = chosenFile.toURI().toURL();
+                    break;
                 } else {
                     return;
                 }
@@ -95,5 +101,22 @@ class SaveNotebookAction extends BaseAction {
         new NotebookStorage().write(notebook, location);
 
         notebook.setNotebookLocation(location);
+    }
+
+    /**
+     * Saves the document programmatically, showing user interface as required.
+     * If errors occur, UI is shown for these and {@code false} is returned.
+     *
+     * @param owner the owner to use in the event that dialogs need to be displayed.
+     * @return {@code true} if the save was successful.
+     */
+    public boolean save(Window owner) {
+        try {
+            doSave();
+            return true;
+        } catch (Throwable t) {
+            handleError(owner, t);
+            return false;
+        }
     }
 }

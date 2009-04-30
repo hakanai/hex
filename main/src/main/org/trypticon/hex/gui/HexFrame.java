@@ -30,6 +30,9 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -39,6 +42,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+
+import ch.randelshofer.quaqua.JSheet;
+import ch.randelshofer.quaqua.SheetEvent;
+import ch.randelshofer.quaqua.SheetListener;
 
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.gui.notebook.Notebook;
@@ -64,7 +72,7 @@ public class HexFrame extends JFrame {
     public HexFrame(Notebook firstNotebook) {
         super("Hex");
 
-        setJMenuBar(buildMenuBar());
+        setJMenuBar(buildMenuBar(this));
 
         tabbedPane = new JTabbedPane();
         tabbedPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3,-3,-4,-3));
@@ -81,7 +89,9 @@ public class HexFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                attemptClose();
+                if (prepareForClose()) {
+                    dispose();
+                }
             }
         });
     }
@@ -93,6 +103,19 @@ public class HexFrame extends JFrame {
      */
     public NotebookPane getNotebookPane() {
         return (NotebookPane) tabbedPane.getSelectedComponent();
+    }
+
+    /**
+     * Gets all currently-open notebook panes.
+     *
+     * @return a list of all notebook panes.
+     */
+    public List<NotebookPane> getAllNotebookPanes() {
+        List<NotebookPane> panes = new ArrayList<NotebookPane>(tabbedPane.getTabCount());
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            panes.add((NotebookPane) tabbedPane.getComponentAt(i));
+        }
+        return Collections.unmodifiableList(panes);
     }
 
     /**
@@ -141,9 +164,10 @@ public class HexFrame extends JFrame {
     /**
      * Builds the application menu bar.
      *
+     * @param frame the frame, or {@code null} if building the frameless menu.
      * @return the menu bar.
      */
-    static JMenuBar buildMenuBar() {
+    static JMenuBar buildMenuBar(JFrame frame) {
         JMenu fileMenu = new JMenu("File");
         fileMenu.add(new NewNotebookAction());
         fileMenu.add(new OpenNotebookAction());
@@ -151,7 +175,11 @@ public class HexFrame extends JFrame {
 
         fileMenu.addSeparator();
         fileMenu.add(new CloseNotebookAction());
-        fileMenu.add(new SaveNotebookAction(false));
+        Action saveAction = new SaveNotebookAction(false);
+        if (frame != null) {
+            frame.getRootPane().getActionMap().put("save", saveAction);
+        }
+        fileMenu.add(saveAction);
         fileMenu.add(new SaveNotebookAction(true));
         // TODO: Revert to Saved
 
@@ -242,14 +270,60 @@ public class HexFrame extends JFrame {
     }
 
     /**
-     * Attempts to close the frame.  Will be called when the user closes the window
-     * or quits the application.
+     * Prepares for closing the frame.
+     *
+     * @return {@code true} if it is OK to close.
      */
-    public void attemptClose() {
+    public boolean prepareForClose() {
+        for (final NotebookPane pane : getAllNotebookPanes()) {
+            if (pane.getNotebook().isDirty()) {
+                // So the user knows which one it's asking about.
+                tabbedPane.setSelectedComponent(pane);
 
-        // TODO: Block if a document hasn't been saved!
+                // XXX: It might be OK to put the name of the pane into the message, but
+                // other apps don't appear to do this.
+                JOptionPane optionPane = new JOptionPane(
+                        "<html>" + UIManager.getString("OptionPane.css") +
+                        "<b>Do you want to save changes to this document<br>" +
+                        "before closing?</b><p>" +
+                        "If you don't save, your changes will be lost.",
+                        JOptionPane.WARNING_MESSAGE);
 
-        dispose();
+                Object[] options = { "Save", "Cancel", "Don't Save" };
+                optionPane.setOptions(options);
+                optionPane.setInitialValue(options[0]);
+                optionPane.putClientProperty("Quaqua.OptionPane.destructiveOption", 2);
+
+                class SaveSheetListener implements SheetListener {
+                    private boolean okToClose = true;
+
+                    public void optionSelected(SheetEvent event) {
+                        Object value = event.getValue();
+                        if (value == null || value.equals("Cancel")) {
+                            okToClose = false;
+                        } else if (value.equals("Don't Save")) {
+                            // Nothing to do.
+                        } else if (value.equals("Save")) {
+                            SaveNotebookAction saveAction = (SaveNotebookAction)
+                                    getRootPane().getActionMap().get("save");
+                            if (!saveAction.save(HexFrame.this)) {
+                                okToClose = false;
+                            }
+                        }
+                    }
+                }
+
+                SaveSheetListener listener = new SaveSheetListener();
+
+                JSheet.showSheet(optionPane, this, listener);
+
+                if (!listener.okToClose) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**

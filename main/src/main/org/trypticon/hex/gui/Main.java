@@ -20,6 +20,7 @@ package org.trypticon.hex.gui;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
@@ -31,14 +32,26 @@ import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
  * @author trejkaz
  */
 public class Main {
-    public static void main(String[] args) throws Exception {
-        new Main().execute(args);
+    public static void main(final String[] args) throws Exception {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new Main().execute(args);
+                } catch (RuntimeException e) {
+                    throw e;
+                } catch (Exception e) {
+                    // TODO: Generic error dialog.  Need a utility for this.
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     public void execute(Object[] args) throws Exception {
         PLAFBootstrap.init();
 
-        // TODO: Load previously-open notebooks from preferences.
+        final WorkspaceStateTracker stateTracker = new WorkspaceStateTracker();
+        boolean openSample = !stateTracker.restore();
 
         if (args.length == 1 && args[0] instanceof String) {
             // TODO: Support a URL here too.
@@ -46,7 +59,10 @@ public class Main {
             File file = new File((String) args[0]);
             Notebook notebook = new NotebookStorage().read(file.toURI().toURL());
             HexFrame.openNotebook(notebook);
-        } else {
+            openSample = false;
+        }
+
+        if (openSample) {
             new OpenSampleNotebookAction().actionPerformed(
                     new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Open Sample Notebook"));
         }

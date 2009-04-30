@@ -42,12 +42,16 @@ public abstract class BaseAction extends AbstractAction {
             JOptionPane.showMessageDialog(findSourceWindow((Component) event.getSource()), e.getMessage(),
                                           "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Throwable t) {
-            logger.log(Level.SEVERE, "Unexpected error in UI action", t);
-
-            JOptionPane.showMessageDialog(findSourceWindow((Component) event.getSource()),
-                                          "Unexpected error in UI action.  Check the log for further details.",
-                                          "Unexpected Error", JOptionPane.ERROR_MESSAGE);
+            handleError(findSourceWindow((Component) event.getSource()), t);
         }
+    }
+
+    protected void handleError(Window owner, Throwable t) {
+        logger.log(Level.SEVERE, "Unexpected error in UI action", t);
+
+        JOptionPane.showMessageDialog(owner,
+                                      "Unexpected error in UI action.  Check the log for further details.",
+                                      "Unexpected Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private Window findSourceWindow(Component component) {
