@@ -47,14 +47,15 @@ public class OpenSampleNotebookAction extends BaseAction {
         HexFrame.openNotebook(notebook);
 
         AnnotationCollection annotations = notebook.getAnnotations();
-        annotations.add(new SimpleMutableAnnotation(0, new UIntInterpretorBE(), "magic number", 4));
+        annotations.add(new SimpleMutableAnnotation(0, 4, new UIntInterpretorBE(), "magic number"));
 
         byte[] hiddenString = { 0x49, 0x20, 0x61, 0x6D, 0x20, 0x69, 0x6E, 0x20, 0x79, 0x6F, 0x75, 0x72,
                                 0x20, 0x61, 0x70, 0x70, 0x6C, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6F, 0x6E,
                                 0x2C, 0x20, 0x68, 0x61, 0x63, 0x6B, 0x69, 0x6E, 0x67, 0x20, 0x79, 0x6F,
                                 0x75, 0x72, 0x20, 0x62, 0x79, 0x74, 0x65, 0x73, 0x2E };
         long hiddenStringPos = BinaryUtils.positionOf(notebook.getBinary(), hiddenString);
-        annotations.add(new SimpleMutableAnnotation(hiddenStringPos, new NullInterpretor(hiddenString.length),
-                                                    null, hiddenString.length));
+        annotations.add(new SimpleMutableAnnotation(hiddenStringPos, hiddenString.length,
+                                                    new NullInterpretor(hiddenString.length),
+                                                    null));
     }
 }

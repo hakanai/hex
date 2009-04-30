@@ -92,8 +92,8 @@ class AddAnnotationAction extends BaseAction {
 
         Interpretor interpretor = info.create(optionMap);
 
-        SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, interpretor, null);
-        annotation.setLength(interpretor.interpret(viewer.getBinary(), position).length());
+        int length = interpretor.interpret(viewer.getBinary(), position).length();
+        SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpretor, null);
 
         viewer.getAnnotations().add(annotation);
     }

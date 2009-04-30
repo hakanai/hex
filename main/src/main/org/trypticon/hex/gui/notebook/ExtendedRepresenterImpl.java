@@ -19,22 +19,21 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.jvyaml.Representer;
+import org.jvyaml.RepresenterException;
 import org.jvyaml.RepresenterImpl;
 import org.jvyaml.Serializer;
 import org.jvyaml.YAMLConfig;
 import org.jvyaml.YAMLNodeCreator;
-import org.jvyaml.RepresenterException;
 import org.jvyaml.nodes.Node;
 
+import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.hex.anno.InterpretorStorage;
-import org.trypticon.hex.anno.Annotation;
 
 /**
  * Extension of the default representer to dodge some issues in the default one.
@@ -97,6 +96,7 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
         public Node toYamlNode(Representer representer) throws IOException {
             Map<String, Object> fields = new LinkedHashMap<String, Object>(3);
             fields.put("position", annotation.getPosition());
+            fields.put("length", annotation.getLength());
             fields.put("interpretor", annotation.getInterpretor());
             fields.put("note", annotation.getNote());
             return representer.map(taguri(), fields, false);

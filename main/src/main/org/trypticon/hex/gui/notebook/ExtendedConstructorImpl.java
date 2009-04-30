@@ -92,11 +92,12 @@ class ExtendedConstructorImpl extends ConstructorImpl {
             @SuppressWarnings("unchecked")
             Map<String, ?> map = (Map<String, ?>) constructor.constructMapping(node);
 
-            long position = (Long) map.get("position");
+            long position = ((Number) map.get("position")).longValue();
+            int length = ((Number) map.get("length")).intValue();
             Interpretor interpretor = (Interpretor) map.get("interpretor");
             String note = (String) map.get("note");
 
-            return new SimpleMutableAnnotation(position, interpretor, note);
+            return new SimpleMutableAnnotation(position, length, interpretor, note);
         }
     }
 

@@ -29,11 +29,7 @@ public class SimpleMutableAnnotation implements Annotation {
     private Interpretor interpretor;
     private String note;
 
-    public SimpleMutableAnnotation(long position, Interpretor interpretor, String note) {
-        this(position, interpretor, note, 0);
-    }
-
-    public SimpleMutableAnnotation(long position, Interpretor interpretor, String note, int length) {
+    public SimpleMutableAnnotation(long position, int length, Interpretor interpretor, String note) {
         if (interpretor == null) {
             throw new IllegalArgumentException("interpretor cannot be null");
         }
@@ -47,9 +43,9 @@ public class SimpleMutableAnnotation implements Annotation {
         }
 
         this.position = position;
+        this.length = length;
         this.interpretor = interpretor;
         this.note = note;
-        this.length = length;
     }
 
     public long getPosition() {
@@ -94,6 +90,7 @@ public class SimpleMutableAnnotation implements Annotation {
         }
         SimpleMutableAnnotation that = (SimpleMutableAnnotation) o;
         return getPosition() == that.getPosition() &&
+               getLength() == that.getLength() &&
                getInterpretor().equals(that.getInterpretor()) &&
                (getNote() == null ? that.getNote() == null : getNote().equals(that.getNote()));
     }
@@ -101,6 +98,7 @@ public class SimpleMutableAnnotation implements Annotation {
     @Override
     public int hashCode() {
         int hashCode = 23 * (int) getPosition();
+        hashCode = hashCode * 71 + getLength();
         hashCode = hashCode * 37 + getInterpretor().hashCode();
         if (note != null) {
             hashCode = hashCode * 51 + getNote().hashCode();
