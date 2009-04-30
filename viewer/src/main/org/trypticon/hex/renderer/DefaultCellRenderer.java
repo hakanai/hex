@@ -64,11 +64,14 @@ public class DefaultCellRenderer extends JLabel implements CellRenderer {
             AnnotationCollection annotations = viewer.getAnnotations();
             Annotation annotation = annotations.getAnnotationAt(position);
             if (annotation != null) {
+                long annoStart = annotation.getPosition();
+                long annoEnd = annoStart + annotation.getLength() - 1;
+
                 // TODO: This 16 is technically a magic number, we should pass in the row length.
-                boolean top = annotation != annotations.getAnnotationAt(position - 16);
-                boolean right = annotation != annotations.getAnnotationAt(position + 1);
-                boolean bottom = annotation != annotations.getAnnotationAt(position + 16);
-                boolean left = annotation != annotations.getAnnotationAt(position - 1);
+                boolean top = position < annoStart + 16;
+                boolean right = position == annoEnd;
+                boolean bottom = position > annoEnd - 16;
+                boolean left = position == annoStart;
 
                 setBorder(new JointedLineBorder(annotationBorder, top, right, bottom, left));
 
