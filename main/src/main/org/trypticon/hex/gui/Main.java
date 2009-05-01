@@ -35,6 +35,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  */
 public class Main {
     public static void main(final String[] args) throws Exception {
+        PLAFBootstrap.init();
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -50,8 +52,6 @@ public class Main {
     }
 
     public void execute(Object[] args) throws Exception {
-        PLAFBootstrap.init();
-
         // If not running on Quaqua, it is impossible to start up without at least one document open.
         // For now, we will resolve this by opening the sample but another way would be supporting the
         // frame having no documents open (which would be bad on Mac...)
