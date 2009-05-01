@@ -24,7 +24,7 @@ package org.trypticon.hex.gui.notebook;
  * @author trejkaz
  */
 class YamlTags {
-    static final String NOTEBOOK_TAG = "!hex/notebook";
-    static final String ANNOTATION_TAG = "!hex/annotation";
-    static final String INTERPRETOR_TAG_PREFIX = "!hex/interpretor:";
+    static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
+    static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
+    static final String INTERPRETOR_TAG = "tag:hex.trypticon.org,2009:interpretor";
 }

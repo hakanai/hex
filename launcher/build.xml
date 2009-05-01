@@ -45,7 +45,9 @@
             <zipfileset src="../anno/build/hex-anno.jar"/>
             <zipfileset src="../viewer/build/hex-viewer.jar"/>
             <zipfileset src="../main/build/hex-main.jar"/>
-            <zipfileset src="../lib/jvyaml.jar"/>
+            <zipfileset src="../lib/jvyamlb.jar"/>
+            <zipfileset src="../lib/bytelist.jar"/>
+            <zipfileset src="../lib/jcodings.jar"/>
 
             <manifest>
                 <attribute name="Main-Class" value="org.trypticon.hex.gui.Main"/>
@@ -84,7 +86,9 @@
             <fileset dir="../anno/build" includes="hex-anno.jar"/>
             <fileset dir="../viewer/build" includes="hex-viewer.jar"/>
             <fileset dir="../main/build" includes="hex-main.jar"/>
-            <fileset dir="../lib" includes="jvyaml.jar"/>
+            <fileset dir="../lib" includes="jvyamlb.jar"/>
+            <fileset dir="../lib" includes="bytelist.jar"/>
+            <fileset dir="../lib" includes="jcodings.jar"/>
 
             <!-- Mac-specific -->
             <fileset dir="../lib" includes="mrjadapter.jar, quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>

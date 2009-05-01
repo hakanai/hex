@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.jvyaml.Representer;
-import org.jvyaml.RepresenterException;
-import org.jvyaml.RepresenterImpl;
-import org.jvyaml.Serializer;
-import org.jvyaml.YAMLConfig;
-import org.jvyaml.YAMLNodeCreator;
-import org.jvyaml.nodes.Node;
+import org.jvyamlb.Representer;
+import org.jvyamlb.RepresenterImpl;
+import org.jvyamlb.Serializer;
+import org.jvyamlb.YAMLConfig;
+import org.jvyamlb.YAMLNodeCreator;
+import org.jvyamlb.exceptions.RepresenterException;
+import org.jvyamlb.nodes.Node;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.Interpretor;
@@ -104,21 +104,17 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
     }
 
     private class InterpretorYAMLNodeCreator implements YAMLNodeCreator {
-        private String name;
         private Map<String, Object> options;
 
         private InterpretorYAMLNodeCreator(Interpretor interpretor) {
-            Map<String, Object> map = interpretorStorage.toMap(interpretor);
-            if (map == null) {
+            options = interpretorStorage.toMap(interpretor);
+            if (options == null) {
                 throw new RepresenterException("Unknown interpretor: " + interpretor);
             }
-
-            options = new LinkedHashMap<String, Object>(map);
-            name = (String) options.remove("name");
         }
 
         public String taguri() {
-            return YamlTags.INTERPRETOR_TAG_PREFIX + name;
+            return YamlTags.INTERPRETOR_TAG;
         }
 
         public Node toYamlNode(Representer representer) throws IOException {

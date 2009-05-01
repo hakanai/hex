@@ -18,22 +18,23 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.net.URL;
-import java.io.StringWriter;
-import java.io.StringReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 
-import org.junit.Test;
-import org.junit.Ignore;
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.nulls.NullInterpretor;
 import org.trypticon.hex.anno.primitive.PrimitiveInterpretors;
+import org.trypticon.hex.anno.strings.StringInterpretor;
 
 /**
  * Tests for {@link NotebookStorage}.
@@ -49,16 +50,17 @@ public class TestNotebookStorage {
         AnnotationCollection annotations = notebook.getAnnotations();
         annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpretor(), "Test"));
         annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpretors.UINT32_LE, null));
+        annotations.add(new SimpleMutableAnnotation(13, 4, new StringInterpretor("utf8"), null));
 
-        StringWriter writer = new StringWriter();
-        storage.write(notebook, writer);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        storage.write(notebook, stream);
 
-        String content = writer.toString();
+        byte[] content = stream.toByteArray();
 
-        //System.out.println(content);
+        System.out.println(new String(content));
 
-        StringReader reader = new StringReader(content);
-        Notebook churned = storage.read(reader);
+        InputStream inStream = new ByteArrayInputStream(content);
+        Notebook churned = storage.read(inStream);
 
         assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
         assertEquals("Wrong annotations", notebook.getAnnotations().getAll(), churned.getAnnotations().getAll());
@@ -84,18 +86,23 @@ public class TestNotebookStorage {
 
     @Test(expected=IOException.class)
     public void testIOExceptionOnReading() throws Exception {
-        storage.read(new BrokenReader());
+        storage.read(new BrokenInputStream());
     }
 
     @Test(expected=IOException.class)
-    @Ignore("requires a fix to JvYAML: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=15")
+    @Ignore("requires a fix to JvYAMLb: http://code.google.com/p/jvyamlb/issues/detail?id=7")
     public void testIOExceptionOnWriting() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));
-        storage.write(notebook, new BrokenWriter());
+        storage.write(notebook, new BrokenOutputStream());
     }
 
-    private static class BrokenReader extends Reader {
-        public int read(char[] chars, int i, int i1) throws IOException {
+    private static class BrokenInputStream extends InputStream {
+        public int read() throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public int read(byte[] bytes, int i, int i1) throws IOException {
             throw new IOException("Broken");
         }
 
@@ -104,15 +111,22 @@ public class TestNotebookStorage {
         }
     }
 
-    private static class BrokenWriter extends Writer {
-        public void write(char[] chars, int i, int i1) throws IOException {
+    private static class BrokenOutputStream extends OutputStream {
+        public void write(int i) throws IOException {
             throw new IOException("Broken");
         }
 
+        @Override
+        public void write(byte[] bytes, int i, int i1) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
         public void flush() throws IOException {
             throw new IOException("Broken");
         }
 
+        @Override
         public void close() throws IOException {
             throw new IOException("Broken");
         }

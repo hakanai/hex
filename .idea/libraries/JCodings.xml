@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="JvYAML">
+  <library name="JCodings">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/jvyaml.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jcodings.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -51,6 +51,16 @@ public class StringInterpretor extends AbstractInterpretor<StringValue> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof StringInterpretor && charset.equals(((StringInterpretor) o).charset);
+    }
+
+    @Override
+    public int hashCode() {
+        return 234611 ^ charset.hashCode();
+    }
+
+    @Override
     public String toString() {
         return String.format("string(%s)", charset.name());
     }

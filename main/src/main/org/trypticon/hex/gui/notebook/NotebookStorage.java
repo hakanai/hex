@@ -18,29 +18,25 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.jvyaml.DefaultYAMLConfig;
-import org.jvyaml.DefaultYAMLFactory;
-import org.jvyaml.Representer;
-import org.jvyaml.Serializer;
-import org.jvyaml.YAML;
-import org.jvyaml.YAMLConfig;
-import org.jvyaml.YAMLFactory;
-import org.jvyaml.Constructor;
-import org.jvyaml.Composer;
-import org.jvyaml.YAMLException;
+import org.jvyamlb.Composer;
+import org.jvyamlb.Constructor;
+import org.jvyamlb.DefaultYAMLConfig;
+import org.jvyamlb.DefaultYAMLFactory;
+import org.jvyamlb.Representer;
+import org.jvyamlb.Serializer;
+import org.jvyamlb.YAML;
+import org.jvyamlb.YAMLConfig;
+import org.jvyamlb.YAMLFactory;
+import org.jvyamlb.exceptions.YAMLException;
 
 import org.trypticon.hex.anno.InterpretorStorage;
 import org.trypticon.hex.anno.MasterInterpretorStorage;
@@ -72,9 +68,9 @@ public class NotebookStorage {
         };
     }
 
-    public Notebook read(Reader reader) throws IOException {
+    public Notebook read(InputStream stream) throws IOException {
         try {
-            return (Notebook) YAML.load(reader, factory, config);
+            return (Notebook) YAML.load(stream, factory, config);
         } catch (YAMLException e) {
             rethrow(e);
             return null; // actually unreachable, compiler isn't smart enough.
@@ -84,7 +80,7 @@ public class NotebookStorage {
     public Notebook read(URL url) throws IOException {
         InputStream stream = url.openStream();
         try {
-            Notebook notebook = read(new InputStreamReader(stream, "UTF-8"));
+            Notebook notebook = read(stream);
             notebook.setNotebookLocation(url);
             return notebook;
         } finally {
@@ -92,9 +88,9 @@ public class NotebookStorage {
         }
     }
 
-    public void write(Notebook notebook, Writer writer) throws IOException {
+    public void write(Notebook notebook, OutputStream stream) throws IOException {
         try {
-            YAML.dump(notebook, writer, factory, config);
+            YAML.dump(notebook, stream, factory, config);
         } catch (YAMLException e) {
             rethrow(e);
         }
@@ -103,7 +99,7 @@ public class NotebookStorage {
     private void write(Notebook notebook, File file) throws IOException {
         OutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
         try {
-            write(notebook, new OutputStreamWriter(stream, "UTF-8"));
+            write(notebook, stream);
         } finally {
             stream.close();
         }
@@ -122,7 +118,7 @@ public class NotebookStorage {
 
             OutputStream stream = connection.getOutputStream();
             try {
-                write(notebook, new OutputStreamWriter(stream, "UTF-8"));
+                write(notebook, stream);
             } finally {
                 stream.close();
             }

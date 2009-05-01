@@ -18,24 +18,25 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.jvyaml.ConstructorImpl;
-import org.jvyaml.Composer;
-import org.jvyaml.Constructor;
-import org.jvyaml.ConstructorException;
-import org.jvyaml.nodes.Node;
+import org.jruby.util.ByteList;
+import org.jvyamlb.Composer;
+import org.jvyamlb.Constructor;
+import org.jvyamlb.ConstructorImpl;
+import org.jvyamlb.exceptions.ConstructorException;
+import org.jvyamlb.nodes.Node;
 
-import org.trypticon.hex.anno.InterpretorStorage;
-import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.Interpretor;
+import org.trypticon.hex.anno.InterpretorStorage;
+import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.SimpleMutableAnnotation;
 
 /**
  * Extension of the default representer to dodge some issues in the default one.
@@ -53,13 +54,33 @@ class ExtendedConstructorImpl extends ConstructorImpl {
         this.interpretorStorage = interpretorStorage;
     }
 
+    /**
+     * Converts a map with {@code ByteList} keys back into a map with {@code String} keys.
+     *
+     * @param map the map.
+     * @return the fixed map.
+     */
+    private Map<String, Object> fixMapping(Map<ByteList, ?> map) {
+        Map<String, Object> result = new LinkedHashMap<String, Object>();
+        for (Map.Entry<ByteList, ?> entry : map.entrySet()) {
+            String key = entry.getKey().toString();
+            Object value = entry.getValue();
+            if (value instanceof ByteList) {
+                value = value.toString();
+            }
+
+            result.put(key, value);
+        }
+        return result;
+    }
+
     @Override
     public YamlConstructor getYamlConstructor(Object o) {
         if (YamlTags.NOTEBOOK_TAG.equals(o)) {
             return notebookConstructor;
         } else if (YamlTags.ANNOTATION_TAG.equals(o)) {
             return annotationConstructor;
-        } else if (o instanceof String && ((String) o).startsWith(YamlTags.INTERPRETOR_TAG_PREFIX)) {
+        } else if (YamlTags.INTERPRETOR_TAG.equals(o)) {
             return interpretorConstructor;
         } else {
             return super.getYamlConstructor(o);
@@ -69,7 +90,7 @@ class ExtendedConstructorImpl extends ConstructorImpl {
     private class NotebookConstructor implements YamlConstructor {
         public Object call(Constructor constructor, Node node) {
             @SuppressWarnings("unchecked")
-            Map<String, ?> map = (Map<String, ?>) constructor.constructMapping(node);
+            Map<String, ?> map = fixMapping((Map<ByteList, ?>) constructor.constructMapping(node));
 
             String binaryLocationURL = (String) map.get("binary_location");
             URL binaryLocation;
@@ -90,7 +111,7 @@ class ExtendedConstructorImpl extends ConstructorImpl {
     private class AnnotationConstructor implements YamlConstructor {
         public Object call(Constructor constructor, Node node) {
             @SuppressWarnings("unchecked")
-            Map<String, ?> map = (Map<String, ?>) constructor.constructMapping(node);
+            Map<String, ?> map = fixMapping((Map<ByteList, ?>) constructor.constructMapping(node));
 
             long position = ((Number) map.get("position")).longValue();
             int length = ((Number) map.get("length")).intValue();
@@ -104,15 +125,11 @@ class ExtendedConstructorImpl extends ConstructorImpl {
     private class InterpretorConstructor implements YamlConstructor {
         public Object call(Constructor constructor, Node node) {
             @SuppressWarnings("unchecked")
-            Map<String, Object> map = (Map<String, Object>) constructor.constructMapping(node);
-            map = new HashMap<String, Object>(map);
-
-            String name = node.getTag().substring(YamlTags.INTERPRETOR_TAG_PREFIX.length());
-            map.put("name", name);
+            Map<String, Object> map = fixMapping((Map<ByteList, ?>) constructor.constructMapping(node));
 
             Interpretor interpretor = interpretorStorage.fromMap(map);
             if (interpretor == null) {
-                throw new ConstructorException(null, "unknown interpretor name: " + name, null);
+                throw new ConstructorException(null, "unknown interpretor: " + map, null);
             }
 
             return interpretor;
