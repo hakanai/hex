@@ -37,7 +37,7 @@ public class TestDosDateTimeInterpretor {
         byte[] data = { 0x67, 0x64, (byte) 0xAC, (byte) 0x2E };
 
         assertDateTimeEquals("Wrong date value", 2003, 5, 12, 12, 35, 14,
-                             interp.interpret(BinaryFactory.wrap(data), 0));
+                             interp.interpret(BinaryFactory.wrap(data), 0, 4));
 
     }
 

@@ -50,7 +50,7 @@ public class MemoryAnnotationCollection extends AbstractAnnotationCollection {
             return null;
         }
 
-        Annotation template = new SimpleMutableAnnotation(position, 1, new NullInterpretor(1), null);
+        Annotation template = new SimpleMutableAnnotation(position, 1, new NullInterpretor(), null);
 
         int pos = Collections.binarySearch(annotations, template, new AnnotationPositionComparator());
         if (pos >= 0) {

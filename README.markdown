@@ -45,33 +45,15 @@ You can open files and look around (see CAVEATS below.)
 
 Cursor and mouse input is all done as far as cursor/selection movement
 is concerned.  Copy also works, currently it copies the selection as
-hexadecimal.
+hexadecimal.  Annotation works but the number of types of annotation
+is still a little limiting.
 
 
 WHAT I AM TRYING TO GET WORKING NOW
 -----------------------------------
 
-Next step is annotation.  I'm trying to grow the editor to a point where
-I can start using it in its incomplete form.  So in order of need:
-
-1. A way to load/save annotation files in YAML - DONE!
-
-2. UI for load/save of Notebook - DONE!
-
-3. UI for creating new annotations at the current selection start.
-   - PARTIAL - primitive annotations work, variable length does not yet.
-
-4. Have these annotations correctly render in the tree so that I can
-   be assured they have been created. - DONE!
-
-5. Get the viewer UI to render the annotations. - DONE!
-
-6. UI for deleting annotations under the cursor. - DONE!
-
-7. Keep documents open from last session. - DONE!
-
-TODO comments scattered throughout the code will generally give an
-indication of what is currently bothering me. ;-)
+Next I will be building the catalogue of available annotations while
+I test the program under real usage conditions.
 
 
 CAVEATS

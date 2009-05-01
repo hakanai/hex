@@ -21,27 +21,41 @@ package org.trypticon.hex.anno;
 import org.trypticon.hex.binary.Binary;
 
 /**
- * Interface for interpretation of a sequence of binary as some typed value.
+ * Base convenience class for implementing fixed-length interpretors.
  *
  * @param <V> the value type.
  * @author trejkaz
  */
-public interface Interpretor<V extends Value> {
+public abstract class AbstractFixedLengthInterpretor<V extends Value>
+        extends AbstractInterpretor<V>
+        implements FixedLengthInterpretor<V> {
 
-    /**
-     * Gets the type of the interpreted values.
-     *
-     * @return the type of the interpreted values.
-     */
-    Class<V> getType();
+    private final int valueLength;
+
+    protected AbstractFixedLengthInterpretor(Class<V> type, int valueLength) {
+        super(type);
+        this.valueLength = valueLength;
+    }
+
+    public int getValueLength() {
+        return valueLength;
+    }
 
     /**
      * Interprets the value for a range.
      *
      * @param binary the binary.
      * @param position the position of the start of the value.
-     * @param length the length of the value to interpret.
      * @return the value.
      */
-    V interpret(Binary binary, long position, int length);
+    protected abstract V interpret(Binary binary, long position);
+
+    public V interpret(Binary binary, long position, int length) {
+        if (length != valueLength) {
+            throw new IllegalArgumentException("Only supports values of length " + valueLength
+                    + " but got " + length);
+        }
+
+        return interpret(binary, position);
+    }
 }

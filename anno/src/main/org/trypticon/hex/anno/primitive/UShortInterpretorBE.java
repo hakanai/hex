@@ -18,7 +18,7 @@
 
 package org.trypticon.hex.anno.primitive;
 
-import org.trypticon.hex.anno.Interpretor;
+import org.trypticon.hex.anno.AbstractFixedLengthInterpretor;
 import org.trypticon.hex.binary.Binary;
 
 /**
@@ -26,7 +26,11 @@ import org.trypticon.hex.binary.Binary;
  *
  * @author trejkaz
  */
-public class UShortInterpretorBE implements Interpretor<UShort> {
+public class UShortInterpretorBE extends AbstractFixedLengthInterpretor<UShort> {
+    public UShortInterpretorBE() {
+        super(UShort.class, 2);
+    }
+
     public Class<UShort> getType() {
         return UShort.class;
     }

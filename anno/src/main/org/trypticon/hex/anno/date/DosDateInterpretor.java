@@ -18,9 +18,9 @@
 
 package org.trypticon.hex.anno.date;
 
-import org.trypticon.hex.anno.Interpretor;
-import org.trypticon.hex.anno.primitive.LittleEndian;
+import org.trypticon.hex.anno.AbstractFixedLengthInterpretor;
 import org.trypticon.hex.anno.primitive.BitField;
+import org.trypticon.hex.anno.primitive.LittleEndian;
 import org.trypticon.hex.binary.Binary;
 
 /**
@@ -28,14 +28,14 @@ import org.trypticon.hex.binary.Binary;
  *
  * @author trejkaz
  */
-public class DosDateInterpretor implements Interpretor<Date> {
+public class DosDateInterpretor extends AbstractFixedLengthInterpretor<Date> {
     private static final BitField day = BitField.lowest(5);
     private static final BitField month = day.next(4);
     private static final BitField year = month.next(7);
     private static final int YEAR_OFFSET = 1980;
 
-    public Class<Date> getType() {
-        return Date.class;
+    public DosDateInterpretor() {
+        super(Date.class, 2);
     }
 
     public Date interpret(Binary binary, long position) {

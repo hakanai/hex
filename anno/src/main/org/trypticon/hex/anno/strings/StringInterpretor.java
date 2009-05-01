@@ -16,40 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.nulls;
+package org.trypticon.hex.anno.strings;
+
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 
 import org.trypticon.hex.anno.AbstractInterpretor;
 import org.trypticon.hex.binary.Binary;
 
 /**
- * An interpretor which can mark a range as meaning nothing.  Useful for
- * when you have a non-semantic comment with no value, such as "reserved",
- * or "I don't know what this is."
+ * Interpretor for string values.
  *
  * @author trejkaz
  */
-public class NullInterpretor extends AbstractInterpretor<NullValue> {
+public class StringInterpretor extends AbstractInterpretor<StringValue> {
+    private final Charset charset;
 
-    public NullInterpretor() {
-        super(NullValue.class);
+    public StringInterpretor(String charset) {
+        super(StringValue.class);
+        this.charset = Charset.forName(charset);
     }
 
-    public NullValue interpret(Binary binary, long position, int length) {
-        return new NullValue(length);
+    public String getCharset() {
+        return charset.name();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return o == this || o instanceof NullInterpretor;
-    }
+    public StringValue interpret(Binary binary, long position, int length) {
+        ByteBuffer buffer = ByteBuffer.allocate(length);
+        binary.read(position, buffer, length);
 
-    @Override
-    public int hashCode() {
-        return 3425671;
+        CharBuffer charBuffer = charset.decode(buffer);
+        return new SimpleStringValue(charBuffer.toString(), length);
     }
 
     @Override
     public String toString() {
-        return "null";
+        return String.format("string(%s)", charset.name());
     }
 }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.nulls;
+package org.trypticon.hex.anno.strings;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,28 +28,31 @@ import org.trypticon.hex.anno.InterpretorInfo;
 import org.trypticon.hex.anno.InterpretorStorage;
 
 /**
- * Interpretor storage for null values.
+ * Storage support for string interpretors.
  *
  * @author trejkaz
  */
-public class NullInterpretorStorage implements InterpretorStorage {
+public class StringInterpretorStorage implements InterpretorStorage {
     public List<InterpretorInfo> getInterpretorInfos() {
-        return Arrays.asList((InterpretorInfo) new NullInterpretorInfo());
+        return Arrays.asList((InterpretorInfo) new StringInterpretorInfo());
     }
 
     public Map<String, Object> toMap(Interpretor interpretor) {
-        if (interpretor.getClass() == NullInterpretor.class) {
-            Map<String, Object> map = new HashMap<String, Object>(2);
-            map.put("name", "null");
-            return map;
+        if (interpretor instanceof StringInterpretor) {
+            Map<String, Object> result = new HashMap<String, Object>(1);
+            result.put("name", "string");
+            result.put("charset", ((StringInterpretor) interpretor).getCharset());
+            return result;
         } else {
             return null;
         }
     }
 
     public Interpretor fromMap(Map<String, Object> map) {
-        if ("null".equals(map.get("name"))) {
-            return new NullInterpretor();
+        String name = (String) map.get("name");
+        if ("string".equals(name)) {
+            String charset = (String) map.get("charset");
+            return new StringInterpretor(charset);
         } else {
             return null;
         }

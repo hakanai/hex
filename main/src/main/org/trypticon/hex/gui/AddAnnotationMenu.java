@@ -18,10 +18,13 @@
 
 package org.trypticon.hex.gui;
 
+import java.util.List;
 import javax.swing.JMenu;
 
-import org.trypticon.hex.anno.primitive.PrimitiveInterpretorStorage;
 import org.trypticon.hex.anno.InterpretorInfo;
+import org.trypticon.hex.anno.nulls.NullInterpretorStorage;
+import org.trypticon.hex.anno.primitive.PrimitiveInterpretorStorage;
+import org.trypticon.hex.anno.strings.StringInterpretorStorage;
 
 /**
  * With with the list of annotations which can be added by the user.
@@ -35,15 +38,23 @@ class AddAnnotationMenu extends JMenu {
         // TODO: This should go through the MasterInterpretorStorage once we have categories.
 
         add(buildPrimitivesMenu());
+
+        addSeparator();
+
+        addAllToMenu(this, new StringInterpretorStorage().getInterpretorInfos());
+        addAllToMenu(this, new NullInterpretorStorage().getInterpretorInfos());
     }
 
     private JMenu buildPrimitivesMenu() {
         JMenu menu = new JMenu("Primitive");
-        for (InterpretorInfo info : new PrimitiveInterpretorStorage().getInterpretorInfos()) {
-            menu.add(new AddAnnotationAction(info));
-        }
+        addAllToMenu(menu, new PrimitiveInterpretorStorage().getInterpretorInfos());
         return menu;
     }
 
+    private void addAllToMenu(JMenu menu, List<InterpretorInfo> infos) {
+        for (InterpretorInfo info : infos) {
+            menu.add(new AddAnnotationAction(info));
+        }
+    }
 
 }

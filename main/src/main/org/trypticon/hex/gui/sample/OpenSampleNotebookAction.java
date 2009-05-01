@@ -56,7 +56,7 @@ public class OpenSampleNotebookAction extends BaseAction {
                                 0x75, 0x72, 0x20, 0x62, 0x79, 0x74, 0x65, 0x73, 0x2E };
         long hiddenStringPos = BinaryUtils.positionOf(notebook.getBinary(), hiddenString);
         annotations.add(new SimpleMutableAnnotation(hiddenStringPos, hiddenString.length,
-                                                    new NullInterpretor(hiddenString.length),
+                                                    new NullInterpretor(),
                                                     null));
     }
 }

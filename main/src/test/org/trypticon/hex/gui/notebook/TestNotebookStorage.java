@@ -47,7 +47,7 @@ public class TestNotebookStorage {
     public void testRoundTrip() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));
         AnnotationCollection annotations = notebook.getAnnotations();
-        annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpretor(4), "Test"));
+        annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpretor(), "Test"));
         annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpretors.UINT32_LE, null));
 
         StringWriter writer = new StringWriter();

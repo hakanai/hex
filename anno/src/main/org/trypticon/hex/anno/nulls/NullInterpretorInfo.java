@@ -16,37 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.primitive;
+package org.trypticon.hex.anno.nulls;
 
-import org.trypticon.hex.anno.AbstractFixedLengthInterpretor;
-import org.trypticon.hex.binary.Binary;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.trypticon.hex.anno.Interpretor;
+import org.trypticon.hex.anno.InterpretorInfo;
 
 /**
- * Interpretor for unsigned short values.
+ * Information about the null interpretor.
  *
  * @author trejkaz
  */
-public class UShortInterpretorLE extends AbstractFixedLengthInterpretor<UShort> {
-    public UShortInterpretorLE() {
-        super(UShort.class, 2);
+public class NullInterpretorInfo implements InterpretorInfo {
+    public String getHumanName() {
+        return "Unknown Value";
     }
 
-    public UShort interpret(Binary binary, long position) {
-        return new UShort(LittleEndian.getShort(binary, position));
+    public List<Option> getOptions() {
+        return Collections.emptyList();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return o == this || o instanceof UShortInterpretorLE;
-    }
-
-    @Override
-    public int hashCode() {
-        return 100322;
-    }
-
-    @Override
-    public String toString() {
-        return "uint2le";
+    public Interpretor create(Map<String, Object> options) {
+        return new NullInterpretor();
     }
 }

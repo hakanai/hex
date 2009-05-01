@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.anno.FixedLengthInterpretor;
 import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.hex.anno.InterpretorInfo;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
@@ -78,8 +79,12 @@ class AddAnnotationAction extends BaseAction {
 
                         // TODO: Support more types in a more generic way.  Forms will help.
 
-                        if (Integer.class == option.getType()) {
+                        if (String.class == option.getType()) {
+                            optionMap.put(option.getName(), value);
+                            break;
+                        } else if (Integer.class == option.getType()) {
                             optionMap.put(option.getName(), Integer.valueOf(value));
+                            break; // the while loop
                         }
                     } else {
                         if (!option.isRequired()) {
@@ -92,7 +97,14 @@ class AddAnnotationAction extends BaseAction {
 
         Interpretor interpretor = info.create(optionMap);
 
-        int length = interpretor.interpret(viewer.getBinary(), position).length();
+        int length;
+        if (interpretor instanceof FixedLengthInterpretor) {
+            length = ((FixedLengthInterpretor) interpretor).getValueLength();
+        } else {
+            length = (int) (viewer.getSelectionModel().getSelectionEnd() -
+                            viewer.getSelectionModel().getSelectionStart()) + 1;
+        }
+
         SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpretor, null);
 
         viewer.getAnnotations().add(annotation);

@@ -16,37 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.primitive;
-
-import org.trypticon.hex.anno.AbstractFixedLengthInterpretor;
-import org.trypticon.hex.binary.Binary;
+package org.trypticon.hex.anno;
 
 /**
- * Interpretor for unsigned short values.
+ * An interpreter with fixed length.
  *
+ * @param <V> the value type.
  * @author trejkaz
  */
-public class UShortInterpretorLE extends AbstractFixedLengthInterpretor<UShort> {
-    public UShortInterpretorLE() {
-        super(UShort.class, 2);
-    }
-
-    public UShort interpret(Binary binary, long position) {
-        return new UShort(LittleEndian.getShort(binary, position));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return o == this || o instanceof UShortInterpretorLE;
-    }
-
-    @Override
-    public int hashCode() {
-        return 100322;
-    }
-
-    @Override
-    public String toString() {
-        return "uint2le";
-    }
+public interface FixedLengthInterpretor<V extends Value> extends Interpretor<V> {
+    /**
+     * Gets the length of values returned from this interpretor.
+     *
+     * @return the length of values returned from this interpretor.
+     */
+    int getValueLength();
 }

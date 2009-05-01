@@ -18,7 +18,7 @@
 
 package org.trypticon.hex.anno.primitive;
 
-import org.trypticon.hex.anno.Interpretor;
+import org.trypticon.hex.anno.AbstractFixedLengthInterpretor;
 import org.trypticon.hex.binary.Binary;
 
 /**
@@ -26,9 +26,9 @@ import org.trypticon.hex.binary.Binary;
  *
  * @author trejkaz
  */
-public class UIntInterpretorBE implements Interpretor<UInt> {
-    public Class<UInt> getType() {
-        return UInt.class;
+public class UIntInterpretorBE extends AbstractFixedLengthInterpretor<UInt> {
+    public UIntInterpretorBE() {
+        super(UInt.class, 4);
     }
 
     public UInt interpret(Binary binary, long position) {

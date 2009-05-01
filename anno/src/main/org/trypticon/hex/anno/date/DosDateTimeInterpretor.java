@@ -19,6 +19,7 @@
 package org.trypticon.hex.anno.date;
 
 import org.trypticon.hex.anno.Interpretor;
+import org.trypticon.hex.anno.AbstractFixedLengthInterpretor;
 import org.trypticon.hex.binary.Binary;
 
 /**
@@ -26,16 +27,16 @@ import org.trypticon.hex.binary.Binary;
  *
  * @author trejkaz
  */
-public class DosDateTimeInterpretor implements Interpretor<DateTime> {
+public class DosDateTimeInterpretor extends AbstractFixedLengthInterpretor<DateTime> {
     private final Interpretor<Date> dateInterp = new DosDateInterpretor();
     private final Interpretor<Time> timeInterp = new DosTimeInterpretor();
 
-    public Class<DateTime> getType() {
-        return DateTime.class;
+    public DosDateTimeInterpretor() {
+        super(DateTime.class, 4);
     }
 
     public DateTime interpret(Binary binary, long position) {
-        return new SimpleDateTime(dateInterp.interpret(binary, position + 2),
-                                  timeInterp.interpret(binary, position));
+        return new SimpleDateTime(dateInterp.interpret(binary, position + 2, 2),
+                                  timeInterp.interpret(binary, position, 2));
     }
 }
