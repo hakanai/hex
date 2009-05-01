@@ -21,6 +21,7 @@ package org.trypticon.hex.gui;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
@@ -52,6 +53,13 @@ public class Main {
 
         final WorkspaceStateTracker stateTracker = new WorkspaceStateTracker();
         boolean openSample = !stateTracker.restore();
+
+        // If not running on Quaqua, it is impossible to start up without at least one document open.
+        // For now, we will resolve this by opening the sample but another way would be supporting the
+        // frame having no documents open (which would be bad on Mac...)
+        if (!"ch.randelshofer.quaqua.QuaquaLookAndFeel".equals(UIManager.getLookAndFeel().getClass().getName())) {
+            openSample = HexFrame.findActiveFrame() == null;
+        }
 
         if (args.length == 1 && args[0] instanceof String) {
             // TODO: Support a URL here too.

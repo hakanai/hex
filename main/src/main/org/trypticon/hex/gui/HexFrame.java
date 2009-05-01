@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -42,16 +43,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.TransferHandler;
-import javax.swing.UIManager;
-
-import ch.randelshofer.quaqua.JSheet;
-import ch.randelshofer.quaqua.SheetEvent;
-import ch.randelshofer.quaqua.SheetListener;
 
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
+import org.trypticon.hex.util.swingsupport.SaveConfirmation;
 
 /**
  * A top-level application frame.
@@ -281,44 +278,27 @@ public class HexFrame extends JFrame {
                 // So the user knows which one it's asking about.
                 tabbedPane.setSelectedComponent(pane);
 
-                // XXX: It might be OK to put the name of the pane into the message, but
-                // other apps don't appear to do this.
-                JOptionPane optionPane = new JOptionPane(
-                        "<html>" + UIManager.getString("OptionPane.css") +
-                        "<b>Do you want to save changes to this document<br>" +
-                        "before closing?</b><p>" +
-                        "If you don't save, your changes will be lost.",
-                        JOptionPane.WARNING_MESSAGE);
+                boolean okToClose = true;
 
-                Object[] options = { "Save", "Cancel", "Don't Save" };
-                optionPane.setOptions(options);
-                optionPane.setInitialValue(options[0]);
-                optionPane.putClientProperty("Quaqua.OptionPane.destructiveOption", 2);
-
-                class SaveSheetListener implements SheetListener {
-                    private boolean okToClose = true;
-
-                    public void optionSelected(SheetEvent event) {
-                        Object value = event.getValue();
-                        if (value == null || value.equals("Cancel")) {
+                switch (SaveConfirmation.getInstance().show(getRootPane())) {
+                    case CANCEL:
+                        okToClose = false;
+                        break;
+                    case DO_NOT_SAVE:
+                        // Nothing to do.
+                        break;
+                    case SAVE:
+                        SaveNotebookAction saveAction = (SaveNotebookAction)
+                                getRootPane().getActionMap().get("save");
+                        if (!saveAction.save(HexFrame.this)) {
                             okToClose = false;
-                        } else if (value.equals("Don't Save")) {
-                            // Nothing to do.
-                        } else if (value.equals("Save")) {
-                            SaveNotebookAction saveAction = (SaveNotebookAction)
-                                    getRootPane().getActionMap().get("save");
-                            if (!saveAction.save(HexFrame.this)) {
-                                okToClose = false;
-                            }
                         }
-                    }
+                        break;
+                    default:
+                        throw new IllegalStateException("Impossible save confirmation option found");
                 }
 
-                SaveSheetListener listener = new SaveSheetListener();
-
-                JSheet.showSheet(optionPane, this, listener);
-
-                if (!listener.okToClose) {
+                if (!okToClose) {
                     return false;
                 }
             }
