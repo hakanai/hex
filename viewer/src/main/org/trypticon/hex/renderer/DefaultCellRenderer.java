@@ -69,9 +69,9 @@ public class DefaultCellRenderer extends JLabel implements CellRenderer {
 
                 // TODO: This 16 is technically a magic number, we should pass in the row length.
                 boolean top = position < annoStart + 16;
-                boolean right = position == annoEnd;
+                boolean right = position == annoEnd && (position % 16 != 15 || top);
                 boolean bottom = position > annoEnd - 16;
-                boolean left = position == annoStart;
+                boolean left = position == annoStart && (position % 16 != 0 || bottom);
 
                 setBorder(new JointedLineBorder(annotationBorder, top, right, bottom, left));
 
