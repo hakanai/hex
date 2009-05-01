@@ -23,12 +23,17 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.AnnotationPane;
+import org.trypticon.hex.gui.SaveNotebookAction;
+import org.trypticon.hex.util.swingsupport.SaveConfirmation;
 
 /**
  * Pane for working with a single notebook.
@@ -95,4 +100,34 @@ public class NotebookPane extends JPanel {
     public HexViewer getViewer() {
         return viewer;
     }
+
+    /**
+     * Prepares for closing the pane.
+     *
+     * @return {@code true} if it is OK to close.
+     */
+    public boolean prepareForClose() {
+        if (notebook.isDirty()) {
+            // So the user knows which one it's asking about.
+            JTabbedPane tabbedPane = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
+            if (tabbedPane != null) {
+                tabbedPane.setSelectedComponent(this);
+            }
+
+            switch (SaveConfirmation.getInstance().show(getRootPane())) {
+                case CANCEL:
+                    return false;
+                case DO_NOT_SAVE:
+                    return true;
+                case SAVE:
+                    SaveNotebookAction saveAction = (SaveNotebookAction) getRootPane().getActionMap().get("save");
+                    return saveAction.save(getRootPane());
+                default:
+                    throw new IllegalStateException("Impossible save confirmation option found");
+            }
+        }
+
+        return true;
+    }
+
 }

@@ -27,6 +27,7 @@ import org.trypticon.hex.anno.primitive.UIntInterpretorBE;
 import org.trypticon.hex.binary.BinaryUtils;
 import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
 /**
@@ -42,7 +43,7 @@ public class OpenSampleNotebookAction extends BaseAction {
 
     protected void doAction(ActionEvent event) throws Exception {
         String resourcePath = Sample.class.getName().replace('.', '/') + ".class";
-        Notebook notebook = new Notebook(getClass().getClassLoader().getResource(resourcePath));
+        Notebook notebook = new DefaultNotebook(getClass().getClassLoader().getResource(resourcePath));
 
         HexFrame.openNotebook(notebook);
 

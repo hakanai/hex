@@ -25,7 +25,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
-import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
@@ -52,7 +52,7 @@ class NewNotebookAction extends BaseAction {
                 throw new ActionException("Not a file: " + file);
             }
 
-            HexFrame.openNotebook(new Notebook(file.toURI().toURL()));
+            HexFrame.openNotebook(new DefaultNotebook(file.toURI().toURL()));
         }
     }
 }

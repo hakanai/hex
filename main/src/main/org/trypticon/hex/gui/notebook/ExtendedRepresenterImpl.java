@@ -51,7 +51,7 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
 
     @Override
     protected YAMLNodeCreator getNodeCreatorFor(Object o) {
-        if (o instanceof Notebook) {
+        if (o instanceof DefaultNotebook) {
             return new NotebookYAMLNodeCreator((Notebook) o);
         } else if (o instanceof Annotation) {
             return new AnnotationYAMLNodeCreator((Annotation) o);

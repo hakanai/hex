@@ -83,7 +83,7 @@ class ExtendedConstructorImpl extends ConstructorImpl {
             List<Annotation> annotationList = (List<Annotation>) map.get("annotations");
             AnnotationCollection annotations = new MemoryAnnotationCollection(annotationList);
 
-            return new Notebook(binaryLocation, annotations);
+            return new DefaultNotebook(binaryLocation, annotations);
         }
     }
 

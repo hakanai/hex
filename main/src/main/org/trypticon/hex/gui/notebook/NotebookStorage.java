@@ -47,7 +47,7 @@ import org.trypticon.hex.anno.MasterInterpretorStorage;
 import org.trypticon.hex.util.URLUtils;
 
 /**
- * Support for reading and writing {@link Notebook}s to files.
+ * Support for reading and writing {@link DefaultNotebook}s to files.
  *
  * @author trejkaz
  */

@@ -18,13 +18,14 @@
 
 package org.trypticon.hex.gui;
 
+import java.awt.Component;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URL;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -41,7 +42,7 @@ import org.trypticon.hex.util.swingsupport.ImprovedFileChooser;
  *
  * @author trejkaz
  */
-class SaveNotebookAction extends BaseAction {
+public class SaveNotebookAction extends BaseAction {
     private final boolean alwaysAsk;
 
     SaveNotebookAction(boolean alwaysAsk) {
@@ -65,7 +66,7 @@ class SaveNotebookAction extends BaseAction {
 
     private void doSave() throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
-        if (frame == null) {
+        if (frame == null || frame.getNotebook() == null) {
             throw new ActionException("Focus is not on a hex viewer window");
         }
 
@@ -110,7 +111,7 @@ class SaveNotebookAction extends BaseAction {
      * @param owner the owner to use in the event that dialogs need to be displayed.
      * @return {@code true} if the save was successful.
      */
-    public boolean save(Window owner) {
+    public boolean save(Component owner) {
         try {
             doSave();
             return true;

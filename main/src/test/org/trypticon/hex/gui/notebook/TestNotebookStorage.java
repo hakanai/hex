@@ -45,7 +45,7 @@ public class TestNotebookStorage {
 
     @Test
     public void testRoundTrip() throws Exception {
-        Notebook notebook = new Notebook(new URL("http://example.com/biscuits.dat.xml"));
+        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));
         AnnotationCollection annotations = notebook.getAnnotations();
         annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpretor(4), "Test"));
         annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpretors.UINT32_LE, null));
@@ -69,7 +69,7 @@ public class TestNotebookStorage {
         File tmpFile = File.createTempFile("temp", ".xml");
         try {
             URL tmpFileURL = tmpFile.toURI().toURL();
-            Notebook notebook = new Notebook(new URL("http://example.com/biscuits.dat.xml"));
+            Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));
 
             storage.write(notebook, tmpFileURL);
 
@@ -90,7 +90,7 @@ public class TestNotebookStorage {
     @Test(expected=IOException.class)
     @Ignore("requires a fix to JvYAML: https://jvyaml.dev.java.net/issues/show_bug.cgi?id=15")
     public void testIOExceptionOnWriting() throws Exception {
-        Notebook notebook = new Notebook(new URL("http://example.com/biscuits.dat.xml"));
+        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));
         storage.write(notebook, new BrokenWriter());
     }
 

@@ -26,15 +26,14 @@ import javax.swing.UIManager;
 /**
  * Support for showing a confirmation dialog for saving the current document.
  */
-public abstract class SaveConfirmation
-{
+public abstract class SaveConfirmation {
     /**
      * Gets an instance of the save confirmation utility appropriate for the current Look and Feel.
      *
      * @return a new save confirmation support object.
      */
     public static SaveConfirmation getInstance() {
-        if ("ch.randelshofer.quaqua.QuaquaLookAndFeel".equals(UIManager.getLookAndFeel().getClass().getName())) {
+        if (PLAFUtils.isQuaqua()) {
             return new QuaquaSaveConfirmation();
         } else {
             return new DefaultSaveConfirmation();
@@ -87,8 +86,7 @@ public abstract class SaveConfirmation
     /**
      * Results of showing the dialog.
      */
-    public static enum Option
-    {
+    public static enum Option {
         CANCEL("Cancel"),
 
         SAVE("Save"),

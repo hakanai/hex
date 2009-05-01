@@ -90,10 +90,6 @@ public class WorkspaceStateTracker {
             return false;
         }
 
-        if (count == 0) {
-            return true;
-        }
-
         for (int i = 0; i < count; i++) {
             String location = openDocumentPrefs.get("location" + i, null);
             if (location == null) {
@@ -113,6 +109,28 @@ public class WorkspaceStateTracker {
             }
         }
 
+        // Only restore preferences if a frame is open.  A frame is opened by default before this occurs,
+        // for most platforms.  The exception is Mac, where if there were no documents open last session,
+        // the frame will not be open.
+
+        // Have to give the window system a chance to put the window up, if it just appeared.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (HexFrame.findActiveFrame() != null) {
+                    restoreFrameLocation(HexFrame.findActiveFrame());
+                }
+            }
+        });
+
+        return true;
+    }
+
+    /**
+     * Restores the location of the given frame.
+     *
+     * @param frame the frame.
+     */
+    public void restoreFrameLocation(final HexFrame frame) {
         Preferences framePositionPrefs = getPrefs().node("framePosition");
         final int x = framePositionPrefs.getInt("x", -1);
         final int y = framePositionPrefs.getInt("y", -1);
@@ -120,14 +138,7 @@ public class WorkspaceStateTracker {
         final int height = framePositionPrefs.getInt("height", -1);
 
         if (x >= 0 && y >= 0 && width >= 0 && height >= 0) {
-            // Have to give the window system a chance to put the window up.
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    HexFrame.findActiveFrame().setBounds(x, y, width, height);
-                }
-            });
+            frame.setBounds(x, y, width, height);
         }
-
-        return true;
     }
 }

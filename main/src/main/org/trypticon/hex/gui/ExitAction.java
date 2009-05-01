@@ -48,8 +48,6 @@ class ExitAction extends AbstractAction {
             }
         }
 
-        new WorkspaceStateTracker().save();
-
         for (Frame frame : closeLater) {
             frame.dispose();
         }

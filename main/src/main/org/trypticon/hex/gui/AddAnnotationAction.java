@@ -49,7 +49,7 @@ class AddAnnotationAction extends BaseAction {
 
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
-        if (frame == null) {
+        if (frame == null || frame.getNotebookPane() == null) {
             throw new ActionException("To add an annotation, focus must be on the hex viewer.");
         }
 

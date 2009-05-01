@@ -46,7 +46,7 @@ public abstract class BaseAction extends AbstractAction {
         }
     }
 
-    protected void handleError(Window owner, Throwable t) {
+    protected void handleError(Component owner, Throwable t) {
         logger.log(Level.SEVERE, "Unexpected error in UI action", t);
 
         JOptionPane.showMessageDialog(owner,

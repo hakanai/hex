@@ -30,6 +30,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,11 +45,15 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.TransferHandler;
 
+import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
-import org.trypticon.hex.util.swingsupport.SaveConfirmation;
+import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * A top-level application frame.
@@ -63,10 +68,8 @@ public class HexFrame extends JFrame {
 
     /**
      * Constructs the top-level frame.
-     *
-     * @param firstNotebook the first notebook to open a tab for.
      */
-    public HexFrame(Notebook firstNotebook) {
+    public HexFrame() {
         super("Hex");
 
         setJMenuBar(buildMenuBar(this));
@@ -76,11 +79,15 @@ public class HexFrame extends JFrame {
 
         // TODO: We should track if any notepads need saving and set Window.documentModified to true/false for Mac.
 
-        addTab(firstNotebook);
+        // We add a dummy pane for size computation purposes only.
+        NotebookPane dummyPane = new NotebookPane(new DummyNotebook());
+        tabbedPane.addTab("", dummyPane);
 
         setLayout(new BorderLayout());
         add(tabbedPane, BorderLayout.CENTER);
         pack();
+
+        tabbedPane.removeTabAt(0);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -121,7 +128,7 @@ public class HexFrame extends JFrame {
      * @return the notebook being viewed.
      */
     public Notebook getNotebook() {
-        return getNotebookPane().getNotebook();
+        return getNotebookPane() == null ? null : getNotebookPane().getNotebook();
     }
 
     /**
@@ -143,17 +150,17 @@ public class HexFrame extends JFrame {
     public void closeCurrentTab() {
         NotebookPane notebookPane = (NotebookPane) tabbedPane.getSelectedComponent();
         if (notebookPane != null) {
-            notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
+            if (notebookPane.prepareForClose()) {
+                notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
 
-            tabbedPane.remove(notebookPane);
+                tabbedPane.remove(notebookPane);
 
-            notebookPane.getNotebook().close();
+                notebookPane.getNotebook().close();
 
-            // Dispose the frame if there are no tabs left.  This maintains the invariant
-            // that there is always some notebook visible in the application, so we don't
-            // need to worry quite so much about what to show when there isn't.
-            if (tabbedPane.getTabCount() == 0) {
-                dispose();
+                // Dispose the frame if there are no tabs left, for Mac only, as empty windows do not exist on Mac.
+                if (PLAFUtils.isQuaqua()) {
+                    dispose();
+                }
             }
         }
     }
@@ -242,12 +249,21 @@ public class HexFrame extends JFrame {
             return;
         }
 
+        ensureFrameOpen().addTab(notebook);
+    }
+
+    /**
+     * Ensures that the frame is open.
+     *
+     * @return a reference to the frame.
+     */
+    public static HexFrame ensureFrameOpen() {
+        HexFrame frame = findActiveFrame();
         if (frame == null) {
-            frame = new HexFrame(notebook);
+            frame = new HexFrame();
             frame.setVisible(true);
-        } else {
-            frame.addTab(notebook);
         }
+        return frame;
     }
 
     /**
@@ -273,34 +289,11 @@ public class HexFrame extends JFrame {
      * @return {@code true} if it is OK to close.
      */
     public boolean prepareForClose() {
+        new WorkspaceStateTracker().save();
+
         for (final NotebookPane pane : getAllNotebookPanes()) {
-            if (pane.getNotebook().isDirty()) {
-                // So the user knows which one it's asking about.
-                tabbedPane.setSelectedComponent(pane);
-
-                boolean okToClose = true;
-
-                switch (SaveConfirmation.getInstance().show(getRootPane())) {
-                    case CANCEL:
-                        okToClose = false;
-                        break;
-                    case DO_NOT_SAVE:
-                        // Nothing to do.
-                        break;
-                    case SAVE:
-                        SaveNotebookAction saveAction = (SaveNotebookAction)
-                                getRootPane().getActionMap().get("save");
-                        if (!saveAction.save(HexFrame.this)) {
-                            okToClose = false;
-                        }
-                        break;
-                    default:
-                        throw new IllegalStateException("Impossible save confirmation option found");
-                }
-
-                if (!okToClose) {
-                    return false;
-                }
+            if (!pane.prepareForClose()) {
+                return false;
             }
         }
 
@@ -317,5 +310,24 @@ public class HexFrame extends JFrame {
             int index = tabbedPane.indexOfComponent((Component) event.getSource());
             tabbedPane.setTitleAt(index, name);
         }
+    }
+
+    /**
+     * A dummy notebook class we can use for size computation.
+     */
+    private class DummyNotebook implements Notebook {
+        private final AnnotationCollection noAnnotations = new MemoryAnnotationCollection();
+        public void open() {}
+        public void close() {}
+        public URL getNotebookLocation() { return null; }
+        public void setNotebookLocation(URL notebookLocation) {}
+        public URL getBinaryLocation() { return null; }
+        public AnnotationCollection getAnnotations() { return noAnnotations; }
+        public Binary getBinary() { return new EmptyBinary(); }
+        public boolean isOpen() { return false; }
+        public String getName() { return ""; }
+        public boolean isDirty() { return false; }
+        public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {}
+        public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {}
     }
 }
