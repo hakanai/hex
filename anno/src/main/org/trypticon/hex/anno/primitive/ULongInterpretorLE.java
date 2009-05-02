@@ -18,29 +18,35 @@
 
 package org.trypticon.hex.anno.primitive;
 
-import org.trypticon.hex.anno.Value;
+import org.trypticon.hex.anno.AbstractFixedLengthInterpretor;
+import org.trypticon.hex.binary.Binary;
 
 /**
- * An unsigned int value.
+ * Interpretor for unsigned long values.
  *
  * @author trejkaz
  */
-public class UInt implements Value {
-    private int value;
-
-    public UInt(int value) {
-        this.value = value;
+public class ULongInterpretorLE extends AbstractFixedLengthInterpretor<ULong> {
+    public ULongInterpretorLE() {
+        super(ULong.class, 2);
     }
 
-    public int getValue() {
-        return value;
+    public ULong interpret(Binary binary, long position) {
+        return new ULong(LittleEndian.getLong(binary, position));
     }
 
-    public int length() {
-        return 4;
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof ULongInterpretorLE;
     }
 
+    @Override
+    public int hashCode() {
+        return 100642;
+    }
+
+    @Override
     public String toString() {
-        return String.valueOf(value);
+        return "uint8le";
     }
 }

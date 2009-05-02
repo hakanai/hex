@@ -25,19 +25,19 @@ import org.trypticon.hex.anno.Value;
  *
  * @author trejkaz
  */
-public class UInt implements Value {
-    private int value;
+public class ULong implements Value {
+    private long value;
 
-    public UInt(int value) {
+    public ULong(long value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 
     public int length() {
-        return 4;
+        return 8;
     }
 
     public String toString() {

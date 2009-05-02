@@ -18,29 +18,29 @@
 
 package org.trypticon.hex.anno.primitive;
 
-import org.trypticon.hex.anno.Value;
+import java.util.List;
+import java.util.Collections;
+import java.util.Map;
+
+import org.trypticon.hex.anno.InterpretorInfo;
+import org.trypticon.hex.anno.Interpretor;
 
 /**
- * An unsigned int value.
+ * Info for {@link org.trypticon.hex.anno.primitive.ULongInterpretorLE}.
  *
  * @author trejkaz
  */
-public class UInt implements Value {
-    private int value;
+public class ULongInterpretorLEInfo implements InterpretorInfo {
 
-    public UInt(int value) {
-        this.value = value;
+    public String getHumanName() {
+        return "Unsigned 64-bit Integer (Little Endian)";
     }
 
-    public int getValue() {
-        return value;
+    public List<Option> getOptions() {
+        return Collections.emptyList();
     }
 
-    public int length() {
-        return 4;
-    }
-
-    public String toString() {
-        return String.valueOf(value);
+    public Interpretor create(Map<String, Object> options) {
+        return new ULongInterpretorLE();
     }
 }

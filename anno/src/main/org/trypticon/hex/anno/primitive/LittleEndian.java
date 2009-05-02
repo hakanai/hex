@@ -40,4 +40,15 @@ public class LittleEndian {
                                  binary.read(position + 1),
                                  binary.read(position));
     }
+
+    public static long getLong(Binary binary, long position) {
+        return Primitives.getLong(binary.read(position + 7),
+                                  binary.read(position + 6),
+                                  binary.read(position + 5),
+                                  binary.read(position + 4),
+                                  binary.read(position + 3),
+                                  binary.read(position + 2),
+                                  binary.read(position + 1),
+                                  binary.read(position));
+    }
 }

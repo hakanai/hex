@@ -26,7 +26,10 @@ import org.trypticon.hex.anno.Interpretor;
  * @author trejkaz
  */
 public class PrimitiveInterpretors {
-    // TODO: Many more.  Putting in the minimum to test I/O code for now.
-
+    public static final Interpretor<UShort> UINT16_BE = new UShortInterpretorBE();
+    public static final Interpretor<UShort> UINT16_LE = new UShortInterpretorLE();
+    public static final Interpretor<UInt> UINT32_BE = new UIntInterpretorBE();
     public static final Interpretor<UInt> UINT32_LE = new UIntInterpretorLE();
+    public static final Interpretor<ULong> UINT64_BE = new ULongInterpretorBE();
+    public static final Interpretor<ULong> UINT64_LE = new ULongInterpretorLE();
 }

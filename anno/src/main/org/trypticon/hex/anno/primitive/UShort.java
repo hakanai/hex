@@ -39,4 +39,8 @@ public class UShort implements Value {
     public int length() {
         return 2;
     }
+
+    public String toString() {
+        return String.valueOf(value);
+    }
 }

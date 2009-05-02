@@ -33,17 +33,18 @@ import org.trypticon.hex.anno.InterpretorInfo;
  * @author trejkaz
  */
 public class PrimitiveInterpretorStorage implements InterpretorStorage {
-    private Map<Class<? extends Interpretor>, String> classToName =
+    private final Map<Class<? extends Interpretor>, String> classToName =
             new HashMap<Class<? extends Interpretor>, String>(10);
-    private Map<String, Class<? extends Interpretor>> nameToClass =
+    private final Map<String, Class<? extends Interpretor>> nameToClass =
             new HashMap<String, Class<? extends Interpretor>>(10);
 
     public PrimitiveInterpretorStorage() {
-        // TODO: More types.
-        register("uint2le", UShortInterpretorLE.class);
         register("uint2be", UShortInterpretorBE.class);
-        register("uint4le", UIntInterpretorLE.class);
+        register("uint2le", UShortInterpretorLE.class);
         register("uint4be", UIntInterpretorBE.class);
+        register("uint4le", UIntInterpretorLE.class);
+        register("uint4be", ULongInterpretorBE.class);
+        register("uint4le", ULongInterpretorLE.class);
     }
 
     private void register(String name, Class<? extends Interpretor> klass) {
@@ -52,18 +53,15 @@ public class PrimitiveInterpretorStorage implements InterpretorStorage {
     }
 
     public List<InterpretorInfo> getInterpretorInfos() {
-        // TODO: More types.
         // TODO: Interpretor info should be structured to allow categorising them as well, for menus.
 
-        return Arrays.asList(new UShortInterpretorLEInfo(),
-                             new UShortInterpretorBEInfo(),
+        return Arrays.asList(new UShortInterpretorBEInfo(),
+                             new UShortInterpretorLEInfo(),
+                             new UIntInterpretorBEInfo(),
                              new UIntInterpretorLEInfo(),
-                             new UIntInterpretorBEInfo());
+                             new ULongInterpretorBEInfo(),
+                             new ULongInterpretorLEInfo());
     }
-
-    // TODO: I think it would be nicer to separate the name from the map and have the name
-    //       as a string and the remaining options as a map.  I'm still looking for a good
-    //       way to do this.
 
     public Map<String, Object> toMap(Interpretor interpretor) {
         String name = classToName.get(interpretor.getClass());

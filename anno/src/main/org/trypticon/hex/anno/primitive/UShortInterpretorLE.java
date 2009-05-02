@@ -42,7 +42,7 @@ public class UShortInterpretorLE extends AbstractFixedLengthInterpretor<UShort> 
 
     @Override
     public int hashCode() {
-        return 100322;
+        return 100162;
     }
 
     @Override
