@@ -26,7 +26,7 @@ import org.trypticon.hex.anno.Value;
  * @author trejkaz
  */
 public class UShort implements Value {
-    private short value;
+    private final short value;
 
     public UShort(short value) {
         this.value = value;
@@ -41,6 +41,6 @@ public class UShort implements Value {
     }
 
     public String toString() {
-        return String.valueOf(value);
+        return String.valueOf(value & 0xFFFF);
     }
 }

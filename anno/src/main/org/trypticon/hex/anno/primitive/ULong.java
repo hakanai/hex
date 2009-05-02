@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.anno.primitive;
 
+import java.math.BigInteger;
+
 import org.trypticon.hex.anno.Value;
 
 /**
@@ -26,7 +28,7 @@ import org.trypticon.hex.anno.Value;
  * @author trejkaz
  */
 public class ULong implements Value {
-    private long value;
+    private final long value;
 
     public ULong(long value) {
         this.value = value;
@@ -41,6 +43,10 @@ public class ULong implements Value {
     }
 
     public String toString() {
-        return String.valueOf(value);
+        BigInteger signed = BigInteger.valueOf(value);
+        if (signed.signum() < 0) {
+            signed = signed.add(BigInteger.ONE.shiftLeft(64));
+        }
+        return signed.toString();
     }
 }

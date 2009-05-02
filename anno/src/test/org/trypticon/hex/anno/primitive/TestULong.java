@@ -18,29 +18,20 @@
 
 package org.trypticon.hex.anno.primitive;
 
-import org.trypticon.hex.anno.Value;
+import java.math.BigInteger;
+
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
- * An unsigned int value.
+ * Tests for {@link ULong}.
  *
  * @author trejkaz
  */
-public class UInt implements Value {
-    private final int value;
-
-    public UInt(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public int length() {
-        return 4;
-    }
-
-    public String toString() {
-        return String.valueOf(value & 0xFFFFFFFFL);
+public class TestULong {
+    @Test
+    public void testToString() {
+        BigInteger oneAboveMaxLong = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE);
+        assertEquals("Wrong string value", oneAboveMaxLong.toString(), new ULong(0x8000000000000000L).toString());
     }
 }
