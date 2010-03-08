@@ -31,6 +31,6 @@ public class NotebookFileFilter extends FileExtensionFilter {
     }
 
     protected String getShortDescription() {
-        return "Hex Notebook Files (*.hex)";
+        return "Hex Notebook Files";
     }
 }
