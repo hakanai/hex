@@ -43,8 +43,8 @@ public class PrimitiveInterpretorStorage implements InterpretorStorage {
         register("uint2le", UShortInterpretorLE.class);
         register("uint4be", UIntInterpretorBE.class);
         register("uint4le", UIntInterpretorLE.class);
-        register("uint4be", ULongInterpretorBE.class);
-        register("uint4le", ULongInterpretorLE.class);
+        register("uint8be", ULongInterpretorBE.class);
+        register("uint8le", ULongInterpretorLE.class);
     }
 
     private void register(String name, Class<? extends Interpretor> klass) {
