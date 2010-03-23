@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.swing.AnnotationPane;
@@ -72,9 +67,14 @@ public class NotebookPane extends JPanel {
         JScrollPane viewerScroll = new JScrollPane(viewer);
         viewerScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        splitPane.setLeftComponent(annoPane);
+        splitPane.setRightComponent(viewerScroll);
+        splitPane.setDividerLocation(annoPane.getPreferredSize().width);
+        splitPane.setResizeWeight(1.0); // left component gets all the extra space
+
         setLayout(new BorderLayout());
-        add(viewerScroll, BorderLayout.CENTER);
-        add(annoPane, BorderLayout.WEST);
+        add(splitPane, BorderLayout.CENTER);
 
         // Why ComponentListener doesn't work here I will never know.
         addHierarchyListener(new HierarchyListener() {
