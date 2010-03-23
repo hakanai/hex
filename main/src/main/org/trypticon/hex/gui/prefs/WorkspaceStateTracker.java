@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,19 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui;
+package org.trypticon.hex.gui.prefs;
 
+import org.trypticon.hex.gui.HexFrame;
+import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.NotebookPane;
+import org.trypticon.hex.gui.notebook.NotebookStorage;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
-import javax.swing.SwingUtilities;
-
-import org.trypticon.hex.gui.notebook.Notebook;
-import org.trypticon.hex.gui.notebook.NotebookPane;
-import org.trypticon.hex.gui.notebook.NotebookStorage;
 
 /**
  * Support for loading and saving the state of the workspace.
@@ -44,7 +45,7 @@ public class WorkspaceStateTracker {
      * @return the preferences node.
      */
     private Preferences getPrefs() {
-        return Preferences.userRoot().node("org/trypticon/hex/gui/workspace");
+        return Preferences.userRoot().node("org/trypticon/hex/gui/prefs/workspace");
     }
 
     /**

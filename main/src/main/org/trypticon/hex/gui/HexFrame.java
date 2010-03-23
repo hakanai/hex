@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,7 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
-import java.awt.Toolkit;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -34,16 +29,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.swing.Action;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
@@ -52,6 +38,8 @@ import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
+import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
+import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
@@ -172,19 +160,21 @@ public class HexFrame extends JFrame {
      * @return the menu bar.
      */
     static JMenuBar buildMenuBar(JFrame frame) {
+        PreferredDirectoryManager preferredDirectoryManager = new PreferredDirectoryManager();
+
         JMenu fileMenu = new JMenu("File");
-        fileMenu.add(new NewNotebookAction());
-        fileMenu.add(new OpenNotebookAction());
+        fileMenu.add(new NewNotebookAction(preferredDirectoryManager));
+        fileMenu.add(new OpenNotebookAction(preferredDirectoryManager));
         // TODO: Open Recent
 
         fileMenu.addSeparator();
         fileMenu.add(new CloseNotebookAction());
-        Action saveAction = new SaveNotebookAction(false);
+        Action saveAction = new SaveNotebookAction(preferredDirectoryManager, false);
         if (frame != null) {
             frame.getRootPane().getActionMap().put("save", saveAction);
         }
         fileMenu.add(saveAction);
-        fileMenu.add(new SaveNotebookAction(true));
+        fileMenu.add(new SaveNotebookAction(preferredDirectoryManager, true));
         // TODO: Revert to Saved
 
         if (!System.getProperty("os.name").toLowerCase().startsWith("mac")) {
@@ -271,7 +261,7 @@ public class HexFrame extends JFrame {
      *
      * @return the active hex viewer.
      */
-    static HexFrame findActiveFrame() {
+    public static HexFrame findActiveFrame() {
         Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
         if (window == null) {
             return null;

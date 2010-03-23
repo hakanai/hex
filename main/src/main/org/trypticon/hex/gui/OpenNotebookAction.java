@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import javax.swing.KeyStroke;
 
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
+import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
@@ -36,7 +37,11 @@ import org.trypticon.hex.util.swingsupport.BaseAction;
  * @author trejkaz
  */
 class OpenNotebookAction extends BaseAction {
-    public OpenNotebookAction() {
+    private final PreferredDirectoryManager preferredDirectoryManager;
+
+    public OpenNotebookAction(PreferredDirectoryManager preferredDirectoryManager) {
+        this.preferredDirectoryManager = preferredDirectoryManager;
+
         putValue(NAME, "Open...");
         putValue(MNEMONIC_KEY, (int) 'o');
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
@@ -49,11 +54,15 @@ class OpenNotebookAction extends BaseAction {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new NotebookFileFilter());
 
+        chooser.setCurrentDirectory(preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS));
+
         if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             if (!file.isFile()) {
                 throw new ActionException("Not a file: " + file);
             }
+
+            preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, chooser.getCurrentDirectory());
 
             HexFrame.openNotebook(new NotebookStorage().read(file.toURI().toURL()));
         }

@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ import javax.swing.KeyStroke;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
+import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 import org.trypticon.hex.util.swingsupport.ImprovedFileChooser;
@@ -43,9 +44,11 @@ import org.trypticon.hex.util.swingsupport.ImprovedFileChooser;
  * @author trejkaz
  */
 public class SaveNotebookAction extends BaseAction {
+    private final PreferredDirectoryManager preferredDirectoryManager;
     private final boolean alwaysAsk;
 
-    SaveNotebookAction(boolean alwaysAsk) {
+    SaveNotebookAction(PreferredDirectoryManager preferredDirectoryManager, boolean alwaysAsk) {
+        this.preferredDirectoryManager = preferredDirectoryManager;
         this.alwaysAsk = alwaysAsk;
 
         int baseMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
@@ -79,6 +82,8 @@ public class SaveNotebookAction extends BaseAction {
             JFileChooser chooser = new ImprovedFileChooser();
             chooser.setFileFilter(new NotebookFileFilter());
 
+            chooser.setCurrentDirectory(preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS));
+
             while (true) {
                 File chosenFile;
                 if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
@@ -91,6 +96,9 @@ public class SaveNotebookAction extends BaseAction {
                             continue;
                         }
                     }
+
+                    preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, chooser.getCurrentDirectory());
+
                     location = chosenFile.toURI().toURL();
                     break;
                 } else {
