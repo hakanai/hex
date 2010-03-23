@@ -25,6 +25,8 @@ import javax.swing.UIManager;
 
 /**
  * Support for showing a confirmation dialog for saving the current document.
+ *
+ * @author trejkaz
  */
 public abstract class SaveConfirmation {
     /**

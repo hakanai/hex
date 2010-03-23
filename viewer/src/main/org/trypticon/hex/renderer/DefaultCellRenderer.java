@@ -29,6 +29,8 @@ import org.trypticon.hex.anno.AnnotationCollection;
 
 /**
  * Default cell renderer implementation, using a Swing label as the component.
+ *
+ * @author trejkaz
  */
 public class DefaultCellRenderer extends JLabel implements CellRenderer {
     private static final Color transparent = new Color(0, 0, 0, 0);

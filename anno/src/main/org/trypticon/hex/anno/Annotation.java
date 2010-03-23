@@ -35,8 +35,7 @@ public interface Annotation {
     long getPosition();
 
     /**
-     * Gets the length of the annotation.  This is purely for convenience, the
-     * authoritative length should be obtained via the interpretor.
+     * Gets the length of the annotation.
      *
      * @return the length of the annotation.
      */

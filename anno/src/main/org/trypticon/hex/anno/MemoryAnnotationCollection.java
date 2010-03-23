@@ -32,17 +32,42 @@ import org.trypticon.hex.anno.nulls.NullInterpretor;
  */
 public class MemoryAnnotationCollection extends AbstractAnnotationCollection {
     private final List<Annotation> annotations;
+    private final List<AnnotationGroup> groups;
 
     public MemoryAnnotationCollection() {
         annotations = new ArrayList<Annotation>(50);
+        groups = new ArrayList<AnnotationGroup>(10);
     }
 
-    public MemoryAnnotationCollection(List<Annotation> annotations) {
+    public MemoryAnnotationCollection(List<Annotation> annotations, List<AnnotationGroup> groups) {
         this.annotations = new ArrayList<Annotation>(annotations);
+
+        if (groups == null) {
+            // Supports earlier files which didn't have groups in them.
+            this.groups = new ArrayList<AnnotationGroup>(10);
+        } else {
+            this.groups = new ArrayList<AnnotationGroup>(groups);
+        }
     }
 
     public List<Annotation> getAll() {
         return Collections.unmodifiableList(annotations);
+    }
+
+    public List<Annotation> findAnnotationsWithin(long position, int length) {
+        int startIndexInclusive = binaryPositionSearch(position);
+        if (startIndexInclusive < 0)
+        {
+            startIndexInclusive = -startIndexInclusive - 1;
+        }
+
+        int endIndexExclusive = binaryPositionSearch(position + length - 1);
+        if (endIndexExclusive < 0)
+        {
+            endIndexExclusive = -endIndexExclusive - 1;
+        }
+
+        return annotations.subList(startIndexInclusive, endIndexExclusive);
     }
 
     public Annotation getAnnotationAt(long position) {
@@ -50,9 +75,7 @@ public class MemoryAnnotationCollection extends AbstractAnnotationCollection {
             return null;
         }
 
-        Annotation template = new SimpleMutableAnnotation(position, 1, new NullInterpretor(), null);
-
-        int pos = Collections.binarySearch(annotations, template, new AnnotationPositionComparator());
+        int pos = binaryPositionSearch(position);
         if (pos >= 0) {
             // Direct hit on the first position for an annotation.
             return annotations.get(pos);
@@ -77,7 +100,37 @@ public class MemoryAnnotationCollection extends AbstractAnnotationCollection {
         }
     }
 
+    public List<AnnotationGroup> getGroups() {
+        return Collections.unmodifiableList(groups);
+    }
+
+    public void add(AnnotationGroup group) {
+        // TODO: Prohibit if it will cross an annotation - annotations wholly inside are OK though.
+        // TODO: Prohibit if it will cross an existing annotation group.
+        // TODO: Needs to be in sorted order.
+        groups.add(group);
+    }
+
+    public void remove(AnnotationGroup group) {
+        groups.remove(group);
+    }
+
+    /**
+     * Finds an annotation which crosses the position specified.
+     *
+     * @param position the position.
+     * @return the index of an annotation which intersects the position.  If no annotations intersect the given
+     *         position, then a negative value is returned where the insertion point can be determined by negating the
+     *         result and subtracting one.
+     */
+    private int binaryPositionSearch(long position)
+    {
+        Annotation template = new SimpleMutableAnnotation(position, 1, new NullInterpretor(), null);
+        return Collections.binarySearch(annotations, template, new AnnotationPositionComparator());
+    }
+
     public void add(Annotation annotation) {
+        // TODO: Prohibit if it will cross an existing annotation.
         int pos = Collections.binarySearch(annotations, annotation, new AnnotationPositionComparator());
         if (pos < 0) {
             pos = -pos - 1;

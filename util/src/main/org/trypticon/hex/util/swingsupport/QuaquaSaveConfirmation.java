@@ -28,6 +28,8 @@ import ch.randelshofer.quaqua.SheetListener;
 
 /**
  * Save confirmation implementation for Mac, where using a sheet is more friendly.
+ *
+ * @author trejkaz
  */
 public class QuaquaSaveConfirmation extends SaveConfirmation {
     protected Object showOptionPane(Component owner, JOptionPane optionPane) {

@@ -23,15 +23,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.jvyamlb.Representer;
-import org.jvyamlb.RepresenterImpl;
-import org.jvyamlb.Serializer;
-import org.jvyamlb.YAMLConfig;
-import org.jvyamlb.YAMLNodeCreator;
+import org.jvyamlb.*;
 import org.jvyamlb.exceptions.RepresenterException;
 import org.jvyamlb.nodes.Node;
-
 import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationGroup;
 import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.hex.anno.InterpretorStorage;
 
@@ -55,6 +51,8 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
             return new NotebookYAMLNodeCreator((Notebook) o);
         } else if (o instanceof Annotation) {
             return new AnnotationYAMLNodeCreator((Annotation) o);
+        } else if (o instanceof AnnotationGroup) {
+            return new AnnotationGroupYAMLNodeCreator((AnnotationGroup) o);
         } else if (o instanceof Interpretor) {
             return new InterpretorYAMLNodeCreator((Interpretor) o);
         } else {
@@ -78,6 +76,7 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
             Map<String, Object> fields = new LinkedHashMap<String, Object>(2);
             fields.put("binary_location", notebook.getBinaryLocation().toExternalForm());
             fields.put("annotations", new ArrayList<Annotation>(notebook.getAnnotations().getAll()));
+            fields.put("annotation_groups", new ArrayList<AnnotationGroup>(notebook.getAnnotations().getGroups()));
             return representer.map(taguri(), fields, false);
         }
     }
@@ -94,11 +93,31 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
         }
 
         public Node toYamlNode(Representer representer) throws IOException {
-            Map<String, Object> fields = new LinkedHashMap<String, Object>(3);
+            Map<String, Object> fields = new LinkedHashMap<String, Object>(4);
             fields.put("position", annotation.getPosition());
             fields.put("length", annotation.getLength());
             fields.put("interpretor", annotation.getInterpretor());
             fields.put("note", annotation.getNote());
+            return representer.map(taguri(), fields, false);
+        }
+    }
+
+    private class AnnotationGroupYAMLNodeCreator implements YAMLNodeCreator {
+        private final AnnotationGroup annotationGroup;
+
+        private AnnotationGroupYAMLNodeCreator(AnnotationGroup annotationGroup) {
+            this.annotationGroup = annotationGroup;
+        }
+
+        public String taguri() {
+            return YamlTags.ANNOTATION_GROUP_TAG;
+        }
+
+        public Node toYamlNode(Representer representer) throws IOException {
+            Map<String, Object> fields = new LinkedHashMap<String, Object>(2);
+            fields.put("position", annotationGroup.getPosition());
+            fields.put("length", annotationGroup.getLength());
+            fields.put("note", annotationGroup.getNote());
             return representer.map(taguri(), fields, false);
         }
     }

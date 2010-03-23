@@ -24,6 +24,8 @@ import org.trypticon.hex.HexViewer;
 
 /**
  * Interface for rendering cells in the viewer.
+ *
+ * @author trejkaz
  */
 public interface CellRenderer
 {

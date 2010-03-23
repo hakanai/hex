@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,16 @@ public interface AnnotationCollection {
     List<Annotation> getAll();
 
     /**
+     * Finds annotations intersecting the given region.
+     *
+     * @param position the start position for the region.
+     * @param length the length of the region.
+     * @return the list of annotations within that range.
+     */
+    // TODO: This method may be useful in the interface later.
+    List<Annotation> findAnnotationsWithin(long position, int length);
+
+    /**
      * <p>Gets the annotation at the given position, if any.</p>
      *
      * <p>This is currently limited to a single result, and it is up to the collection
@@ -57,6 +67,28 @@ public interface AnnotationCollection {
      * @param annotation the annotation to remove.
      */
     void remove(Annotation annotation);
+
+    /**
+     * Gets a list of all groups at the top level.  Annotations found in these groups will still exist
+     * within the list returned from {@link #getAll()}.
+     *
+     * @return the list of sub-collections.
+     */
+    List<AnnotationGroup> getGroups();
+
+    /**
+     * Adds an annotation group.
+     *
+     * @param group the annotation group to add.
+     */
+    void add(AnnotationGroup group);
+
+    /**
+     * Removes an annotation group.
+     *
+     * @param group the annotation group to remove.
+     */
+    void remove(AnnotationGroup group);
 
     /**
      * Adds a listener for changes in the collection.

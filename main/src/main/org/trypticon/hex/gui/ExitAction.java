@@ -26,6 +26,8 @@ import javax.swing.AbstractAction;
 
 /**
  * Action to exit the application.
+ *
+ * @author trejkaz
  */
 class ExitAction extends AbstractAction {
     ExitAction() {

@@ -18,23 +18,19 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.SimpleMutableAnnotationGroup;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.nulls.NullInterpretor;
 import org.trypticon.hex.anno.primitive.PrimitiveInterpretors;
 import org.trypticon.hex.anno.strings.StringInterpretor;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for {@link NotebookStorage}.
@@ -52,6 +48,9 @@ public class TestNotebookStorage {
         annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpretors.UINT32_LE, null));
         annotations.add(new SimpleMutableAnnotation(13, 4, new StringInterpretor("utf8"), null));
 
+        // TODO: Test nested groups (not supported yet.)
+        annotations.add(new SimpleMutableAnnotationGroup(9, 8, "Test Group"));
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         storage.write(notebook, stream);
 
@@ -64,6 +63,7 @@ public class TestNotebookStorage {
 
         assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
         assertEquals("Wrong annotations", notebook.getAnnotations().getAll(), churned.getAnnotations().getAll());
+        assertEquals("Wrong groups", notebook.getAnnotations().getGroups(), churned.getAnnotations().getGroups());
     }
 
     @Test

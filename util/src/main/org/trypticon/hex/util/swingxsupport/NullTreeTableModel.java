@@ -18,14 +18,16 @@
 
 package org.trypticon.hex.util.swingxsupport;
 
-import org.jdesktop.swingx.treetable.TreeTableModel;
-
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
+
+import org.jdesktop.swingx.treetable.TreeTableModel;
 
 /**
  * An empty model for use with {@link org.jdesktop.swingx.JXTreeTable JXTreeTable}.  {@code JXTreeTable} does not permit setting the model
  * to {@code null} like a lot of Swing components.
+ *
+ * @author trejkaz
  */
 public class NullTreeTableModel implements TreeTableModel {
     public Class<?> getColumnClass(int i) {

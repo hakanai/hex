@@ -25,6 +25,8 @@ import javax.swing.JOptionPane;
 
 /**
  * Default save confirmation support, using the option pane's built-in dialog support.
+ *
+ * @author trejkaz
  */
 public class DefaultSaveConfirmation extends SaveConfirmation {
     protected Object showOptionPane(Component owner, JOptionPane optionPane) {

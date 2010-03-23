@@ -26,5 +26,6 @@ package org.trypticon.hex.gui.notebook;
 class YamlTags {
     static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
     static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
+    static final String ANNOTATION_GROUP_TAG = "tag:hex.trypticon.org,2009:annotation_group";
     static final String INTERPRETOR_TAG = "tag:hex.trypticon.org,2009:interpretor";
 }

@@ -25,6 +25,8 @@ import org.jdesktop.swingx.table.TableColumnExt;
 
 /**
  * Customisations for the annotation tree table.
+ *
+ * @author trejkaz
  */
 public class AnnotationTreeTable extends JXTreeTable {
     public AnnotationTreeTable() {

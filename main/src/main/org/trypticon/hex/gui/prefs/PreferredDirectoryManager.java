@@ -24,6 +24,8 @@ import javax.swing.filechooser.FileSystemView;
 
 /**
  * Support for tracking preferred directories.
+ *
+ * @author trejkaz
  */
 public class PreferredDirectoryManager {
     public static final Key BINARIES = new Key("binaries");
