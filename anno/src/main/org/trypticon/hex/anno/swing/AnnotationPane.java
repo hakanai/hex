@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,16 @@
 
 package org.trypticon.hex.anno.swing;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.util.swingxsupport.NullTreeTableModel;
-
-import javax.swing.*;
-import javax.swing.table.TableColumnModel;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Panel displaying the annotations.
@@ -44,25 +43,13 @@ public class AnnotationPane extends JPanel {
     private Binary binary;
 
     public AnnotationPane() {
-        annoTreeTable = new JXTreeTable(new NullTreeTableModel());
+        annoTreeTable = new AnnotationTreeTable();
         setLayout(new BorderLayout());
         JScrollPane annoTreeTableScroll = new JScrollPane(annoTreeTable);
         Dimension preferredSize = annoTreeTableScroll.getPreferredSize();
         preferredSize.width = 400;
         annoTreeTableScroll.setPreferredSize(preferredSize);
         add(annoTreeTableScroll, BorderLayout.CENTER);
-
-        // Hijack changes to the model to set appropriate column widths.  Actually there is probably a better way...
-        annoTreeTable.addPropertyChangeListener("model", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent event) {
-                TableColumnModel columnModel = annoTreeTable.getColumnModel();
-                if (columnModel.getColumnCount() >= 3) {
-                    columnModel.getColumn(AnnotationTreeTableModel.TYPE_COLUMN).setPreferredWidth(100);
-                    columnModel.getColumn(AnnotationTreeTableModel.VALUE_COLUMN).setPreferredWidth(100);
-                    columnModel.getColumn(AnnotationTreeTableModel.NOTE_COLUMN).setPreferredWidth(200);
-                }
-            }
-        });
     }
 
     public AnnotationCollection getAnnotations() {

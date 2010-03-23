@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
 
 package org.trypticon.hex.anno.swing;
 
+import javax.swing.event.TreeModelEvent;
+import javax.swing.tree.TreePath;
+
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.util.swingxsupport.AbstractTreeTableModel;
-
-import javax.swing.event.TreeModelEvent;
-import javax.swing.tree.TreePath;
 
 /**
  * Tree model for annotations.
