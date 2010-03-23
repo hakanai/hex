@@ -35,4 +35,9 @@ public class NullValue implements Value {
     public int length() {
         return length;
     }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

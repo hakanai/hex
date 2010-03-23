@@ -16,19 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.util.swingsupport;
+package org.trypticon.hex.util.swingxsupport;
 
-import javax.swing.tree.TreeModel;
-import javax.swing.event.TreeModelListener;
+import org.jdesktop.swingx.treetable.TreeTableModel;
+
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 
 /**
  * Base class for implementing custom tree models, since Sun forgot to implement one.
  *
  * @author trejkaz
  */
-public abstract class AbstractTreeModel implements TreeModel {
+public abstract class AbstractTreeTableModel implements TreeTableModel {
     private EventListenerList listenerList;
 
     protected void fireTreeNodesInserted(TreeModelEvent event) {

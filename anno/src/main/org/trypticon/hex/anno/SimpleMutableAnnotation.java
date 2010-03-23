@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.anno;
 
+import org.trypticon.hex.binary.Binary;
+
 /**
  * Implementation of a single annotation.
  *
@@ -70,6 +72,10 @@ public class SimpleMutableAnnotation implements Annotation {
 
     public void setInterpretor(Interpretor interpretor) {
         this.interpretor = interpretor;
+    }
+
+    public Value interpret(Binary binary) {
+        return interpretor.interpret(binary, position, length);
     }
 
     public String getNote() {

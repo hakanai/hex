@@ -10,6 +10,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="Quaqua" level="project" />
+    <orderEntry type="library" name="SwingX" level="project" />
   </component>
 </module>
 

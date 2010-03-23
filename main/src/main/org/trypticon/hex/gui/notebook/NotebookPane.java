@@ -31,7 +31,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.AnnotationPane;
+import org.trypticon.hex.anno.swing.AnnotationPane;
 import org.trypticon.hex.gui.SaveNotebookAction;
 import org.trypticon.hex.util.swingsupport.SaveConfirmation;
 
@@ -67,6 +67,7 @@ public class NotebookPane extends JPanel {
 
         annoPane = new AnnotationPane();
         annoPane.setAnnotations(notebook.getAnnotations());
+        annoPane.setBinary(notebook.getBinary());
 
         JScrollPane viewerScroll = new JScrollPane(viewer);
         viewerScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

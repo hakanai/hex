@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.anno;
 
+import org.trypticon.hex.binary.Binary;
+
 /**
  * Interface marking an annotation within the binary.
  *
@@ -46,6 +48,15 @@ public interface Annotation {
      * @return the interpretor.  TODO: Decide on nullable vs. non-null.
      */
     Interpretor getInterpretor();
+
+    /**
+     * Convenience method to call the interpretor with the appropriate position and length
+     * to interpret the value.
+     *
+     * @param binary the binary.
+     * @return the value.
+     */
+    Value interpret(Binary binary);
 
     /**
      * A note added by the user.
