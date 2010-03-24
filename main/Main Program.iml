@@ -18,6 +18,7 @@
     <orderEntry type="library" name="JvYAMLb" level="project" />
     <orderEntry type="library" name="MRJAdapter" level="project" />
     <orderEntry type="library" name="Quaqua" level="project" />
+    <orderEntry type="library" name="SwingX" level="project" />
   </component>
 </module>
 
