@@ -70,7 +70,7 @@ public class NotebookPane extends JPanel {
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(annoPane);
         splitPane.setRightComponent(viewerScroll);
-        splitPane.setDividerLocation(annoPane.getPreferredSize().width);
+        splitPane.setDividerLocation(-viewerScroll.getPreferredSize().width);
         splitPane.setResizeWeight(1.0); // left component gets all the extra space
 
         setLayout(new BorderLayout());
