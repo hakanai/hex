@@ -30,9 +30,15 @@ import org.jdesktop.swingx.table.TableColumnExt;
  */
 public class AnnotationTreeTable extends JXTreeTable {
     public AnnotationTreeTable() {
-        // TODO: This doesn't actually work due to a bug in SwingX.  Upstream:
+        // XXX: This doesn't actually work due to a "feature" in Swing.  I originally thought it was a bug in SwingX:
         // https://swingx.dev.java.net/issues/show_bug.cgi?id=1289
-        setAutoResizeMode(AUTO_RESIZE_LAST_COLUMN);
+        //setAutoResizeMode(AUTO_RESIZE_LAST_COLUMN);
+
+        setAutoResizeMode(AUTO_RESIZE_OFF);
+
+        // This method is misleadingly named but it makes the table fill the available width automatically
+        // if the viewport width is greater than the table width.
+        setHorizontalScrollEnabled(true);
 
         setColumnFactory(new ColumnFactory() {
             @Override
@@ -43,6 +49,10 @@ public class AnnotationTreeTable extends JXTreeTable {
                     case AnnotationTreeTableModel.TYPE_COLUMN:
                     case AnnotationTreeTableModel.VALUE_COLUMN:
                         columnExt.setPreferredWidth(100);
+
+                        //HACK: Setting this appears to solve the problem where these columns will resize when the
+                        //   containing component resizes.
+                        columnExt.setMaxWidth(Short.MAX_VALUE);
                         break;
                     case AnnotationTreeTableModel.NOTE_COLUMN:
                         columnExt.setPreferredWidth(200);
