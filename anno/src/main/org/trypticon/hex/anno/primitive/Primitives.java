@@ -1,6 +1,6 @@
 /*
  * Hex - a hex viewer and annotator
- * Copyright (C) 2009  Trejkaz, Hex Project
+ * Copyright (C) 2009-2010  Trejkaz, Hex Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,6 @@ public class Primitives {
     }
 
     static long getLong(byte b1, byte b2, byte b3, byte b4, byte b5, byte b6, byte b7, byte b8) {
-        return (long) getInt(b1, b2, b3, b4) << 32 | getInt(b5, b6, b7, b8); 
+        return (long) getInt(b1, b2, b3, b4) << 32 | getInt(b5, b6, b7, b8);
     }
 }

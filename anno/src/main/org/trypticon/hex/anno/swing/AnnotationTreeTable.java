@@ -31,7 +31,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
 public class AnnotationTreeTable extends JXTreeTable {
     public AnnotationTreeTable() {
         // TODO: This doesn't actually work due to a bug in SwingX.  Upstream:
-        // https://swingx.dev.java.net/issues/show_bug.cgi?id=1289 
+        // https://swingx.dev.java.net/issues/show_bug.cgi?id=1289
         setAutoResizeMode(AUTO_RESIZE_LAST_COLUMN);
 
         setColumnFactory(new ColumnFactory() {
