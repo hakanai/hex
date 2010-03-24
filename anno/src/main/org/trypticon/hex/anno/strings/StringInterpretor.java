@@ -45,6 +45,7 @@ public class StringInterpretor extends AbstractInterpretor<StringValue> {
     public StringValue interpret(Binary binary, long position, int length) {
         ByteBuffer buffer = ByteBuffer.allocate(length);
         binary.read(position, buffer, length);
+        buffer.rewind();
 
         CharBuffer charBuffer = charset.decode(buffer);
         return new SimpleStringValue(charBuffer.toString(), length);
