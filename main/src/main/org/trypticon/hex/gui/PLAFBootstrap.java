@@ -34,7 +34,9 @@ class PLAFBootstrap {
         String systemLAF = UIManager.getSystemLookAndFeelClassName();
 
         try {
-            if ("apple.laf.AquaLookAndFeel".equals(systemLAF)) {
+            // com.apple.laf is definitely the case on SnowLeopard.  I think apple.laf must have been from Leopard.
+            if ("com.apple.laf.AquaLookAndFeel".equals(systemLAF) ||
+                "apple.laf.AquaLookAndFeel".equals(systemLAF)) {
                 MacPLAFBootstrap.init();
                 return;
             }
