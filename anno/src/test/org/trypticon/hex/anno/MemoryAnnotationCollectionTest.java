@@ -19,7 +19,7 @@
 package org.trypticon.hex.anno;
 
 import org.junit.Test;
-import org.trypticon.hex.anno.nulls.NullInterpretor;
+import org.trypticon.hex.interpreters.nulls.NullInterpretor;
 
 import java.util.Arrays;
 import java.util.List;

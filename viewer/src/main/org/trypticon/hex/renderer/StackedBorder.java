@@ -20,7 +20,9 @@ package org.trypticon.hex.renderer;
 
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.util.LinkedList;
 import java.util.List;
 

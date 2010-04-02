@@ -18,9 +18,9 @@
 
 package org.trypticon.hex.anno;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
-import org.trypticon.hex.anno.nulls.NullInterpretor;
 
 /**
  * A collection of annotations kept in memory.

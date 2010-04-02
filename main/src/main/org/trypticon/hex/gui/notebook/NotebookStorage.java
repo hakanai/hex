@@ -38,8 +38,8 @@ import org.jvyamlb.YAMLConfig;
 import org.jvyamlb.YAMLFactory;
 import org.jvyamlb.exceptions.YAMLException;
 
-import org.trypticon.hex.anno.InterpretorStorage;
-import org.trypticon.hex.anno.MasterInterpretorStorage;
+import org.trypticon.hex.interpreters.InterpretorStorage;
+import org.trypticon.hex.interpreters.MasterInterpretorStorage;
 import org.trypticon.hex.util.URLUtils;
 
 /**

@@ -18,7 +18,12 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import org.junit.Ignore;
@@ -27,9 +32,9 @@ import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.anno.nulls.NullInterpretor;
-import org.trypticon.hex.anno.primitive.PrimitiveInterpretors;
-import org.trypticon.hex.anno.strings.StringInterpretor;
+import org.trypticon.hex.interpreters.nulls.NullInterpretor;
+import org.trypticon.hex.interpreters.primitives.PrimitiveInterpretors;
+import org.trypticon.hex.interpreters.strings.StringInterpretor;
 
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
@@ -95,7 +100,7 @@ public class TestNotebookStorage {
         storage.read(new BrokenInputStream());
     }
 
-    @Test(expected=IOException.class)
+    @Test(expected= IOException.class)
     @Ignore("requires a fix to JvYAMLb: http://code.google.com/p/jvyamlb/issues/detail?id=7")
     public void testIOExceptionOnWriting() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));

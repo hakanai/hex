@@ -18,7 +18,7 @@
 
 package org.trypticon.hex.anno;
 
-import org.trypticon.hex.anno.nulls.NullInterpretor;
+import org.trypticon.hex.interpreters.nulls.NullInterpretor;
 import org.trypticon.hex.anno.util.Annotations;
 
 import java.util.ArrayList;

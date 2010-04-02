@@ -19,15 +19,23 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.jvyamlb.*;
+import org.jvyamlb.Representer;
+import org.jvyamlb.RepresenterImpl;
+import org.jvyamlb.Serializer;
+import org.jvyamlb.YAMLConfig;
+import org.jvyamlb.YAMLNodeCreator;
 import org.jvyamlb.exceptions.RepresenterException;
 import org.jvyamlb.nodes.Node;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.anno.Interpretor;
-import org.trypticon.hex.anno.InterpretorStorage;
+import org.trypticon.hex.interpreters.Interpretor;
+import org.trypticon.hex.interpreters.InterpretorStorage;
 
 /**
  * Extension of the default representer to dodge some issues in the default one.

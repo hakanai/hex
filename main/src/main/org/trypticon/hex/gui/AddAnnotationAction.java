@@ -26,7 +26,11 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.*;
+import org.trypticon.hex.anno.OverlappingAnnotationException;
+import org.trypticon.hex.anno.SimpleMutableAnnotation;
+import org.trypticon.hex.interpreters.FixedLengthInterpretor;
+import org.trypticon.hex.interpreters.Interpretor;
+import org.trypticon.hex.interpreters.InterpretorInfo;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 

@@ -22,14 +22,13 @@ import java.awt.event.ActionEvent;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.anno.nulls.NullInterpretor;
-import org.trypticon.hex.anno.primitive.UIntInterpretorBE;
-import org.trypticon.hex.anno.primitive.UShortInterpretorBE;
-import org.trypticon.hex.anno.strings.StringInterpretor;
 import org.trypticon.hex.binary.BinaryUtils;
 import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.DefaultNotebook;
+import org.trypticon.hex.interpreters.primitives.UIntInterpretorBE;
+import org.trypticon.hex.interpreters.primitives.UShortInterpretorBE;
+import org.trypticon.hex.interpreters.strings.StringInterpretor;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
 /**

@@ -11,6 +11,7 @@
     <orderEntry type="module" module-name="Annotations" />
     <orderEntry type="module" module-name="Binary API" />
     <orderEntry type="module" module-name="Hex Viewer" />
+    <orderEntry type="module" module-name="Interpreter API" />
     <orderEntry type="module" module-name="Utilities" />
     <orderEntry type="library" name="ByteList" level="project" />
     <orderEntry type="library" name="JCodings" level="project" />

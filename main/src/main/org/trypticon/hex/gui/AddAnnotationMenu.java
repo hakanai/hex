@@ -21,10 +21,10 @@ package org.trypticon.hex.gui;
 import java.util.List;
 import javax.swing.JMenu;
 
-import org.trypticon.hex.anno.InterpretorInfo;
-import org.trypticon.hex.anno.nulls.NullInterpretorStorage;
-import org.trypticon.hex.anno.primitive.PrimitiveInterpretorStorage;
-import org.trypticon.hex.anno.strings.StringInterpretorStorage;
+import org.trypticon.hex.interpreters.InterpretorInfo;
+import org.trypticon.hex.interpreters.nulls.NullInterpretorStorage;
+import org.trypticon.hex.interpreters.primitives.PrimitiveInterpretorStorage;
+import org.trypticon.hex.interpreters.strings.StringInterpretorStorage;
 
 /**
  * With with the list of annotations which can be added by the user.

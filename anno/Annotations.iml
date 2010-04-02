@@ -9,6 +9,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Binary API" />
+    <orderEntry type="module" module-name="Interpreter API" />
     <orderEntry type="module" module-name="Utilities" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="SwingX" level="project" />

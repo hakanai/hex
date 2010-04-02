@@ -23,7 +23,7 @@ import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

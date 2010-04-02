@@ -19,10 +19,9 @@
 package org.trypticon.hex.anno.util;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.anno.nulls.NullInterpretor;
+import org.trypticon.hex.interpreters.nulls.NullInterpretor;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;

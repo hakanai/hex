@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="false" version="4">
+<project version="4">
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/anno/Annotations.iml" filepath="$PROJECT_DIR$/anno/Annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/binary/Binary API.iml" filepath="$PROJECT_DIR$/binary/Binary API.iml" />
       <module fileurl="file://$PROJECT_DIR$/viewer/Hex Viewer.iml" filepath="$PROJECT_DIR$/viewer/Hex Viewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/interpreter/Interpreter API.iml" filepath="$PROJECT_DIR$/interpreter/Interpreter API.iml" />
       <module fileurl="file://$PROJECT_DIR$/launcher/Launcher.iml" filepath="$PROJECT_DIR$/launcher/Launcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/main/Main Program.iml" filepath="$PROJECT_DIR$/main/Main Program.iml" />
       <module fileurl="file://$PROJECT_DIR$/util/Utilities.iml" filepath="$PROJECT_DIR$/util/Utilities.iml" />

@@ -19,6 +19,8 @@
 package org.trypticon.hex.anno;
 
 import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.interpreters.Interpretor;
+import org.trypticon.hex.interpreters.Value;
 
 /**
  * Implementation of a single annotation.

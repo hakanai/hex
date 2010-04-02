@@ -30,8 +30,14 @@ import org.jvyamlb.Constructor;
 import org.jvyamlb.ConstructorImpl;
 import org.jvyamlb.exceptions.ConstructorException;
 import org.jvyamlb.nodes.Node;
-import org.trypticon.hex.anno.*;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
+import org.trypticon.hex.interpreters.Interpretor;
+import org.trypticon.hex.interpreters.InterpretorStorage;
 
 /**
  * Extension of the default representer to dodge some issues in the default one.
