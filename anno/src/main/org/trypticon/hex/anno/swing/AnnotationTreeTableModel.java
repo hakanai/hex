@@ -21,10 +21,7 @@ package org.trypticon.hex.anno.swing;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.tree.TreePath;
 
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.AnnotationCollectionEvent;
-import org.trypticon.hex.anno.AnnotationCollectionListener;
+import org.trypticon.hex.anno.*;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.util.swingxsupport.AbstractTreeTableModel;
 
@@ -67,29 +64,36 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
     }
 
     public boolean isLeaf(Object o) {
-        return o != rootNode;
+        return o != rootNode && !(o instanceof GroupAnnotation);
     }
 
-    public int getChildCount(Object o) {
-        if (o == rootNode) {
-            return annotations.getAll().size();
+    public int getChildCount(Object node) {
+        if (node == rootNode) {
+            return annotations.getTopLevel().size();
+        } else if (node instanceof GroupAnnotation) {
+            return ((GroupAnnotation) node).getAnnotations().size();
         } else {
             return 0;
         }
     }
 
-    public Object getChild(Object o, int i) {
-        if (o == rootNode) {
-            return annotations.getAll().get(i);
+    public Object getChild(Object node, int index) {
+        if (node == rootNode) {
+            return annotations.getTopLevel().get(index);
+        } else if (node instanceof GroupAnnotation) {
+            return ((GroupAnnotation) node).getAnnotations().get(index);
         } else {
             return null;
         }
     }
 
-    public int getIndexOfChild(Object o, Object child) {
-        if (o == rootNode) {
+    public int getIndexOfChild(Object node, Object child) {
+        if (node == rootNode) {
             //noinspection SuspiciousMethodCalls
-            return annotations.getAll().indexOf(child);
+            return annotations.getTopLevel().indexOf(child);
+        } else if (node instanceof GroupAnnotation) {
+            //noinspection SuspiciousMethodCalls
+            return ((GroupAnnotation) node).getAnnotations().indexOf(child);
         } else {
             return -1;
         }
@@ -131,9 +135,19 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         Annotation anno = (Annotation) node;
         switch (column) {
             case TYPE_COLUMN:
-                return ((Annotation) node).getInterpretor();
+                if (anno instanceof GroupAnnotation) {
+                    // TODO: It would be nice if groups could have the name of what they represent.
+                    return "group";
+                } else {
+                    return ((Annotation) node).getInterpretor();
+                }
             case VALUE_COLUMN:
-                return anno.interpret(binary);
+                if (anno instanceof GroupAnnotation) {
+                    // XXX: Later we do want to support groups with interpretations.
+                    return null;
+                } else {
+                    return anno.interpret(binary);
+                }
             case NOTE_COLUMN:
                 return anno.getNote();
             default:
@@ -141,12 +155,12 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         }
     }
 
-    public boolean isCellEditable(Object o, int i) {
+    public boolean isCellEditable(Object node, int column) {
         // TODO: Make Notes at least directly editable.
         return false;
     }
 
-    public void setValueAt(Object o, Object o1, int i) {
+    public void setValueAt(Object node, Object value, int column) {
         throw new UnsupportedOperationException("Editing not supported right now");
     }
 

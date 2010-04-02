@@ -24,12 +24,14 @@ import java.net.URL;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.SimpleMutableAnnotationGroup;
+import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.nulls.NullInterpretor;
 import org.trypticon.hex.anno.primitive.PrimitiveInterpretors;
 import org.trypticon.hex.anno.strings.StringInterpretor;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -42,14 +44,19 @@ public class TestNotebookStorage {
 
     @Test
     public void testRoundTrip() throws Exception {
-        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));
+        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new MemoryAnnotationCollection(100));
         AnnotationCollection annotations = notebook.getAnnotations();
         annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpretor(), "Test"));
         annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpretors.UINT32_LE, null));
         annotations.add(new SimpleMutableAnnotation(13, 4, new StringInterpretor("utf8"), null));
 
-        // TODO: Test nested groups (not supported yet.)
-        annotations.add(new SimpleMutableAnnotationGroup(9, 8, "Test Group"));
+        try {
+            // TODO: Test nested groups (not supported yet.)
+            annotations.add(new SimpleMutableGroupAnnotation(9, 8, "Test Group"));
+            fail("expected UnsupportedOperationException - need more tests");
+        } catch (UnsupportedOperationException e) {
+            // Expected.
+        }
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         storage.write(notebook, stream);
@@ -62,8 +69,7 @@ public class TestNotebookStorage {
         Notebook churned = storage.read(inStream);
 
         assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
-        assertEquals("Wrong annotations", notebook.getAnnotations().getAll(), churned.getAnnotations().getAll());
-        assertEquals("Wrong groups", notebook.getAnnotations().getGroups(), churned.getAnnotations().getGroups());
+        assertEquals("Wrong annotations", notebook.getAnnotations().getRootGroup(), churned.getAnnotations().getRootGroup());
     }
 
     @Test
@@ -71,7 +77,7 @@ public class TestNotebookStorage {
         File tmpFile = File.createTempFile("temp", ".xml");
         try {
             URL tmpFileURL = tmpFile.toURI().toURL();
-            Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));
+            Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new MemoryAnnotationCollection(100));
 
             storage.write(notebook, tmpFileURL);
 

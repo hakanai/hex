@@ -46,7 +46,7 @@ public class DefaultNotebook implements Notebook
     private URL notebookLocation;
     private String name;
     private final URL binaryLocation;
-    private final AnnotationCollection annotations;
+    private AnnotationCollection annotations;
     private Binary binary;
 
     private final Object openLock = new Object();
@@ -62,7 +62,7 @@ public class DefaultNotebook implements Notebook
      * @param binaryLocation the location of the binary.
      */
     public DefaultNotebook(URL binaryLocation) {
-        this(binaryLocation, new MemoryAnnotationCollection());
+        this(binaryLocation, null);
     }
 
     /**
@@ -75,12 +75,9 @@ public class DefaultNotebook implements Notebook
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
 
-        // New annotations appearing mean we need to be saved.
-        annotations.addAnnotationCollectionListener(new AnnotationCollectionListener() {
-            public void annotationsChanged(AnnotationCollectionEvent event) {
-                setDirty(true);
-            }
-        });
+        if (annotations != null) {
+            attachAnnotationCollectionListener();
+        }
 
         String path = binaryLocation.getPath();
         int lastSlash = path.lastIndexOf('/');
@@ -112,6 +109,22 @@ public class DefaultNotebook implements Notebook
                 binary = BinaryFactory.open(binaryLocation);
             }
         }
+
+        if (annotations == null) {
+            // Happens on first creation because we need to know the length of the file.
+            annotations = new MemoryAnnotationCollection(binary.length());
+
+            attachAnnotationCollectionListener();
+        }
+    }
+
+    private void attachAnnotationCollectionListener() {
+        // New annotations appearing mean we need to be saved.
+        annotations.addAnnotationCollectionListener(new AnnotationCollectionListener() {
+            public void annotationsChanged(AnnotationCollectionEvent event) {
+                setDirty(true);
+            }
+        });
     }
 
     /**

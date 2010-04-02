@@ -31,7 +31,7 @@ import org.jvyamlb.ConstructorImpl;
 import org.jvyamlb.exceptions.ConstructorException;
 import org.jvyamlb.nodes.Node;
 import org.trypticon.hex.anno.*;
-import org.trypticon.hex.anno.SimpleMutableAnnotationGroup;
+import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 
 /**
  * Extension of the default representer to dodge some issues in the default one.
@@ -42,7 +42,7 @@ class ExtendedConstructorImpl extends ConstructorImpl {
     private final InterpretorStorage interpretorStorage;
     private final YamlConstructor notebookConstructor = new NotebookConstructor();
     private final YamlConstructor annotationConstructor = new AnnotationConstructor();
-    private final YamlConstructor annotationGroupConstructor = new AnnotationGroupConstructor();
+    private final YamlConstructor annotationGroupConstructor = new GroupAnnotationConstructor();
     private final YamlConstructor interpretorConstructor = new InterpretorConstructor();
 
     public ExtendedConstructorImpl(Composer composer, InterpretorStorage interpretorStorage) {
@@ -74,10 +74,10 @@ class ExtendedConstructorImpl extends ConstructorImpl {
     public YamlConstructor getYamlConstructor(Object o) {
         if (YamlTags.NOTEBOOK_TAG.equals(o)) {
             return notebookConstructor;
+        } else if (YamlTags.GROUP_ANNOTATION_TAG.equals(o)) {
+            return annotationGroupConstructor;
         } else if (YamlTags.ANNOTATION_TAG.equals(o)) {
             return annotationConstructor;
-        } else if (YamlTags.ANNOTATION_GROUP_TAG.equals(o)) {
-            return annotationGroupConstructor;
         } else if (YamlTags.INTERPRETOR_TAG.equals(o)) {
             return interpretorConstructor;
         } else {
@@ -98,13 +98,9 @@ class ExtendedConstructorImpl extends ConstructorImpl {
                 throw new ConstructorException("while constructing notebook", "invalid URL", binaryLocationURL);
             }
 
-            @SuppressWarnings("unchecked")
-            List<Annotation> annotationList = (List<Annotation>) map.get("annotations");
+            GroupAnnotation rootGroup = (GroupAnnotation) map.get("root_group");
 
-            @SuppressWarnings("unchecked")
-            List<AnnotationGroup> annotationGroupList = (List<AnnotationGroup>) map.get("annotation_groups");
-
-            AnnotationCollection annotations = new MemoryAnnotationCollection(annotationList, annotationGroupList);
+            AnnotationCollection annotations = new MemoryAnnotationCollection(rootGroup);
 
             return new DefaultNotebook(binaryLocation, annotations);
         }
@@ -124,7 +120,7 @@ class ExtendedConstructorImpl extends ConstructorImpl {
         }
     }
 
-    private class AnnotationGroupConstructor implements YamlConstructor {
+    private class GroupAnnotationConstructor implements YamlConstructor {
         public Object call(Constructor constructor, Node node) {
             @SuppressWarnings("unchecked")
             Map<String, ?> map = fixMapping((Map<ByteList, ?>) constructor.constructMapping(node));
@@ -132,8 +128,10 @@ class ExtendedConstructorImpl extends ConstructorImpl {
             long position = ((Number) map.get("position")).longValue();
             int length = ((Number) map.get("length")).intValue();
             String note = (String) map.get("note");
+            @SuppressWarnings("unchecked")
+            List<Annotation> annotations = (List<Annotation>) map.get("annotations");
 
-            return new SimpleMutableAnnotationGroup(position, length, note);
+            return new SimpleMutableGroupAnnotation(position, length, note, annotations);
         }
     }
 

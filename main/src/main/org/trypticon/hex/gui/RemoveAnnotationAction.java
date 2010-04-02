@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
@@ -45,11 +46,12 @@ class RemoveAnnotationAction extends BaseAction {
 
         long position = viewer.getSelectionModel().getCursor();
 
-        Annotation annotation = viewer.getAnnotations().getAnnotationAt(position);
-        if (annotation == null) {
+        List<Annotation> annotationPath = viewer.getAnnotations().getAnnotationPathAt(position);
+        if (annotationPath == null) {
             throw new ActionException("To remove an annotation, the cursor must be at an annotation.");
         }
 
-        viewer.getAnnotations().remove(annotation);
+        // TODO: This results in a search but we already know the parent.  We could add a method which takes the parent.
+        viewer.getAnnotations().remove(annotationPath.get(annotationPath.size() - 1));
     }
 }

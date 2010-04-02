@@ -19,7 +19,8 @@
 package org.trypticon.hex.gui;
 
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.SimpleMutableAnnotationGroup;
+import org.trypticon.hex.anno.OverlappingAnnotationException;
+import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
@@ -49,6 +50,10 @@ public class AddSubRegionAction extends BaseAction {
         long position = viewer.getSelectionModel().getSelectionStart();
         int length = (int) (viewer.getSelectionModel().getSelectionEnd() - position);
 
-        viewer.getAnnotations().add(new SimpleMutableAnnotationGroup(position, length, null));
+        try {
+            viewer.getAnnotations().add(new SimpleMutableGroupAnnotation(position, length, null));
+        } catch (OverlappingAnnotationException e) {
+            throw new ActionException("You cannot create annotations which overlap each other.", e);
+        }
     }
 }

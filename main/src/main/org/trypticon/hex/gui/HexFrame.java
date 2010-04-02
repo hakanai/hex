@@ -310,7 +310,7 @@ public class HexFrame extends JFrame {
      * A dummy notebook class we can use for size computation.
      */
     private class DummyNotebook implements Notebook {
-        private final AnnotationCollection noAnnotations = new MemoryAnnotationCollection();
+        private final AnnotationCollection noAnnotations = new MemoryAnnotationCollection(0);
         public void open() {}
         public void close() {}
         public URL getNotebookLocation() { return null; }

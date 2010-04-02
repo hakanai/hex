@@ -27,39 +27,35 @@ import java.util.List;
  */
 public interface AnnotationCollection {
     /**
-     * Gets a list of all annotations.
+     * Gets the root group annotation, covering the entire file.
      *
-     * @return the list of all annotations.
+     * @return the root group annotation.
      */
-    List<Annotation> getAll();
+    GroupAnnotation getRootGroup();
 
     /**
-     * Finds annotations intersecting the given region.
+     * Gets a list of the top-level annotations.
      *
-     * @param position the start position for the region.
-     * @param length the length of the region.
-     * @return the list of annotations within that range.
+     * @return the list of the top-level annotations.
      */
-    // TODO: This method may be useful in the interface later.
-    List<Annotation> findAnnotationsWithin(long position, int length);
+    List<Annotation> getTopLevel();
 
     /**
-     * <p>Gets the annotation at the given position, if any.</p>
-     *
-     * <p>This is currently limited to a single result, and it is up to the collection
-     *    to decide which to return in the case of two residing at the same location.</p>
+     * Gets the annotation path from the root to the leaf annotation node.
      *
      * @param position the position to look up.
-     * @return the annotation at that position, or {@code null} if there are none.
+     * @return the path to the deepest annotation at that position, including the group annotations
+     *         which contain it.  Returns {@code null} if outside all annotations.
      */
-    Annotation getAnnotationAt(long position);
+    List<Annotation> getAnnotationPathAt(long position);
 
     /**
      * Adds an annotation.
      *
      * @param annotation the annotation to add.
+     * @throws OverlappingAnnotationException if the annotation overlaps an existing one.
      */
-    void add(Annotation annotation);
+    void add(Annotation annotation) throws OverlappingAnnotationException;
 
     /**
      * Removes an annotation.
@@ -67,28 +63,6 @@ public interface AnnotationCollection {
      * @param annotation the annotation to remove.
      */
     void remove(Annotation annotation);
-
-    /**
-     * Gets a list of all groups at the top level.  Annotations found in these groups will still exist
-     * within the list returned from {@link #getAll()}.
-     *
-     * @return the list of sub-collections.
-     */
-    List<AnnotationGroup> getGroups();
-
-    /**
-     * Adds an annotation group.
-     *
-     * @param group the annotation group to add.
-     */
-    void add(AnnotationGroup group);
-
-    /**
-     * Removes an annotation group.
-     *
-     * @param group the annotation group to remove.
-     */
-    void remove(AnnotationGroup group);
 
     /**
      * Adds a listener for changes in the collection.

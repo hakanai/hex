@@ -16,16 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.notebook;
+package org.trypticon.hex.anno;
+
+import java.util.List;
 
 /**
- * Common place for YAML tag IDs.
+ * <p>A sub-region of the binary file.</p>
+ *
+ * <p>Covers a region of the binary file, and can also be nested.</p>
  *
  * @author trejkaz
  */
-class YamlTags {
-    static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
-    static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
-    static final String GROUP_ANNOTATION_TAG = "tag:hex.trypticon.org,2009:group_annotation";
-    static final String INTERPRETOR_TAG = "tag:hex.trypticon.org,2009:interpretor";
+public interface GroupAnnotation extends Annotation {
+
+    /**
+     * Gets the list of contained annotations.
+     *
+     * @return the list of contained annotations.
+     */
+    List<Annotation> getAnnotations();
+
+    /**
+     * Finds an annotation at the given position.
+     *
+     * @param position the position (relative to the entire file.)
+     * @return the annotation found.
+     */
+    Annotation findAnnotationAt(long position);
+
 }

@@ -26,10 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.FixedLengthInterpretor;
-import org.trypticon.hex.anno.Interpretor;
-import org.trypticon.hex.anno.InterpretorInfo;
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
+import org.trypticon.hex.anno.*;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
@@ -107,6 +104,10 @@ class AddAnnotationAction extends BaseAction {
 
         SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpretor, null);
 
-        viewer.getAnnotations().add(annotation);
+        try {
+            viewer.getAnnotations().add(annotation);
+        } catch (OverlappingAnnotationException e) {
+            throw new ActionException("You cannot create annotations which overlap each other.", e);
+        }
     }
 }

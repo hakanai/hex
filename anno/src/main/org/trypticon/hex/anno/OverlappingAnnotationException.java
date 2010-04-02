@@ -16,16 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.notebook;
+package org.trypticon.hex.anno;
 
 /**
- * Common place for YAML tag IDs.
- *
- * @author trejkaz
+ * Thrown when trying to add an {@link Annotation} to an {@link AnnotationCollection}, but
+ * it would cross over some other annotation.
  */
-class YamlTags {
-    static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
-    static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
-    static final String GROUP_ANNOTATION_TAG = "tag:hex.trypticon.org,2009:group_annotation";
-    static final String INTERPRETOR_TAG = "tag:hex.trypticon.org,2009:interpretor";
+public class OverlappingAnnotationException extends Exception {
 }

@@ -20,12 +20,15 @@ package org.trypticon.hex.renderer;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 import org.trypticon.hex.HexUtils;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.GroupAnnotation;
 
 /**
  * Default cell renderer implementation, using a Swing label as the component.
@@ -39,6 +42,9 @@ public class DefaultCellRenderer extends JLabel implements CellRenderer {
     //       and there should be a policy to choose which to use.
     private static final Color annotationBorder = Color.RED;
     private static final Color annotationBackground = new Color(255, 240, 240);
+
+    private static final Color groupAnnotationBorder = Color.GRAY;
+    private static final Color groupAnnotationBackground = new Color(240, 240, 240);
 
     public DefaultCellRenderer() {
         setOpaque(true);
@@ -64,20 +70,43 @@ public class DefaultCellRenderer extends JLabel implements CellRenderer {
             foreground = viewer.getForeground();
 
             AnnotationCollection annotations = viewer.getAnnotations();
-            Annotation annotation = annotations.getAnnotationAt(position);
-            if (annotation != null) {
-                long annoStart = annotation.getPosition();
-                long annoEnd = annoStart + annotation.getLength() - 1;
+            List<Annotation> annotationPath = annotations.getAnnotationPathAt(position);
+            if (annotationPath != null) {
+                Border border = null;
 
-                // TODO: This 16 is technically a magic number, we should pass in the row length.
-                boolean top = position < annoStart + 16;
-                boolean right = position == annoEnd && (position % 16 != 15 || top);
-                boolean bottom = position > annoEnd - 16;
-                boolean left = position == annoStart && (position % 16 != 0 || bottom);
+                for (Annotation annotation : annotationPath) {
+                    long annoStart = annotation.getPosition();
+                    long annoEnd = annoStart + annotation.getLength() - 1;
 
-                setBorder(new JointedLineBorder(annotationBorder, top, right, bottom, left));
+                    // TODO: This 16 is technically a magic number, we should pass in the row length.
+                    boolean top = position < annoStart + 16;
+                    boolean right = position == annoEnd && (position % 16 != 15 || top);
+                    boolean bottom = position > annoEnd - 16;
+                    boolean left = position == annoStart && (position % 16 != 0 || bottom);
 
-                background = annotationBackground;
+                    if (top || right || bottom || left) {
+                        Border nextBorder = new JointedLineBorder(
+                                annotation instanceof GroupAnnotation ? groupAnnotationBorder : annotationBorder,
+                                top, right, bottom, left);
+                        if (border == null) {
+                            border = nextBorder;
+                        } else if (border instanceof StackedBorder) {
+                            ((StackedBorder) border).stack(nextBorder);
+                        } else {
+                            border = new StackedBorder(nextBorder);
+                        }
+                    }
+                }
+
+                if (border != null) {
+                    setBorder(border);
+                }
+
+                if (annotationPath.get(annotationPath.size() - 1) instanceof GroupAnnotation) {
+                    background = groupAnnotationBackground;
+                } else {
+                    background = annotationBackground;
+                }
             }
 
             if (selected && viewer.getSelectionBackground() != null) {

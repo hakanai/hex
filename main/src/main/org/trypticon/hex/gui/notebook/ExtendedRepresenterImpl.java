@@ -19,15 +19,13 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.jvyamlb.*;
 import org.jvyamlb.exceptions.RepresenterException;
 import org.jvyamlb.nodes.Node;
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.AnnotationGroup;
+import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.Interpretor;
 import org.trypticon.hex.anno.InterpretorStorage;
 
@@ -49,12 +47,15 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
     protected YAMLNodeCreator getNodeCreatorFor(Object o) {
         if (o instanceof DefaultNotebook) {
             return new NotebookYAMLNodeCreator((Notebook) o);
+        } else if (o instanceof GroupAnnotation) {
+            return new GroupAnnotationYAMLNodeCreator((GroupAnnotation) o);
         } else if (o instanceof Annotation) {
             return new AnnotationYAMLNodeCreator((Annotation) o);
-        } else if (o instanceof AnnotationGroup) {
-            return new AnnotationGroupYAMLNodeCreator((AnnotationGroup) o);
         } else if (o instanceof Interpretor) {
             return new InterpretorYAMLNodeCreator((Interpretor) o);
+        } else if (o instanceof List) {
+            // Primarily to catch issues with unmodifiable lists.
+            return super.getNodeCreatorFor(new ArrayList<Object>((Collection<?>) o));
         } else {
             return super.getNodeCreatorFor(o);
         }
@@ -75,8 +76,7 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
             // TODO: Fix JvYAML, it is reordering my LinkedHashMap for no good reason!
             Map<String, Object> fields = new LinkedHashMap<String, Object>(2);
             fields.put("binary_location", notebook.getBinaryLocation().toExternalForm());
-            fields.put("annotations", new ArrayList<Annotation>(notebook.getAnnotations().getAll()));
-            fields.put("annotation_groups", new ArrayList<AnnotationGroup>(notebook.getAnnotations().getGroups()));
+            fields.put("root_group", notebook.getAnnotations().getRootGroup());
             return representer.map(taguri(), fields, false);
         }
     }
@@ -102,22 +102,23 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
         }
     }
 
-    private class AnnotationGroupYAMLNodeCreator implements YAMLNodeCreator {
-        private final AnnotationGroup annotationGroup;
+    private class GroupAnnotationYAMLNodeCreator implements YAMLNodeCreator {
+        private final GroupAnnotation groupAnnotation;
 
-        private AnnotationGroupYAMLNodeCreator(AnnotationGroup annotationGroup) {
-            this.annotationGroup = annotationGroup;
+        private GroupAnnotationYAMLNodeCreator(GroupAnnotation groupAnnotation) {
+            this.groupAnnotation = groupAnnotation;
         }
 
         public String taguri() {
-            return YamlTags.ANNOTATION_GROUP_TAG;
+            return YamlTags.GROUP_ANNOTATION_TAG;
         }
 
         public Node toYamlNode(Representer representer) throws IOException {
             Map<String, Object> fields = new LinkedHashMap<String, Object>(2);
-            fields.put("position", annotationGroup.getPosition());
-            fields.put("length", annotationGroup.getLength());
-            fields.put("note", annotationGroup.getNote());
+            fields.put("position", groupAnnotation.getPosition());
+            fields.put("length", groupAnnotation.getLength());
+            fields.put("note", groupAnnotation.getNote());
+            fields.put("annotations", groupAnnotation.getAnnotations());
             return representer.map(taguri(), fields, false);
         }
     }

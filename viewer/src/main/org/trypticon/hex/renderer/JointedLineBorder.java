@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 
 /**
@@ -32,7 +33,7 @@ import javax.swing.border.Border;
  *
  * @author trejkaz
  */
-public class JointedLineBorder implements Border {
+public class JointedLineBorder extends AbstractBorder {
     private final Color colour;
     private final boolean top;
     private final boolean right;
@@ -61,6 +62,12 @@ public class JointedLineBorder implements Border {
         if (right) {
             graphics.drawLine(x + width - 1, 0, x + width - 1, height - 1);
         }
+    }
+
+    @Override
+    public Insets getBorderInsets(Component component, Insets insets) {
+        insets.set(0, 0, 0, 0);
+        return insets;
     }
 
     public Insets getBorderInsets(Component component) {
