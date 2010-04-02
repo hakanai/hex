@@ -19,7 +19,7 @@
 package org.trypticon.hex.anno;
 
 import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.interpreters.Interpretor;
+import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.Value;
 
 /**
@@ -44,14 +44,14 @@ public interface Annotation {
     int getLength();
 
     /**
-     * Gets the interpretor used to interpret the value at the given position.
+     * Gets the interpreter used to interpret the value at the given position.
      *
-     * @return the interpretor.  TODO: Decide on nullable vs. non-null.
+     * @return the interpreter.  TODO: Decide on nullable vs. non-null.
      */
-    Interpretor getInterpretor();
+    Interpreter getInterpreter();
 
     /**
-     * Convenience method to call the interpretor with the appropriate position and length
+     * Convenience method to call the interpreter with the appropriate position and length
      * to interpret the value.
      *
      * @param binary the binary.

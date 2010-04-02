@@ -21,10 +21,10 @@ package org.trypticon.hex.gui;
 import java.util.List;
 import javax.swing.JMenu;
 
-import org.trypticon.hex.interpreters.InterpretorInfo;
-import org.trypticon.hex.interpreters.nulls.NullInterpretorStorage;
-import org.trypticon.hex.interpreters.primitives.PrimitiveInterpretorStorage;
-import org.trypticon.hex.interpreters.strings.StringInterpretorStorage;
+import org.trypticon.hex.interpreters.InterpreterInfo;
+import org.trypticon.hex.interpreters.nulls.NullInterpreterStorage;
+import org.trypticon.hex.interpreters.primitives.PrimitiveInterpreterStorage;
+import org.trypticon.hex.interpreters.strings.StringInterpreterStorage;
 
 /**
  * With with the list of annotations which can be added by the user.
@@ -35,24 +35,24 @@ class AddAnnotationMenu extends JMenu {
     public AddAnnotationMenu() {
         super("Add Annotation");
 
-        // TODO: This should go through the MasterInterpretorStorage once we have categories.
+        // TODO: This should go through the MasterInterpreterStorage once we have categories.
 
         add(buildPrimitivesMenu());
 
         addSeparator();
 
-        addAllToMenu(this, new StringInterpretorStorage().getInterpretorInfos());
-        addAllToMenu(this, new NullInterpretorStorage().getInterpretorInfos());
+        addAllToMenu(this, new StringInterpreterStorage().getInterpreterInfos());
+        addAllToMenu(this, new NullInterpreterStorage().getInterpreterInfos());
     }
 
     private JMenu buildPrimitivesMenu() {
         JMenu menu = new JMenu("Primitive");
-        addAllToMenu(menu, new PrimitiveInterpretorStorage().getInterpretorInfos());
+        addAllToMenu(menu, new PrimitiveInterpreterStorage().getInterpreterInfos());
         return menu;
     }
 
-    private void addAllToMenu(JMenu menu, List<InterpretorInfo> infos) {
-        for (InterpretorInfo info : infos) {
+    private void addAllToMenu(JMenu menu, List<InterpreterInfo> infos) {
+        for (InterpreterInfo info : infos) {
             menu.add(new AddAnnotationAction(info));
         }
     }

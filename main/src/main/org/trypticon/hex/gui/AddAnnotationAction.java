@@ -28,9 +28,9 @@ import javax.swing.SwingUtilities;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.interpreters.FixedLengthInterpretor;
-import org.trypticon.hex.interpreters.Interpretor;
-import org.trypticon.hex.interpreters.InterpretorInfo;
+import org.trypticon.hex.interpreters.FixedLengthInterpreter;
+import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.interpreters.InterpreterInfo;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
@@ -41,9 +41,9 @@ import org.trypticon.hex.util.swingsupport.BaseAction;
  * @author trejkaz
  */
 class AddAnnotationAction extends BaseAction {
-    private final InterpretorInfo info;
+    private final InterpreterInfo info;
 
-    public AddAnnotationAction(InterpretorInfo info) {
+    public AddAnnotationAction(InterpreterInfo info) {
         this.info = info;
 
         putValue(NAME, info.getHumanName());
@@ -59,13 +59,13 @@ class AddAnnotationAction extends BaseAction {
 
         long position = viewer.getSelectionModel().getSelectionStart();
 
-        List<InterpretorInfo.Option> options = info.getOptions();
+        List<InterpreterInfo.Option> options = info.getOptions();
         Map<String, Object> optionMap = new HashMap<String, Object>(options.size());
         if (!options.isEmpty()) {
 
             // TODO: We should do this in a single form, I'm just lazy right now.
 
-            for (InterpretorInfo.Option option : options) {
+            for (InterpreterInfo.Option option : options) {
                 while (true) {
                     String value = JOptionPane.showInputDialog(SwingUtilities.getWindowAncestor(viewer),
                                                                "Enter a value for parameter: " + option.getName() + " (" +
@@ -96,17 +96,17 @@ class AddAnnotationAction extends BaseAction {
             }
         }
 
-        Interpretor interpretor = info.create(optionMap);
+        Interpreter interpreter = info.create(optionMap);
 
         int length;
-        if (interpretor instanceof FixedLengthInterpretor) {
-            length = ((FixedLengthInterpretor) interpretor).getValueLength();
+        if (interpreter instanceof FixedLengthInterpreter) {
+            length = ((FixedLengthInterpreter) interpreter).getValueLength();
         } else {
             length = (int) (viewer.getSelectionModel().getSelectionEnd() -
                             viewer.getSelectionModel().getSelectionStart()) + 1;
         }
 
-        SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpretor, null);
+        SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpreter, null);
 
         try {
             viewer.getAnnotations().add(annotation);

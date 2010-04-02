@@ -38,8 +38,8 @@ import org.jvyamlb.YAMLConfig;
 import org.jvyamlb.YAMLFactory;
 import org.jvyamlb.exceptions.YAMLException;
 
-import org.trypticon.hex.interpreters.InterpretorStorage;
-import org.trypticon.hex.interpreters.MasterInterpretorStorage;
+import org.trypticon.hex.interpreters.InterpreterStorage;
+import org.trypticon.hex.interpreters.MasterInterpreterStorage;
 import org.trypticon.hex.util.URLUtils;
 
 /**
@@ -48,7 +48,7 @@ import org.trypticon.hex.util.URLUtils;
  * @author trejkaz
  */
 public class NotebookStorage {
-    private final InterpretorStorage interpretorStorage = new MasterInterpretorStorage();
+    private final InterpreterStorage interpreterStorage = new MasterInterpreterStorage();
     private final YAMLConfig config;
     private final YAMLFactory factory;
 
@@ -58,12 +58,12 @@ public class NotebookStorage {
         factory = new DefaultYAMLFactory() {
             @Override
             public Constructor createConstructor(Composer composer) {
-                return new ExtendedConstructorImpl(composer, interpretorStorage);
+                return new ExtendedConstructorImpl(composer, interpreterStorage);
             }
 
             @Override
             public Representer createRepresenter(Serializer serializer, YAMLConfig yamlConfig) {
-                return new ExtendedRepresenterImpl(serializer, yamlConfig, interpretorStorage);
+                return new ExtendedRepresenterImpl(serializer, yamlConfig, interpreterStorage);
             }
         };
     }

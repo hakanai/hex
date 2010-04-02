@@ -34,8 +34,8 @@ import org.jvyamlb.exceptions.RepresenterException;
 import org.jvyamlb.nodes.Node;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.interpreters.Interpretor;
-import org.trypticon.hex.interpreters.InterpretorStorage;
+import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.interpreters.InterpreterStorage;
 
 /**
  * Extension of the default representer to dodge some issues in the default one.
@@ -43,12 +43,12 @@ import org.trypticon.hex.interpreters.InterpretorStorage;
  * @author trejkaz
  */
 class ExtendedRepresenterImpl extends RepresenterImpl {
-    private final InterpretorStorage interpretorStorage;
+    private final InterpreterStorage interpreterStorage;
 
     public ExtendedRepresenterImpl(Serializer serializer, YAMLConfig yamlConfig,
-                                   InterpretorStorage interpretorStorage) {
+                                   InterpreterStorage interpreterStorage) {
         super(serializer, yamlConfig);
-        this.interpretorStorage = interpretorStorage;
+        this.interpreterStorage = interpreterStorage;
     }
 
     @Override
@@ -59,8 +59,8 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
             return new GroupAnnotationYAMLNodeCreator((GroupAnnotation) o);
         } else if (o instanceof Annotation) {
             return new AnnotationYAMLNodeCreator((Annotation) o);
-        } else if (o instanceof Interpretor) {
-            return new InterpretorYAMLNodeCreator((Interpretor) o);
+        } else if (o instanceof Interpreter) {
+            return new InterpreterYAMLNodeCreator((Interpreter) o);
         } else if (o instanceof List) {
             // Primarily to catch issues with unmodifiable lists.
             return super.getNodeCreatorFor(new ArrayList<Object>((Collection<?>) o));
@@ -104,7 +104,7 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
             Map<String, Object> fields = new LinkedHashMap<String, Object>(4);
             fields.put("position", annotation.getPosition());
             fields.put("length", annotation.getLength());
-            fields.put("interpretor", annotation.getInterpretor());
+            fields.put("interpreter", annotation.getInterpreter());
             fields.put("note", annotation.getNote());
             return representer.map(taguri(), fields, false);
         }
@@ -131,18 +131,18 @@ class ExtendedRepresenterImpl extends RepresenterImpl {
         }
     }
 
-    private class InterpretorYAMLNodeCreator implements YAMLNodeCreator {
+    private class InterpreterYAMLNodeCreator implements YAMLNodeCreator {
         private Map<String, Object> options;
 
-        private InterpretorYAMLNodeCreator(Interpretor interpretor) {
-            options = interpretorStorage.toMap(interpretor);
+        private InterpreterYAMLNodeCreator(Interpreter interpreter) {
+            options = interpreterStorage.toMap(interpreter);
             if (options == null) {
-                throw new RepresenterException("Unknown interpretor: " + interpretor);
+                throw new RepresenterException("Unknown interpreter: " + interpreter);
             }
         }
 
         public String taguri() {
-            return YamlTags.INTERPRETOR_TAG;
+            return YamlTags.INTERPRETER_TAG;
         }
 
         public Node toYamlNode(Representer representer) throws IOException {

@@ -16,16 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.notebook;
+package org.trypticon.hex.interpreters;
+
+import org.trypticon.hex.binary.Binary;
 
 /**
- * Common place for YAML tag IDs.
+ * Interface for interpretation of a sequence of binary as some typed value.
  *
+ * @param <V> the value type.
  * @author trejkaz
  */
-class YamlTags {
-    static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
-    static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
-    static final String GROUP_ANNOTATION_TAG = "tag:hex.trypticon.org,2009:group_annotation";
-    static final String INTERPRETER_TAG = "tag:hex.trypticon.org,2009:interpreter";
+public interface Interpreter<V extends Value> {
+
+    /**
+     * Gets the type of the interpreted values.
+     *
+     * @return the type of the interpreted values.
+     */
+    Class<V> getType();
+
+    /**
+     * Interprets the value for a range.
+     *
+     * @param binary the binary.
+     * @param position the position of the start of the value.
+     * @param length the length of the value to interpret.
+     * @return the value.
+     */
+    V interpret(Binary binary, long position, int length);
 }

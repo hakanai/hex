@@ -16,16 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.notebook;
+package org.trypticon.hex.interpreters.nulls;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.interpreters.InterpreterInfo;
 
 /**
- * Common place for YAML tag IDs.
+ * Information about the null interpreter.
  *
  * @author trejkaz
  */
-class YamlTags {
-    static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
-    static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
-    static final String GROUP_ANNOTATION_TAG = "tag:hex.trypticon.org,2009:group_annotation";
-    static final String INTERPRETER_TAG = "tag:hex.trypticon.org,2009:interpreter";
+public class NullInterpreterInfo implements InterpreterInfo {
+    public String getHumanName() {
+        return "Unknown Value";
+    }
+
+    public List<Option> getOptions() {
+        return Collections.emptyList();
+    }
+
+    public Interpreter create(Map<String, Object> options) {
+        return new NullInterpreter();
+    }
 }

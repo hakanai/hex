@@ -19,7 +19,7 @@
 package org.trypticon.hex.anno;
 
 import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.interpreters.Interpretor;
+import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.Value;
 
 /**
@@ -30,12 +30,12 @@ import org.trypticon.hex.interpreters.Value;
 public class SimpleMutableAnnotation implements Annotation {
     private long position;
     private int length;
-    private Interpretor interpretor;
+    private Interpreter interpreter;
     private String note;
 
-    public SimpleMutableAnnotation(long position, int length, Interpretor interpretor, String note) {
-        if (interpretor == null) {
-            throw new IllegalArgumentException("interpretor cannot be null");
+    public SimpleMutableAnnotation(long position, int length, Interpreter interpreter, String note) {
+        if (interpreter == null) {
+            throw new IllegalArgumentException("interpreter cannot be null");
         }
 
         if (position < 0) {
@@ -48,7 +48,7 @@ public class SimpleMutableAnnotation implements Annotation {
 
         this.position = position;
         this.length = length;
-        this.interpretor = interpretor;
+        this.interpreter = interpreter;
         this.note = note;
     }
 
@@ -68,16 +68,16 @@ public class SimpleMutableAnnotation implements Annotation {
         this.length = length;
     }
 
-    public Interpretor getInterpretor() {
-        return interpretor;
+    public Interpreter getInterpreter() {
+        return interpreter;
     }
 
-    public void setInterpretor(Interpretor interpretor) {
-        this.interpretor = interpretor;
+    public void setInterpreter(Interpreter interpreter) {
+        this.interpreter = interpreter;
     }
 
     public Value interpret(Binary binary) {
-        return interpretor.interpret(binary, position, length);
+        return interpreter.interpret(binary, position, length);
     }
 
     public String getNote() {
@@ -99,7 +99,7 @@ public class SimpleMutableAnnotation implements Annotation {
         SimpleMutableAnnotation that = (SimpleMutableAnnotation) o;
         return getPosition() == that.getPosition() &&
                getLength() == that.getLength() &&
-               getInterpretor().equals(that.getInterpretor()) &&
+               getInterpreter().equals(that.getInterpreter()) &&
                (getNote() == null ? that.getNote() == null : getNote().equals(that.getNote()));
     }
 
@@ -107,7 +107,7 @@ public class SimpleMutableAnnotation implements Annotation {
     public int hashCode() {
         int hashCode = 23 * (int) getPosition();
         hashCode = hashCode * 71 + getLength();
-        hashCode = hashCode * 37 + getInterpretor().hashCode();
+        hashCode = hashCode * 37 + getInterpreter().hashCode();
         if (note != null) {
             hashCode = hashCode * 51 + getNote().hashCode();
         }
@@ -117,9 +117,9 @@ public class SimpleMutableAnnotation implements Annotation {
     @Override
     public String toString() {
         if (note != null) {
-            return String.format("@%d:%s(%s)", position, interpretor, note);
+            return String.format("@%d:%s(%s)", position, interpreter, note);
         } else {
-            return String.format("@%d:%s", position, interpretor);
+            return String.format("@%d:%s", position, interpreter);
         }
     }
 }

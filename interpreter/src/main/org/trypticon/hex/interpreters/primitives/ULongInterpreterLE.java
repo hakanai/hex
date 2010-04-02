@@ -16,16 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.notebook;
+package org.trypticon.hex.interpreters.primitives;
+
+import org.trypticon.hex.interpreters.AbstractFixedLengthInterpreter;
+import org.trypticon.hex.binary.Binary;
 
 /**
- * Common place for YAML tag IDs.
+ * Interpreter for unsigned long values.
  *
  * @author trejkaz
  */
-class YamlTags {
-    static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
-    static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
-    static final String GROUP_ANNOTATION_TAG = "tag:hex.trypticon.org,2009:group_annotation";
-    static final String INTERPRETER_TAG = "tag:hex.trypticon.org,2009:interpreter";
+public class ULongInterpreterLE extends AbstractFixedLengthInterpreter<ULong> {
+    public ULongInterpreterLE() {
+        super(ULong.class, 2);
+    }
+
+    public ULong interpret(Binary binary, long position) {
+        return new ULong(LittleEndian.getLong(binary, position));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof ULongInterpreterLE;
+    }
+
+    @Override
+    public int hashCode() {
+        return 100642;
+    }
+
+    @Override
+    public String toString() {
+        return "uint8le";
+    }
 }

@@ -143,7 +143,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
                     // TODO: It would be nice if groups could have the name of what they represent.
                     return "group";
                 } else {
-                    return ((Annotation) node).getInterpretor();
+                    return ((Annotation) node).getInterpreter();
                 }
             case VALUE_COLUMN:
                 if (anno instanceof GroupAnnotation) {

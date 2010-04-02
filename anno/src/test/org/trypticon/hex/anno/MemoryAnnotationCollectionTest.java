@@ -19,7 +19,7 @@
 package org.trypticon.hex.anno;
 
 import org.junit.Test;
-import org.trypticon.hex.interpreters.nulls.NullInterpretor;
+import org.trypticon.hex.interpreters.nulls.NullInterpreter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +37,7 @@ public class MemoryAnnotationCollectionTest {
         MemoryAnnotationCollection collection = new MemoryAnnotationCollection(100);
 
         GroupAnnotation group = new SimpleMutableGroupAnnotation(0, 20, "group");
-        Annotation leaf = new SimpleMutableAnnotation(0, 10, new NullInterpretor(), "leaf");
+        Annotation leaf = new SimpleMutableAnnotation(0, 10, new NullInterpreter(), "leaf");
 
         collection.add(group);
         collection.add(leaf);
@@ -54,7 +54,7 @@ public class MemoryAnnotationCollectionTest {
         MemoryAnnotationCollection collection = new MemoryAnnotationCollection(100);
 
         GroupAnnotation group = new SimpleMutableGroupAnnotation(0, 20, "group");
-        Annotation leaf = new SimpleMutableAnnotation(5, 10, new NullInterpretor(), "leaf");
+        Annotation leaf = new SimpleMutableAnnotation(5, 10, new NullInterpreter(), "leaf");
 
         collection.add(group);
         collection.add(leaf);
@@ -71,7 +71,7 @@ public class MemoryAnnotationCollectionTest {
         MemoryAnnotationCollection collection = new MemoryAnnotationCollection(100);
 
         GroupAnnotation group = new SimpleMutableGroupAnnotation(0, 20, "group");
-        Annotation leaf = new SimpleMutableAnnotation(10, 10, new NullInterpretor(), "leaf");
+        Annotation leaf = new SimpleMutableAnnotation(10, 10, new NullInterpreter(), "leaf");
 
         collection.add(group);
         collection.add(leaf);

@@ -16,16 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.notebook;
+package org.trypticon.hex.interpreters;
 
 /**
- * Common place for YAML tag IDs.
+ * An interpreter with fixed length.
  *
+ * @param <V> the value type.
  * @author trejkaz
  */
-class YamlTags {
-    static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
-    static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
-    static final String GROUP_ANNOTATION_TAG = "tag:hex.trypticon.org,2009:group_annotation";
-    static final String INTERPRETER_TAG = "tag:hex.trypticon.org,2009:interpreter";
+public interface FixedLengthInterpreter<V extends Value> extends Interpreter<V> {
+    /**
+     * Gets the length of values returned from this interpreter.
+     *
+     * @return the length of values returned from this interpreter.
+     */
+    int getValueLength();
 }

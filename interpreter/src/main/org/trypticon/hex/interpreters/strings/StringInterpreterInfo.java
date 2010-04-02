@@ -16,16 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.notebook;
+package org.trypticon.hex.interpreters.strings;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.interpreters.InterpreterInfo;
 
 /**
- * Common place for YAML tag IDs.
+ * Information about the string interpreter.
  *
  * @author trejkaz
  */
-class YamlTags {
-    static final String NOTEBOOK_TAG = "tag:hex.trypticon.org,2009:notebook";
-    static final String ANNOTATION_TAG = "tag:hex.trypticon.org,2009:annotation";
-    static final String GROUP_ANNOTATION_TAG = "tag:hex.trypticon.org,2009:group_annotation";
-    static final String INTERPRETER_TAG = "tag:hex.trypticon.org,2009:interpreter";
+public class StringInterpreterInfo implements InterpreterInfo {
+    public String getHumanName() {
+        return "String";
+    }
+
+    public List<Option> getOptions() {
+        return Arrays.asList(new Option("charset", String.class, true));
+    }
+
+    public Interpreter create(Map<String, Object> options) {
+        String charset = (String) options.get("charset");
+        return new StringInterpreter(charset);
+    }
 }

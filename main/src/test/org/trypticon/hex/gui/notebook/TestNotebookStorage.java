@@ -32,9 +32,9 @@ import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.interpreters.nulls.NullInterpretor;
-import org.trypticon.hex.interpreters.primitives.PrimitiveInterpretors;
-import org.trypticon.hex.interpreters.strings.StringInterpretor;
+import org.trypticon.hex.interpreters.nulls.NullInterpreter;
+import org.trypticon.hex.interpreters.primitives.PrimitiveInterpreters;
+import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
@@ -51,9 +51,9 @@ public class TestNotebookStorage {
     public void testRoundTrip() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new MemoryAnnotationCollection(100));
         AnnotationCollection annotations = notebook.getAnnotations();
-        annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpretor(), "Test"));
-        annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpretors.UINT32_LE, null));
-        annotations.add(new SimpleMutableAnnotation(13, 4, new StringInterpretor("utf8"), null));
+        annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpreter(), "Test"));
+        annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE, null));
+        annotations.add(new SimpleMutableAnnotation(13, 4, new StringInterpreter("utf8"), null));
 
         try {
             // TODO: Test nested groups (not supported yet.)

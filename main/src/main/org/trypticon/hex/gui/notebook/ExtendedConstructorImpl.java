@@ -36,8 +36,8 @@ import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
-import org.trypticon.hex.interpreters.Interpretor;
-import org.trypticon.hex.interpreters.InterpretorStorage;
+import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.interpreters.InterpreterStorage;
 
 /**
  * Extension of the default representer to dodge some issues in the default one.
@@ -45,15 +45,15 @@ import org.trypticon.hex.interpreters.InterpretorStorage;
  * @author trejkaz
  */
 class ExtendedConstructorImpl extends ConstructorImpl {
-    private final InterpretorStorage interpretorStorage;
+    private final InterpreterStorage interpreterStorage;
     private final YamlConstructor notebookConstructor = new NotebookConstructor();
     private final YamlConstructor annotationConstructor = new AnnotationConstructor();
     private final YamlConstructor annotationGroupConstructor = new GroupAnnotationConstructor();
-    private final YamlConstructor interpretorConstructor = new InterpretorConstructor();
+    private final YamlConstructor interpreterConstructor = new InterpreterConstructor();
 
-    public ExtendedConstructorImpl(Composer composer, InterpretorStorage interpretorStorage) {
+    public ExtendedConstructorImpl(Composer composer, InterpreterStorage interpreterStorage) {
         super(composer);
-        this.interpretorStorage = interpretorStorage;
+        this.interpreterStorage = interpreterStorage;
     }
 
     /**
@@ -84,8 +84,8 @@ class ExtendedConstructorImpl extends ConstructorImpl {
             return annotationGroupConstructor;
         } else if (YamlTags.ANNOTATION_TAG.equals(o)) {
             return annotationConstructor;
-        } else if (YamlTags.INTERPRETOR_TAG.equals(o)) {
-            return interpretorConstructor;
+        } else if (YamlTags.INTERPRETER_TAG.equals(o)) {
+            return interpreterConstructor;
         } else {
             return super.getYamlConstructor(o);
         }
@@ -119,10 +119,10 @@ class ExtendedConstructorImpl extends ConstructorImpl {
 
             long position = ((Number) map.get("position")).longValue();
             int length = ((Number) map.get("length")).intValue();
-            Interpretor interpretor = (Interpretor) map.get("interpretor");
+            Interpreter interpreter = (Interpreter) map.get("interpreter");
             String note = (String) map.get("note");
 
-            return new SimpleMutableAnnotation(position, length, interpretor, note);
+            return new SimpleMutableAnnotation(position, length, interpreter, note);
         }
     }
 
@@ -141,17 +141,17 @@ class ExtendedConstructorImpl extends ConstructorImpl {
         }
     }
 
-    private class InterpretorConstructor implements YamlConstructor {
+    private class InterpreterConstructor implements YamlConstructor {
         public Object call(Constructor constructor, Node node) {
             @SuppressWarnings("unchecked")
             Map<String, Object> map = fixMapping((Map<ByteList, ?>) constructor.constructMapping(node));
 
-            Interpretor interpretor = interpretorStorage.fromMap(map);
-            if (interpretor == null) {
-                throw new ConstructorException(null, "unknown interpretor: " + map, null);
+            Interpreter interpreter = interpreterStorage.fromMap(map);
+            if (interpreter == null) {
+                throw new ConstructorException(null, "unknown interpreter: " + map, null);
             }
 
-            return interpretor;
+            return interpreter;
         }
     }
 }
