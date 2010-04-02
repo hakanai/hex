@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="false" version="4">
+<project version="4">
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
+  <component name="IdProvider" IDEtalkID="D091799A46D999DD5B6B29B60B899A7E" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -26,7 +27,6 @@
   <component name="ProjectDetails">
     <option name="projectName" value="Hex" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/.idea/out" />
   </component>
@@ -34,5 +34,6 @@
     <option name="myVersion" value="124" />
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
 
