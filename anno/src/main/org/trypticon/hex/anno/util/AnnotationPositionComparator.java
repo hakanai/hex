@@ -16,25 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno;
+package org.trypticon.hex.anno.util;
+
+import org.trypticon.hex.anno.Annotation;
+
+import java.util.Comparator;
 
 /**
- * Thrown when trying to add an {@link Annotation} to an {@link AnnotationCollection}, but
- * it would cross over some other annotation.
+ * Comparator which orders annotations by their position.
  */
-public class OverlappingAnnotationException extends Exception {
-
-    private final Annotation existing;
-    private final Annotation attempted;
-
-    @Deprecated
-    public OverlappingAnnotationException() {
-        this.existing = null;
-        this.attempted = null;
-    }
-
-    public OverlappingAnnotationException(Annotation existing, Annotation attempted) {
-        this.existing = existing;
-        this.attempted = attempted;
+public class AnnotationPositionComparator implements Comparator<Annotation> {
+    public int compare(Annotation annotation1, Annotation annotation2) {
+        if (annotation1.getPosition() < annotation2.getPosition()) {
+            return -1;
+        } else if (annotation1.getPosition() > annotation2.getPosition()){
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

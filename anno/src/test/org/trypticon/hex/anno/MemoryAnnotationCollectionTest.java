@@ -32,54 +32,105 @@ import static org.junit.Assert.assertEquals;
  * @author trejkaz
  */
 public class MemoryAnnotationCollectionTest {
+    MemoryAnnotationCollection collection;
+
     @Test
     public void testAddingAnnotationInsideGroupAtStartPosition() throws Exception {
-        MemoryAnnotationCollection collection = new MemoryAnnotationCollection(100);
+        createCollection(100);
 
-        GroupAnnotation group = new SimpleMutableGroupAnnotation(0, 20, "group");
-        Annotation leaf = new SimpleMutableAnnotation(0, 10, new NullInterpreter(), "leaf");
+        addGroup(0, 20, "group");
+        addLeaf(0, 10, "leaf");
 
-        collection.add(group);
-        collection.add(leaf);
+        assertSingleLeafInsideSingleGroup();
+    }
 
-        List<Annotation> topLevel = collection.getTopLevel();
-        assertEquals("Group should be by itself at the top level", Arrays.<Annotation>asList(group), topLevel);
+    @Test
+    public void testAddingGroupAroundAnnotationAtStartPosition() throws Exception {
+        createCollection(100);
 
-        List<Annotation> groupLevel = group.getAnnotations();
-        assertEquals("Leaf should be by itself at the group level", Arrays.<Annotation>asList(leaf), groupLevel);
+        addLeaf(0, 10, "leaf");
+        addGroup(0, 20, "group");
+
+        assertSingleLeafInsideSingleGroup();
     }
 
     @Test
     public void testAddingAnnotationInsideGroupAtMiddlePosition() throws Exception {
-        MemoryAnnotationCollection collection = new MemoryAnnotationCollection(100);
+        createCollection(100);
 
-        GroupAnnotation group = new SimpleMutableGroupAnnotation(0, 20, "group");
-        Annotation leaf = new SimpleMutableAnnotation(5, 10, new NullInterpreter(), "leaf");
+        addGroup(0, 20, "group");
+        addLeaf(5, 10, "leaf");
 
-        collection.add(group);
-        collection.add(leaf);
+        assertSingleLeafInsideSingleGroup();
+    }
 
-        List<Annotation> topLevel = collection.getTopLevel();
-        assertEquals("Group should be by itself at the top level", Arrays.<Annotation>asList(group), topLevel);
+    @Test
+    public void testAddingGroupAroundAnnotationAtMiddlePosition() throws Exception {
+        createCollection(100);
 
-        List<Annotation> groupLevel = group.getAnnotations();
-        assertEquals("Leaf should be by itself at the group level", Arrays.<Annotation>asList(leaf), groupLevel);
+        addLeaf(5, 10, "leaf");
+        addGroup(0, 20, "group");
+
+        assertSingleLeafInsideSingleGroup();
     }
 
     @Test
     public void testAddingAnnotationInsideGroupAtEndPosition() throws Exception {
-        MemoryAnnotationCollection collection = new MemoryAnnotationCollection(100);
+        createCollection(100);
 
-        GroupAnnotation group = new SimpleMutableGroupAnnotation(0, 20, "group");
-        Annotation leaf = new SimpleMutableAnnotation(10, 10, new NullInterpreter(), "leaf");
+        addGroup(0, 20, "group");
+        addLeaf(10, 10, "leaf");
 
+        assertSingleLeafInsideSingleGroup();
+    }
+
+    @Test
+    public void testAddingGroupAroundAnnotationAtEndPosition() throws Exception {
+        createCollection(100);
+
+        addLeaf(10, 10, "leaf");
+        addGroup(0, 20, "group");
+
+        assertSingleLeafInsideSingleGroup();
+    }
+
+    private void assertSingleLeafInsideSingleGroup() {
+        assertStructure(new Object[] { null,
+                            new Object[] { "group",
+                                "leaf"
+                            }
+                        });
+    }
+
+    private void createCollection(int binarySize) {
+        collection = new MemoryAnnotationCollection(binarySize);
+    }
+
+    private void addGroup(int position, int length, String note) throws Exception {
+        GroupAnnotation group = new SimpleMutableGroupAnnotation(position, length, note);
         collection.add(group);
+    }
+
+    private void addLeaf(int position, int length, String note) throws Exception {
+        Annotation leaf = new SimpleMutableAnnotation(position, length, new NullInterpreter(), note);
         collection.add(leaf);
+    }
 
-        List<Annotation> topLevel = collection.getTopLevel();
-        assertEquals("Group should be by itself at the top level", Arrays.<Annotation>asList(group), topLevel);
+    private void assertStructure(Object[] expected) {
+        assertStructure(collection.getRootGroup(), expected);
+    }
 
-        List<Annotation> groupLevel = group.getAnnotations();
-        assertEquals("Leaf should be by itself at the group level", Arrays.<Annotation>asList(leaf), groupLevel);
+    private void assertStructure(GroupAnnotation group, Object[] expected) {
+        assertEquals("Wrong node (note didn't match)", expected[0], group.getNote());
+        List<Annotation> children = group.getAnnotations();
+        assertEquals("Wrong number of children inside " + group, expected.length - 1, children.size());
+        for (int i = 1; i < expected.length; i++) {
+            Annotation child = children.get(i - 1);
+            if (child instanceof GroupAnnotation) {
+                assertStructure((GroupAnnotation) child, (Object[]) expected[i]);
+            } else {
+                assertEquals("Wrong node (note didn't match)", expected[i], child.getNote());
+            }
+        }
     }
 }

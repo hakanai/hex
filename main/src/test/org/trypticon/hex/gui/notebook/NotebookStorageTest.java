@@ -55,14 +55,7 @@ public class NotebookStorageTest {
         annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpreter(), "Test"));
         annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE, null));
         annotations.add(new SimpleMutableAnnotation(13, 4, new StringInterpreter("utf8"), null));
-
-        try {
-            // TODO: Test nested groups (not supported yet.)
-            annotations.add(new SimpleMutableGroupAnnotation(9, 8, "Test Group"));
-            fail("expected UnsupportedOperationException - need more tests");
-        } catch (UnsupportedOperationException e) {
-            // Expected.
-        }
+        annotations.add(new SimpleMutableGroupAnnotation(9, 8, "Test Group"));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         storage.write(notebook, stream);

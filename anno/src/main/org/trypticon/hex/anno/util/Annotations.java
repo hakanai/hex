@@ -38,7 +38,7 @@ public class Annotations {
         long outerStart = outerAnnotation.getPosition();
         long outerEnd = outerStart + outerAnnotation.getLength() - 1;
         long innerStart = innerAnnotation.getPosition();
-        long innerEnd = innerStart + innerAnnotation.getLength() - 2;
+        long innerEnd = innerStart + innerAnnotation.getLength() - 1;
 
         return outerStart <= innerStart && outerEnd >= innerEnd;
     }

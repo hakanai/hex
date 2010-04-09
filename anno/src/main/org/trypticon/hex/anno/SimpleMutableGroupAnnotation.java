@@ -18,12 +18,13 @@
 
 package org.trypticon.hex.anno;
 
+import org.trypticon.hex.anno.util.AnnotationPositionComparator;
+import org.trypticon.hex.anno.util.AnnotationRangeSearchHit;
+import org.trypticon.hex.anno.util.AnnotationRangeSearcher;
 import org.trypticon.hex.interpreters.nulls.NullInterpreter;
-import org.trypticon.hex.anno.util.Annotations;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -86,51 +87,84 @@ public class SimpleMutableGroupAnnotation extends SimpleMutableAnnotation implem
     }
 
     public void add(Annotation annotation) throws OverlappingAnnotationException {
-        int pos = Collections.binarySearch(annotations, annotation, new AnnotationPositionComparator());
+        List<AnnotationRangeSearchHit> hits = new AnnotationRangeSearcher().findAllInRange(annotations, annotation);
+        if (hits.size() == 0) {
+            // No annotations in the vicinity at all, just add it and bail.
+            insertInPosition(annotation);
+            return;
+        }
 
-        Annotation existingAnnotation;
-        if (pos == -1) {
-            existingAnnotation = null;
-        } else if (pos >= 0) {
-            existingAnnotation = annotations.get(pos);
+        if (hits.get(0).getRelation() == AnnotationRangeSearchHit.Relation.INTERSECTING_START) {
+            throw new OverlappingAnnotationException(hits.get(0).getAnnotation(), annotation);
+        }
+
+        if (hits.get(hits.size() - 1).getRelation() == AnnotationRangeSearchHit.Relation.INTERSECTING_END) {
+            throw new OverlappingAnnotationException(hits.get(hits.size() - 1).getAnnotation(), annotation);
+        }
+
+        // Dealing with surrounding is simple.  If it was a group then we recurse to add inside the group,
+        // otherwise it's illegal.
+        if (hits.get(0).getRelation() == AnnotationRangeSearchHit.Relation.SURROUNDING) {
+            if (hits.get(0).getAnnotation() instanceof GroupAnnotation) {
+                // No problem, the new annotation will go into that group.
+                ((SimpleMutableGroupAnnotation) hits.get(0).getAnnotation()).add(annotation);
+                return;
+            } else {
+                throw new OverlappingAnnotationException(hits.get(0).getAnnotation(), annotation);
+            }
+        }
+
+        // For the same range, the order we nest will depend on which one is a group vs. a leaf.
+        if (hits.get(0).getRelation() == AnnotationRangeSearchHit.Relation.SAME_RANGE) {
+            if (hits.get(0).getAnnotation() instanceof GroupAnnotation) {
+                // The case of annotation also being a GroupAnnotation is ambiguous in that we could nest
+                // them either way.  But we'll just treat the new one as inside the old one, which is simpler.
+                ((SimpleMutableGroupAnnotation) hits.get(0).getAnnotation()).add(annotation);
+                return;
+            } else {
+                // Otherwise we treat it the same as CONTAINED_WITHIN which is handled below.
+            }
+        }
+
+        // Now the hits are entirely contained within the range.  As was the case with the surrounding case,
+        // this is only legal if the one containing the others is a group.
+        if (annotation instanceof GroupAnnotation) {
+            SimpleMutableGroupAnnotation group = (SimpleMutableGroupAnnotation) annotation;
+
+            // Move the contained annotations inside the group.  This should succeed unless the caller does
+            // something dumb like putting some annotations inside the group.  If it fails, at least the
+            // subsequent calls will not be made, so things should still be consistent.
+            for (AnnotationRangeSearchHit hit : hits) {
+                group.add(hit.getAnnotation());
+            }
+
+            // Now remove them from ourselves.
+            for (AnnotationRangeSearchHit hit : hits) {
+                remove(hit.getAnnotation());
+            }
+
+            // And finally add the group to ourselves.  We know this must be safe because we just removed all the
+            // annotations in its location.
+            insertInPosition(annotation);
+
         } else {
-            existingAnnotation = annotations.get(-pos - 2);
+            throw new OverlappingAnnotationException(hits.get(0).getAnnotation(), annotation); // picks the first one
         }
+    }
 
-        if (existingAnnotation != null) {
-            // 1. See if the new annotation is completely container inside the existing annotation.
-            //   If it is, and the existing annotation is a group, then we can delegate down.
-
-            if (Annotations.contains(existingAnnotation, annotation)) {
-                if (existingAnnotation instanceof GroupAnnotation) {
-                    ((SimpleMutableGroupAnnotation) existingAnnotation).add(annotation);
-                    return;
-                } else {
-                    throw new OverlappingAnnotationException();
-                }
-            }
-
-            // 2. See if the new annotation completely surrounds the existing annotation.
-
-            if (Annotations.contains(annotation, existingAnnotation)) {
-                throw new UnsupportedOperationException("Not supported yet, sorry.");
-            }
-
-            // 3. Any other kind of overlap is completely prohibited.
-
-            if (Annotations.overlap(existingAnnotation, annotation)) {
-                throw new OverlappingAnnotationException();
-            }
+    /**
+     * Inserts an annotation into the list in the correct order.  At the time this is called, all the necessary
+     * sanity checks should already have been performed.
+     *
+     * @param annotation the annotation to add.
+     */
+    private void insertInPosition(Annotation annotation) {
+        int pos = binaryPositionSearch(annotation.getPosition());
+        if (pos < 0) {
+            pos = -pos - 1;
         }
+        annotations.add(pos, annotation);
 
-        // Otherwise there is no overlap so no problem.
-
-        // If the location were found then one of the overlap checks above would have been satisfied,
-        // so the position must be negative here.
-        assert pos < 0;
-
-        int insertionPoint = -pos - 1;
-        annotations.add(insertionPoint, annotation);
     }
 
     public void remove(Annotation annotation) {
@@ -190,18 +224,6 @@ public class SimpleMutableGroupAnnotation extends SimpleMutableAnnotation implem
         int hashCode = super.hashCode();
         hashCode = 71 * hashCode + annotations.hashCode();
         return hashCode;
-    }
-
-    private class AnnotationPositionComparator implements Comparator<Annotation> {
-        public int compare(Annotation annotation1, Annotation annotation2) {
-            if (annotation1.getPosition() < annotation2.getPosition()) {
-                return -1;
-            } else if (annotation1.getPosition() > annotation2.getPosition()){
-                return 1;
-            } else {
-                return 0;
-            }
-        }
     }
 
     @Override
