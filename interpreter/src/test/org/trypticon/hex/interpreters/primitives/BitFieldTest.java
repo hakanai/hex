@@ -18,21 +18,25 @@
 
 package org.trypticon.hex.interpreters.primitives;
 
-import java.math.BigInteger;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests for {@link ULong}.
+ * Tests for {@link BitField}.
  *
  * @author trejkaz
  */
-public class TestULong {
+public class BitFieldTest {
+
     @Test
-    public void testToString() {
-        BigInteger oneAboveMaxLong = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE);
-        assertEquals("Wrong string value", oneAboveMaxLong.toString(), new ULong(0x8000000000000000L).toString());
+    public void testBitFieldConstruction() {
+
+        // Three reads of 5 bits at a time, just to make sure it shifts correctly.
+        BitField last5Bits = BitField.lowest(5);
+        assertEquals("Wrong value", 0x1F, last5Bits.evaluate(0xFFFF));
+        assertEquals("Wrong value", 0x1F, last5Bits.next(5).evaluate(0xFFFF));
+        assertEquals("Wrong value", 0x1F, last5Bits.next(5).next(5).evaluate(0xFFFF));
     }
 }

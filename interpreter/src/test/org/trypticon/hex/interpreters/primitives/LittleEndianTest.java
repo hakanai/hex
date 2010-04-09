@@ -16,35 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.binary;
+package org.trypticon.hex.interpreters.primitives;
 
-import java.nio.ByteBuffer;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.binary.BinaryFactory;
+
 /**
- * Tests for {@link ByteBufferBinary}.
+ * Tests for {@link LittleEndian}.
  *
  * @author trejkaz
  */
-public class TestByteBufferBinary {
+public class LittleEndianTest {
 
     @Test
-    public void testReading() {
-        byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        Binary binary = new ByteBufferBinary(buffer);
-
-        assertEquals("Wrong result", 0, binary.read(0));
-
-        byte[] tmp = new byte[4];
-        binary.read(1, tmp);
-        assertArrayEquals("Wrong result", new byte[]{1, 2, 3, 4}, tmp);
-        binary.read(5, tmp);
-        assertArrayEquals("Wrong result", new byte[]{5, 6, 7, 8}, tmp);
-
-        assertEquals("Wrong result", 9, binary.read(9));
+    public void testGetShort() {
+        Binary binary = BinaryFactory.wrap(new byte[] { 0x01, 0x02, (byte) 0xC1, (byte) 0xC2 });
+        assertEquals("Wrong value", (short) 0x0201, LittleEndian.getShort(binary, 0));
+        assertEquals("Wrong value", (short) 0xC2C1, LittleEndian.getShort(binary, 2));
     }
 }

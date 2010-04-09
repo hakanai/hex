@@ -18,24 +18,22 @@
 
 package org.trypticon.hex.interpreters.primitives;
 
-import org.junit.Assert;
+import java.math.BigInteger;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.binary.BinaryFactory;
-
 /**
- * Tests for {@link LittleEndian}.
+ * Tests for {@link ULong}.
  *
  * @author trejkaz
  */
-public class TestLittleEndian {
+public class ULongTest {
+
     @Test
-    public void testGetShort() {
-        Binary binary = BinaryFactory.wrap(new byte[] { 0x01, 0x02, (byte) 0xC1, (byte) 0xC2 });
-        assertEquals("Wrong value", (short) 0x0201, LittleEndian.getShort(binary, 0));
-        assertEquals("Wrong value", (short) 0xC2C1, LittleEndian.getShort(binary, 2));
+    public void testToString() {
+        BigInteger oneAboveMaxLong = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE);
+        assertEquals("Wrong string value", oneAboveMaxLong.toString(), new ULong(0x8000000000000000L).toString());
     }
 }

@@ -44,7 +44,8 @@ import static org.junit.Assert.assertEquals;
  *
  * @author trejkaz
  */
-public class TestNotebookStorage {
+public class NotebookStorageTest {
+
     private NotebookStorage storage = new NotebookStorage();
 
     @Test

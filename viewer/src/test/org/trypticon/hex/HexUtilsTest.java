@@ -26,7 +26,8 @@ import static org.junit.Assert.assertEquals;
  *
  * @author trejkaz
  */
-public class TestHexUtils {
+public class HexUtilsTest {
+
     @Test
     public void testToHex() {
         assertEquals("Wrong hex", "0A", HexUtils.toHex((byte) 0x0A));
