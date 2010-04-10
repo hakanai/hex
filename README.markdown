@@ -1,11 +1,30 @@
-
-
 Hex - A simple hex viewer written in Java.
 
 Copyright (C) 2009  Trejkaz, Hex Project
 
 Now accepting contributions for a Mac icon file for this project! ;-)
 
+
+WHAT I AM TRYING TO GET WORKING NOW
+-----------------------------------
+
+* Sub-regions (for structs and the like)
+    * DONE - Creating and storing sub-regions
+    * DONE - Creating annotations inside an existing sub-region
+    * TODO - Creating a sub-region over an area which has annotations already
+    * TODO - Detect all edge conditions for overlapping regions and/or annotations - mainly this needs tests
+
+* The road to file format parsing
+    * TODO - Pick some structs and make an action which can create that struct at a given location
+        * TODO - JPEG header
+        * TODO - BMP header
+    * TODO - Come up with a simpler API for defining structs in a declarative way
+    * TODO - More formats (still to be decided but will depend on what I'm looking at at the time.)
+
+* Sub-stream support
+    * Ability to mark a straem as a sub-stream, possible processed in some way (e.g. zlib inflate)
+    * Ability to open that stream separately
+    * Ability to annotate that stream
 
 WHAT IS IT AND WHY
 ------------------
@@ -47,13 +66,6 @@ Cursor and mouse input is all done as far as cursor/selection movement
 is concerned.  Copy also works, currently it copies the selection as
 hexadecimal.  Annotation works but the number of types of annotation
 is still a little limiting.
-
-
-WHAT I AM TRYING TO GET WORKING NOW
------------------------------------
-
-Next I will be building the catalogue of available annotations while
-I test the program under real usage conditions.
 
 
 CAVEATS
