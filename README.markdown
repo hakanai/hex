@@ -8,12 +8,6 @@ Now accepting contributions for a Mac icon file for this project! ;-)
 WHAT I AM TRYING TO GET WORKING NOW
 -----------------------------------
 
-* Sub-regions (for structs and the like)
-    * DONE - Creating and storing sub-regions
-    * DONE - Creating annotations inside an existing sub-region
-    * TODO - Creating a sub-region over an area which has annotations already
-    * TODO - Detect all edge conditions for overlapping regions and/or annotations - mainly this needs tests
-
 * The road to file format parsing
     * TODO - Pick some structs and make an action which can create that struct at a given location
         * TODO - JPEG header
