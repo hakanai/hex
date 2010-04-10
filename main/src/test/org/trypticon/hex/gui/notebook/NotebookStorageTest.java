@@ -18,15 +18,15 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URL;
+import java.nio.CharBuffer;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
@@ -36,7 +36,6 @@ import org.trypticon.hex.interpreters.nulls.NullInterpreter;
 import org.trypticon.hex.interpreters.primitives.PrimitiveInterpreters;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
-import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -57,15 +56,15 @@ public class NotebookStorageTest {
         annotations.add(new SimpleMutableAnnotation(13, 4, new StringInterpreter("utf8"), null));
         annotations.add(new SimpleMutableGroupAnnotation(9, 8, "Test Group"));
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        storage.write(notebook, stream);
+        StringWriter writer = new StringWriter();
+        storage.write(notebook, writer);
 
-        byte[] content = stream.toByteArray();
+        String content = writer.toString();
 
-        System.out.println(new String(content));
+        System.out.println(content);
 
-        InputStream inStream = new ByteArrayInputStream(content);
-        Notebook churned = storage.read(inStream);
+        Reader reader = new StringReader(content);
+        Notebook churned = storage.read(reader);
 
         assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
         assertEquals("Wrong annotations", notebook.getAnnotations().getRootGroup(), churned.getAnnotations().getRootGroup());
@@ -91,23 +90,33 @@ public class NotebookStorageTest {
 
     @Test(expected=IOException.class)
     public void testIOExceptionOnReading() throws Exception {
-        storage.read(new BrokenInputStream());
+        storage.read(new BrokenReader());
     }
 
-    @Test(expected= IOException.class)
-    @Ignore("requires a fix to JvYAMLb: http://code.google.com/p/jvyamlb/issues/detail?id=7")
+    @Test(expected=IOException.class)
     public void testIOExceptionOnWriting() throws Exception {
-        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"));
-        storage.write(notebook, new BrokenOutputStream());
+        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"),
+                                                new MemoryAnnotationCollection(100));
+        storage.write(notebook, new BrokenWriter());
     }
 
-    private static class BrokenInputStream extends InputStream {
+    private static class BrokenReader extends Reader {
         public int read() throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public int read(byte[] bytes, int i, int i1) throws IOException {
+        public int read(CharBuffer target) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public int read(char[] cbuf) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public int read(char[] cbuf, int off, int len) throws IOException {
             throw new IOException("Broken");
         }
 
@@ -116,13 +125,43 @@ public class NotebookStorageTest {
         }
     }
 
-    private static class BrokenOutputStream extends OutputStream {
+    private static class BrokenWriter extends Writer {
         public void write(int i) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public void write(byte[] bytes, int i, int i1) throws IOException {
+        public void write(char[] cbuf) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public void write(char[] cbuf, int off, int len) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public void write(String str) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public void write(String str, int off, int len) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public Writer append(CharSequence csq) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public Writer append(CharSequence csq, int start, int end) throws IOException {
+            throw new IOException("Broken");
+        }
+
+        @Override
+        public Writer append(char c) throws IOException {
             throw new IOException("Broken");
         }
 

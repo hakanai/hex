@@ -12,7 +12,6 @@
     <orderEntry type="module" module-name="Annotations" />
     <orderEntry type="module" module-name="Binary API" />
     <orderEntry type="library" name="JUnit" level="project" />
-    <orderEntry type="library" name="JvYAMLb" level="project" />
   </component>
 </module>
 

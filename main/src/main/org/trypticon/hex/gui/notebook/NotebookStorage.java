@@ -22,25 +22,26 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
-
-import org.jvyamlb.Composer;
-import org.jvyamlb.Constructor;
-import org.jvyamlb.DefaultYAMLConfig;
-import org.jvyamlb.DefaultYAMLFactory;
-import org.jvyamlb.Representer;
-import org.jvyamlb.Serializer;
-import org.jvyamlb.YAML;
-import org.jvyamlb.YAMLConfig;
-import org.jvyamlb.YAMLFactory;
-import org.jvyamlb.exceptions.YAMLException;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import org.trypticon.hex.interpreters.InterpreterStorage;
 import org.trypticon.hex.interpreters.MasterInterpreterStorage;
 import org.trypticon.hex.util.URLUtils;
+import org.yaml.snakeyaml.Dumper;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Loader;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.BaseConstructor;
+import org.yaml.snakeyaml.error.YAMLException;
+import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
  * Support for reading and writing {@link DefaultNotebook}s to files.
@@ -49,28 +50,22 @@ import org.trypticon.hex.util.URLUtils;
  */
 public class NotebookStorage {
     private final InterpreterStorage interpreterStorage = new MasterInterpreterStorage();
-    private final YAMLConfig config;
-    private final YAMLFactory factory;
+    private final Yaml yaml;
 
     public NotebookStorage() {
-        config = new DefaultYAMLConfig();
 
-        factory = new DefaultYAMLFactory() {
-            @Override
-            public Constructor createConstructor(Composer composer) {
-                return new ExtendedConstructorImpl(composer, interpreterStorage);
-            }
+        BaseConstructor constructor = new ExtendedConstructor(interpreterStorage);
 
-            @Override
-            public Representer createRepresenter(Serializer serializer, YAMLConfig yamlConfig) {
-                return new ExtendedRepresenterImpl(serializer, yamlConfig, interpreterStorage);
-            }
-        };
+        Representer representer = new ExtendedRepresenter(interpreterStorage);
+        DumperOptions dumperOptions = new DumperOptions();
+
+        yaml = new Yaml(new Loader(constructor),
+                        new Dumper(representer, dumperOptions));
     }
 
-    public Notebook read(InputStream stream) throws IOException {
+    public Notebook read(Reader reader) throws IOException {
         try {
-            return (Notebook) YAML.load(stream, factory, config);
+            return (Notebook) yaml.load(reader);
         } catch (YAMLException e) {
             rethrow(e);
             return null; // actually unreachable, compiler isn't smart enough.
@@ -78,30 +73,30 @@ public class NotebookStorage {
     }
 
     public Notebook read(URL url) throws IOException {
-        InputStream stream = url.openStream();
+        Reader reader = new InputStreamReader(url.openStream(), "UTF-8");
         try {
-            Notebook notebook = read(stream);
+            Notebook notebook = read(reader);
             notebook.setNotebookLocation(url);
             return notebook;
         } finally {
-            stream.close();
+            reader.close();
         }
     }
 
-    public void write(Notebook notebook, OutputStream stream) throws IOException {
+    public void write(Notebook notebook, Writer writer) throws IOException {
         try {
-            YAML.dump(notebook, stream, factory, config);
+            yaml.dump(notebook, writer);
         } catch (YAMLException e) {
             rethrow(e);
         }
     }
 
     private void write(Notebook notebook, File file) throws IOException {
-        OutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
+        Writer writer = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)), "UTF-8");
         try {
-            write(notebook, stream);
+            write(notebook, writer);
         } finally {
-            stream.close();
+            writer.close();
         }
     }
 
@@ -116,11 +111,11 @@ public class NotebookStorage {
             connection.setDoOutput(true);
             connection.connect();
 
-            OutputStream stream = connection.getOutputStream();
+            Writer writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
             try {
-                write(notebook, stream);
+                write(notebook, writer);
             } finally {
-                stream.close();
+                writer.close();
             }
         }
         notebook.setNotebookLocation(url);
