@@ -31,3 +31,4 @@ class YamlTags {
     static final Tag GROUP_ANNOTATION_TAG = new Tag("tag:hex.trypticon.org,2009:group_annotation");
     static final Tag INTERPRETER_TAG = new Tag("tag:hex.trypticon.org,2009:interpreter");
 }
+

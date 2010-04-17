@@ -28,15 +28,15 @@ import org.trypticon.hex.binary.Binary;
  * @author trejkaz
  */
 public class DosDateTimeInterpreter extends AbstractFixedLengthInterpreter<DateTime> {
-    private final Interpreter<Date> dateInterp = new DosDateInterpreter();
-    private final Interpreter<Time> timeInterp = new DosTimeInterpreter();
+    private final Interpreter<Date> dateInterpreter = new DosDateInterpreter();
+    private final Interpreter<Time> timeInterpreter = new DosTimeInterpreter();
 
     public DosDateTimeInterpreter() {
         super(DateTime.class, 4);
     }
 
     public DateTime interpret(Binary binary, long position) {
-        return new SimpleDateTime(dateInterp.interpret(binary, position + 2, 2),
-                                  timeInterp.interpret(binary, position, 2));
+        return new SimpleDateTime(dateInterpreter.interpret(binary, position + 2, 2),
+                                  timeInterpreter.interpret(binary, position, 2));
     }
 }

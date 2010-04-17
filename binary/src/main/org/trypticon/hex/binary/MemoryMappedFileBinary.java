@@ -38,7 +38,7 @@ class MemoryMappedFileBinary extends AbstractBinary implements Binary, Closeable
     private Binary delegate;
 
     /**
-     * Cosntructs the binary, mapping the provided file into memory.
+     * Constructs the binary, mapping the provided file into memory.
      *
      * @param file the file to map into memory.
      * @throws IOException if the file could not be read.

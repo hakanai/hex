@@ -32,12 +32,12 @@ import org.trypticon.hex.binary.BinaryFactory;
 public class DosDateTimeInterpreterTest {
     @Test
     public void testInterpret() {
-        Interpreter<DateTime> interp = new DosDateTimeInterpreter();
+        Interpreter<DateTime> interpreter = new DosDateTimeInterpreter();
 
         byte[] data = { 0x67, 0x64, (byte) 0xAC, (byte) 0x2E };
 
         assertDateTimeEquals("Wrong date value", 2003, 5, 12, 12, 35, 14,
-                             interp.interpret(BinaryFactory.wrap(data), 0, 4));
+                             interpreter.interpret(BinaryFactory.wrap(data), 0, 4));
 
     }
 

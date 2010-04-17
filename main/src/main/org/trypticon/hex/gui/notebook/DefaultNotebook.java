@@ -68,7 +68,7 @@ public class DefaultNotebook implements Notebook
     /**
      * Constructs a notebook with an existing annotation collection.
      *
-     * @param binaryLocation the location of the bianry.
+     * @param binaryLocation the location of the binary.
      * @param annotations the annotation collection.
      */
     public DefaultNotebook(URL binaryLocation, AnnotationCollection annotations) {

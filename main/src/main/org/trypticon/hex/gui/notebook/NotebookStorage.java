@@ -28,8 +28,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.Iterator;
 
 import org.trypticon.hex.interpreters.InterpreterStorage;
 import org.trypticon.hex.interpreters.MasterInterpreterStorage;
@@ -41,7 +39,6 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.BaseConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
-import org.yaml.snakeyaml.resolver.Resolver;
 
 /**
  * Support for reading and writing {@link DefaultNotebook}s to files.
@@ -49,10 +46,10 @@ import org.yaml.snakeyaml.resolver.Resolver;
  * @author trejkaz
  */
 public class NotebookStorage {
-    private final InterpreterStorage interpreterStorage = new MasterInterpreterStorage();
     private final Yaml yaml;
 
     public NotebookStorage() {
+        InterpreterStorage interpreterStorage = new MasterInterpreterStorage();
 
         BaseConstructor constructor = new ExtendedConstructor(interpreterStorage);
 
