@@ -1,30 +1,31 @@
 <project name="hex" default="build">
+    <scriptdef name="run-all" language="JavaScript">
+        <attribute name="target"/>
+        <![CDATA[
+
+        var builds = new Array("util", "binary", "interpreter", "anno", "viewer", "formats", "main", "launcher");
+        var target = attributes.get("target");
+        for (i = 0; i < builds.length; i++) {
+            var task = project.createTask("ant");
+            task.setDir(new java.io.File(builds[i]));
+            if (target != null) {
+                task.setTarget(target);
+            }
+            task.perform();
+        }
+ 
+        ]]>
+    </scriptdef>
+
     <target name="build" description="Runs each build in series.">
-        <ant dir="util"/>
-        <ant dir="binary"/>
-        <ant dir="interpreter"/>
-        <ant dir="anno"/>
-        <ant dir="viewer"/>
-        <ant dir="main"/>
-        <ant dir="launcher"/>
+        <run-all/>
     </target>
 
     <target name="test" description="Tests each build in series.">
-        <ant dir="util" target="test"/>
-        <ant dir="binary" target="test"/>
-        <ant dir="interpreter" target="test"/>
-        <ant dir="anno" target="test"/>
-        <ant dir="viewer" target="test"/>
-        <ant dir="main" target="test"/>
+        <run-all target="test"/>
     </target>
 
     <target name="clean" description="Cleans generated files from each build">
-        <ant dir="util" target="clean"/>
-        <ant dir="binary" target="clean"/>
-        <ant dir="interpreter" target="clean"/>
-        <ant dir="anno" target="clean"/>
-        <ant dir="viewer" target="clean"/>
-        <ant dir="main" target="clean"/>
-        <ant dir="launcher" target="clean"/>
+        <run-all target="clean"/>
     </target>
 </project>
