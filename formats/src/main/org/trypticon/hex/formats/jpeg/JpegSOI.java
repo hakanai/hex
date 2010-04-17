@@ -16,50 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.interpreters.primitives;
-
-import org.trypticon.hex.interpreters.Value;
+package org.trypticon.hex.formats.jpeg;
 
 /**
- * An unsigned short value.
+ * JPEG Start-Of-Image marker.
  *
  * @author trejkaz
  */
-public class UShort extends Number implements Value {
-    private final short value;
-
-    public UShort(short value) {
-        this.value = value;
-    }
-
-    public short getValue() {
-        return value;
-    }
-
-    @Override
-    public int intValue() {
-        return value;
-    }
-
-    public long longValue() {
-        return value;
-    }
-
-    @Override
-    public float floatValue() {
-        return value;
-    }
-
-    @Override
-    public double doubleValue() {
-        return value;
-    }
-
-    public int length() {
-        return 2;
-    }
-
-    public String toString() {
-        return String.valueOf(value & 0xFFFF);
+public class JpegSOI extends JpegEmptyBlock {
+    public JpegSOI() {
+        super("SOI", (short) 0xFFD8);
     }
 }

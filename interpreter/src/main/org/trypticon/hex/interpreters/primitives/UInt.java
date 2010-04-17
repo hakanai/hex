@@ -25,7 +25,7 @@ import org.trypticon.hex.interpreters.Value;
  *
  * @author trejkaz
  */
-public class UInt implements Value {
+public class UInt extends Number implements Value {
     private final int value;
 
     public UInt(int value) {
@@ -33,6 +33,26 @@ public class UInt implements Value {
     }
 
     public int getValue() {
+        return value;
+    }
+
+    @Override
+    public int intValue() {
+        return value;
+    }
+
+    @Override
+    public long longValue() {
+        return value;
+    }
+
+    @Override
+    public float floatValue() {
+        return value;
+    }
+
+    @Override
+    public double doubleValue() {
         return value;
     }
 

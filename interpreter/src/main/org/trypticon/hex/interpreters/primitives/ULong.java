@@ -27,7 +27,7 @@ import org.trypticon.hex.interpreters.Value;
  *
  * @author trejkaz
  */
-public class ULong implements Value {
+public class ULong extends Number implements Value {
     private final long value;
 
     public ULong(long value) {
@@ -35,6 +35,26 @@ public class ULong implements Value {
     }
 
     public long getValue() {
+        return value;
+    }
+
+    @Override
+    public int intValue() {
+        return (int) value;
+    }
+
+    @Override
+    public long longValue() {
+        return value;
+    }
+
+    @Override
+    public float floatValue() {
+        return value;
+    }
+
+    @Override
+    public double doubleValue() {
         return value;
     }
 

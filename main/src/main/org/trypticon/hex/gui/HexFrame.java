@@ -40,6 +40,12 @@ import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
+import org.trypticon.hex.formats.jpeg.JpegAPP0;
+import org.trypticon.hex.formats.jpeg.JpegBlock;
+import org.trypticon.hex.formats.jpeg.JpegEOI;
+import org.trypticon.hex.formats.jpeg.JpegSOI;
+import org.trypticon.hex.formats.jpeg.JpegSOS;
+import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
@@ -228,6 +234,9 @@ public class HexFrame extends JFrame {
         editMenu.add(new AddSubRegionAction());
         editMenu.add(new RemoveSubRegionAction());
 
+        editMenu.addSeparator();
+        editMenu.add(buildFormatsMenu());
+
         JMenu helpMenu = new JMenu("Help");
         // TODO: Help / User Guide
         helpMenu.add(new OpenSampleNotebookAction());
@@ -238,6 +247,16 @@ public class HexFrame extends JFrame {
         menuBar.add(editMenu);
         menuBar.add(helpMenu);
         return menuBar;
+    }
+
+    private static JMenu buildFormatsMenu() {
+        JMenu menu = new JMenu("Formats");
+        menu.add(new DropStructureAction(new JpegSOI()));
+        menu.add(new DropStructureAction(new JpegAPP0()));
+        menu.add(new DropStructureAction(new JpegBlock()));
+        menu.add(new DropStructureAction(new JpegSOS()));
+        menu.add(new DropStructureAction(new JpegEOI()));
+        return menu;
     }
 
     /**

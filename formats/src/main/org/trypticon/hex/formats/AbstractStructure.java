@@ -16,50 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.interpreters.primitives;
-
-import org.trypticon.hex.interpreters.Value;
+package org.trypticon.hex.formats;
 
 /**
- * An unsigned short value.
+ * Base convenience class for implementing structures.
  *
  * @author trejkaz
  */
-public class UShort extends Number implements Value {
-    private final short value;
+public abstract class AbstractStructure implements Structure {
+    private final String name;
 
-    public UShort(short value) {
-        this.value = value;
+    protected AbstractStructure(String name) {
+        this.name = name;
     }
 
-    public short getValue() {
-        return value;
-    }
-
-    @Override
-    public int intValue() {
-        return value;
-    }
-
-    public long longValue() {
-        return value;
-    }
-
-    @Override
-    public float floatValue() {
-        return value;
-    }
-
-    @Override
-    public double doubleValue() {
-        return value;
-    }
-
-    public int length() {
-        return 2;
-    }
-
-    public String toString() {
-        return String.valueOf(value & 0xFFFF);
+    public String getName() {
+        return name;
     }
 }
