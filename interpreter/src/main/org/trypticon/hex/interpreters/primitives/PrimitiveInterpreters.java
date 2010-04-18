@@ -33,4 +33,9 @@ public class PrimitiveInterpreters {
     public static final Interpreter<UInt> UINT32_LE = new UIntInterpreterLE();
     public static final Interpreter<ULong> UINT64_BE = new ULongInterpreterBE();
     public static final Interpreter<ULong> UINT64_LE = new ULongInterpreterLE();
+
+    public static final Interpreter<Float> FLOAT32_BE = new FloatInterpreterBE();
+    public static final Interpreter<Float> FLOAT32_LE = new FloatInterpreterLE();
+    public static final Interpreter<Double> FLOAT64_BE = new DoubleInterpreterBE();
+    public static final Interpreter<Double> FLOAT64_LE = new DoubleInterpreterLE();
 }

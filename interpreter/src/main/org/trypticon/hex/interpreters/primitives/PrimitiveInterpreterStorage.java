@@ -46,6 +46,10 @@ public class PrimitiveInterpreterStorage implements InterpreterStorage {
         register("uint4le", UIntInterpreterLE.class);
         register("uint8be", ULongInterpreterBE.class);
         register("uint8le", ULongInterpreterLE.class);
+        register("float4be", FloatInterpreterBE.class);
+        register("float4le", FloatInterpreterLE.class);
+        register("float8be", DoubleInterpreterBE.class);
+        register("float8le", DoubleInterpreterLE.class);
     }
 
     private void register(String name, Class<? extends Interpreter> klass) {
@@ -62,7 +66,11 @@ public class PrimitiveInterpreterStorage implements InterpreterStorage {
                              new UIntInterpreterBEInfo(),
                              new UIntInterpreterLEInfo(),
                              new ULongInterpreterBEInfo(),
-                             new ULongInterpreterLEInfo());
+                             new ULongInterpreterLEInfo(),
+                             new FloatInterpreterBEInfo(),
+                             new FloatInterpreterLEInfo(),
+                             new DoubleInterpreterBEInfo(),
+                             new DoubleInterpreterLEInfo());
     }
 
     public Map<String, Object> toMap(Interpreter interpreter) {
