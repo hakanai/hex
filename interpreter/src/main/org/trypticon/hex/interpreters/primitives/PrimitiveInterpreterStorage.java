@@ -39,6 +39,7 @@ public class PrimitiveInterpreterStorage implements InterpreterStorage {
             new HashMap<String, Class<? extends Interpreter>>(10);
 
     public PrimitiveInterpreterStorage() {
+        register("uint1", UByteInterpreter.class);
         register("uint2be", UShortInterpreterBE.class);
         register("uint2le", UShortInterpreterLE.class);
         register("uint4be", UIntInterpreterBE.class);
@@ -55,7 +56,8 @@ public class PrimitiveInterpreterStorage implements InterpreterStorage {
     public List<InterpreterInfo> getInterpreterInfos() {
         // TODO: Interpreter info should be structured to allow categorising them as well, for menus.
 
-        return Arrays.asList(new UShortInterpreterBEInfo(),
+        return Arrays.asList(new UByteInterpreterInfo(),
+                             new UShortInterpreterBEInfo(),
                              new UShortInterpreterLEInfo(),
                              new UIntInterpreterBEInfo(),
                              new UIntInterpreterLEInfo(),

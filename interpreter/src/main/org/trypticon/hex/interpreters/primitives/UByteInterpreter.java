@@ -18,19 +18,35 @@
 
 package org.trypticon.hex.interpreters.primitives;
 
-import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.interpreters.AbstractFixedLengthInterpreter;
 
 /**
- * Convenience class holding a bunch of instances to primitive interpreters.
+ * Interpreter for unsigned byte values.
  *
  * @author trejkaz
  */
-public class PrimitiveInterpreters {
-    public static final Interpreter<UByte> UINT8 = new UByteInterpreter();
-    public static final Interpreter<UShort> UINT16_BE = new UShortInterpreterBE();
-    public static final Interpreter<UShort> UINT16_LE = new UShortInterpreterLE();
-    public static final Interpreter<UInt> UINT32_BE = new UIntInterpreterBE();
-    public static final Interpreter<UInt> UINT32_LE = new UIntInterpreterLE();
-    public static final Interpreter<ULong> UINT64_BE = new ULongInterpreterBE();
-    public static final Interpreter<ULong> UINT64_LE = new ULongInterpreterLE();
+public class UByteInterpreter extends AbstractFixedLengthInterpreter<UByte> {
+    public UByteInterpreter() {
+        super(UByte.class, 1);
+    }
+
+    public UByte interpret(Binary binary, long position) {
+        return new UByte(binary.read(position));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof UByteInterpreter;
+    }
+
+    @Override
+    public int hashCode() {
+        return 100081;
+    }
+
+    @Override
+    public String toString() {
+        return "uint1";
+    }
 }

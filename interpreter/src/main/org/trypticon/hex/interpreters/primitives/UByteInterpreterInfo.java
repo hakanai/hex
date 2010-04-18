@@ -19,18 +19,28 @@
 package org.trypticon.hex.interpreters.primitives;
 
 import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.interpreters.InterpreterInfo;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Convenience class holding a bunch of instances to primitive interpreters.
+ * Info for {@link UByteInterpreter}.
  *
  * @author trejkaz
  */
-public class PrimitiveInterpreters {
-    public static final Interpreter<UByte> UINT8 = new UByteInterpreter();
-    public static final Interpreter<UShort> UINT16_BE = new UShortInterpreterBE();
-    public static final Interpreter<UShort> UINT16_LE = new UShortInterpreterLE();
-    public static final Interpreter<UInt> UINT32_BE = new UIntInterpreterBE();
-    public static final Interpreter<UInt> UINT32_LE = new UIntInterpreterLE();
-    public static final Interpreter<ULong> UINT64_BE = new ULongInterpreterBE();
-    public static final Interpreter<ULong> UINT64_LE = new ULongInterpreterLE();
+public class UByteInterpreterInfo implements InterpreterInfo {
+
+    public String getHumanName() {
+        return "Unsigned 8-bit Integer";
+    }
+
+    public List<Option> getOptions() {
+        return Collections.emptyList();
+    }
+
+    public Interpreter create(Map<String, Object> options) {
+        return new UByteInterpreter();
+    }
 }

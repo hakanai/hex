@@ -18,19 +18,48 @@
 
 package org.trypticon.hex.interpreters.primitives;
 
-import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.interpreters.Value;
 
 /**
- * Convenience class holding a bunch of instances to primitive interpreters.
+ * An unsigned byte value.
  *
  * @author trejkaz
  */
-public class PrimitiveInterpreters {
-    public static final Interpreter<UByte> UINT8 = new UByteInterpreter();
-    public static final Interpreter<UShort> UINT16_BE = new UShortInterpreterBE();
-    public static final Interpreter<UShort> UINT16_LE = new UShortInterpreterLE();
-    public static final Interpreter<UInt> UINT32_BE = new UIntInterpreterBE();
-    public static final Interpreter<UInt> UINT32_LE = new UIntInterpreterLE();
-    public static final Interpreter<ULong> UINT64_BE = new ULongInterpreterBE();
-    public static final Interpreter<ULong> UINT64_LE = new ULongInterpreterLE();
+public class UByte extends Number implements Value {
+    private final byte value;
+
+    public UByte(byte value) {
+        this.value = value;
+    }
+
+    public byte getValue() {
+        return value;
+    }
+
+    @Override
+    public int intValue() {
+        return value;
+    }
+
+    public long longValue() {
+        return value;
+    }
+
+    @Override
+    public float floatValue() {
+        return value;
+    }
+
+    @Override
+    public double doubleValue() {
+        return value;
+    }
+
+    public int length() {
+        return 1;
+    }
+
+    public String toString() {
+        return String.valueOf(value & 0xFF);
+    }
 }
