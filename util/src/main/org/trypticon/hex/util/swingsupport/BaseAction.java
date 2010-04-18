@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  * A convenience action class with some facility for catching errors.
@@ -36,13 +35,14 @@ public abstract class BaseAction extends AbstractAction {
     private static final Logger logger = Logger.getLogger(BaseAction.class.getName());
 
     public void actionPerformed(ActionEvent event) {
+        Window sourceWindow = new SourceWindowFinder().findSourceWindow(event);
+
         try {
             doAction(event);
         } catch (ActionException e) {
-            JOptionPane.showMessageDialog(findSourceWindow((Component) event.getSource()), e.getMessage(),
-                                          "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(sourceWindow, e.getMessage(), "Hex: Error", JOptionPane.ERROR_MESSAGE);
         } catch (Throwable t) {
-            handleError(findSourceWindow((Component) event.getSource()), t);
+            handleError(sourceWindow, t);
         }
     }
 
@@ -52,14 +52,6 @@ public abstract class BaseAction extends AbstractAction {
         JOptionPane.showMessageDialog(owner,
                                       "Unexpected error in UI action.  Check the log for further details.",
                                       "Unexpected Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private Window findSourceWindow(Component component) {
-        if (component instanceof Window) {
-            return (Window) component;
-        } else {
-            return SwingUtilities.getWindowAncestor(component);
-        }
     }
 
     protected abstract void doAction(ActionEvent event) throws Exception;
