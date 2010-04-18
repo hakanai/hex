@@ -19,9 +19,6 @@
 package org.trypticon.hex.formats.jpeg;
 
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.binary.Binary;
@@ -40,15 +37,14 @@ public class JpegBlock extends AbstractStructure {
         super("JPEG Block");
     }
 
-    public void drop(Binary binary, AnnotationCollection annotations, long position) throws OverlappingAnnotationException {
+    public Annotation drop(Binary binary, long position) {
         //FF E0
         Annotation blockId = new SimpleMutableAnnotation(position, 2, new UShortInterpreterBE(), "block ID");
 
         Annotation length = new SimpleMutableAnnotation(position + 2, 2, new UShortInterpreterBE(), "length");
         int lengthValue = ((Number) length.interpret(binary)).intValue();
 
-        GroupAnnotation soi = new SimpleMutableGroupAnnotation(position, 2 + lengthValue, "Unknown",
-                                                               Arrays.asList(blockId, length));
-        annotations.add(soi);
+        return new SimpleMutableGroupAnnotation(position, 2 + lengthValue, "Unknown",
+                                                Arrays.asList(blockId, length));
     }
 }

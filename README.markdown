@@ -10,7 +10,8 @@ WHAT I AM TRYING TO GET WORKING NOW
 
 * The road to file format parsing
     * TODO - Pick some structs and make an action which can create that struct at a given location
-        * TODO - JPEG header
+        * DONE - JPEG header
+        * DONE - Java class file
         * TODO - BMP header
     * TODO - Come up with a simpler API for defining structs in a declarative way
     * TODO - More formats (still to be decided but will depend on what I'm looking at at the time.)

@@ -16,30 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.formats;
-
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.binary.Binary;
+package org.trypticon.hex.formats.classfile.constantpool;
 
 /**
- * Knows how to create annotations which match a certain structure.
+ * "CONSTANT_Fieldref_info" structure.
  *
  * @author trejkaz
  */
-public interface Structure {
-    /**
-     * Gets the name of the structure.
-     *
-     * @return the name of the structure.
-     */
-    String getName();
-
-    /**
-     * Creates an annotation representing the structure.  May be a group annotation containing further annotations.
-     *
-     * @param binary the binary to annotate.
-     * @param position the position to start from.
-     * @return the created annotation.
-     */
-    Annotation drop(Binary binary, long position);
+public class ConstantFieldrefInfo extends AbstractConstantRefInfo {
+    protected ConstantFieldrefInfo() {
+        super("CONSTANT_Fieldref_info");
+    }
 }

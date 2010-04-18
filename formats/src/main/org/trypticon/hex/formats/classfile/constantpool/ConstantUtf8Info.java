@@ -16,43 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.formats.jpeg;
+package org.trypticon.hex.formats.classfile.constantpool;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.formats.AbstractStructure;
-import org.trypticon.hex.interpreters.primitives.UShort;
-import org.trypticon.hex.interpreters.primitives.UShortInterpreterBE;
+import org.trypticon.hex.formats.classfile.AbstractClassFileStructure;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
 import java.util.Arrays;
 
 /**
- * JPEG/JFIF APP0 marker.
+ * "CONSTANT_Utf8_info" structure.
  *
  * @author trejkaz
  */
-public class JpegAPP0 extends AbstractStructure {
-    public JpegAPP0() {
-        super("JPEG APP0");
+public class ConstantUtf8Info extends AbstractClassFileStructure {
+    protected ConstantUtf8Info() {
+        super("CONSTANT_Utf8_info");
     }
 
     public Annotation drop(Binary binary, long position) {
-        //FF E0
-        Annotation blockId = new SimpleMutableAnnotation(position, 2, new UShortInterpreterBE(), "APP0");
-        if (((UShort) blockId.interpret(binary)).getValue() != (short) 0xFFE0)
-        {
-            throw new IllegalArgumentException("Magic number 0xFFE0 not found, actually got: " + ((UShort) blockId.interpret(binary)).getValue());
-        }
+        long pos = position;
+        Annotation tag    = u1(pos, "tag");    pos += 1;
+        Annotation length = u2(pos, "length"); pos += 2;
 
-        Annotation length = new SimpleMutableAnnotation(position + 2, 2, new UShortInterpreterBE(), "length");
+        // The string is actually documented as
+        // TODO: Confirm that old-style modified UTF-8 strings work (the ones which Java encoded \0 as two bytes.)
         int lengthValue = ((Number) length.interpret(binary)).intValue();
+        Annotation bytes  = new SimpleMutableAnnotation(pos, lengthValue, new StringInterpreter("UTF-8"), "bytes");
+        pos += lengthValue;
 
-        Annotation identifier = new SimpleMutableAnnotation(position + 4, 5, new StringInterpreter("US-ASCII"), null);
-
-        return new SimpleMutableGroupAnnotation(position, 2 + lengthValue, "APP0",
-                                                Arrays.asList(blockId, length, identifier));
+        int structureLength = (int) (pos - position);
+        return new SimpleMutableGroupAnnotation(position, structureLength, getName(),
+                                                Arrays.asList(tag, length, bytes));
     }
 }

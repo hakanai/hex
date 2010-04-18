@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui.formats;
 
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
@@ -56,6 +57,7 @@ public class DropStructureAction extends BaseAction {
         AnnotationCollection annotations = viewer.getAnnotations();
         long position = viewer.getSelectionModel().getSelectionStart();
 
-        structure.drop(binary, annotations, position);
+        Annotation annotation = structure.drop(binary, position);
+        annotations.add(annotation);
     }
 }

@@ -40,6 +40,7 @@ import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
+import org.trypticon.hex.formats.classfile.ClassFile;
 import org.trypticon.hex.formats.jpeg.JpegAPP0;
 import org.trypticon.hex.formats.jpeg.JpegBlock;
 import org.trypticon.hex.formats.jpeg.JpegEOI;
@@ -251,6 +252,8 @@ public class HexFrame extends JFrame {
 
     private static JMenu buildFormatsMenu() {
         JMenu menu = new JMenu("Formats");
+        menu.add(new DropStructureAction(new ClassFile()));
+        menu.addSeparator();
         menu.add(new DropStructureAction(new JpegSOI()));
         menu.add(new DropStructureAction(new JpegAPP0()));
         menu.add(new DropStructureAction(new JpegBlock()));

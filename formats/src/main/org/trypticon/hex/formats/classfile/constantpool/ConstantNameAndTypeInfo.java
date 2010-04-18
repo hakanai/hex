@@ -16,34 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.formats.jpeg;
+package org.trypticon.hex.formats.classfile.constantpool;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.formats.ConvenienceStructure;
-import org.trypticon.hex.interpreters.primitives.UShortInterpreterBE;
+import org.trypticon.hex.formats.classfile.AbstractClassFileStructure;
 
 import java.util.Arrays;
 
 /**
- * Base class for JPEG blocks which only consist of the two byte marker.
+ * "CONSTANT_NameAndType_info" structure.
  *
  * @author trejkaz
  */
-abstract class JpegEmptyBlock extends ConvenienceStructure {
-    private final String name;
-    private final short magic;
-
-    protected JpegEmptyBlock(String name, short magic) {
-        super("JPEG " + name);
-        this.name = name;
-        this.magic = magic;
+public class ConstantNameAndTypeInfo extends AbstractClassFileStructure {
+    protected ConstantNameAndTypeInfo() {
+        super("CONSTANT_NameAndType_info");
     }
 
     public Annotation drop(Binary binary, long position) {
-        Annotation blockId = magic(binary, position, new UShortInterpreterBE(), name, magic);
+        long pos = position;
+        Annotation tag             = u1(pos, "tag");              pos += 1;
+        Annotation nameIndex       = u2(pos, "name_index");       pos += 2;
+        Annotation descriptorIndex = u2(pos, "descriptor_index"); pos += 2;
 
-        return new SimpleMutableGroupAnnotation(position, 2, name, Arrays.asList(blockId));
+        int length = (int) (pos - position);
+        return new SimpleMutableGroupAnnotation(position, length, getName(),
+                                                Arrays.asList(tag, nameIndex, descriptorIndex));
     }
 }
