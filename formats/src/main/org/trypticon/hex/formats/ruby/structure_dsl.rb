@@ -42,6 +42,14 @@ end
 class StructureDSL
   @@fields = []
 
+  def self.nice_name
+    @@nice_name || name
+  end
+
+  def self.nice_name=(nice_name)
+    @@nice_name = nice_name.to_s
+  end
+
   def self.unsigned8(sym)
     @@fields << Field.new(sym, "uint1")
   end
@@ -98,7 +106,7 @@ class StructureDSL
     end
 
     length = pos - position
-    org.trypticon.hex.anno.SimpleMutableGroupAnnotation.new(position, length, self.class.name, annotations)
+    org.trypticon.hex.anno.SimpleMutableGroupAnnotation.new(position, length, self.class.nice_name, annotations)
   end
 
   def self.metaclass
@@ -108,18 +116,10 @@ class StructureDSL
   end
 end
 
-#class Struct1 < StructureDSL
-#  unsigned16 :value
-#end
-#
-#class Struct2 < StructureDSL
-#  unsigned32 :value
-#end
-#
-#class CONSTANT_Utf8_info < StructureDSL
-#  unsigned8  :tag
-#  unsigned16 :length
-#  string     :bytes, :length => :length
-#end
-
-#CONSTANT_Utf8_info.new
+def structure(name, &block)
+  clazz = Class.new(StructureDSL) do
+    instance_eval(&block)
+  end
+  clazz.nice_name = name
+  clazz.new
+end

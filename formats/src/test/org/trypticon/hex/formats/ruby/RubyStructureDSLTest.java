@@ -44,12 +44,11 @@ public class RubyStructureDSLTest {
     @Test
     public void testRunning() {
         Structure structure = new RubyStructureDSL(
-            "class CONSTANT_Utf8_info < StructureDSL\n" +
+            "structure :CONSTANT_Utf8_info do\n" +
             "  unsigned8  :tag\n" +
             "  unsigned16 :length\n" +
             "  string     :bytes, :length => :length\n" +
-            "end\n" +
-            "CONSTANT_Utf8_info").createStructure();
+            "end").createStructure();
 
         Binary binary = BinaryFactory.wrap(new byte[] {
             1,                        // tag

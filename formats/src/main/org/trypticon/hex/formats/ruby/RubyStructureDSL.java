@@ -44,11 +44,8 @@ public class RubyStructureDSL {
         container.put("$interpreter_storage", new MasterInterpreterStorage());
         container.runScriptlet(PathType.CLASSPATH, basePath + "/structure_dsl.rb");
 
-        // Run the script itself, which should return a class (TODO)
-        Object clazz = container.runScriptlet(scriptlet);
-
-        // Instantiate the class and cast to Structure.
-        Object instance = container.callMethod(clazz, "new");
+        // Run the script itself, which should return a Structure instance.
+        Object instance = container.runScriptlet(scriptlet);
         return container.getInstance(instance, Structure.class);
     }
 }
