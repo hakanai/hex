@@ -42,29 +42,58 @@ import static org.junit.Assert.assertEquals;
 public class RubyStructureDSLTest {
 
     @Test
-    public void testRunning() {
+    public void testLengthUsage() {
         Structure structure = new RubyStructureDSL(
-            "structure :CONSTANT_Utf8_info do\n" +
-            "  uint1    :tag\n" +
+            "structure :string_with_length do\n" +
             "  uint2be  :length\n" +
             "  string   :bytes, :charset => 'UTF-8', :length => :length\n" +
-            "end").createStructure();
+            "end"
+        ).createStructure();
 
         Binary binary = BinaryFactory.wrap(new byte[] {
-            1,                        // tag
-            0, 4,                     // length (4)
-            0x74, 0x65, 0x73, 0x74    // "test"
+            0, 4,                     // length = 4
+            0x74, 0x65, 0x73, 0x74    // bytes = "test"
         });
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
         Annotation[] children = {
-            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
-            new SimpleMutableAnnotation(1, 2, new UShortInterpreterBE(), "length"),
-            new SimpleMutableAnnotation(3, 4, new StringInterpreter("UTF-8"), "bytes"),
+            new SimpleMutableAnnotation(0, 2, new UShortInterpreterBE(), "length"),
+            new SimpleMutableAnnotation(2, 4, new StringInterpreter("UTF-8"), "bytes"),
         };
 
-        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 7, "CONSTANT_Utf8_info", Arrays.asList(children));
+        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 6, "string_with_length", Arrays.asList(children));
+
+        assertEquals("Wrong annotations created", expected, group);
+    }
+
+    @Test
+    public void testArrayUsage() {
+        Structure structure = new RubyStructureDSL(
+            "structure :array_with_size do\n" +
+            "  uint2be :size \n" +
+            "  array :elements, :element_type => :uint2be, :start_index => 1, :size => :size \n" +
+            "end"
+        ).createStructure();
+
+        Binary binary = BinaryFactory.wrap(new byte[] {
+            0, 3,               // size = 3
+            0, 1, 0, 2, 0, 3,   // elements = [1, 2, 3]
+        });
+
+        GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
+
+        Annotation[] arrayElements = {
+            new SimpleMutableAnnotation(2, 2, new UShortInterpreterBE(), "elements[1]"),
+            new SimpleMutableAnnotation(4, 2, new UShortInterpreterBE(), "elements[2]"),
+            new SimpleMutableAnnotation(6, 2, new UShortInterpreterBE(), "elements[3]"),
+        };
+        Annotation[] children = {
+            new SimpleMutableAnnotation(0, 2, new UShortInterpreterBE(), "size"),
+            new SimpleMutableGroupAnnotation(2, 6, "elements", Arrays.asList(arrayElements)),
+        };
+
+        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 8, "array_with_size", Arrays.asList(children));
 
         assertEquals("Wrong annotations created", expected, group);
     }
