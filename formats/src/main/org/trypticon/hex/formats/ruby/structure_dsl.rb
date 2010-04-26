@@ -2,7 +2,7 @@
 class Field
   attr_accessor :name
   attr_accessor :interpreter_map
-  attr_accessor :length_from_field
+  attr_accessor :length
 
   def initialize(name, interpreter, options = {}, &block)
     @name = name
@@ -18,23 +18,6 @@ class Field
 
     if block
       block.call(self)
-    end
-  end
-end
-
-class InstantiatedField < Field
-  attr_accessor :interpreter
-  attr_accessor :position
-  attr_accessor :length
-
-  def initialize(field)
-    @name = field.name
-    @interpreter_map = field.interpreter_map
-    @length_from_field = field.length_from_field
-
-    @interpreter = $interpreter_storage.from_map(field.interpreter_map)
-    if !@interpreter
-      raise "Could not find interpreter: #{field.interpreter_map.inspect}"
     end
   end
 end
@@ -66,38 +49,34 @@ class StructureDSL
     string_options.merge!(options)
 
     @fields << Field.new(sym, "string", string_options) do |field|
-      if length.is_a?(Symbol)
-        field.length_from_field = length
-      end
+      field.length = length
     end
   end
 
   # Implements Structure
   def drop(binary, position)
 
-    instantiated_fields = []
     annotations = []
     pos = position
 
     @fields.each do |field|
-      instantiated_field = InstantiatedField.new(field)
+      interpreter = $interpreter_storage.from_map(field.interpreter_map)
 
       length = -1
-      if instantiated_field.interpreter.is_a?(org.trypticon.hex.interpreters.FixedLengthInterpreter)
-        length = instantiated_field.interpreter.value_length
-      elsif instantiated_field.length_from_field
-        length_field = instantiated_fields.find { |f| f.name == instantiated_field.length_from_field }
-        length = length_field.interpreter.interpret(binary, length_field.position, length_field.length).int_value
+      if interpreter.is_a?(org.trypticon.hex.interpreters.FixedLengthInterpreter)
+        length = interpreter.value_length
+      elsif field.length.is_a?(Symbol) || field.length.is_a?(String)
+        length_annotation = annotations.find { |f| f.note == field.length.to_s }
+        if !length_annotation
+          raise "No annotation called #{field.length} to get the length from"
+        end
+        length = length_annotation.interpret(binary).int_value
       else
-        raise "No way to determine the length for field #{field.name} of type #{instantiated_field.interpreter.class}"
+        raise "No way to determine the length for field #{field.name} of type #{interpreter.class}"
       end
 
-      instantiated_field.position = pos
-      instantiated_field.length = length
+      annotation = org.trypticon.hex.anno.SimpleMutableAnnotation.new(pos, length, interpreter, field.name)
 
-      annotation = org.trypticon.hex.anno.SimpleMutableAnnotation.new(pos, length, instantiated_field.interpreter, field.name)
-
-      instantiated_fields << instantiated_field
       annotations << annotation
 
       pos += length
