@@ -40,34 +40,32 @@ class InstantiatedField < Field
 end
 
 class StructureDSL
-  @@fields = []
+  attr_accessor :name
+  attr_accessor :fields
 
-  def self.nice_name
-    @@nice_name || name
+  def initialize(name)
+    @name = name
+    @fields = []
   end
 
-  def self.nice_name=(nice_name)
-    @@nice_name = nice_name.to_s
+  def unsigned8(sym)
+    @fields << Field.new(sym, "uint1")
   end
 
-  def self.unsigned8(sym)
-    @@fields << Field.new(sym, "uint1")
+  def unsigned16(sym)
+    @fields << Field.new(sym, "uint2be")
   end
 
-  def self.unsigned16(sym)
-    @@fields << Field.new(sym, "uint2be")
+  def unsigned32(sym)
+    @fields << Field.new(sym, "uint4be")
   end
 
-  def self.unsigned32(sym)
-    @@fields << Field.new(sym, "uint4be")
-  end
-
-  def self.string(sym, options = {})
+  def string(sym, options = {})
     length = options.delete(:length)
     string_options = { :charset => 'UTF-8' }
     string_options.merge!(options)
 
-    @@fields << Field.new(sym, "string", string_options) do |field|
+    @fields << Field.new(sym, "string", string_options) do |field|
       if length.is_a?(Symbol)
         field.length_from_field = length
       end
@@ -81,7 +79,7 @@ class StructureDSL
     annotations = []
     pos = position
 
-    @@fields.each do |field|
+    @fields.each do |field|
       instantiated_field = InstantiatedField.new(field)
 
       length = -1
@@ -106,20 +104,14 @@ class StructureDSL
     end
 
     length = pos - position
-    org.trypticon.hex.anno.SimpleMutableGroupAnnotation.new(position, length, self.class.nice_name, annotations)
-  end
-
-  def self.metaclass
-    class << self
-      self
-    end
+    org.trypticon.hex.anno.SimpleMutableGroupAnnotation.new(position, length, self.name.to_s, annotations)
   end
 end
 
 def structure(name, &block)
-  clazz = Class.new(StructureDSL) do
-    instance_eval(&block)
-  end
-  clazz.nice_name = name
-  clazz.new
+  structure = StructureDSL.new(name)
+
+  structure.instance_eval(&block)
+
+  structure
 end
