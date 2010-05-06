@@ -39,17 +39,17 @@ public class PrimitiveInterpreterStorage implements InterpreterStorage {
             new HashMap<String, Class<? extends Interpreter>>(10);
 
     public PrimitiveInterpreterStorage() {
-        register("uint1", UByteInterpreter.class);
-        register("uint2be", UShortInterpreterBE.class);
-        register("uint2le", UShortInterpreterLE.class);
-        register("uint4be", UIntInterpreterBE.class);
-        register("uint4le", UIntInterpreterLE.class);
-        register("uint8be", ULongInterpreterBE.class);
-        register("uint8le", ULongInterpreterLE.class);
-        register("float4be", FloatInterpreterBE.class);
-        register("float4le", FloatInterpreterLE.class);
-        register("float8be", DoubleInterpreterBE.class);
-        register("float8le", DoubleInterpreterLE.class);
+        register("uint8", UByteInterpreter.class);
+        register("uint16_be", UShortInterpreterBE.class);
+        register("uint16_le", UShortInterpreterLE.class);
+        register("uint32_be", UIntInterpreterBE.class);
+        register("uint32_le", UIntInterpreterLE.class);
+        register("uint64_be", ULongInterpreterBE.class);
+        register("uint64_le", ULongInterpreterLE.class);
+        register("float32_be", FloatInterpreterBE.class);
+        register("float32_le", FloatInterpreterLE.class);
+        register("float64_be", DoubleInterpreterBE.class);
+        register("float64_le", DoubleInterpreterLE.class);
     }
 
     private void register(String name, Class<? extends Interpreter> klass) {

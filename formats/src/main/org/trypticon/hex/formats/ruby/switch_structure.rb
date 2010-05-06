@@ -14,7 +14,7 @@ class SwitchStructure
 
   # Drops the structure at the given location.
   def do_drop(drop_context, binary, position)
-    value = drop_context.get_int_value(@value_name, @value_name, binary)
+    value = drop_context.get_int_value(:value, @value_name, binary)
 
     structure_name = @mappings[value] || raise("Value has no associated mapping: #{value}")
 

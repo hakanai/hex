@@ -22,7 +22,8 @@ import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.formats.classfile.constantpool.CpInfo;
+import org.trypticon.hex.formats.Structure;
+import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -52,7 +53,8 @@ public class ClassFile extends AbstractClassFileStructure {
         List<Annotation> constantPoolChildren = new LinkedList<Annotation>();
         int constantPoolLength = 0;
         for (int i = 1, count = ((Number) constantPoolCount.interpret(binary)).intValue(); i < count; i++) {
-            Annotation constantPoolChild = new CpInfo().drop(binary, pos + constantPoolLength);
+            Structure cpInfo = new RubyStructureDSL(getClass().getResource("constantpool/cp_info.rb")).createStructure();
+            Annotation constantPoolChild = cpInfo.drop(binary, pos + constantPoolLength);
             constantPoolLength += constantPoolChild.getLength();
             constantPoolChildren.add(constantPoolChild);
         }

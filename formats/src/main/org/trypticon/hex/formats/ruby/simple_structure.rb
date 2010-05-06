@@ -40,6 +40,8 @@ class SimpleStructure
              @interpreter.value_length :
              drop_context.get_int_value(:length, @length, binary)
 
+    raise("length is negative (#{length})") if length < 0
+
     SimpleMutableAnnotation.new(position, length, @interpreter, @name)
   end
 end

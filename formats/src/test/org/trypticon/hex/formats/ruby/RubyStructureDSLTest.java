@@ -46,8 +46,8 @@ public class RubyStructureDSLTest {
     public void testLengthUsage() {
         Structure structure = new RubyStructureDSL(
             "structure :string_with_length do\n" +
-            "  uint2be  :length\n" +
-            "  string   :bytes, :charset => 'UTF-8', :length => :length\n" +
+            "  uint16_be  :length\n" +
+            "  string     :bytes, :charset => 'UTF-8', :length => :length\n" +
             "end"
         ).createStructure();
 
@@ -72,8 +72,8 @@ public class RubyStructureDSLTest {
     public void testArrayUsage() {
         Structure structure = new RubyStructureDSL(
             "structure :array_with_size do\n" +
-            "  uint2be :size \n" +
-            "  array :elements, :element_type => :uint2be, :start_index => 1, :size => :size \n" +
+            "  uint16_be :size \n" +
+            "  array     :elements, :element_type => :uint16_be, :start_index => 1, :size => :size \n" +
             "end"
         ).createStructure();
 
@@ -102,15 +102,15 @@ public class RubyStructureDSLTest {
     private Structure createSwitchNotReplacingStructure() {
         return new RubyStructureDSL(
             "structure :option1 do\n" +
-            "  uint2be :value\n" +
+            "  uint16_be :value\n" +
             "end\n" +
             " \n" +
             "structure :option2 do\n" +
-            "  uint4be :value\n" +
+            "  uint32_be :value\n" +
             "end\n" +
             " \n" +
             "structure :one_or_the_other do\n" +
-            "  uint1 :tag\n" +
+            "  uint8 :tag\n" +
             "  switch :tag, :mappings => {\n" +
             "    1 => :option1,\n" +
             "    2 => :option2 \n" +
@@ -168,17 +168,17 @@ public class RubyStructureDSLTest {
     private Structure createSwitchReplacingStructure() {
         return new RubyStructureDSL(
             "structure :option1 do\n" +
-            "  uint1 :tag\n" +
-            "  uint2be :value\n" +
+            "  uint8      :tag\n" +
+            "  uint16_be  :value\n" +
             "end\n" +
             " \n" +
             "structure :option2 do\n" +
-            "  uint1 :tag\n" +
-            "  uint4be :value\n" +
+            "  uint8      :tag\n" +
+            "  uint32_be  :value\n" +
             "end\n" +
             " \n" +
             "structure :one_or_the_other do\n" +
-            "  uint1 :tag\n" +
+            "  uint8  :tag\n" +
             "  switch :tag, :replaces_this_structure => true, :mappings => {\n" +
             "    1 => :option1,\n" +
             "    2 => :option2 \n" +

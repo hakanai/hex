@@ -22,9 +22,7 @@ import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.interpreters.MasterInterpreterStorage;
-import sun.misc.IOUtils;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

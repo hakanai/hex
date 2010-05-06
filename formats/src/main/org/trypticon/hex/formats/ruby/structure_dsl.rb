@@ -11,7 +11,7 @@ require 'org/trypticon/hex/formats/ruby/switch_structure'
 
 # $interpreter_storage is defined by the container.  We define a local structure storage here for
 # structures which are defined in the script.
-$local_structure_storage = {}
+$local_structure_storage ||= {}
 
 
 #
@@ -97,10 +97,10 @@ class StructureDSL
 
     @fields.each do |field|
       # Special case, if the current structure had a switch definition in it which is supposed to
-      # replace our entire structure, then we have to pass it a position of 0, and then return only
-      # *its* annotation instead of our own.
+      # replace our entire structure, then we have to pass it the position of the start of this structure,
+      # and then return only *its* annotation instead of our own.
       if field.is_a?(SwitchStructure) && field.replaces_this_structure
-        annotation = field.do_drop(drop_context, binary, 0)
+        annotation = field.do_drop(drop_context, binary, position)
         return annotation
       end
 
