@@ -22,6 +22,7 @@ import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.formats.classfile.AbstractClassFileStructure;
+import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 
 /**
  * "cp_info" structure detailing a single entry in the constant pool.
@@ -55,13 +56,13 @@ public class CpInfo extends AbstractClassFileStructure {
             case 7: //CONSTANT_Class
                 return new ConstantClassInfo();
             case 8: //CONSTANT_String
-                return new ConstantStringInfo();
+                return new RubyStructureDSL(getClass().getResource("CONSTANT_String_info.rb")).createStructure();
             case 9: //CONSTANT_Fieldref
-                return new ConstantFieldrefInfo();
+                return new RubyStructureDSL(getClass().getResource("CONSTANT_Fieldref_info.rb")).createStructure();
             case 10: //CONSTANT_Methodref
-                return new ConstantMethodrefInfo();
+                return new RubyStructureDSL(getClass().getResource("CONSTANT_Methodref_info.rb")).createStructure();
             case 11: //CONSTANT_InterfaceMethodref
-                return new ConstantInterfaceMethodrefInfo();
+                return new RubyStructureDSL(getClass().getResource("CONSTANT_InterfaceMethodref_info.rb")).createStructure();
             case 12: //CONSTANT_NameAndType
                 return new ConstantNameAndTypeInfo();
             default:
