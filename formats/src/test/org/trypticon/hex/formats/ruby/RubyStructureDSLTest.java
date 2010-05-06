@@ -27,6 +27,7 @@ import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.interpreters.primitives.UByteInterpreter;
+import org.trypticon.hex.interpreters.primitives.UIntInterpreterBE;
 import org.trypticon.hex.interpreters.primitives.UShortInterpreterBE;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
@@ -95,6 +96,134 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 8, "array_with_size", Arrays.asList(children));
 
+        assertEquals("Wrong annotations created", expected, group);
+    }
+
+    private Structure createSwitchNotReplacingStructure() {
+        return new RubyStructureDSL(
+            "structure :option1 do\n" +
+            "  uint2be :value\n" +
+            "end\n" +
+            " \n" +
+            "structure :option2 do\n" +
+            "  uint4be :value\n" +
+            "end\n" +
+            " \n" +
+            "structure :one_or_the_other do\n" +
+            "  uint1 :tag\n" +
+            "  switch :tag, :mappings => {\n" +
+            "    1 => :option1,\n" +
+            "    2 => :option2 \n" +
+            "  }\n" +
+            "end\n"
+        ).createStructure();
+    }
+
+    @Test
+    public void testSwitchUsageNotReplacingStructure1() {
+        Structure structure = createSwitchNotReplacingStructure();
+
+        Binary binary = BinaryFactory.wrap(new byte[] {
+            1,     // tag = 1
+            0, 1,  // value = 1
+        });
+
+        GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
+
+        Annotation[] grandchildren = {
+            new SimpleMutableAnnotation(1, 2, new UShortInterpreterBE(), "value"),
+        };
+        Annotation[] children = {
+            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
+            new SimpleMutableGroupAnnotation(1, 2, "option1", Arrays.asList(grandchildren)),
+        };
+
+        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 3, "one_or_the_other", Arrays.asList(children));
+        assertEquals("Wrong annotations created", expected, group);
+    }
+
+    @Test
+    public void testSwitchUsageNotReplacingStructure2() {
+        Structure structure = createSwitchNotReplacingStructure();
+
+        Binary binary = BinaryFactory.wrap(new byte[] {
+            2,           // tag = 2
+            0, 0, 0, 2,  // value = 2
+        });
+
+        GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
+
+        Annotation[] grandchildren = {
+            new SimpleMutableAnnotation(1, 4, new UIntInterpreterBE(), "value"),
+        };
+        Annotation[] children = {
+            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
+            new SimpleMutableGroupAnnotation(1, 4, "option2", Arrays.asList(grandchildren)),
+        };
+
+        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 5, "one_or_the_other", Arrays.asList(children));
+        assertEquals("Wrong annotations created", expected, group);
+    }
+
+    private Structure createSwitchReplacingStructure() {
+        return new RubyStructureDSL(
+            "structure :option1 do\n" +
+            "  uint1 :tag\n" +
+            "  uint2be :value\n" +
+            "end\n" +
+            " \n" +
+            "structure :option2 do\n" +
+            "  uint1 :tag\n" +
+            "  uint4be :value\n" +
+            "end\n" +
+            " \n" +
+            "structure :one_or_the_other do\n" +
+            "  uint1 :tag\n" +
+            "  switch :tag, :replaces_this_structure => true, :mappings => {\n" +
+            "    1 => :option1,\n" +
+            "    2 => :option2 \n" +
+            "  }\n" +
+            "end\n"
+        ).createStructure();
+    }
+
+    @Test
+    public void testSwitchUsageReplacingStructure1() {
+        Structure structure = createSwitchReplacingStructure();
+
+        Binary binary = BinaryFactory.wrap(new byte[] {
+            1,     // tag = 1
+            0, 1,  // value = 1
+        });
+
+        GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
+
+        Annotation[] children = {
+            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
+            new SimpleMutableAnnotation(1, 2, new UShortInterpreterBE(), "value"),
+        };
+
+        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 3, "option1", Arrays.asList(children));
+        assertEquals("Wrong annotations created", expected, group);
+    }
+
+    @Test
+    public void testSwitchUsageReplacingStructure2() {
+        Structure structure = createSwitchReplacingStructure();
+
+        Binary binary = BinaryFactory.wrap(new byte[] {
+            2,           // tag = 2
+            0, 0, 0, 2,  // value = 2
+        });
+
+        GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
+
+        Annotation[] children = {
+            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
+            new SimpleMutableAnnotation(1, 4, new UIntInterpreterBE(), "value"),
+        };
+
+        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 5, "option2", Arrays.asList(children));
         assertEquals("Wrong annotations created", expected, group);
     }
 }

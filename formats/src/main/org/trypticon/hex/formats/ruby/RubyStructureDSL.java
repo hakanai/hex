@@ -23,6 +23,9 @@ import org.jruby.embed.ScriptingContainer;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.interpreters.MasterInterpreterStorage;
 
+import java.io.IOException;
+import java.net.URL;
+
 /**
  * Java entry point to a Ruby DSL for creating structures.
  *
@@ -33,6 +36,18 @@ public class RubyStructureDSL {
 
     public RubyStructureDSL(String scriptlet) {
         this.scriptlet = scriptlet;
+    }
+
+    public RubyStructureDSL(URL scriptLocation) {
+        this(loadURL(scriptLocation));
+    }
+
+    private static String loadURL(URL location) {
+        try {
+            return (String) location.getContent();
+        } catch (IOException e) {
+            throw new RuntimeException("URL was not accessible: " + location, e);
+        }
     }
 
     public Structure createStructure() {

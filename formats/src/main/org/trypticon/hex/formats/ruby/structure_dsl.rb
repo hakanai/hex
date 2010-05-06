@@ -3,126 +3,16 @@ include_class org.trypticon.hex.anno.SimpleMutableAnnotation
 include_class org.trypticon.hex.anno.SimpleMutableGroupAnnotation
 include_class org.trypticon.hex.interpreters.FixedLengthInterpreter
 
-#
-# Holds information for a single sequence of annotations being dropped into place.
-#
-class DropContext
-  attr_reader :annotations
+require 'org/trypticon/hex/formats/ruby/drop_context'
+require 'org/trypticon/hex/formats/ruby/simple_structure'
+require 'org/trypticon/hex/formats/ruby/array_structure'
+require 'org/trypticon/hex/formats/ruby/switch_structure'
 
-  def initialize(annotations)
-    @annotations = annotations
-  end
 
-  # call-seq:
-  #   get_int_value(:length, 2)       #=> an Integer
-  #   get_int_value(:length, :length) #=> an Integer
-  #
-  # Gets an integer value from a previously encountered annotation.
-  #
-  # Parameters:
-  #   desc - symbol describing the parameter (used primarily for exception messages)
-  #   param - the parameter provided:
-  #         If it's a number, the number is returned after converting to an integer.
-  #         If it's a string or symbol, the number is taken from the field with that name, which must
-  #           have occurred previous to the current field being processed.
-  #   binary - the binary to look up values in if needed
-  #
-  def get_int_value(desc, param, binary)
-    if param.is_a?(Numeric)
-      param.to_i
-    elsif param.is_a?(Symbol) || param.is_a?(String)
-      annotation = @annotations.find { |a| a.note == param.to_s }
-      if !annotation
-        raise "No annotation called #{param} to get the length from"
-      end
-      annotation.interpret(binary).int_value
-    else
-      raise "No way to determine the #{desc}"
-    end
-  end
-end
+# $interpreter_storage is defined by the container.  We define a local structure storage here for
+# structures which are defined in the script.
+$local_structure_storage = {}
 
-#
-# A simple structure holds an interpreter and its length.
-#
-class SimpleStructure
-  attr_reader :name
-
-  # Parameters:
-  #   name             - the name the annotation will receive
-  #   interpreter_map  - specifies the interpreter to use to interpret the binary at the location of the
-  #                      annotation.  Supported interpreter map options:
-  #     :name     - the short name of the interpreter
-  #     :length   - the length of the structure:
-  #         If it's a number, the number is taken as the length (after converting to an integer.)
-  #         If it's a string or symbol, the number is taken from the field with that name, which must
-  #           have occurred previous to the current field being processed.
-  #     Plus various options depending on the interpreter used.
-  #
-  def initialize(name, interpreter_map)
-    @name = name
-
-    @length = interpreter_map.delete(:length)
-
-    # Converts the keys to string in the process.  Symbols look better for hash keys on the Ruby side,
-    # but the Java side expects a map keyed by String.
-    tmp = {}
-    interpreter_map.each_pair do |key, value|
-      tmp[key.to_s] = value.to_s
-    end
-
-    @interpreter = $interpreter_storage.from_map(tmp)
-    if !@interpreter
-      raise "Interpreter not found: #{interpreter_map.inspect}"
-    end
-  end
-
-  # Drops the structure at the given location.
-  def do_drop(drop_context, binary, position)
-    length = @interpreter.is_a?(FixedLengthInterpreter) ?
-             @interpreter.value_length :
-             drop_context.get_int_value(:length, @length, binary)
-
-    SimpleMutableAnnotation.new(position, length, @interpreter, @name)
-  end
-end
-
-#
-# An array structure will create a sequence of the same structure.
-#
-class ArrayStructure
-  attr_reader :name
-
-  def initialize(name, start_index, size, element_structure)
-    @name = name
-    @start_index = start_index
-    @size = size
-    @element_structure = element_structure
-  end
-
-  # Drops the structure at the given location.
-  def do_drop(drop_context, binary, position)
-
-    annotations = []
-    pos = position
-    size = drop_context.get_int_value(:size, @size, binary)
-
-    child_drop_context = DropContext.new(annotations)
-
-    (@start_index...@start_index+size).each do |i|
-
-      annotation = @element_structure.do_drop(child_drop_context, binary, pos)
-      annotation.note = "#{self.name}[#{i}]"
-
-      annotations << annotation
-
-      pos += annotation.length
-    end
-
-    length = pos - position
-    SimpleMutableGroupAnnotation.new(position, length, self.name.to_s, annotations)
-  end
-end
 
 #
 # Main DSL class.
@@ -137,6 +27,12 @@ class StructureDSL
   end
 
   # Catch-all allows simple interpreter-based fields to be supported without creating methods for them all.
+  #
+  # Auto-creates methods with the following arguments:
+  #   name     - the name of the field
+  #   options  - additional options for the interpreter - differs depending on the interpreter being used.
+  #     (the method name is used as the interpreter name.)
+  #
   def method_missing(method, *args)
     # name of the method call becomes the interpreter name
     # first argument becomes the field name
@@ -172,6 +68,25 @@ class StructureDSL
     @fields << ArrayStructure.new(name, start_index, size, element_structure)
   end
 
+  # Creates a switch structure (similar to a union but the lengths can vary.)
+  # TODO: Is there a better name for this?  variant?
+  # TODO: Should mappings be specified in a block?
+  #
+  #   value_name - the name of the field to switch on.  needs to have been defined before the switch definition.
+  #   options    - a map of options.  Supported options:
+  #     :replaces_this_structure  - if true (default is false), the switched structure replaces this one entirely.
+  #                                 If this is used then no other definitions should be included except for the
+  #                                 minimum required before the switch.  If false, the structure is added as a
+  #                                 child of this structure.
+  #     :mappings                 - value to structure name mappings
+  #
+  def switch(value_name, options = {})
+    replaces_this_structure = options[:replaces_this_structure] || false
+    mappings                = options[:mappings]                || raise("mappings option not provided")
+
+    @fields << SwitchStructure.new(value_name, replaces_this_structure, mappings)
+  end
+
   # Drops the structure at the given location.
   def do_drop(drop_context, binary, position)
 
@@ -181,6 +96,14 @@ class StructureDSL
     drop_context = DropContext.new(annotations)
 
     @fields.each do |field|
+      # Special case, if the current structure had a switch definition in it which is supposed to
+      # replace our entire structure, then we have to pass it a position of 0, and then return only
+      # *its* annotation instead of our own.
+      if field.is_a?(SwitchStructure) && field.replaces_this_structure
+        annotation = field.do_drop(drop_context, binary, 0)
+        return annotation
+      end
+
       annotation = field.do_drop(drop_context, binary, pos)
 
       annotations << annotation
@@ -197,6 +120,9 @@ class StructureDSL
     do_drop(DropContext.new([]), binary, position)
   end
 
+  def inspect
+    "#{super} name=#{name}"
+  end
 end
 
 # Main entry point, a simple method which instantiates the DSL and evaluates the caller's block
@@ -209,6 +135,8 @@ def structure(name, &block)
   structure = StructureDSL.new(name)
 
   structure.instance_eval(&block)
+
+  $local_structure_storage[name] = structure
 
   structure
 end
