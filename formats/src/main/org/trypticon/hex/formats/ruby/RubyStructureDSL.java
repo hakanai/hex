@@ -22,8 +22,12 @@ import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.interpreters.MasterInterpreterStorage;
+import sun.misc.IOUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -44,7 +48,14 @@ public class RubyStructureDSL {
 
     private static String loadURL(URL location) {
         try {
-            return (String) location.getContent();
+            InputStream stream = location.openStream();
+            ByteArrayOutputStream temp = new ByteArrayOutputStream();
+            byte[] buffer = new byte[64*1024];
+            int bytesRead;
+            while ((bytesRead = stream.read(buffer)) != -1) {
+                temp.write(buffer, 0, bytesRead);
+            }
+            return temp.toString("UTF-8");
         } catch (IOException e) {
             throw new RuntimeException("URL was not accessible: " + location, e);
         }
