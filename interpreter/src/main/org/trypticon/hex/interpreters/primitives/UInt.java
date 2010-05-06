@@ -43,7 +43,7 @@ public class UInt extends Number implements Value {
 
     @Override
     public long longValue() {
-        return value;
+        return value & 0xFFFFFFFFL;
     }
 
     @Override

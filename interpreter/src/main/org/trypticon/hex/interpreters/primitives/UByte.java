@@ -38,11 +38,11 @@ public class UByte extends Number implements Value {
 
     @Override
     public int intValue() {
-        return value;
+        return value & 0xFF;
     }
 
     public long longValue() {
-        return value;
+        return value & 0xFF;
     }
 
     @Override

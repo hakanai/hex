@@ -38,11 +38,11 @@ public class UShort extends Number implements Value {
 
     @Override
     public int intValue() {
-        return value;
+        return value & 0xFFFF;
     }
 
     public long longValue() {
-        return value;
+        return value & 0xFFFF;
     }
 
     @Override
