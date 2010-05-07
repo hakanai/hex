@@ -111,10 +111,12 @@ public class RubyStructureDSLTest {
             " \n" +
             "structure :one_or_the_other do\n" +
             "  uint8 :tag\n" +
-            "  switch :tag, :mappings => {\n" +
-            "    1 => :option1,\n" +
-            "    2 => :option2 \n" +
-            "  }\n" +
+            "  switch :tag do |value|\n" +
+            "    case value \n" +
+            "      when 1; :option1 \n" +
+            "      when 2; :option2 \n" +
+            "    end\n" +
+            "  end\n" +
             "end\n"
         ).createStructure();
     }
@@ -179,10 +181,12 @@ public class RubyStructureDSLTest {
             " \n" +
             "structure :one_or_the_other do\n" +
             "  uint8  :tag\n" +
-            "  switch :tag, :replaces_this_structure => true, :mappings => {\n" +
-            "    1 => :option1,\n" +
-            "    2 => :option2 \n" +
-            "  }\n" +
+            "  switch :tag, :replaces_this_structure => true do |value|\n" +
+            "    case value \n" +
+            "      when 1; :option1 \n" +
+            "      when 2; :option2 \n" +
+            "    end\n" +
+            "  end\n" +
             "end\n"
         ).createStructure();
     }

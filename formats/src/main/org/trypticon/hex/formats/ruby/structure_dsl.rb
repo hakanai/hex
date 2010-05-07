@@ -70,7 +70,6 @@ class StructureDSL
 
   # Creates a switch structure (similar to a union but the lengths can vary.)
   # TODO: Is there a better name for this?  variant?
-  # TODO: Should mappings be specified in a block?
   #
   #   value_name - the name of the field to switch on.  needs to have been defined before the switch definition.
   #   options    - a map of options.  Supported options:
@@ -78,13 +77,12 @@ class StructureDSL
   #                                 If this is used then no other definitions should be included except for the
   #                                 minimum required before the switch.  If false, the structure is added as a
   #                                 child of this structure.
-  #     :mappings                 - value to structure name mappings
+  #   mapping_block - block is called with the value read, and should return a symbol indicating the structure to use.
   #
-  def switch(value_name, options = {})
+  def switch(value_name, options = {}, &mapping_block)
     replaces_this_structure = options[:replaces_this_structure] || false
-    mappings                = options[:mappings]                || raise("mappings option not provided")
 
-    @fields << SwitchStructure.new(value_name, replaces_this_structure, mappings)
+    @fields << SwitchStructure.new(value_name, replaces_this_structure, mapping_block)
   end
 
   # Drops the structure at the given location.
