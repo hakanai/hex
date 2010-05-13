@@ -81,7 +81,7 @@ public class ClassFile extends AbstractClassFileStructure {
         List<Annotation> fieldsChildren = new LinkedList<Annotation>();
         int fieldsLength = 0;
         for (int i = 0, count = ((Number) fieldsCount.interpret(binary)).intValue(); i < count; i++) {
-            Annotation fieldsChild = new FieldInfo().drop(binary, pos + fieldsLength);
+            Annotation fieldsChild = new RubyStructureDSL(getClass().getResource("field_info.rb")).createStructure().drop(binary, pos + fieldsLength);
             fieldsLength += fieldsChild.getLength();
             fieldsChildren.add(fieldsChild);
         }

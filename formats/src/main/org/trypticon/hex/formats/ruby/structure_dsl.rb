@@ -39,12 +39,18 @@ class StructureDSL
     # the tail goes into the options for the field
 
     StructureDSL.send(:define_method, method) do |name, *args1|
-      interpreter_map = args1.shift || {}
-      interpreter_map_with_name = interpreter_map.merge(:name => method)
-      @fields << SimpleStructure.new(name, interpreter_map_with_name)
+      options = args1.shift || {}
+      options_with_name = options.merge(:name => method)
+      @fields << SimpleStructure.new(name, options_with_name)
     end
 
     send(method, *args)
+  end
+
+  # Creates an unknown structure.  Actually this is just a shortcut for specifying the null interpreter.
+  def unknown(name, options = {})
+    interpreter_map_with_name = options.merge(:name => :null)
+    @fields << SimpleStructure.new(name, interpreter_map_with_name)
   end
 
   # Creates an array structure.
@@ -61,9 +67,11 @@ class StructureDSL
     element_type = options[:element_type] || raise("element_type option not provided")
     start_index  = options[:start_index]  || 0
 
-    # TODO: Support complex structures inside the array too.
-    # Name not needed here because ArrayStructure stamps its own name onto the elements.
-    element_structure = SimpleStructure.new(nil, { :name => element_type })
+    element_structure = $local_structure_storage[element_type]
+    if !element_structure
+      # Name not needed here because ArrayStructure stamps its own name onto the elements.
+      element_structure = SimpleStructure.new(nil, { :name => element_type })
+    end
 
     @fields << ArrayStructure.new(name, start_index, size, element_structure)
   end
