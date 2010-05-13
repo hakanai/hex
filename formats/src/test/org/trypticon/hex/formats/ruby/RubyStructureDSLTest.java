@@ -44,12 +44,12 @@ public class RubyStructureDSLTest {
 
     @Test
     public void testLengthUsage() {
-        Structure structure = new RubyStructureDSL(
+        Structure structure = RubyStructureDSL.load(
             "structure :string_with_length do\n" +
             "  uint16_be  :length\n" +
             "  string     :bytes, :charset => 'UTF-8', :length => :length\n" +
             "end"
-        ).createStructure();
+        );
 
         Binary binary = BinaryFactory.wrap(new byte[] {
             0, 4,                     // length = 4
@@ -70,12 +70,12 @@ public class RubyStructureDSLTest {
 
     @Test
     public void testArrayUsage() {
-        Structure structure = new RubyStructureDSL(
+        Structure structure = RubyStructureDSL.load(
             "structure :array_with_size do\n" +
             "  uint16_be :size \n" +
             "  array     :elements, :element_type => :uint16_be, :start_index => 1, :size => :size \n" +
             "end"
-        ).createStructure();
+        );
 
         Binary binary = BinaryFactory.wrap(new byte[] {
             0, 3,               // size = 3
@@ -100,7 +100,7 @@ public class RubyStructureDSLTest {
     }
 
     private Structure createSwitchNotReplacingStructure() {
-        return new RubyStructureDSL(
+        return RubyStructureDSL.load(
             "structure :option1 do\n" +
             "  uint16_be :value\n" +
             "end\n" +
@@ -118,7 +118,7 @@ public class RubyStructureDSLTest {
             "    end\n" +
             "  end\n" +
             "end\n"
-        ).createStructure();
+        );
     }
 
     @Test
@@ -168,7 +168,7 @@ public class RubyStructureDSLTest {
     }
 
     private Structure createSwitchReplacingStructure() {
-        return new RubyStructureDSL(
+        return RubyStructureDSL.load(
             "structure :option1 do\n" +
             "  uint8      :tag\n" +
             "  uint16_be  :value\n" +
@@ -188,7 +188,7 @@ public class RubyStructureDSLTest {
             "    end\n" +
             "  end\n" +
             "end\n"
-        ).createStructure();
+        );
     }
 
     @Test

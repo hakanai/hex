@@ -36,12 +36,20 @@ import java.net.URL;
 public class RubyStructureDSL {
     private final String scriptlet;
 
-    public RubyStructureDSL(String scriptlet) {
+    private RubyStructureDSL(String scriptlet) {
         this.scriptlet = scriptlet;
     }
 
-    public RubyStructureDSL(URL scriptLocation) {
+    private RubyStructureDSL(URL scriptLocation) {
         this(loadURL(scriptLocation));
+    }
+
+    public static Structure load(String scriptlet) {
+        return new RubyStructureDSL(scriptlet).createStructure();
+    }
+
+    public static Structure load(URL scriptLocation) {
+        return new RubyStructureDSL(scriptLocation).createStructure();
     }
 
     private static String loadURL(URL location) {
@@ -59,7 +67,7 @@ public class RubyStructureDSL {
         }
     }
 
-    public Structure createStructure() {
+    private Structure createStructure() {
         ScriptingContainer container = new ScriptingContainer();
         container.setOutput(System.out);
 

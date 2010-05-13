@@ -49,7 +49,7 @@ public class OpenSampleNotebookAction extends BaseAction {
         Binary binary = notebook.getBinary();
         AnnotationCollection annotations = notebook.getAnnotations();
 
-        Structure structure = new RubyStructureDSL(HexFrame.class.getResource("/org/trypticon/hex/formats/classfile/class_file.rb")).createStructure();
+        Structure structure = RubyStructureDSL.load(getClass().getResource("/org/trypticon/hex/formats/classfile/class_file.rb"));
         annotations.add(structure.drop(binary, 0));
     }
 }
