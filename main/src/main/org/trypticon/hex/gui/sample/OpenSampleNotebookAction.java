@@ -22,7 +22,8 @@ import java.awt.event.ActionEvent;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.formats.classfile.ClassFile;
+import org.trypticon.hex.formats.Structure;
+import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.DefaultNotebook;
@@ -48,6 +49,7 @@ public class OpenSampleNotebookAction extends BaseAction {
         Binary binary = notebook.getBinary();
         AnnotationCollection annotations = notebook.getAnnotations();
 
-        annotations.add(new ClassFile().drop(binary, 0));
+        Structure structure = new RubyStructureDSL(HexFrame.class.getResource("/org/trypticon/hex/formats/classfile/class_file.rb")).createStructure();
+        annotations.add(structure.drop(binary, 0));
     }
 }

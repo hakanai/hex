@@ -40,12 +40,12 @@ import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
-import org.trypticon.hex.formats.classfile.ClassFile;
 import org.trypticon.hex.formats.jpeg.JpegAPP0;
 import org.trypticon.hex.formats.jpeg.JpegBlock;
 import org.trypticon.hex.formats.jpeg.JpegEOI;
 import org.trypticon.hex.formats.jpeg.JpegSOI;
 import org.trypticon.hex.formats.jpeg.JpegSOS;
+import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
@@ -252,7 +252,7 @@ public class HexFrame extends JFrame {
 
     private static JMenu buildFormatsMenu() {
         JMenu menu = new JMenu("Formats");
-        menu.add(new DropStructureAction(new ClassFile()));
+        menu.add(new DropStructureAction(new RubyStructureDSL(HexFrame.class.getResource("/org/trypticon/hex/formats/classfile/class_file.rb")).createStructure()));
         menu.addSeparator();
         menu.add(new DropStructureAction(new JpegSOI()));
         menu.add(new DropStructureAction(new JpegAPP0()));
