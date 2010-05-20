@@ -27,6 +27,7 @@ import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
+import org.trypticon.hex.gui.warmup.JRubyWarmup;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
@@ -37,6 +38,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
 public class Main {
     public static void main(final String[] args) throws Exception {
         PLAFBootstrap.init();
+
+        new JRubyWarmup().start();
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
