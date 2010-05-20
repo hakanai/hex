@@ -19,10 +19,10 @@
 package org.trypticon.hex.gui;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 import net.roydesign.app.Application;
+import org.trypticon.hex.util.LoggerUtils;
 
 /**
  * <p>Mac-specific look and feel fixes.</p>
@@ -35,14 +35,13 @@ import net.roydesign.app.Application;
  * @author trejkaz
  */
 public class MacPLAFBootstrap {
-    private static final Logger logger = Logger.getLogger(MacPLAFBootstrap.class.getName());
 
     /**
      * Initialises look and feel for Aqua (Mac OS X.)
      *
      * @throws Exception if an error occurs.
      */
-    static void init() throws Exception {
+    void init() throws Exception {
         // Look and feel tweaks for Apple's runtime.
         // These need to be done before setting the LAF.
 
@@ -65,7 +64,7 @@ public class MacPLAFBootstrap {
         try {
             UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Unexpected error initialising Quaqua, falling back to Aqua", e);
+            LoggerUtils.get().log(Level.WARNING, "Unexpected error initialising Quaqua, falling back to Aqua", e);
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
     }

@@ -37,7 +37,7 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  */
 public class Main {
     public static void main(final String[] args) throws Exception {
-        PLAFBootstrap.init();
+        new PLAFBootstrap().init();
 
         new JRubyWarmup().start();
 

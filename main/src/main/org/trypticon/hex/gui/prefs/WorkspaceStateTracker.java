@@ -22,13 +22,13 @@ import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
+import org.trypticon.hex.util.LoggerUtils;
 
 import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 /**
@@ -37,7 +37,6 @@ import java.util.prefs.Preferences;
  * @author trejkaz
  */
 public class WorkspaceStateTracker {
-    private static final Logger logger = Logger.getLogger(WorkspaceStateTracker.class.getName());
 
     /**
      * Gets the preferences node to use for storing the state.
@@ -94,7 +93,7 @@ public class WorkspaceStateTracker {
         for (int i = 0; i < count; i++) {
             String location = openDocumentPrefs.get("location" + i, null);
             if (location == null) {
-                logger.warning("Location for open document " + i + " missing, skipping");
+                LoggerUtils.get().warning("Location for open document " + i + " missing, skipping");
                 continue;
             }
 
@@ -103,10 +102,10 @@ public class WorkspaceStateTracker {
                 Notebook notebook = new NotebookStorage().read(url);
                 HexFrame.openNotebook(notebook);
             } catch (MalformedURLException e) {
-                logger.log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
+                LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
                         location + ", skipping", e);
             } catch (IOException e) {
-                logger.log(Level.WARNING, "Error opening previously-open notebook: " + location + ", skipping");
+                LoggerUtils.get().log(Level.WARNING, "Error opening previously-open notebook: " + location + ", skipping");
             }
         }
 

@@ -18,35 +18,18 @@
 
 package org.trypticon.hex.util;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.logging.Level;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
- * Utilities for dealing with URLs.
+ * Tests for {@link LoggerUtils}.
  *
  * @author trejkaz
  */
-public class URLUtils {
-
-    private URLUtils() {
+public class LoggerUtilsTest {
+    @Test
+    public void testGettingLogger() throws Exception {
+        assertEquals("Name was not what we expected", "org.trypticon.hex.util.LoggerUtilsTest", LoggerUtils.get().getName());
     }
-
-    /**
-     * Converts a {@link URL} into a {@link File}.
-     *
-     * @param location the URL.
-     * @return the file.
-     */
-    public static File toFile(URL location) {
-        try {
-            return new File(location.toURI());
-        } catch (URISyntaxException e) {
-            // Tolerance for bad URLs, but should not happen.
-            LoggerUtils.get().log(Level.WARNING, "Illegal URI syntax in URL somehow: " + location, e);
-            return new File(location.getPath());
-        }
-    }
-
 }

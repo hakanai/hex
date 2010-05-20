@@ -18,10 +18,11 @@
 
 package org.trypticon.hex.util.swingsupport;
 
+import org.trypticon.hex.util.LoggerUtils;
+
 import java.awt.event.ActionEvent;
 import java.awt.Component;
 import java.awt.Window;
-import java.util.logging.Logger;
 import java.util.logging.Level;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
@@ -32,7 +33,6 @@ import javax.swing.JOptionPane;
  * @author trejkaz
  */
 public abstract class BaseAction extends AbstractAction {
-    private static final Logger logger = Logger.getLogger(BaseAction.class.getName());
 
     public void actionPerformed(ActionEvent event) {
         Window sourceWindow = new SourceWindowFinder().findSourceWindow(event);
@@ -47,7 +47,7 @@ public abstract class BaseAction extends AbstractAction {
     }
 
     protected void handleError(Component owner, Throwable t) {
-        logger.log(Level.SEVERE, "Unexpected error in UI action", t);
+        LoggerUtils.get().log(Level.SEVERE, "Unexpected error in UI action", t);
 
         JOptionPane.showMessageDialog(owner,
                                       "Unexpected error in UI action.  Check the log for further details.",

@@ -18,8 +18,9 @@
 
 package org.trypticon.hex.gui;
 
+import org.trypticon.hex.util.LoggerUtils;
+
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 /**
@@ -28,23 +29,22 @@ import javax.swing.UIManager;
  * @author trejkaz
  */
 class PLAFBootstrap {
-    private static final Logger logger = Logger.getLogger(PLAFBootstrap.class.getName());
 
-    static void init() {
+    void init() {
         String systemLAF = UIManager.getSystemLookAndFeelClassName();
 
         try {
             // com.apple.laf is definitely the case on SnowLeopard.  I think apple.laf must have been from Leopard.
             if ("com.apple.laf.AquaLookAndFeel".equals(systemLAF) ||
                 "apple.laf.AquaLookAndFeel".equals(systemLAF)) {
-                MacPLAFBootstrap.init();
+                new MacPLAFBootstrap().init();
                 return;
             }
 
             // Other special cases go here as needed.
 
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Unexpected error initialising custom LAF, falling back to generic", e);
+            LoggerUtils.get().log(Level.WARNING, "Unexpected error initialising custom LAF, falling back to generic", e);
         }
 
         initGeneric();
@@ -54,11 +54,11 @@ class PLAFBootstrap {
     /**
      * Initialises the generic look and feel.
      */
-    private static void initGeneric() {
+    private void initGeneric() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Unexpected error initialising platform LAF, falling back to default", e);
+            LoggerUtils.get().log(Level.WARNING, "Unexpected error initialising platform LAF, falling back to default", e);
         }
     }
 }

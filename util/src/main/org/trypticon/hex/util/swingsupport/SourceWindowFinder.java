@@ -18,12 +18,13 @@
 
 package org.trypticon.hex.util.swingsupport;
 
+import org.trypticon.hex.util.LoggerUtils;
+
 import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.util.logging.Logger;
 
 /**
  * Utility to find the source window for an event.
@@ -65,7 +66,7 @@ public class SourceWindowFinder {
         if (root instanceof Window) {
             return (Window) root;
         } else {
-            Logger.getLogger(getClass().getName()).warning("Top-level component was not a window: " + root);
+            LoggerUtils.get().warning("Top-level component was not a window: " + root);
             return null;
         }
 

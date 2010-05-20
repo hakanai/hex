@@ -22,7 +22,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.Logger;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
@@ -30,6 +29,7 @@ import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
+import org.trypticon.hex.util.LoggerUtils;
 
 /**
  * Holds a set of annotations along with a reference to the file the user is working on.
@@ -39,9 +39,8 @@ import org.trypticon.hex.binary.BinaryFactory;
  *
  * @author trejkaz
  */
-public class DefaultNotebook implements Notebook
-{
-    private static final Logger logger = Logger.getLogger(DefaultNotebook.class.getName());
+public class DefaultNotebook implements Notebook {
+
     private PropertyChangeSupport propertyChanges;
     private URL notebookLocation;
     private String name;
@@ -104,7 +103,7 @@ public class DefaultNotebook implements Notebook
 
         synchronized (openLock) {
             if (binary != null) {
-                logger.warning("Already open when open() was called, doing nothing.");
+                LoggerUtils.get().warning("Already open when open() was called, doing nothing.");
             } else {
                 binary = BinaryFactory.open(binaryLocation);
             }
@@ -133,7 +132,7 @@ public class DefaultNotebook implements Notebook
     public void close() {
         synchronized (openLock) {
             if (binary == null) {
-                logger.warning("Already closed when close() was called, doing nothing.");
+                LoggerUtils.get().warning("Already closed when close() was called, doing nothing.");
             } else {
                 binary.close();
                 binary = null;
