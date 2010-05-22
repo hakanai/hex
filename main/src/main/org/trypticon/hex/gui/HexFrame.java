@@ -254,6 +254,8 @@ public class HexFrame extends JFrame {
         JMenu menu = new JMenu("Formats");
         menu.add(new DropStructureAction(RubyStructureDSL.load(HexFrame.class.getResource("/org/trypticon/hex/formats/classfile/class_file.rb"))));
         menu.addSeparator();
+        menu.add(new DropStructureAction(RubyStructureDSL.load(HexFrame.class.getResource("/org/trypticon/hex/formats/gif/gif_header.rb"))));
+        menu.addSeparator();
         menu.add(new DropStructureAction(new JpegSOI()));
         menu.add(new DropStructureAction(new JpegAPP0()));
         menu.add(new DropStructureAction(new JpegBlock()));

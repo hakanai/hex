@@ -230,4 +230,37 @@ public class RubyStructureDSLTest {
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 5, "option2", Arrays.asList(children));
         assertEquals("Wrong annotations created", expected, group);
     }
+
+    @Test
+    public void testSwitchUsageForOptionalStructure() {
+        Structure structure = RubyStructureDSL.load(
+            "structure :optional_structure do\n" +
+            "  uint32_be  :value\n" +
+            "end\n" +
+            " \n" +
+            "structure :some_header do\n" +
+            "  uint8  :bit_field\n" +
+            "  switch :bit_field do |value|\n" +
+            "    if value & 0x01 != 0 \n" +
+            "      :optional_structure \n" +
+            "    else \n" +
+            "      nil \n" +
+            "    end\n" +
+            "  end\n" +
+            "end\n"
+        );
+
+        Binary binary = BinaryFactory.wrap(new byte[] {
+            2,           // bit_field = 2 (0x01 not set)
+        });
+
+        GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
+
+        Annotation[] children = {
+            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "bit_field"),
+        };
+
+        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 1, "some_header", Arrays.asList(children));
+        assertEquals("Wrong annotations created", expected, group);
+    }
 }

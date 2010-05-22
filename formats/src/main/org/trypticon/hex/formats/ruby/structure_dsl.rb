@@ -99,7 +99,7 @@ class StructureDSL
     annotations = []
     pos = position
 
-    drop_context = DropContext.new(annotations)
+    drop_context = drop_context.new_child_context(annotations)
 
     @fields.each do |field|
       # Special case, if the current structure had a switch definition in it which is supposed to
@@ -111,10 +111,10 @@ class StructureDSL
       end
 
       annotation = field.do_drop(drop_context, binary, pos)
-
-      annotations << annotation
-
-      pos += annotation.length
+      if annotation
+        annotations << annotation
+        pos += annotation.length
+      end
     end
 
     length = pos - position

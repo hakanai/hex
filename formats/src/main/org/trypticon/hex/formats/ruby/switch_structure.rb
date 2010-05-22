@@ -16,10 +16,12 @@ class SwitchStructure
   def do_drop(drop_context, binary, position)
     value = drop_context.get_int_value(:value, @value_name, binary)
 
-    structure_name = @mapping_block.call(value) || raise("Value has no associated mapping: #{value}")
-
-    structure = $local_structure_storage[structure_name] || raise("Structure '#{structure_name}' has not been defined")
-
-    structure.do_drop(drop_context, binary, position)
+    structure_name = @mapping_block.call(value)
+    if structure_name
+      structure = $local_structure_storage[structure_name] || raise("Structure '#{structure_name}' has not been defined")
+      structure.do_drop(drop_context, binary, position)
+    else
+      nil
+    end
   end
 end

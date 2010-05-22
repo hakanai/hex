@@ -26,6 +26,7 @@ structure :cp_info do
       when 10 ; :CONSTANT_Methodref_info
       when 11 ; :CONSTANT_InterfaceMethodref_info
       when 12 ; :CONSTANT_NameAndType_info
+      else raise("Value has no mapping: #{value}")
     end
   end
 end

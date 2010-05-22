@@ -5,8 +5,14 @@
 class DropContext
   attr_reader :annotations
 
-  def initialize(annotations)
+  def initialize(annotations, parent_context = nil)
     @annotations = annotations
+    @parent_context = parent_context
+  end
+
+  # Creates a new child context.
+  def new_child_context(annotations)
+    DropContext.new(annotations, self)
   end
 
   # call-seq:
@@ -30,9 +36,9 @@ class DropContext
     if param.is_a?(Numeric)
       param.to_i
     elsif param.is_a?(Symbol)
-      annotation = @annotations.find { |a| a.note == param.to_s }
+      annotation = find_annotation(param)
       if !annotation
-        raise "No annotation called #{param} to get the length from"
+        raise "No annotation called #{param} to get the #{desc} from"
       end
       annotation.interpret(binary).int_value
     elsif param.is_a?(String)
@@ -44,4 +50,17 @@ class DropContext
       raise "No way to determine the #{desc}"
     end
   end
+
+protected
+
+  # Finds an annotation with the given name.  If it doesn't exist in the current context, walks up
+  # until it finds a context where it does exist.
+  def find_annotation(name)
+    annotation = @annotations.find { |a| a.note == name.to_s }
+    if !annotation && @parent_context
+      annotation = @parent_context.find_annotation(name)
+    end
+    annotation
+  end
+
 end
