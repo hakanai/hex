@@ -40,11 +40,6 @@ import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
-import org.trypticon.hex.formats.jpeg.JpegAPP0;
-import org.trypticon.hex.formats.jpeg.JpegBlock;
-import org.trypticon.hex.formats.jpeg.JpegEOI;
-import org.trypticon.hex.formats.jpeg.JpegSOI;
-import org.trypticon.hex.formats.jpeg.JpegSOS;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.notebook.Notebook;
@@ -256,11 +251,8 @@ public class HexFrame extends JFrame {
         menu.addSeparator();
         menu.add(new DropStructureAction(RubyStructureDSL.load(HexFrame.class.getResource("/org/trypticon/hex/formats/gif/gif_header.rb"))));
         menu.addSeparator();
-        menu.add(new DropStructureAction(new JpegSOI()));
-        menu.add(new DropStructureAction(new JpegAPP0()));
-        menu.add(new DropStructureAction(new JpegBlock()));
-        menu.add(new DropStructureAction(new JpegSOS()));
-        menu.add(new DropStructureAction(new JpegEOI()));
+        menu.add(new DropStructureAction(RubyStructureDSL.load(HexFrame.class.getResource("/org/trypticon/hex/formats/jpeg/jpeg_image.rb"))));
+        menu.add(new DropStructureAction(RubyStructureDSL.load(HexFrame.class.getResource("/org/trypticon/hex/formats/jpeg/jpeg_eoi.rb"))));
         return menu;
     }
 

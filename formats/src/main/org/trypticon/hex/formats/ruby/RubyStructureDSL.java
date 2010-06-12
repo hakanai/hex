@@ -41,6 +41,7 @@ public class RubyStructureDSL {
     }
 
     private RubyStructureDSL(URL scriptLocation) {
+        // TODO: Doing it this way actually loses the link to the script when something goes wrong.
         this(loadURL(scriptLocation));
     }
 
@@ -77,7 +78,11 @@ public class RubyStructureDSL {
         container.runScriptlet(PathType.CLASSPATH, basePath + "/structure_dsl.rb");
 
         // Run the script itself, which should return a Structure instance.
-        Object instance = container.runScriptlet(scriptlet);
-        return container.getInstance(instance, Structure.class);
+        try {
+            Object instance = container.runScriptlet(scriptlet);
+            return container.getInstance(instance, Structure.class);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error loading script: \n" + scriptlet, e);
+        }
     }
 }

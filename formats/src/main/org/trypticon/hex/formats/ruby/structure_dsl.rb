@@ -63,9 +63,22 @@ class StructureDSL
   #     :start_index   - the start index (default: 0)
   #
   def array(name, options = {})
-    size         = options[:size]         || raise("size option not provided")
+    size_type    = options[:size_type]    || :fixed_element_count
     element_type = options[:element_type] || raise("element_type option not provided")
     start_index  = options[:start_index]  || 0
+
+    size_type_object = case size_type
+      when :fixed_element_count
+        size       = options[:size]         || raise("size option not provided")
+        ArrayStructure::FixedElementCount.new(size)
+      when :fixed_byte_size
+        byte_size  = options[:byte_size]    || raise("byte_size option not provided")
+        ArrayStructure::FixedByteSize.new(byte_size)
+      when :until_exception
+        ArrayStructure::UnlimitedElementsUntilException.new
+      else
+        raise "Unknown size_type: #{size_type}"
+    end
 
     element_structure = $local_structure_storage[element_type]
     if !element_structure
@@ -73,7 +86,7 @@ class StructureDSL
       element_structure = SimpleStructure.new(nil, { :name => element_type })
     end
 
-    @fields << ArrayStructure.new(name, start_index, size, element_structure)
+    @fields << ArrayStructure.new(name, start_index, size_type_object, element_structure)
   end
 
   # Creates a switch structure (similar to a union but the lengths can vary.)
