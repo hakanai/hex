@@ -62,8 +62,7 @@ public class DropStructureAction extends BaseAction {
             Annotation annotation = structure.drop(binary, position);
             annotations.add(annotation);
         } catch (Exception e) {
-            String message = "An error occurred trying to drop the structure onto the binary.  The most likely cause is that it isn't the structure you're looking for.";
-            JOptionPane.showMessageDialog(frame, message, (String) getValue(NAME), JOptionPane.ERROR_MESSAGE);
+            throw new ActionException("An error occurred trying to drop the structure onto the binary.  The most likely cause is that it isn't the structure you're looking for.", e);
         }
     }
 }
