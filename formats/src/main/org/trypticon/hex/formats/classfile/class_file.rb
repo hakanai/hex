@@ -1,8 +1,8 @@
 
-require 'org/trypticon/hex/formats/classfile/constantpool/cp_info.rb'
-require 'org/trypticon/hex/formats/classfile/field_info.rb'
-require 'org/trypticon/hex/formats/classfile/method_info.rb'
-require 'org/trypticon/hex/formats/classfile/attribute_info.rb'
+require 'org/trypticon/hex/formats/classfile/constantpool/cp_info'
+require 'org/trypticon/hex/formats/classfile/field_info'
+require 'org/trypticon/hex/formats/classfile/method_info'
+require 'org/trypticon/hex/formats/classfile/attribute_info'
 
 structure :class_file do
 

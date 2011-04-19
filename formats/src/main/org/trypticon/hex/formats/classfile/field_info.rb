@@ -1,5 +1,5 @@
 
-require 'org/trypticon/hex/formats/classfile/attribute_info.rb'
+require 'org/trypticon/hex/formats/classfile/attribute_info'
 
 structure :field_info do
   uint16_be :access_flags
