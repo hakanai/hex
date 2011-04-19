@@ -230,8 +230,9 @@ public class HexFrame extends JFrame {
         editMenu.add(new AddSubRegionAction());
         editMenu.add(new RemoveSubRegionAction());
 
-        editMenu.addSeparator();
-        editMenu.add(buildFormatsMenu());
+        // Temporarily disabled until more things are sorted out.
+        //editMenu.addSeparator();
+        //editMenu.add(buildFormatsMenu());
 
         JMenu helpMenu = new JMenu("Help");
         // TODO: Help / User Guide
