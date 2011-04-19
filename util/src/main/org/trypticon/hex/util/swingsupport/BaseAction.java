@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.util.swingsupport;
 
+import org.jdesktop.swingx.JXErrorPane;
+import org.jdesktop.swingx.error.ErrorInfo;
 import org.trypticon.hex.util.LoggerUtils;
 
 import java.awt.event.ActionEvent;
@@ -49,9 +51,9 @@ public abstract class BaseAction extends AbstractAction {
     protected void handleError(Component owner, Throwable t) {
         LoggerUtils.get().log(Level.SEVERE, "Unexpected error in UI action", t);
 
-        JOptionPane.showMessageDialog(owner,
-                                      "Unexpected error in UI action.  Check the log for further details.",
-                                      "Unexpected Error", JOptionPane.ERROR_MESSAGE);
+        JXErrorPane.showDialog(owner, new ErrorInfo("Unexpected Error",
+                                                    "Unexpected error in UI action.",
+                                                    null, null, t, Level.SEVERE, null));
     }
 
     protected abstract void doAction(ActionEvent event) throws Exception;
