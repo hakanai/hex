@@ -50,6 +50,10 @@ public class OpenSampleNotebookAction extends BaseAction {
         AnnotationCollection annotations = notebook.getAnnotations();
 
         Structure structure = RubyStructureDSL.load(getClass().getResource("/org/trypticon/hex/formats/classfile/class_file.rb"));
+        if (structure == null) {
+            throw new IllegalStateException("class_file.rb couldn't be loaded");
+        }
+
         annotations.add(structure.drop(binary, 0));
     }
 }
