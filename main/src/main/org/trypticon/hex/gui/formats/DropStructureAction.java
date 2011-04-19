@@ -27,6 +27,7 @@ import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
+import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 
 /**
@@ -57,7 +58,12 @@ public class DropStructureAction extends BaseAction {
         AnnotationCollection annotations = viewer.getAnnotations();
         long position = viewer.getSelectionModel().getSelectionStart();
 
-        Annotation annotation = structure.drop(binary, position);
-        annotations.add(annotation);
+        try {
+            Annotation annotation = structure.drop(binary, position);
+            annotations.add(annotation);
+        } catch (Exception e) {
+            String message = "An error occurred trying to drop the structure onto the binary.  The most likely cause is that it isn't the structure you're looking for.";
+            JOptionPane.showMessageDialog(frame, message, (String) getValue(NAME), JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
