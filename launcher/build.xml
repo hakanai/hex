@@ -50,6 +50,7 @@
 
             <zipfileset src="../lib/snakeyaml.jar"/>
             <zipfileset src="../lib/swingx.jar"/>
+            <zipfileset src="../lib/jruby-complete.jar"/>
 
             <manifest>
                 <attribute name="Main-Class" value="org.trypticon.hex.gui.Main"/>
@@ -91,7 +92,7 @@
             <fileset dir="../util/build" includes="hex-util.jar"/>
             <fileset dir="../viewer/build" includes="hex-viewer.jar"/>
 
-            <fileset dir="../lib" includes="snakeyaml.jar, swingx.jar"/>
+            <fileset dir="../lib" includes="snakeyaml.jar, swingx.jar, jruby-complete.jar"/>
 
             <!-- Mac-specific -->
             <fileset dir="../lib" includes="mrjadapter.jar, quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>
