@@ -17,9 +17,7 @@
   -->
 
 <project name="launcher" default="default">
-    <property name="app.name" value="Hex"/>
-    <property name="app.version" value="0.1"/>
-    <property name="app.copyright" value="Copyright (C) 2009  Trejkaz, Hex Project"/>
+    <property file="../app.properties"/>
 
     <target name="default" depends="-determine-platform, -build-mac-app-bundle-if-mac, -build-executable-jar-if-other"
             description="Builds whichever launcher is deemed to fit your platform best"/>
@@ -99,7 +97,7 @@
         </copy>
     </target>
 
-    <target name="test" description="Does nothing.  Exists to make the test target work."/>
+    <target name="test" description="Does nothing.  Exists to make the test target work"/>
 
     <target name="clean" description="Cleans generated files">
         <delete dir="build"/>

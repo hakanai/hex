@@ -1,4 +1,6 @@
 <project name="hex" default="build">
+    <property file="app.properties"/>
+
     <scriptdef name="run-all" language="JavaScript">
         <attribute name="target"/>
         <![CDATA[
@@ -13,19 +15,44 @@
             }
             task.perform();
         }
- 
+
         ]]>
     </scriptdef>
 
-    <target name="build" description="Runs each build in series.">
+    <target name="build" description="Runs each build in series">
         <run-all/>
     </target>
 
-    <target name="test" description="Tests each build in series.">
+    <target name="test" description="Tests each build in series">
         <run-all target="test"/>
+    </target>
+
+    <target name="dist-cycle" depends="clean, build" description="Cleans and builds distribution files">
+        <mkdir dir="build"/>
+
+        <!-- Source -->
+        <tar destfile="build/hex-src-${app.version}.tar" longfile="gnu">
+            <zipfileset prefix="hex-src-${app.version}" dir="." excludes="build/, */build/, projectFilesBackup, **/.DS_Store, .idea/out/, .idea/workspace.xml, .idea/dictionaries/"/>
+        </tar>
+        <bzip2 destfile="build/hex-src-${app.version}.tar.bz2" src="build/hex-src-${app.version}.tar"/>
+
+        <!-- Executable jar -->
+        <ant dir="launcher" target="executable-jar"/>
+        <zip zipfile="build/hex-bin-${app.version}.zip">
+            <zipfileset prefix="hex-bin-${app.version}" dir="launcher/build" includes="hex-${app.version}.jar"/>
+            <zipfileset prefix="hex-bin-${app.version}" dir="." includes="COPYING, README.markdown"/>
+        </zip>
+
+        <!-- Mac app bundle -->
+        <ant dir="launcher" target="mac-app-bundle"/>
+        <zip zipfile="build/Hex.app-${app.version}.zip">
+            <zipfileset prefix="Hex.app-${app.version}" dir="launcher/build" includes="Hex.app"/>
+            <zipfileset prefix="Hex.app-${app.version}" dir="." includes="COPYING, README.markdown"/>
+        </zip>
     </target>
 
     <target name="clean" description="Cleans generated files from each build">
         <run-all target="clean"/>
+        <delete dir="build"/>
     </target>
 </project>

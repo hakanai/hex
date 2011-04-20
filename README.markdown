@@ -16,10 +16,6 @@ WHAT I AM TRYING TO GET WORKING NOW
     * TODO - Come up with a simpler API for defining structs in a declarative way
     * TODO - More formats (still to be decided but will depend on what I'm looking at at the time.)
 
-* Sub-stream support
-    * Ability to mark a straem as a sub-stream, possible processed in some way (e.g. zlib inflate)
-    * Ability to open that stream separately
-    * Ability to annotate that stream
 
 WHAT IS IT AND WHY
 ------------------
@@ -87,4 +83,11 @@ BEYOND
 * More data types (the list will grow as I need them.)
 * Structs - a hard one but I have some ideas
 * *Scriptable* structs (because I want to put a Ruby DSL in here.)
+* Sub-stream support
+    * Ability to mark a stream as a sub-stream, possibly processed in some way (e.g. zlib inflate)
+    * Ability to open that stream separately
+    * Ability to annotate that stream
+* Directory abstraction
+    * Ability to layer a directory abstraction on top of a file format (e.g. OLE2)
+    * Ability to inspect files in the abstracted directory like ordinary binaries
 
