@@ -58,6 +58,7 @@
     <target name="package" depends="compile" description="Create the jar file">
         <jar jarfile="build/hex-${ant.project.name}.jar">
             <fileset dir="build/classes"/>
+            <fileset dir="src/main" excludes="**/*.java"/>
         </jar>
     </target>
 
