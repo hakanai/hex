@@ -28,7 +28,7 @@ import org.trypticon.hex.binary.Binary;
  */
 public class ULongInterpreterBE extends AbstractFixedLengthInterpreter<ULong> {
     public ULongInterpreterBE() {
-        super(ULong.class, 2);
+        super(ULong.class, 8);
     }
 
     public Class<ULong> getType() {
