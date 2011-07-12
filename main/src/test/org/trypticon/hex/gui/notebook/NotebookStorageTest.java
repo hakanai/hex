@@ -88,6 +88,19 @@ public class NotebookStorageTest {
         }
     }
 
+    @Test
+    public void testSpaceInName_NewNotebook() throws Exception {
+        Notebook notebook = new DefaultNotebook(new File("some file.dat").toURI().toURL());
+        assertEquals("Wrong notebook name", "New: some file.dat", notebook.getName());
+    }
+
+    @Test
+    public void testSpaceInName_SavedNotebook() throws Exception {
+        Notebook notebook = new DefaultNotebook(new File("some file.dat").toURI().toURL());
+        notebook.setNotebookLocation(new File("My Notebook.hex").toURI().toURL());
+        assertEquals("Wrong notebook name", "My Notebook", notebook.getName());
+    }
+
     @Test(expected=IOException.class)
     public void testIOExceptionOnReading() throws Exception {
         storage.read(new BrokenReader());

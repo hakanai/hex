@@ -30,6 +30,7 @@ import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.util.LoggerUtils;
+import org.trypticon.hex.util.URLUtils;
 
 /**
  * Holds a set of annotations along with a reference to the file the user is working on.
@@ -81,6 +82,7 @@ public class DefaultNotebook implements Notebook {
         String path = binaryLocation.getPath();
         int lastSlash = path.lastIndexOf('/');
         String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
+        baseName = URLUtils.decode(baseName);
 
         this.name = "New: " + baseName;
 
@@ -168,9 +170,12 @@ public class DefaultNotebook implements Notebook {
 
             String path = notebookLocation.getPath();
             int lastSlash = path.lastIndexOf('/');
-            String lastPathComponent = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
-            int dot = lastPathComponent.indexOf('.');
-            setName(dot >= 0 ? lastPathComponent.substring(0, dot) : lastPathComponent);
+            String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
+            int dot = baseName.indexOf('.');
+            baseName = dot >= 0 ? baseName.substring(0, dot) : baseName;
+            baseName = URLUtils.decode(baseName);
+
+            setName(baseName);
         }
 
         setDirty(false);
