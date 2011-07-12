@@ -42,6 +42,10 @@ class ExtendedRepresenter extends Representer {
 
     @Override
     protected Node representData(Object data) {
+
+        // Dodge some bug in SnakeYAML where the wrong IDs are being generated.
+        this.representedObjects.clear();
+
         if (data instanceof Notebook) {
             return representNotebook((Notebook) data);
         } else if (data instanceof GroupAnnotation) {
