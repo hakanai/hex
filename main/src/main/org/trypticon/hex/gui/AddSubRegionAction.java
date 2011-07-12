@@ -48,7 +48,7 @@ public class AddSubRegionAction extends BaseAction {
         // TODO: Check that it's legal, or have the model throw an exception if it isn't.
 
         long position = viewer.getSelectionModel().getSelectionStart();
-        int length = (int) (viewer.getSelectionModel().getSelectionEnd() - position);
+        int length = (int) (viewer.getSelectionModel().getSelectionEnd() - position) + 1;
 
         try {
             viewer.getAnnotations().add(new SimpleMutableGroupAnnotation(position, length, null));
