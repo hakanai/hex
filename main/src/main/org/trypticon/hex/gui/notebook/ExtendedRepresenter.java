@@ -43,8 +43,8 @@ class ExtendedRepresenter extends Representer {
     @Override
     protected Node representData(Object data) {
 
-        // Dodge some bug in SnakeYAML where the wrong IDs are being generated.
-        this.representedObjects.clear();
+        // Dodge some bug in SnakeYAML: http://code.google.com/p/snakeyaml/issues/detail?id=127§
+        objectToRepresent = data;
 
         if (data instanceof Notebook) {
             return representNotebook((Notebook) data);
