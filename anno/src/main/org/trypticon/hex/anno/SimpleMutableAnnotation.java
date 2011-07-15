@@ -27,7 +27,7 @@ import org.trypticon.hex.interpreters.Value;
  *
  * @author trejkaz
  */
-public class SimpleMutableAnnotation implements Annotation {
+public class SimpleMutableAnnotation implements MutableAnnotation {
     private long position;
     private int length;
     private Interpreter interpreter;

@@ -18,16 +18,17 @@
 
 package org.trypticon.hex.anno.swing;
 
-import javax.swing.event.TreeModelEvent;
-import javax.swing.tree.TreePath;
-
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.anno.MutableAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.util.swingxsupport.AbstractTreeTableModel;
+
+import javax.swing.event.TreeModelEvent;
+import javax.swing.tree.TreePath;
 
 /**
  * Tree model for annotations.
@@ -160,12 +161,20 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
     }
 
     public boolean isCellEditable(Object node, int column) {
-        // TODO: Make Notes at least directly editable.
-        return false;
+        return column == NOTE_COLUMN;
     }
 
-    public void setValueAt(Object node, Object value, int column) {
-        throw new UnsupportedOperationException("Editing not supported right now");
+    public void setValueAt(Object value, Object node, int column) {
+        if (column == NOTE_COLUMN) {
+            if (node instanceof MutableAnnotation) {
+                ((MutableAnnotation) node).setNote((String) value);
+                // TODO: Set a dirty flag somewhere.
+            } else {
+                // TODO
+            }
+        } else {
+            throw new UnsupportedOperationException("Editing not supported on column " + column);
+        }
     }
 
     public void annotationsChanged(AnnotationCollectionEvent event) {

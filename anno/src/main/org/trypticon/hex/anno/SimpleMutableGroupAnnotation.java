@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author trejkaz
  */
-public class SimpleMutableGroupAnnotation extends SimpleMutableAnnotation implements GroupAnnotation {
+public class SimpleMutableGroupAnnotation extends SimpleMutableAnnotation implements MutableGroupAnnotation {
 
     private final List<Annotation> annotations;
 
