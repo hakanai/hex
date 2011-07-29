@@ -1,0 +1,8 @@
+
+Version 0.2 (XXXX-XX-XX)
+
+   New: Notes are now editable through the annotations tree view.
+
+ Fixed: Adding a 64-bit integer actually added a 16-bit integer of the same kind.
+ Fixed: Creating a sub-region caused the end offset to be one less than it should have been.
+ Fixed: Filenames with a space were showing %20 for the notebook description.
