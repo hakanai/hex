@@ -86,6 +86,21 @@ public class SimpleMutableGroupAnnotation extends SimpleMutableAnnotation implem
         }
     }
 
+    public GroupAnnotation findDeepestGroupAnnotationAt(long position) {
+        Annotation annotation = findAnnotationAt(position);
+        if (!(annotation instanceof GroupAnnotation)) {
+            return null;
+        }
+
+        GroupAnnotation groupAnnotation = (GroupAnnotation) annotation;
+        GroupAnnotation deepest = groupAnnotation.findDeepestGroupAnnotationAt(position);
+        if (deepest == null) {
+            return groupAnnotation;
+        } else {
+            return deepest;
+        }
+    }
+
     public void add(Annotation annotation) throws OverlappingAnnotationException {
         List<AnnotationRangeSearchHit> hits = new AnnotationRangeSearcher().findAllInRange(annotations, annotation);
         if (hits.size() == 0) {
@@ -177,6 +192,17 @@ public class SimpleMutableGroupAnnotation extends SimpleMutableAnnotation implem
 
         if (foundAnnotation.equals(annotation)) {
             annotations.remove(annotation);
+
+            // We removed a group so we have to add its children back.
+            if (annotation instanceof GroupAnnotation) {
+                for (Annotation childAnnotation : ((GroupAnnotation) annotation).getAnnotations()) {
+                    try {
+                        add(childAnnotation);
+                    } catch (OverlappingAnnotationException e) {
+                        throw new IllegalStateException("Got an overlap - should be impossible", e);
+                    }
+                }
+            }
         } else {
             // Found one but it wasn't the one we were looking for.
             // If it's a group annotation then we might find it further down the tree.

@@ -18,23 +18,6 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
@@ -58,6 +41,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.TransferHandler;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A top-level application frame.
@@ -341,7 +340,7 @@ public class HexFrame extends JFrame {
      * A dummy notebook class we can use for size computation.
      */
     private class DummyNotebook implements Notebook {
-        private final AnnotationCollection noAnnotations = new MemoryAnnotationCollection(0);
+        private final AnnotationCollection noAnnotations = new MemoryAnnotationCollection(1);
         public void open() {}
         public void close() {}
         public URL getNotebookLocation() { return null; }

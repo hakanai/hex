@@ -117,9 +117,9 @@ public class SimpleMutableAnnotation implements MutableAnnotation {
     @Override
     public String toString() {
         if (note != null) {
-            return String.format("@%d:%s(%s)", position, interpreter, note);
+            return String.format("@%d..%d:%s(%s)", position, position + length - 1, interpreter, note);
         } else {
-            return String.format("@%d:%s", position, interpreter);
+            return String.format("@%d..%d:%s", position, position + length - 1, interpreter);
         }
     }
 }

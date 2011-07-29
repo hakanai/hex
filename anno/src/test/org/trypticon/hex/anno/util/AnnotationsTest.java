@@ -35,52 +35,82 @@ import static org.trypticon.hex.anno.util.Annotations.*;
 public class AnnotationsTest {
 
     @Test
-    public void testContainsForOverlapOfOnePosition() {
+    public void testContains_OverlapOfOnePosition() {
         assertFalse(contains(a(0, 10), a(9, 10)));
     }
 
     @Test
-    public void testContainsForTouchingRegions() {
+    public void testContains_TouchingRegions() {
         assertFalse(contains(a(0, 10), a(10, 10)));
     }
 
     @Test
-    public void testContainsForFirstContainedInSecond() {
+    public void testContains_TouchingRegions_ZeroLengthBefore() {
+        assertFalse(contains(a(0, 10), a(0, 0)));
+    }
+
+    @Test
+    public void testContains_TouchingRegions_ZeroLengthAfter() {
+        assertFalse(contains(a(0, 10), a(10, 0)));
+    }
+
+    @Test
+    public void testContains_FirstContainedInSecond() {
         assertFalse(contains(a(0, 5), a(0, 10)));
     }
 
     @Test
-    public void testContainsForSecondContainedInFirst() {
+    public void testContains_SecondContainedInFirst() {
         assertTrue(contains(a(0, 10), a(0, 5)));
     }
 
     @Test
-    public void testContainsForSameRegion() {
+    public void testContains_SecondContainedInFirst_ZeroLengthNearStart() {
+        assertTrue(contains(a(0, 10), a(1, 0)));
+    }
+
+    @Test
+    public void testContains_SecondContainedInFirst_ZeroLengthNearEnd() {
+        assertTrue(contains(a(0, 10), a(9, 0)));
+    }
+
+    @Test
+    public void testContains_SameRegion() {
         assertTrue(contains(a(0, 10), a(0, 10)));
     }
 
     @Test
-    public void testOverlapForOverlapOfOnePosition() {
+    public void testOverlap_OverlapOfOnePosition() {
         assertTrue(overlap(a(0, 10), a(9, 10)));
     }
 
     @Test
-    public void testOverlapForTouchingRegions() {
+    public void testOverlap_TouchingRegions() {
         assertFalse(overlap(a(0, 10), a(10, 10)));
     }
 
     @Test
-    public void testOverlapForFirstContainedInSecond() {
+    public void testOverlap_TouchingRegions_ZeroLengthBefore() {
+        assertFalse(overlap(a(0, 10), a(0, 0)));
+    }
+
+    @Test
+    public void testOverlap_TouchingRegions_ZeroLengthAfter() {
+        assertFalse(overlap(a(0, 10), a(10, 0)));
+    }
+
+    @Test
+    public void testOverlap_FirstContainedInSecond() {
         assertTrue(overlap(a(0, 5), a(0, 10)));
     }
 
     @Test
-    public void testOverlapForSecondContainedInFirst() {
+    public void testOverlap_SecondContainedInFirst() {
         assertTrue(overlap(a(0, 10), a(0, 5)));
     }
 
     @Test
-    public void testOverlapForSameRegion() {
+    public void testOverlap_SameRegion() {
         assertTrue(overlap(a(0, 10), a(0, 10)));
     }
 

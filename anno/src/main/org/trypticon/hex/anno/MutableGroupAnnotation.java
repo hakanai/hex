@@ -24,4 +24,22 @@ package org.trypticon.hex.anno;
  * @author trejkaz
  */
 public interface MutableGroupAnnotation extends GroupAnnotation, MutableAnnotation {
+
+    /**
+     * Adds an annotation to the group annotation.
+     *
+     * @param annotation the annotation to add.
+     * @throws OverlappingAnnotationException if the annotation partially overlaps another annotation.
+     */
+    void add(Annotation annotation) throws OverlappingAnnotationException;
+
+    /**
+     * Removes an annotation from the group annotation.
+     * If the removed annotation was a group, its original children are added back.
+     *
+     * @param annotation the annotation to remove.
+     * @throws IllegalArgumentException if the annotation isn't actually in the group.
+     */
+    void remove(Annotation annotation);
+
 }

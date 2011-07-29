@@ -40,6 +40,18 @@ public class Annotations {
         long innerStart = innerAnnotation.getPosition();
         long innerEnd = innerStart + innerAnnotation.getLength() - 1;
 
+        // zero-length checks
+        if (outerAnnotation.getLength() == 0) {
+            //noinspection SimplifiableIfStatement
+            if (innerAnnotation.getLength() == 0) {
+                return outerStart == innerStart;
+            } else {
+                return false;
+            }
+        } else if (innerAnnotation.getLength() == 0) {
+            return outerStart < innerStart && outerEnd >= innerStart;
+        }
+
         return outerStart <= innerStart && outerEnd >= innerEnd;
     }
 

@@ -40,8 +40,15 @@ public interface GroupAnnotation extends Annotation {
      * Finds an annotation at the given position.
      *
      * @param position the position (relative to the entire file.)
-     * @return the annotation found.
+     * @return the annotation found.  Returns {@code null} if no annotation is found.
      */
     Annotation findAnnotationAt(long position);
 
+    /**
+     * Finds the deepest group annotation at the given position.
+     *
+     * @param position the position (relative to the entire file.)
+     * @return the group annotation found.  Returns {@code null} if this group annotation is the deepest.
+     */
+    GroupAnnotation findDeepestGroupAnnotationAt(long position);
 }

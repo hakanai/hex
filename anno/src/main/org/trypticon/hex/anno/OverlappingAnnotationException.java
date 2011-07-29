@@ -34,7 +34,11 @@ public class OverlappingAnnotationException extends Exception {
     }
 
     public OverlappingAnnotationException(Annotation existing, Annotation attempted) {
+        super(String.format("Overlapping annotations.\n  attempted to add: %s\n  would have overlapped: %s",
+                            attempted, existing));
         this.existing = existing;
         this.attempted = attempted;
     }
+
+    // TODO: Reconstruct message after deserialisation
 }

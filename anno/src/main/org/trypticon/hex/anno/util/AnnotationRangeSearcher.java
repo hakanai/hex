@@ -70,7 +70,9 @@ public class AnnotationRangeSearcher {
         } else {
             // If it starts at the same point it might still be surrounding, or might be the same range.
             Annotation firstAnnotation = list.get(startMatch);
-            if (firstAnnotation.getLength() == annotation.getLength()) {
+            if (firstAnnotation.getLength() == 0) {
+                return results; // hits exactly at the start, but it's zero length, so no overlap.
+            } else if (firstAnnotation.getLength() == annotation.getLength()) {
                 results.add(new AnnotationRangeSearchHit(firstAnnotation, AnnotationRangeSearchHit.Relation.SAME_RANGE));
                 return results;
             } else if (Annotations.contains(firstAnnotation, annotation)) {

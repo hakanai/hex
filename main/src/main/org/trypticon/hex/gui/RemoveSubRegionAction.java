@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui;
 
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
@@ -45,9 +46,11 @@ public class RemoveSubRegionAction extends BaseAction {
 
         long position = viewer.getSelectionModel().getCursor();
 
-        // TODO Get the deepest group at that position.
-        //viewer.getAnnotations().getGroupAt(position)
+        GroupAnnotation group = viewer.getAnnotations().getRootGroup().findDeepestGroupAnnotationAt(position);
+        if (group == null) {
+            throw new ActionException("To remove a group annotation, the cursor must be at a group annotation.");
+        }
 
-        throw new UnsupportedOperationException("Not implemented yet");
+        viewer.getAnnotations().remove(group);
     }
 }
