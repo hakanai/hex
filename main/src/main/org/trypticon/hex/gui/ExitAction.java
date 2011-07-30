@@ -18,11 +18,11 @@
 
 package org.trypticon.hex.gui;
 
+import javax.swing.AbstractAction;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.AbstractAction;
 
 /**
  * Action to exit the application.
@@ -39,15 +39,12 @@ class ExitAction extends AbstractAction {
         List<Frame> closeLater = new ArrayList<Frame>(2);
         for (Frame frame : Frame.getFrames()) {
             if (frame instanceof HexFrame) {
-                if (((HexFrame) frame).prepareForClose()) {
-                    closeLater.add(frame);
-                } else {
+                if (!((HexFrame) frame).prepareForClose()) {
                     // User decided it wasn't OK to close after all.
                     return;
                 }
-            } else {
-                frame.dispose();
             }
+            closeLater.add(frame);
         }
 
         for (Frame frame : closeLater) {

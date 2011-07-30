@@ -11,3 +11,4 @@ Version 0.2 (XXXX-XX-XX)
  Fixed: Overlaps were incorrectly detected when zero-length annotations were present, or when trying to add
         a zero-length annotation, where the zero-length annotation was precisely at the start or end of another
         annotation.
+ Fixed: Sometimes on exit you would be asked to close a notebook you had already closed.

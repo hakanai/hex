@@ -168,6 +168,23 @@ public class HexFrame extends JFrame {
         }
     }
 
+    @Override
+    public void dispose() {
+        try {
+            // At the time of closing the frame, there might be tabs open still.
+            for (Component tab : tabbedPane.getComponents()) {
+                if (tab instanceof NotebookPane) {
+                    Notebook notebook = ((NotebookPane) tab).getNotebook();
+                    if (notebook.isOpen()) {
+                        notebook.close();
+                    }
+                }
+            }
+        } finally {
+            super.dispose();
+        }
+    }
+
     /**
      * Builds the application menu bar.
      *

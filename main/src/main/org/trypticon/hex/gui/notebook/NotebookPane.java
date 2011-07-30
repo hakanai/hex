@@ -18,12 +18,6 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.awt.BorderLayout;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.swing.AnnotationPane;
 import org.trypticon.hex.gui.SaveNotebookAction;
@@ -35,6 +29,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Pane for working with a single notebook.
@@ -114,7 +113,8 @@ public class NotebookPane extends JPanel {
      * @return {@code true} if it is OK to close.
      */
     public boolean prepareForClose() {
-        if (notebook.isDirty()) {
+        // On exit, some frames might be left around in the background which have their notebooks closed already.
+        if (notebook.isOpen() && notebook.isDirty()) {
             // So the user knows which one it's asking about.
             JTabbedPane tabbedPane = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
             if (tabbedPane != null) {
