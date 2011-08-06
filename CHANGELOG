@@ -1,4 +1,9 @@
 
+Version 0.X (XXXX-XX-XX)
+
+   New: Annotations not visible in the tree due to their parents being collapsed are now hidden from rendering
+        in the viewer.
+
 Version 0.2 (XXXX-XX-XX)
 
    New: Notes are now editable through the annotations tree view.

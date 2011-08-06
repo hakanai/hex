@@ -61,13 +61,13 @@ public class NotebookPane extends JPanel {
             }
         });
 
-        viewer = new HexViewer();
-        viewer.setAnnotations(notebook.getAnnotations());
-        viewer.setBinary(notebook.getBinary());
-
         annoPane = new AnnotationPane();
         annoPane.setAnnotations(notebook.getAnnotations());
         annoPane.setBinary(notebook.getBinary());
+
+        viewer = new HexViewer();
+        viewer.setAnnotations(annoPane.getExpandedAnnotations());
+        viewer.setBinary(notebook.getBinary());
 
         JScrollPane viewerScroll = new JScrollPane(viewer);
         viewerScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

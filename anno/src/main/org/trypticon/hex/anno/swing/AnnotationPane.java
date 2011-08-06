@@ -18,16 +18,16 @@
 
 package org.trypticon.hex.anno.swing;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.util.swingxsupport.NullTreeTableModel;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 /**
  * Panel displaying the annotations.
@@ -77,5 +77,14 @@ public class AnnotationPane extends JPanel {
             annoTreeTableModel = new NullTreeTableModel();
         }
         annoTreeTable.setTreeTableModel(annoTreeTableModel);
+    }
+
+    /**
+     * Gets an annotation collection which hides the nodes which are not expanded in the tree.
+     *
+     * @return the annotation collection.
+     */
+    public AnnotationCollection getExpandedAnnotations() {
+        return new ExpansionTrackingAnnotationCollection(annoTreeTable, annotations);
     }
 }
