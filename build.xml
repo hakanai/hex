@@ -46,7 +46,7 @@
         <!-- Mac app bundle -->
         <ant dir="launcher" target="mac-app-bundle"/>
         <zip zipfile="build/Hex.app-${app.version}.zip">
-            <zipfileset prefix="Hex.app-${app.version}" dir="launcher/build" includes="Hex.app"/>
+            <zipfileset prefix="Hex.app-${app.version}" dir="launcher/build" includes="Hex.app/**"/>
             <zipfileset prefix="Hex.app-${app.version}" dir="." includes="COPYING, README.markdown"/>
         </zip>
     </target>
