@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui.notebook;
 
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.swing.AnnotationPane;
 import org.trypticon.hex.gui.SaveNotebookAction;
 import org.trypticon.hex.util.swingsupport.SaveConfirmation;
@@ -34,6 +35,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 /**
  * Pane for working with a single notebook.
@@ -68,6 +70,18 @@ public class NotebookPane extends JPanel {
         viewer = new HexViewer();
         viewer.setAnnotations(annoPane.getExpandedAnnotations());
         viewer.setBinary(notebook.getBinary());
+
+        annoPane.addPropertyChangeListener("selectedAnnotationPath", new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent event) {
+                @SuppressWarnings("unchecked")
+                List<Annotation> selectedAnnotationPath = (List<Annotation>) event.getNewValue();
+                if (selectedAnnotationPath != null) {
+                    Annotation annotation = selectedAnnotationPath.get(selectedAnnotationPath.size() - 1);
+                    viewer.getSelectionModel().setCursor(annotation.getPosition());
+                    viewer.getSelectionModel().setCursorAndExtendSelection(annotation.getPosition() + annotation.getLength() - 1);
+                }
+            }
+        });
 
         JScrollPane viewerScroll = new JScrollPane(viewer);
         viewerScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

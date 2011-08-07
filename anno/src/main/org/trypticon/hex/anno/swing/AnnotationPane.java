@@ -20,14 +20,21 @@ package org.trypticon.hex.anno.swing;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.TreeTableModel;
+import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.util.swingxsupport.NullTreeTableModel;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Panel displaying the annotations.
@@ -42,8 +49,25 @@ public class AnnotationPane extends JPanel {
     private AnnotationCollection annotations;
     private Binary binary;
 
+    private List<Annotation> selectedAnnotationPath;
+
     public AnnotationPane() {
         annoTreeTable = new AnnotationTreeTable();
+
+        annoTreeTable.addTreeSelectionListener(new TreeSelectionListener() {
+            public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
+                TreePath treePath = annoTreeTable.getTreeSelectionModel().getSelectionPath();
+                if (treePath == null) {
+                    setSelectedAnnotationPath(null);
+                } else {
+                    Object[] treePathArray = treePath.getPath();
+                    Annotation[] pathArray = new Annotation[treePathArray.length - 1];
+                    System.arraycopy(treePathArray, 1, pathArray, 0, pathArray.length);
+                    setSelectedAnnotationPath(Arrays.asList(pathArray));
+                }
+            }
+        });
+
         setLayout(new BorderLayout());
         JScrollPane annoTreeTableScroll = new JScrollPane(annoTreeTable);
         Dimension preferredSize = annoTreeTableScroll.getPreferredSize();
@@ -63,6 +87,16 @@ public class AnnotationPane extends JPanel {
     public void setAnnotations(AnnotationCollection annotations) {
         this.annotations = annotations;
         createModelIfComplete();
+    }
+
+    public List<Annotation> getSelectedAnnotationPath() {
+        return selectedAnnotationPath;
+    }
+
+    private void setSelectedAnnotationPath(List<Annotation> selectedAnnotationPath) {
+        List<Annotation> oldSelectedAnnotationPath = this.selectedAnnotationPath;
+        this.selectedAnnotationPath = selectedAnnotationPath == null ? null : Collections.unmodifiableList(selectedAnnotationPath);
+        firePropertyChange("selectedAnnotationPath", oldSelectedAnnotationPath, selectedAnnotationPath);
     }
 
     public void setBinary(Binary binary) {
