@@ -29,7 +29,12 @@ class ArrayStructure
     end
 
     length = pos - position
-    SimpleMutableGroupAnnotation.new(position, length, self.name.to_s, annotations)
+
+    if length > 0
+      SimpleMutableGroupAnnotation.new(position, length, self.name.to_s, annotations)
+    else
+      nil
+    end
   end
 
   class FixedElementCount

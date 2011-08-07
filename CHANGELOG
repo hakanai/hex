@@ -1,20 +1,24 @@
 
 Version 0.X (XXXX-XX-XX)
 
-   New: Annotations not visible in the tree due to their parents being collapsed are now hidden from rendering
-        in the viewer.
-   New: Selecting an annotation in the tree will select the corresponding range in the viewer.
+     New: Annotations not visible in the tree due to their parents being collapsed are now hidden from rendering
+          in the viewer.
+     New: Selecting an annotation in the tree will select the corresponding range in the viewer.
+
+ Changed: Zero-width annotations removed as they were causing altogether too much trouble (e.g. when sorting a list
+          of annotations, it's hard to know which one is first.)  The structure DSL is updated to not drop an
+          array annotation in if the length would be zero, which was the common cause for it.
 
 Version 0.2 (XXXX-XX-XX)
 
-   New: Notes are now editable through the annotations tree view.
-   New: It is now possible to delete a sub-region (it was possible using Remove Annotation, but only if there was
-        a byte where you could select the sub-region without selecting an annotation.
+     New: Notes are now editable through the annotations tree view.
+     New: It is now possible to delete a sub-region (it was possible using Remove Annotation, but only if there was
+          a byte where you could select the sub-region without selecting an annotation.
 
- Fixed: Adding a 64-bit integer actually added a 16-bit integer of the same kind.
- Fixed: Creating a sub-region caused the end offset to be one less than it should have been.
- Fixed: Filenames with a space were showing %20 for the notebook description.
- Fixed: Overlaps were incorrectly detected when zero-length annotations were present, or when trying to add
-        a zero-length annotation, where the zero-length annotation was precisely at the start or end of another
-        annotation.
- Fixed: Sometimes on exit you would be asked to close a notebook you had already closed.
+   Fixed: Adding a 64-bit integer actually added a 16-bit integer of the same kind.
+   Fixed: Creating a sub-region caused the end offset to be one less than it should have been.
+   Fixed: Filenames with a space were showing %20 for the notebook description.
+   Fixed: Overlaps were incorrectly detected when zero-length annotations were present, or when trying to add
+          a zero-length annotation, where the zero-length annotation was precisely at the start or end of another
+          annotation.
+   Fixed: Sometimes on exit you would be asked to close a notebook you had already closed.

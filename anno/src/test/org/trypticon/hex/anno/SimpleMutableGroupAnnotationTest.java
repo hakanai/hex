@@ -45,12 +45,6 @@ public class SimpleMutableGroupAnnotationTest {
     }
 
     @Test
-    public void testAdd_ZeroLengthGroup() throws Exception {
-        group.add(new SimpleMutableAnnotation(20, 20, new NullInterpreter(), ""));
-        group.add(new SimpleMutableGroupAnnotation(40, 0, ""));
-    }
-
-    @Test
     public void testAdd_GroupAroundConsecutive() throws Exception {
         group.add(new SimpleMutableAnnotation(20, 20, new NullInterpreter(), ""));
         group.add(new SimpleMutableAnnotation(40, 20, new NullInterpreter(), ""));

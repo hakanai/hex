@@ -45,34 +45,6 @@ public class AnnotationRangeSearcherTest {
     }
 
     @Test
-    public void testOutside_ZeroLengthBefore_New() {
-        makeList(12, 4);
-        expect();
-        test(12, 0);
-    }
-
-    @Test
-    public void testOutside_ZeroLengthBefore_Existing() {
-        makeList(12, 0);
-        expect();
-        test(12, 4);
-    }
-
-    @Test
-    public void testOutside_ZeroLengthAfter_New() {
-        makeList(12, 4);
-        expect();
-        test(16, 0);
-    }
-
-    @Test
-    public void testOutside_ZeroLengthAfter_Existing() {
-        makeList(16, 0);
-        expect();
-        test(12, 4);
-    }
-
-    @Test
     public void testSameRange() {
         makeList(12, 4);
         expect(0, SAME_RANGE);

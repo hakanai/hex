@@ -42,8 +42,8 @@ public class SimpleMutableAnnotation implements MutableAnnotation {
             throw new IllegalArgumentException("position cannot be negative");
         }
 
-        if (length < 0) {
-            throw new IllegalArgumentException("length cannot be negative");
+        if (length <= 0) {
+            throw new IllegalArgumentException("length must be positive");
         }
 
         this.position = position;

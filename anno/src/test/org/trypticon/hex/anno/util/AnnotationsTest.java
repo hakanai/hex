@@ -45,16 +45,6 @@ public class AnnotationsTest {
     }
 
     @Test
-    public void testContains_TouchingRegions_ZeroLengthBefore() {
-        assertFalse(contains(a(0, 10), a(0, 0)));
-    }
-
-    @Test
-    public void testContains_TouchingRegions_ZeroLengthAfter() {
-        assertFalse(contains(a(0, 10), a(10, 0)));
-    }
-
-    @Test
     public void testContains_FirstContainedInSecond() {
         assertFalse(contains(a(0, 5), a(0, 10)));
     }
@@ -62,16 +52,6 @@ public class AnnotationsTest {
     @Test
     public void testContains_SecondContainedInFirst() {
         assertTrue(contains(a(0, 10), a(0, 5)));
-    }
-
-    @Test
-    public void testContains_SecondContainedInFirst_ZeroLengthNearStart() {
-        assertTrue(contains(a(0, 10), a(1, 0)));
-    }
-
-    @Test
-    public void testContains_SecondContainedInFirst_ZeroLengthNearEnd() {
-        assertTrue(contains(a(0, 10), a(9, 0)));
     }
 
     @Test
@@ -87,16 +67,6 @@ public class AnnotationsTest {
     @Test
     public void testOverlap_TouchingRegions() {
         assertFalse(overlap(a(0, 10), a(10, 10)));
-    }
-
-    @Test
-    public void testOverlap_TouchingRegions_ZeroLengthBefore() {
-        assertFalse(overlap(a(0, 10), a(0, 0)));
-    }
-
-    @Test
-    public void testOverlap_TouchingRegions_ZeroLengthAfter() {
-        assertFalse(overlap(a(0, 10), a(10, 0)));
     }
 
     @Test
