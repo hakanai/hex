@@ -53,29 +53,20 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         annotations.addAnnotationCollectionListener(this);
     }
 
-    private Object rootNode = new Object() {
-        @Override
-        public String toString() {
-            return "Annotations";
-        }
-    };
-
     public AnnotationCollection getAnnotations() {
         return annotations;
     }
 
     public Object getRoot() {
-        return rootNode;
+        return annotations.getRootGroup();
     }
 
     public boolean isLeaf(Object o) {
-        return o != rootNode && !(o instanceof GroupAnnotation);
+        return !(o instanceof GroupAnnotation);
     }
 
     public int getChildCount(Object node) {
-        if (node == rootNode) {
-            return annotations.getTopLevel().size();
-        } else if (node instanceof GroupAnnotation) {
+        if (node instanceof GroupAnnotation) {
             return ((GroupAnnotation) node).getAnnotations().size();
         } else {
             return 0;
@@ -83,9 +74,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
     }
 
     public Object getChild(Object node, int index) {
-        if (node == rootNode) {
-            return annotations.getTopLevel().get(index);
-        } else if (node instanceof GroupAnnotation) {
+        if (node instanceof GroupAnnotation) {
             return ((GroupAnnotation) node).getAnnotations().get(index);
         } else {
             return null;
@@ -93,10 +82,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
     }
 
     public int getIndexOfChild(Object node, Object child) {
-        if (node == rootNode) {
-            //noinspection SuspiciousMethodCalls
-            return annotations.getTopLevel().indexOf(child);
-        } else if (node instanceof GroupAnnotation) {
+        if (node instanceof GroupAnnotation) {
             //noinspection SuspiciousMethodCalls
             return ((GroupAnnotation) node).getAnnotations().indexOf(child);
         } else {
@@ -133,10 +119,6 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
     }
 
     public Object getValueAt(Object node, int column) {
-        if (node == rootNode) {
-            return null;
-        }
-
         Annotation anno = (Annotation) node;
         switch (column) {
             case TYPE_COLUMN:
@@ -179,6 +161,6 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
 
     public void annotationsChanged(AnnotationCollectionEvent event) {
         // TODO: This will change a bit once we have some more structure.
-        fireTreeStructureChanged(new TreeModelEvent(this, new Object[] { rootNode }));
+        fireTreeStructureChanged(new TreeModelEvent(this, new Object[] { getRoot() }));
     }
 }

@@ -75,17 +75,20 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
         List<Annotation> fullPath = delegate.getAnnotationPathAt(position);
 
         List<Annotation> path = new ArrayList<Annotation>(fullPath.size());
-        TreePath treePath = new TreePath(treeTable.getTreeTableModel().getRoot());
+        TreePath treePath = new TreePath(delegate.getRootGroup());
 
-        for (int i = 0; i < fullPath.size(); i++) {
-            Annotation node = fullPath.get(i);
+        for (Annotation node : fullPath) {
             path.add(node);
             treePath = treePath.pathByAddingChild(node);
+
             if (treeTable.isCollapsed(treePath)) {
                 break;
             }
         }
 
+        if (path.size() < fullPath.size()) {
+            System.out.println("culled from " + fullPath.size() + " to " + path.size());
+        }
         return path;
     }
 
