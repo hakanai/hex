@@ -86,9 +86,6 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
             }
         }
 
-        if (path.size() < fullPath.size()) {
-            System.out.println("culled from " + fullPath.size() + " to " + path.size());
-        }
         return path;
     }
 
