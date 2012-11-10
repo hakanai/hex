@@ -39,6 +39,7 @@
         <mkdir dir="build"/>
         <jar jarfile="build/hex-${app.version}.jar">
             <zipfileset src="../anno/build/hex-anno.jar"/>
+            <zipfileset src="../anno-gui/build/hex-anno-gui.jar"/>
             <zipfileset src="../binary/build/hex-binary.jar"/>
             <zipfileset src="../formats/build/hex-formats.jar"/>
             <zipfileset src="../interpreter/build/hex-interpreter.jar"/>
@@ -83,6 +84,7 @@
 
         <copy todir="build/Hex.app/Contents/Resources/Java">
             <fileset dir="../anno/build" includes="hex-anno.jar"/>
+            <fileset dir="../anno-gui/build" includes="hex-anno-gui.jar"/>
             <fileset dir="../binary/build" includes="hex-binary.jar"/>
             <fileset dir="../formats/build" includes="hex-formats.jar"/>
             <fileset dir="../interpreter/build" includes="hex-interpreter.jar"/>
