@@ -2,14 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="" />
-    <mapping directory="$PROJECT_DIR$/anno" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/binary" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/anno-gui" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/formats" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/interpreter" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/launcher" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/main" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/util" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/viewer" vcs="Git" />
   </component>
 </project>
 

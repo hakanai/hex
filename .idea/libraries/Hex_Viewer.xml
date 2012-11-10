@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Hex Viewer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/hex-viewer.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

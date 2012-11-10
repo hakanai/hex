@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Hex Annotations">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/hex-anno.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

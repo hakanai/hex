@@ -1,6 +1,6 @@
 <!--
   ~ Hex - a hex viewer and annotator
-  ~ Copyright (C) 2009  Trejkaz, Hex Project
+  ~ Copyright (C) 2009-2010  Trejkaz, Hex Project
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -38,15 +38,15 @@
     <target name="executable-jar" description="Builds a cross-platform executable JAR file">
         <mkdir dir="build"/>
         <jar jarfile="build/hex-${app.version}.jar">
-            <zipfileset src="../anno/build/hex-anno.jar"/>
             <zipfileset src="../anno-gui/build/hex-anno-gui.jar"/>
-            <zipfileset src="../binary/build/hex-binary.jar"/>
             <zipfileset src="../formats/build/hex-formats.jar"/>
-            <zipfileset src="../interpreter/build/hex-interpreter.jar"/>
             <zipfileset src="../main/build/hex-main.jar"/>
-            <zipfileset src="../util/build/hex-util.jar"/>
-            <zipfileset src="../viewer/build/hex-viewer.jar"/>
 
+            <zipfileset src="../lib/hex-anno.jar"/>
+            <zipfileset src="../lib/hex-binary.jar"/>
+            <zipfileset src="../lib/hex-interpreter.jar"/>
+            <zipfileset src="../lib/hex-util.jar"/>
+            <zipfileset src="../lib/hex-viewer.jar"/>
             <zipfileset src="../lib/snakeyaml.jar"/>
             <zipfileset src="../lib/swingx.jar"/>
             <zipfileset src="../lib/jruby-complete.jar"/>
@@ -83,16 +83,12 @@
         <!-- TODO: I need an icon file to go into Contents/Resources/Hex.icns :-( -->
 
         <copy todir="build/Hex.app/Contents/Resources/Java">
-            <fileset dir="../anno/build" includes="hex-anno.jar"/>
             <fileset dir="../anno-gui/build" includes="hex-anno-gui.jar"/>
-            <fileset dir="../binary/build" includes="hex-binary.jar"/>
             <fileset dir="../formats/build" includes="hex-formats.jar"/>
-            <fileset dir="../interpreter/build" includes="hex-interpreter.jar"/>
             <fileset dir="../main/build" includes="hex-main.jar"/>
-            <fileset dir="../util/build" includes="hex-util.jar"/>
-            <fileset dir="../viewer/build" includes="hex-viewer.jar"/>
 
-            <fileset dir="../lib" includes="snakeyaml.jar, swingx.jar, jruby-complete.jar"/>
+            <fileset dir="../lib" includes="hex-anno.jar, hex-binary.jar, hex-interpreter.jar, hex-util.jar,
+                                            hex-viewer.jar, snakeyaml.jar, swingx.jar, jruby-complete.jar"/>
 
             <!-- Mac-specific -->
             <fileset dir="../lib" includes="mrjadapter.jar, quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>

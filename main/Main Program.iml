@@ -9,13 +9,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Annotations" />
-    <orderEntry type="module" module-name="Binary API" />
+    <orderEntry type="module" module-name="Annotation GUI" />
     <orderEntry type="module" module-name="File Formats" />
-    <orderEntry type="module" module-name="Hex Viewer" />
-    <orderEntry type="module" module-name="Interpreter API" />
-    <orderEntry type="module" module-name="Utilities" />
     <orderEntry type="library" name="ByteList" level="project" />
+    <orderEntry type="library" name="Hex Annotations" level="project" />
+    <orderEntry type="library" name="Hex Binary" level="project" />
+    <orderEntry type="library" name="Hex Interpreters" level="project" />
+    <orderEntry type="library" name="Hex Utilities" level="project" />
+    <orderEntry type="library" name="Hex Viewer" level="project" />
     <orderEntry type="library" name="JCodings" level="project" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="MRJAdapter" level="project" />
