@@ -1,15 +1,16 @@
 
-Version 0.X (XXXX-XX-XX)
+Version 0.3 (2012-11-10)
 
      New: Annotations not visible in the tree due to their parents being collapsed are now hidden from rendering
           in the viewer.
      New: Selecting an annotation in the tree will select the corresponding range in the viewer.
 
+ Changed: Code usable by other projects was moved out into hex-components (doesn't affect functionality.)
  Changed: Zero-width annotations removed as they were causing altogether too much trouble (e.g. when sorting a list
           of annotations, it's hard to know which one is first.)  The structure DSL is updated to not drop an
           array annotation in if the length would be zero, which was the common cause for it.
 
-Version 0.2 (XXXX-XX-XX)
+Version 0.2 (2011-07-30)
 
      New: Notes are now editable through the annotations tree view.
      New: It is now possible to delete a sub-region (it was possible using Remove Annotation, but only if there was
