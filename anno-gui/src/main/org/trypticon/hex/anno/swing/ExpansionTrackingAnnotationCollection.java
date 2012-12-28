@@ -73,6 +73,9 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
     
     public List<Annotation> getAnnotationPathAt(long position) {
         List<Annotation> fullPath = delegate.getAnnotationPathAt(position);
+        if (fullPath == null) {
+            return null;
+        }
 
         List<Annotation> path = new ArrayList<Annotation>(fullPath.size());
         TreePath treePath = new TreePath(delegate.getRootGroup());

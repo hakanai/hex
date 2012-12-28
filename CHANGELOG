@@ -1,4 +1,8 @@
 
+Version X.X (XXXX-XX-XX)
+
+   Fixed: NullPointerException for new notebooks due to a lack of annotations.
+
 Version 0.3 (2012-11-10)
 
      New: Annotations not visible in the tree due to their parents being collapsed are now hidden from rendering
