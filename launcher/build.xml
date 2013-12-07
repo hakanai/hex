@@ -63,7 +63,25 @@
         <antcall target="mac-app-bundle"/>
     </target>
 
-    <target name="mac-app-bundle" description="Builds an app bundle for running on Mac OS X">
+    <target name="-mac-app-bundle-uptodate">
+        <uptodate property="mac-app-bundle.uptodate" targetfile="build/Hex.app/Contents/_CodeSignature/CodeResources">
+            <srcfiles dir="src/mac/app-bundle-stub"/>
+            <srcfiles dir="src/mac" includes="Info.plist"/>
+            <srcfiles dir="." includes="build.xml"/>
+            <srcfiles dir=".." includes="app.properties"/>
+            <srcfiles dir="../anno-gui/build" includes="hex-anno-gui.jar"/>
+            <srcfiles dir="../formats/build" includes="hex-formats.jar"/>
+            <srcfiles dir="../main/build" includes="hex-main.jar"/>
+            <srcfiles dir="../lib" includes="*.jar"/>
+        </uptodate>
+    </target>
+
+    <target name="-delete-mac-app-bundle-unless-uptodate" depends="-mac-app-bundle-uptodate" if="mac-app-bundle.uptodate">
+        <delete file="build/Hex.app"/>
+    </target>
+
+    <target name="mac-app-bundle" depends="-delete-mac-app-bundle-unless-uptodate" unless="mac-app-bundle.uptodate"
+            description="Builds an app bundle for running on Mac OS X">
         <mkdir dir="build/Hex.app"/>
 
         <copy todir="build/Hex.app">
