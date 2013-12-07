@@ -31,10 +31,9 @@
         <mkdir dir="build"/>
 
         <!-- Source -->
-        <tar destfile="build/hex-src-${app.version}.tar" longfile="gnu">
+        <tar destfile="build/hex-src-${app.version}.tar" compression="bzip2" longfile="gnu">
             <zipfileset prefix="hex-src-${app.version}" dir="." excludes="build/, */build/, projectFilesBackup, **/.DS_Store, .idea/out/, .idea/workspace.xml, .idea/dictionaries/"/>
         </tar>
-        <bzip2 destfile="build/hex-src-${app.version}.tar.bz2" src="build/hex-src-${app.version}.tar"/>
 
         <!-- Executable jar -->
         <ant dir="launcher" target="executable-jar"/>
