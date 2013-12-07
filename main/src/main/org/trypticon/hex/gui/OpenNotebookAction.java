@@ -19,9 +19,11 @@
 package org.trypticon.hex.gui;
 
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import javax.swing.DefaultFocusManager;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
@@ -50,14 +52,14 @@ class OpenNotebookAction extends BaseAction {
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
-        HexFrame frame = HexFrame.findActiveFrame();
+        Window activeWindow = DefaultFocusManager.getCurrentManager().getActiveWindow();
 
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new NotebookFileFilter());
 
         chooser.setCurrentDirectory(preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS));
 
-        if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+        if (chooser.showOpenDialog(activeWindow) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             if (!file.isFile()) {
                 throw new ActionException("Not a file: " + file);
