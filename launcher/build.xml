@@ -98,8 +98,6 @@
             <arg value="${app.signer}"/>
             <arg value="--timestamp"/>
             <arg value="build/Hex.app"/>
-            <arg value="--resource-rules"/>
-            <arg value="src/mac/ResourceRules.plist"/>
         </exec>
     </target>
 
