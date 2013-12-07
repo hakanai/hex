@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui;
 
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -29,6 +30,7 @@ import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * Action to open a new binary file, creating a new notebook for annotating it.
@@ -51,13 +53,14 @@ class NewNotebookAction extends BaseAction {
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
-        HexFrame frame = HexFrame.findActiveFrame();
+        // For Mac OS X, when opening files, the file chooser is *not* parented by the current window.
+        Window activeWindow = PLAFUtils.isAqua() ? null : HexFrame.findActiveFrame();
 
         JFileChooser chooser = new JFileChooser();
 
         chooser.setCurrentDirectory(preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.BINARIES));
 
-        if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+        if (chooser.showOpenDialog(activeWindow) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             if (!file.isFile()) {
                 throw new ActionException("Not a file: " + file);
