@@ -32,6 +32,7 @@ import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * Action to open an existing notebook.
@@ -54,7 +55,8 @@ class OpenNotebookAction extends BaseAction {
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
-        Window activeWindow = DefaultFocusManager.getCurrentManager().getActiveWindow();
+        // For Mac OS X, when opening files, the file chooser is *not* parented by the current window.
+        Window activeWindow = PLAFUtils.isAqua() ? null : HexFrame.findActiveFrame();
 
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(new NotebookFileFilter());
