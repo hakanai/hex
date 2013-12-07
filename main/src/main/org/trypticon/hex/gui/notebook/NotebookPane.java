@@ -172,6 +172,8 @@ public class NotebookPane extends JPanel {
                     }
                 }
             });
+        } else {
+            okToCloseCallback.execute(true);
         }
     }
 
