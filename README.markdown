@@ -40,10 +40,14 @@ If something is missing, prod me to fix it.
 
 To build, execute 'ant' in the top directory.
 
-A file you can run will appear in the launcher/build directory.  If you
-are a Mac user you will get a proper .app bundle, everyone else will
-currently get a .jar file until I have time to do something about that
-(pro-tip: contribute!)
+A file you can run will appear in the launcher/build directory.
+
+If you are a Mac user you will get a proper .app bundle, but you will
+have to edit app.properties at the root to reference your own code
+signing key before the build process will produce a usable app.
+
+If you are not a Mac user, the build will create an executable .jar
+file until a better option emerges (pro-tip: contribute!)
 
 
 WHAT WORKS
