@@ -45,7 +45,7 @@ public abstract class ConvenienceStructure extends AbstractStructure {
     }
 
     protected Annotation magic(Binary binary, long position, FixedLengthInterpreter interpreter, String name, int magicValue) {
-        int valueLength = interpreter.getValueLength();
+        long valueLength = interpreter.getValueLength();
         Annotation magicAnnotation = new SimpleMutableAnnotation(position, valueLength, interpreter, name);
         checkMagic(binary, magicAnnotation, magicValue);
         return magicAnnotation;

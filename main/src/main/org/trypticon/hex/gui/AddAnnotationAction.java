@@ -99,12 +99,12 @@ class AddAnnotationAction extends BaseAction {
 
         Interpreter interpreter = info.create(optionMap);
 
-        int length;
+        long length;
         if (interpreter instanceof FixedLengthInterpreter) {
             length = ((FixedLengthInterpreter) interpreter).getValueLength();
         } else {
-            length = (int) (viewer.getSelectionModel().getSelectionEnd() -
-                            viewer.getSelectionModel().getSelectionStart()) + 1;
+            length = (viewer.getSelectionModel().getSelectionEnd() -
+                      viewer.getSelectionModel().getSelectionStart()) + 1;
         }
 
         SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpreter, null);

@@ -1,6 +1,8 @@
 
 Version X.X (XXXX-XX-XX)
 
+     New: Support for binaries larger than 2 GiB (updated hex-components to v0.4)
+
    Fixed: NullPointerException for new notebooks due to a lack of annotations.
 
 Version 0.3 (2012-11-10)

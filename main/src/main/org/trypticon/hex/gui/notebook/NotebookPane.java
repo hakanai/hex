@@ -22,13 +22,10 @@ import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.swing.AnnotationPane;
 import org.trypticon.hex.gui.SaveNotebookAction;
-import org.trypticon.hex.util.swingsupport.SaveConfirmation;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
 import java.awt.event.HierarchyEvent;
@@ -36,6 +33,7 @@ import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import org.trypticon.hex.gui.util.SaveConfirmation;
 
 /**
  * Pane for working with a single notebook.
@@ -85,13 +83,10 @@ public class NotebookPane extends JPanel {
             }
         });
 
-        JScrollPane viewerScroll = new JScrollPane(viewer);
-        viewerScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(annoPane);
-        splitPane.setRightComponent(viewerScroll);
-        splitPane.setDividerLocation(-viewerScroll.getPreferredSize().width);
+        splitPane.setRightComponent(viewer);
+        splitPane.setDividerLocation(annoPane.getPreferredSize().width);
         splitPane.setResizeWeight(1.0); // left component gets all the extra space
 
         setLayout(new BorderLayout());
