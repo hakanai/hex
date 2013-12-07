@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="JCodings">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/jcodings.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

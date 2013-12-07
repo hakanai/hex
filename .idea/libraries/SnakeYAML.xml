@@ -4,8 +4,6 @@
       <root url="jar://$PROJECT_DIR$/lib/snakeyaml.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="file://$PROJECT_DIR$/../../Downloads/snakeyaml/src/main/java" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>
