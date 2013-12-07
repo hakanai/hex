@@ -20,11 +20,22 @@ package org.trypticon.hex.gui;
 
 import java.awt.Frame;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.util.List;
 import javax.swing.DefaultFocusManager;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.NotebookStorage;
+import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
+import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
+import org.trypticon.hex.gui.util.Callback;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
@@ -33,20 +44,55 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  * @author trejkaz
  */
 public class HexApplication {
-    private static final HexApplication instance = new HexApplication();
-
     /**
-     * Gets the singleton instance of the application.
-     *
-     * @return the application.
+     * Constructs the application.
      */
-    public static HexApplication get() {
-        return instance;
+    public HexApplication() {
+        new PLAFBootstrap().init(this);
     }
 
-    //TODO: Application startup logic should eventually move in here.
+    /**
+     * Opens windows which should be open on startup.
+     */
+    public void openInitialWindows() {
+        // If not running on Aqua, it is impossible to start up without at least one document open.
+        // For now, we will resolve this by opening the sample but another way would be supporting the
+        // frame having no documents open (which would be bad on Mac...)
+        if (!PLAFUtils.isAqua()) {
+            JFrame frame = new MultipleHexFrame(this);
+            frame.setVisible(true);
+        }
 
-    //TODO: Exit logic should eventually move in here.
+        final WorkspaceStateTracker stateTracker = WorkspaceStateTracker.create(this);
+        boolean restoredState = stateTracker.restore();
+
+        // Open a sample notebook if this is the first time the application was ever opened.
+        if (!restoredState) {
+            new OpenSampleNotebookAction(this).actionPerformed(
+                new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Open Sample Notebook"));
+        }
+    }
+
+    /**
+     * Opens a notebook from a file path.
+     *
+     * @param notebookPath the notebook path.
+     * @return the frame the notebook was opened in, or {@code null} if there was a problem opening it
+     *         (in this situation the user would have been alerted already.)
+     */
+    public HexFrame openNotebook(Path notebookPath) {
+        try {
+            Notebook notebook = new NotebookStorage().read(notebookPath.toUri().toURL());
+            return openNotebook(notebook);
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("The JRE created a URL which was malformed: " + notebookPath, e);
+        } catch (IOException e) {
+            Window activeWindow = DefaultFocusManager.getCurrentManager().getActiveWindow();
+            JOptionPane.showMessageDialog(activeWindow, "There was a problem opening the notebook: " + e.getMessage(),
+                                          "Error Opening File", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
 
     /**
      * <p>Opens a notebook.</p>
@@ -70,7 +116,7 @@ public class HexApplication {
 
         if (PLAFUtils.isAqua()) {
             // Try to mimic document-based Mac applications better by using a separate frame per notebook.
-            SingleHexFrame frame = new SingleHexFrame(notebook);
+            SingleHexFrame frame = new SingleHexFrame(this, notebook);
             frame.setVisible(true);
             return frame;
         } else {
@@ -78,5 +124,90 @@ public class HexApplication {
             frame.addTab(notebook);
             return frame;
         }
+    }
+
+    /**
+     * Tries to exit the application.
+     *
+     * @param okToExitCallback a callback which is called with {@code true} if it's OK to exit
+     * and {@code false} if it's not OK.
+     */
+    public void tryToExit(final Callback<Boolean> okToExitCallback) {
+        // This will only be called once even though tryToExitInner will call itself until nothing is unconfirmed.
+        WorkspaceStateTracker.create(this).save();
+
+        tryToExitInner(okToExitCallback);
+    }
+
+    /**
+     * Tries to exit the application.
+     *
+     * @param okToExitCallback a callback which is called with {@code true} if it's OK to exit
+     * and {@code false} if it's not OK.
+     */
+    public void tryToExitInner(final Callback<Boolean> okToExitCallback) {
+        final List<HexFrame> frames = HexFrame.findAllFrames();
+        if (frames.isEmpty()) {
+            // No frames, can exit immediately.
+            okToExitCallback.execute(true);
+            return;
+        }
+
+        prepareForExit(frames, new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean okToExit) {
+                if (okToExit) {
+                    for (Frame frame : frames) {
+                        frame.dispose();
+                    }
+
+                    // Depending on the platform, the dialogs may have been modeless, so the user might have opened
+                    // new frames while we were prompting them to close the existing ones.
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            tryToExitInner(okToExitCallback);
+                        }
+                    });
+                } else {
+                    okToExitCallback.execute(false);
+                }
+            }
+        });
+    }
+
+    /**
+     * Prepares for exiting the application. Recursively calls itself for each frame.
+     *
+     * @param frames the list of frames.
+     * @param okToExitCallback a callback which is called with {@code true} if all frames said it's okay to close
+     * or {@code false} if one of them said it wasn't.
+     */
+    private void prepareForExit(List<HexFrame> frames, final Callback<Boolean> okToExitCallback) {
+        if (frames.isEmpty()) {
+            // Every frame said it was OK to close.
+            okToExitCallback.execute(true);
+            return;
+        }
+
+        HexFrame firstFrame = frames.get(0);
+        final List<HexFrame> remainingFrames = frames.subList(1, frames.size());
+
+        firstFrame.prepareForClose(new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean okToClose) {
+                if (okToClose) {
+                    // Reducing the risk of a StackOverflowError if there are a large number of frames open.
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            prepareForExit(remainingFrames, okToExitCallback);
+                        }
+                    });
+                } else {
+                    okToExitCallback.execute(false);
+                }
+            }
+        });
     }
 }

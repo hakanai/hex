@@ -36,9 +36,11 @@ import org.trypticon.hex.util.swingsupport.BaseAction;
  * @author trejkaz
  */
 class NewNotebookAction extends BaseAction {
+    private final HexApplication application;
     private final PreferredDirectoryManager preferredDirectoryManager;
 
-    NewNotebookAction(PreferredDirectoryManager preferredDirectoryManager) {
+    NewNotebookAction(HexApplication application, PreferredDirectoryManager preferredDirectoryManager) {
+        this.application = application;
         this.preferredDirectoryManager = preferredDirectoryManager;
 
         putValue(NAME, "New...");
@@ -63,7 +65,7 @@ class NewNotebookAction extends BaseAction {
 
             preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.BINARIES, chooser.getCurrentDirectory());
 
-            HexApplication.get().openNotebook(new DefaultNotebook(file.toURI().toURL()));
+            application.openNotebook(new DefaultNotebook(file.toURI().toURL()));
         }
     }
 }

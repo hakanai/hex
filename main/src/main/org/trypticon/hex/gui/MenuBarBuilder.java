@@ -40,6 +40,11 @@ import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
  * @author trejkaz
  */
 public class MenuBarBuilder {
+    private final HexApplication application;
+
+    public MenuBarBuilder(HexApplication application) {
+        this.application = application;
+    }
 
     /**
      * Builds the application menu bar.
@@ -51,8 +56,8 @@ public class MenuBarBuilder {
         PreferredDirectoryManager preferredDirectoryManager = new PreferredDirectoryManager();
 
         JMenu fileMenu = new JMenu("File");
-        fileMenu.add(new NewNotebookAction(preferredDirectoryManager));
-        fileMenu.add(new OpenNotebookAction(preferredDirectoryManager));
+        fileMenu.add(new NewNotebookAction(application, preferredDirectoryManager));
+        fileMenu.add(new OpenNotebookAction(application, preferredDirectoryManager));
         // TODO: Open Recent
 
         fileMenu.addSeparator();
@@ -67,7 +72,7 @@ public class MenuBarBuilder {
 
         if (!System.getProperty("os.name").toLowerCase().startsWith("mac")) {
             fileMenu.addSeparator();
-            fileMenu.add(new ExitAction());
+            fileMenu.add(new ExitAction(application));
         }
 
         // TODO: Copy as:
@@ -108,7 +113,7 @@ public class MenuBarBuilder {
 
         JMenu helpMenu = new JMenu("Help");
         // TODO: Help / User Guide
-        helpMenu.add(new OpenSampleNotebookAction());
+        helpMenu.add(new OpenSampleNotebookAction(application));
         // TODO: Help / About (non-Mac only.  Mac needs to hook into the app menu.)
 
         JMenuBar menuBar = new JMenuBar();

@@ -40,11 +40,12 @@ public class SingleHexFrame extends HexFrame {
 
     /**
      * Constructs the top-level frame.
+     *
+     * @param application the application which the frame belongs to.
      */
-    public SingleHexFrame(Notebook notebook) {
+    public SingleHexFrame(HexApplication application, Notebook notebook) {
+        super(application);
         setTitle(notebook.getName());
-
-        setJMenuBar(new MenuBarBuilder().buildMenuBar(this));
 
         notebookPane = new NotebookPane(notebook);
         notebookPane.addPropertyChangeListener("name", new TitleUpdater());

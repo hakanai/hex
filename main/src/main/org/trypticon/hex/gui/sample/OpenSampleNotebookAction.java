@@ -36,7 +36,10 @@ import org.trypticon.hex.util.swingsupport.BaseAction;
  * @author trejkaz
  */
 public class OpenSampleNotebookAction extends BaseAction {
-    public OpenSampleNotebookAction() {
+    private final HexApplication application;
+
+    public OpenSampleNotebookAction(HexApplication application) {
+        this.application = application;
         putValue(NAME, "Open Sample Notebook");
         putValue(MNEMONIC_KEY, (int) 's');
     }
@@ -46,7 +49,7 @@ public class OpenSampleNotebookAction extends BaseAction {
         String resourcePath = Sample.class.getName().replace('.', '/') + ".class";
         Notebook notebook = new DefaultNotebook(getClass().getClassLoader().getResource(resourcePath));
 
-        HexApplication.get().openNotebook(notebook);
+        application.openNotebook(notebook);
 
         Binary binary = notebook.getBinary();
         AnnotationCollection annotations = notebook.getAnnotations();

@@ -36,7 +36,12 @@ import org.trypticon.hex.util.LoggerUtils;
  *
  * @author trejkaz
  */
-public class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
+class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
+    private final HexApplication application;
+
+    AquaWorkspaceStateTracker(HexApplication application) {
+        this.application = application;
+    }
 
     @Override
     public void save() {
@@ -68,8 +73,6 @@ public class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
             return false;
         }
 
-        HexApplication application = HexApplication.get();
-
         for (int i = 0; i < count; i++) {
             final Preferences openDocumentPrefs = topPrefs.node("document" + i);
 
@@ -79,21 +82,19 @@ public class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
                 continue;
             }
 
-            final HexFrame frame;
             try {
                 URL url = new URL(location);
                 Notebook notebook = new NotebookStorage().read(url);
-                frame = application.openNotebook(notebook);
+                HexFrame frame = application.openNotebook(notebook);
+                if (frame != null) {
+                    restoreFrameLocation(frame, openDocumentPrefs);
+                }
             } catch (MalformedURLException e) {
                 LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
                                                      location + ", skipping", e);
-                continue;
             } catch (IOException e) {
                 LoggerUtils.get().log(Level.WARNING, "Error opening previously-open notebook: " + location + ", skipping");
-                continue;
             }
-
-            restoreFrameLocation(frame, openDocumentPrefs);
         }
 
         return true;

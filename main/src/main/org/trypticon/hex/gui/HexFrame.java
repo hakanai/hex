@@ -71,6 +71,27 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  * @author trejkaz
  */
 public abstract class HexFrame extends JFrame {
+    private final HexApplication application;
+
+    /**
+     * Constructs the frame.
+     *
+     * @param application the application which the frame belongs to.
+     */
+    protected HexFrame(HexApplication application) {
+        this.application = application;
+
+        setJMenuBar(new MenuBarBuilder(application).buildMenuBar(this));
+    }
+
+    /**
+     * Gets the application which the frame belongs to.
+     *
+     * @return the application.
+     */
+    protected HexApplication getApplication() {
+        return application;
+    }
 
     /**
      * Gets the currently-selected notebook pane.

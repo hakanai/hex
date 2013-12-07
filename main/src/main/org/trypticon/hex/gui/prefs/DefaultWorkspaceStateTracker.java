@@ -38,7 +38,12 @@ import org.trypticon.hex.util.LoggerUtils;
  *
  * @author trejkaz
  */
-public class DefaultWorkspaceStateTracker extends WorkspaceStateTracker {
+class DefaultWorkspaceStateTracker extends WorkspaceStateTracker {
+    private final HexApplication application;
+
+    DefaultWorkspaceStateTracker(HexApplication application) {
+        this.application = application;
+    }
 
     @Override
     public void save() {
@@ -87,7 +92,7 @@ public class DefaultWorkspaceStateTracker extends WorkspaceStateTracker {
             try {
                 URL url = new URL(location);
                 Notebook notebook = new NotebookStorage().read(url);
-                HexApplication.get().openNotebook(notebook);
+                application.openNotebook(notebook);
             } catch (MalformedURLException e) {
                 LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
                                                      location + ", skipping", e);

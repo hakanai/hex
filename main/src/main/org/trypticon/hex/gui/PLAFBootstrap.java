@@ -30,14 +30,14 @@ import org.trypticon.hex.util.LoggerUtils;
  */
 class PLAFBootstrap {
 
-    void init() {
+    void init(HexApplication application) {
         String systemLAF = UIManager.getSystemLookAndFeelClassName();
 
         try {
             // com.apple.laf is definitely the case on SnowLeopard.  I think apple.laf must have been from Leopard.
             if ("com.apple.laf.AquaLookAndFeel".equals(systemLAF) ||
                 "apple.laf.AquaLookAndFeel".equals(systemLAF)) {
-                new MacPLAFBootstrap().init();
+                new MacPLAFBootstrap().init(application);
                 return;
             }
 

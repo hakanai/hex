@@ -72,11 +72,12 @@ public class MultipleHexFrame extends HexFrame {
 
     /**
      * Constructs the top-level frame.
+     *
+     * @param application the application which the frame belongs to.
      */
-    public MultipleHexFrame() {
+    public MultipleHexFrame(HexApplication application) {
+        super(application);
         setTitle("Hex");
-
-        setJMenuBar(new MenuBarBuilder().buildMenuBar(this));
 
         tabbedPane = new JTabbedPane();
         tabbedPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, -3, -4, -3));

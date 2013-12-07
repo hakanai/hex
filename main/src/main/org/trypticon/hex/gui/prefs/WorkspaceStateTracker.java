@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.prefs.Preferences;
 import javax.swing.SwingUtilities;
 
+import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
@@ -94,13 +95,14 @@ public abstract class WorkspaceStateTracker {
     /**
      * Creates an appropriate instance of the workspace state tracker for the current platform.
      *
+     * @param application the application.
      * @return the tracker.
      */
-    public static WorkspaceStateTracker create() {
+    public static WorkspaceStateTracker create(HexApplication application) {
         if (PLAFUtils.isAqua()) {
-            return new AquaWorkspaceStateTracker();
+            return new AquaWorkspaceStateTracker(application);
         } else {
-            return new DefaultWorkspaceStateTracker();
+            return new DefaultWorkspaceStateTracker(application);
         }
     }
 }

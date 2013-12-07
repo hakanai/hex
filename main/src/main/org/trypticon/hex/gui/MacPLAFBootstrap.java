@@ -46,23 +46,24 @@ public class MacPLAFBootstrap {
     /**
      * Initialises look and feel for Aqua (Mac OS X.)
      *
+     * @param application the main application.
      * @throws Exception if an error occurs.
      */
-    void init() throws Exception {
+    void init(final HexApplication application) throws Exception {
         // Look and feel tweaks for Apple's runtime.
         // These need to be done before setting the LAF.
 
         // When frames are visible this system property will make that menu become the screen menu.
         System.setProperty("apple.laf.useScreenMenuBar", "true");
 
-        final Application application = MacFactory.getApplication();
+        final Application macApplication = MacFactory.getApplication();
 
         // TODO: About (along with Help -> About in main app.)
         // TODO: Preferences - when we get some. ;-)
-        application.setQuitHandler(new QuitHandler() {
+        macApplication.setQuitHandler(new QuitHandler() {
             @Override
             public void handleQuitRequestWith(QuitEvent quitEvent, final QuitResponse quitResponse) {
-                new ExitAction().tryToExit(new Callback<Boolean>() {
+                application.tryToExit(new Callback<Boolean>() {
                     @Override
                     public void execute(Boolean okToExit) {
                         if (okToExit) {
@@ -77,7 +78,7 @@ public class MacPLAFBootstrap {
 
         // And then a different menu when there are no frames visible:
         // Workaround here for setDefaultMenuBar not working: https://java.net/jira/browse/MACOSX_PORT-775
-        JFrame dummy = new DefaultMenuDummyFrame(new MenuBarBuilder().buildMenuBar(null));
+        JFrame dummy = new DefaultMenuDummyFrame(new MenuBarBuilder(application).buildMenuBar(null));
         dummy.setVisible(true);
 
         try {

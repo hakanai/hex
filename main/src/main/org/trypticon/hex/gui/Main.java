@@ -20,6 +20,8 @@ package org.trypticon.hex.gui;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.nio.file.Paths;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -37,7 +39,6 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  */
 public class Main {
     public static void main(final String[] args) throws Exception {
-        new PLAFBootstrap().init();
 
         new JRubyWarmup().start();
 
@@ -56,31 +57,17 @@ public class Main {
         });
     }
 
-    public void execute(Object[] args) throws Exception {
-        // If not running on Aqua, it is impossible to start up without at least one document open.
-        // For now, we will resolve this by opening the sample but another way would be supporting the
-        // frame having no documents open (which would be bad on Mac...)
-        if (!PLAFUtils.isAqua()) {
-            JFrame frame = new MultipleHexFrame();
-            frame.setVisible(true);
+    public void execute(String[] args) throws Exception {
+        HexApplication application = new HexApplication();
+
+        application.openInitialWindows();
+
+        if (args.length > 0) {
+            for (String arg : args) {
+                // TODO: Support a URL here too.
+                // TODO: Support binary here too. Find a way to distinguish this in this context.
+                application.openNotebook(Paths.get(arg));
+            }
         }
-
-        final WorkspaceStateTracker stateTracker = WorkspaceStateTracker.create();
-        boolean openSample = !stateTracker.restore();
-
-        if (args.length == 1 && args[0] instanceof String) {
-            // TODO: Support a URL here too.
-            // TODO: Support binary here too. Find a way to distinguish this in this context.
-            File file = new File((String) args[0]);
-            Notebook notebook = new NotebookStorage().read(file.toURI().toURL());
-            HexApplication.get().openNotebook(notebook);
-            openSample = false;
-        }
-
-        if (openSample) {
-            new OpenSampleNotebookAction().actionPerformed(
-                new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Open Sample Notebook"));
-        }
-
     }
 }
