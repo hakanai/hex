@@ -61,7 +61,7 @@ class AddAnnotationAction extends BaseAction {
         long position = viewer.getSelectionModel().getSelectionStart();
 
         List<InterpreterInfo.Option> options = info.getOptions();
-        Map<String, Object> optionMap = new HashMap<String, Object>(options.size());
+        Map<String, Object> optionMap = new HashMap<>(options.size());
         if (!options.isEmpty()) {
 
             // TODO: We should do this in a single form, I'm just lazy right now.
