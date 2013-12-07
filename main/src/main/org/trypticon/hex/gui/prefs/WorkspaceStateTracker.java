@@ -115,6 +115,7 @@ public class WorkspaceStateTracker {
 
         // Have to give the window system a chance to put the window up, if it just appeared.
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (HexFrame.findActiveFrame() != null) {
                     restoreFrameLocation(HexFrame.findActiveFrame());

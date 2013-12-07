@@ -57,6 +57,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.trypticon.hex.gui.util.Callback;
 
 /**
  * A top-level application frame.
@@ -96,9 +97,14 @@ public class HexFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                if (prepareForClose()) {
-                    dispose();
-                }
+                prepareForClose(new Callback<Boolean>() {
+                    @Override
+                    public void execute(Boolean okToClose) {
+                        if (okToClose) {
+                            dispose();
+                        }
+                    }
+                });
             }
         });
     }
@@ -151,20 +157,25 @@ public class HexFrame extends JFrame {
      * Closes the currently-viewed notebook.
      */
     public void closeCurrentTab() {
-        NotebookPane notebookPane = (NotebookPane) tabbedPane.getSelectedComponent();
+        final NotebookPane notebookPane = (NotebookPane) tabbedPane.getSelectedComponent();
         if (notebookPane != null) {
-            if (notebookPane.prepareForClose()) {
-                notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
+            notebookPane.prepareForClose(new Callback<Boolean>() {
+                @Override
+                public void execute(Boolean okToClose) {
+                    if (okToClose) {
+                        notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
 
-                tabbedPane.remove(notebookPane);
+                        tabbedPane.remove(notebookPane);
 
-                notebookPane.getNotebook().close();
+                        notebookPane.getNotebook().close();
 
-                // Dispose the frame if there are no tabs left, for Mac only, as empty windows do not exist on Mac.
-                if (PLAFUtils.isQuaqua()) {
-                    dispose();
+                        // Dispose the frame if there are no tabs left, for Mac only, as empty windows do not exist on Mac.
+                        if (PLAFUtils.isAqua()) {
+                            dispose();
+                        }
+                    }
                 }
-            }
+            });
         }
     }
 
@@ -327,18 +338,48 @@ public class HexFrame extends JFrame {
     /**
      * Prepares for closing the frame.
      *
-     * @return {@code true} if it is OK to close.
+     * @param okToCloseCallback a callback which is called with {@code true} if it's okay to close or
+     * {@code false} if it is not OK to close.
      */
-    public boolean prepareForClose() {
+    public void prepareForClose(final Callback<Boolean> okToCloseCallback) {
         new WorkspaceStateTracker().save();
 
-        for (final NotebookPane pane : getAllNotebookPanes()) {
-            if (!pane.prepareForClose()) {
-                return false;
-            }
+        prepareForClose(getAllNotebookPanes(), okToCloseCallback);
+    }
+
+    /**
+     * Prepares for closing the frame. Recursively calls itself for each pane.
+     *
+     * @param panes the list of panes we are yet to ask.
+     * @param okToCloseCallback a callback which is called with {@code true} if all panes said it's okay
+     * to close or {@code false} if one of them said it wasn't.
+     */
+    private void prepareForClose(List<NotebookPane> panes, final Callback<Boolean> okToCloseCallback) {
+        if (panes.isEmpty()) {
+            // Every pane said it was OK to close.
+            okToCloseCallback.execute(true);
+            return;
         }
 
-        return true;
+        NotebookPane firstPane = panes.get(0);
+        final List<NotebookPane> remainingPanes = panes.subList(1, panes.size());
+
+        firstPane.prepareForClose(new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean okToClose) {
+                if (okToClose) {
+                    // Reducing the risk of a StackOverflowError if there are a large number of panes open.
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            prepareForClose(remainingPanes, okToCloseCallback);
+                        }
+                    });
+                } else {
+                    okToCloseCallback.execute(false);
+                }
+            }
+        });
     }
 
     /**

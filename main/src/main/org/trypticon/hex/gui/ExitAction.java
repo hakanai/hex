@@ -18,11 +18,12 @@
 
 package org.trypticon.hex.gui;
 
-import javax.swing.AbstractAction;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import org.trypticon.hex.gui.util.Callback;
 
 /**
  * Action to exit the application.
@@ -37,19 +38,91 @@ class ExitAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        List<Frame> closeLater = new ArrayList<Frame>(2);
-        for (Frame frame : Frame.getFrames()) {
-            if (frame instanceof HexFrame) {
-                if (!((HexFrame) frame).prepareForClose()) {
-                    // User decided it wasn't OK to close after all.
-                    return;
+        tryToExit(new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean okToExit) {
+                if (okToExit) {
+                    System.exit(0);
                 }
             }
-            closeLater.add(frame);
+        });
+    }
+
+    /**
+     * Tries to exit the application.
+     *
+     * @param okToExitCallback a callback which is called with {@code true} if it's OK to exit
+     * and {@code false} if it's not OK.
+     */
+    public void tryToExit(final Callback<Boolean> okToExitCallback) {
+        final List<HexFrame> frames = new LinkedList<>();
+        for (Frame frame : Frame.getFrames()) {
+            if (frame instanceof HexFrame && frame.isDisplayable()) {
+                frames.add((HexFrame) frame);
+            }
         }
 
-        for (Frame frame : closeLater) {
-            frame.dispose();
+        if (frames.isEmpty()) {
+            // No frames, can exit immediately.
+            okToExitCallback.execute(true);
+            return;
         }
+
+        prepareForExit(frames, new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean okToExit) {
+                if (okToExit) {
+                    for (Frame frame : frames) {
+                        frame.dispose();
+                    }
+
+                    // Depending on the platform, the dialogs may have been modeless, so the user might have opened
+                    // new frames while we were prompting them to close the existing ones.
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            tryToExit(okToExitCallback);
+                        }
+                    });
+                } else {
+                    okToExitCallback.execute(false);
+                }
+            }
+        });
+    }
+
+    /**
+     * Prepares for exiting the application. Recursively calls itself for each frame.
+     *
+     * @param frames the list of frames.
+     * @param okToExitCallback a callback which is called with {@code true} if all frames said it's okay to close
+     * or {@code false} if one of them said it wasn't.
+     */
+    private void prepareForExit(List<HexFrame> frames, final Callback<Boolean> okToExitCallback) {
+        if (frames.isEmpty()) {
+            // Every frame said it was OK to close.
+            okToExitCallback.execute(true);
+            return;
+        }
+
+        HexFrame firstFrame = frames.get(0);
+        final List<HexFrame> remainingFrames = frames.subList(1, frames.size());
+
+        firstFrame.prepareForClose(new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean okToClose) {
+                if (okToClose) {
+                    // Reducing the risk of a StackOverflowError if there are a large number of frames open.
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            prepareForExit(remainingFrames, okToExitCallback);
+                        }
+                    });
+                } else {
+                    okToExitCallback.execute(false);
+                }
+            }
+        });
     }
 }

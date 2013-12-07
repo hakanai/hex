@@ -127,9 +127,10 @@ public class NotebookPane extends JPanel {
     /**
      * Prepares for closing the pane.
      *
-     * @return {@code true} if it is OK to close.
+     * @param okToCloseCallback a callback which is called with {@code true} if it's okay to close or
+     * {@code false} if it is not OK.
      */
-    public boolean prepareForClose() {
+    public void prepareForClose(final Callback<Boolean> okToCloseCallback) {
         // On exit, some frames might be left around in the background which have their notebooks closed already.
         if (notebook.isOpen() && notebook.isDirty()) {
             // So the user knows which one it's asking about.
@@ -138,20 +139,27 @@ public class NotebookPane extends JPanel {
                 tabbedPane.setSelectedComponent(this);
             }
 
-            switch (SaveConfirmation.getInstance().show(getRootPane())) {
-                case CANCEL:
-                    return false;
-                case DO_NOT_SAVE:
-                    return true;
-                case SAVE:
-                    SaveNotebookAction saveAction = (SaveNotebookAction) getRootPane().getActionMap().get("save");
-                    return saveAction.save(getRootPane());
-                default:
-                    throw new IllegalStateException("Impossible save confirmation option found");
-            }
+            SaveConfirmation.getInstance().show(getRootPane(), new Callback<SaveConfirmation.Option>() {
+                @Override
+                public void execute(SaveConfirmation.Option option) {
+                    switch (option) {
+                        case CANCEL:
+                            okToCloseCallback.execute(false);
+                            break;
+                        case DO_NOT_SAVE:
+                            okToCloseCallback.execute(true);
+                            break;
+                        case SAVE:
+                            SaveNotebookAction saveAction = (SaveNotebookAction) getRootPane().getActionMap().get("save");
+                            boolean saveSucceeded = saveAction.save(getRootPane());
+                            okToCloseCallback.execute(saveSucceeded);
+                            break;
+                        default:
+                            throw new IllegalStateException("Impossible save confirmation option found");
+                    }
+                }
+            });
         }
-
-        return true;
     }
 
 }
