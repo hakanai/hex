@@ -42,6 +42,7 @@ public class Main {
         new JRubyWarmup().start();
 
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     new Main().execute(args);

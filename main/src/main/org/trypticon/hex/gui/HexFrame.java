@@ -346,6 +346,7 @@ public class HexFrame extends JFrame {
      * the responsibility of {@code JTabbedPane} but Sun forgot to implement it.
      */
     private class TabTitleUpdater implements PropertyChangeListener {
+        @Override
         public void propertyChange(PropertyChangeEvent event) {
             String name = (String) event.getNewValue();
             int index = tabbedPane.indexOfComponent((Component) event.getSource());

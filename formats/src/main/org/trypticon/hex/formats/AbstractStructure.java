@@ -30,6 +30,7 @@ public abstract class AbstractStructure implements Structure {
         this.name = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }

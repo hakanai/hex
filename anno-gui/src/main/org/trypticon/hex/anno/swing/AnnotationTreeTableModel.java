@@ -57,14 +57,17 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         return annotations;
     }
 
+    @Override
     public Object getRoot() {
         return annotations.getRootGroup();
     }
 
+    @Override
     public boolean isLeaf(Object o) {
         return !(o instanceof GroupAnnotation);
     }
 
+    @Override
     public int getChildCount(Object node) {
         if (node instanceof GroupAnnotation) {
             return ((GroupAnnotation) node).getAnnotations().size();
@@ -73,6 +76,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         }
     }
 
+    @Override
     public Object getChild(Object node, int index) {
         if (node instanceof GroupAnnotation) {
             return ((GroupAnnotation) node).getAnnotations().get(index);
@@ -81,6 +85,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         }
     }
 
+    @Override
     public int getIndexOfChild(Object node, Object child) {
         if (node instanceof GroupAnnotation) {
             //noinspection SuspiciousMethodCalls
@@ -90,22 +95,27 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         }
     }
 
+    @Override
     public void valueForPathChanged(TreePath treePath, Object o) {
         // I don't think I will need this.
     }
 
+    @Override
     public int getColumnCount() {
         return COLUMN_COUNT;
     }
 
+    @Override
     public int getHierarchicalColumn() {
         return TYPE_COLUMN;
     }
 
+    @Override
     public String getColumnName(int column) {
         return COLUMN_NAMES[column];
     }
 
+    @Override
     public Class<?> getColumnClass(int column) {
         switch (column) {
             case TYPE_COLUMN:
@@ -118,6 +128,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         }
     }
 
+    @Override
     public Object getValueAt(Object node, int column) {
         Annotation anno = (Annotation) node;
         switch (column) {
@@ -142,10 +153,12 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         }
     }
 
+    @Override
     public boolean isCellEditable(Object node, int column) {
         return column == NOTE_COLUMN;
     }
 
+    @Override
     public void setValueAt(Object value, Object node, int column) {
         if (column == NOTE_COLUMN) {
             if (node instanceof MutableAnnotation) {
@@ -159,6 +172,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
         }
     }
 
+    @Override
     public void annotationsChanged(AnnotationCollectionEvent event) {
         // TODO: This will change a bit once we have some more structure.
         fireTreeStructureChanged(new TreeModelEvent(this, new Object[] { getRoot() }));

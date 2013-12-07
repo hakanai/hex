@@ -59,10 +59,12 @@ class ExtendedConstructor extends Constructor {
     private abstract class SimpleConstructor implements Construct {
         protected abstract Object construct(Map<Object, Object> map);
 
+        @Override
         public Object construct(Node node) {
             return construct(constructMapping((MappingNode) node));
         }
 
+        @Override
         public void construct2ndStep(Node node, Object object) {
         }
     }

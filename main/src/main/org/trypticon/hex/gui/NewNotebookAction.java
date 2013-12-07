@@ -47,6 +47,7 @@ class NewNotebookAction extends BaseAction {
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
     }
 
+    @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
 

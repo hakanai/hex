@@ -36,6 +36,7 @@ class RemoveAnnotationAction extends BaseAction {
         putValue(NAME, "Remove Annotation");
     }
 
+    @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame == null || frame.getNotebookPane() == null) {

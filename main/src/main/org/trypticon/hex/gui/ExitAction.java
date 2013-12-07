@@ -35,6 +35,7 @@ class ExitAction extends AbstractAction {
         putValue(MNEMONIC_KEY, (int) 'x');
     }
 
+    @Override
     public void actionPerformed(ActionEvent event) {
         List<Frame> closeLater = new ArrayList<Frame>(2);
         for (Frame frame : Frame.getFrames()) {

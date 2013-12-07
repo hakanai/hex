@@ -99,6 +99,7 @@ public class DefaultNotebook implements Notebook {
      *
      * @throws IOException if an I/O error prevents opening the binary.
      */
+    @Override
     public void open() throws IOException {
 
         // TODO: Support relative path to binary file.
@@ -122,6 +123,7 @@ public class DefaultNotebook implements Notebook {
     private void attachAnnotationCollectionListener() {
         // New annotations appearing mean we need to be saved.
         annotations.addAnnotationCollectionListener(new AnnotationCollectionListener() {
+            @Override
             public void annotationsChanged(AnnotationCollectionEvent event) {
                 setDirty(true);
             }
@@ -131,6 +133,7 @@ public class DefaultNotebook implements Notebook {
     /**
      * Closes the notebook.
      */
+    @Override
     public void close() {
         synchronized (openLock) {
             if (binary == null) {
@@ -147,6 +150,7 @@ public class DefaultNotebook implements Notebook {
      *
      * @return the notebook location.
      */
+    @Override
     public URL getNotebookLocation() {
         return notebookLocation;
     }
@@ -160,6 +164,7 @@ public class DefaultNotebook implements Notebook {
      * @param notebookLocation the new notebook location.
      * @see #getNotebookLocation()
      */
+    @Override
     public void setNotebookLocation(URL notebookLocation) {
         if (notebookLocation == null) {
             throw new IllegalArgumentException("notebook location cannot be null");
@@ -181,14 +186,17 @@ public class DefaultNotebook implements Notebook {
         setDirty(false);
     }
 
+    @Override
     public URL getBinaryLocation() {
         return binaryLocation;
     }
 
+    @Override
     public AnnotationCollection getAnnotations() {
         return annotations;
     }
 
+    @Override
     public Binary getBinary() {
         return binary;
     }
@@ -198,6 +206,7 @@ public class DefaultNotebook implements Notebook {
      *
      * @return {@code true} if it is open, {@code false} if it is closed.
      */
+    @Override
     public boolean isOpen() {
         return binary != null;
     }
@@ -210,6 +219,7 @@ public class DefaultNotebook implements Notebook {
      *
      * @return the name of the notebook.
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -231,6 +241,7 @@ public class DefaultNotebook implements Notebook {
      *
      * @return {@code true} if the notebook has unsaved changes.
      */
+    @Override
     public boolean isDirty() {
         return dirty;
     }
@@ -243,6 +254,7 @@ public class DefaultNotebook implements Notebook {
         }
     }
 
+    @Override
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         if (propertyChanges == null) {
             propertyChanges = new PropertyChangeSupport(this);
@@ -250,6 +262,7 @@ public class DefaultNotebook implements Notebook {
         propertyChanges.addPropertyChangeListener(propertyName, listener);
     }
 
+    @Override
     public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         if (propertyChanges != null) {
             propertyChanges.removePropertyChangeListener(propertyName, listener);

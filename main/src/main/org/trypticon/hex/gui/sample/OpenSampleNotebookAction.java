@@ -40,6 +40,7 @@ public class OpenSampleNotebookAction extends BaseAction {
         putValue(MNEMONIC_KEY, (int) 's');
     }
 
+    @Override
     protected void doAction(ActionEvent event) throws Exception {
         String resourcePath = Sample.class.getName().replace('.', '/') + ".class";
         Notebook notebook = new DefaultNotebook(getClass().getClassLoader().getResource(resourcePath));

@@ -55,6 +55,7 @@ public class AnnotationPane extends JPanel {
         annoTreeTable = new AnnotationTreeTable();
 
         annoTreeTable.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
             public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
                 TreePath treePath = annoTreeTable.getTreeSelectionModel().getSelectionPath();
                 if (treePath == null) {

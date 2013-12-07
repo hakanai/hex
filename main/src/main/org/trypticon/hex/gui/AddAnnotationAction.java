@@ -49,6 +49,7 @@ class AddAnnotationAction extends BaseAction {
         putValue(NAME, info.getHumanName());
     }
 
+    @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame == null || frame.getNotebookPane() == null) {

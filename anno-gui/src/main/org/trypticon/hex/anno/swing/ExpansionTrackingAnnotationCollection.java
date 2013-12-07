@@ -45,32 +45,38 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
         this.delegate = delegate;
 
         treeTable.addTreeExpansionListener(new TreeExpansionListener() {
+            @Override
             public void treeExpanded(TreeExpansionEvent treeExpansionEvent) {
                 fireAnnotationsChanged();
             }
 
+            @Override
             public void treeCollapsed(TreeExpansionEvent treeExpansionEvent) {
                 fireAnnotationsChanged();
             }
         });
 
         delegate.addAnnotationCollectionListener(new AnnotationCollectionListener() {
+            @Override
             public void annotationsChanged(AnnotationCollectionEvent event) {
                 fireAnnotationsChanged();
             }
         });
     }
 
+    @Override
     public GroupAnnotation getRootGroup() {
         return delegate.getRootGroup();
     }
 
+    @Override
     public List<Annotation> getTopLevel() {
         return delegate.getTopLevel();
     }
 
     // TODO: Methods to get the children of a node, so that it can be intercepted.
-    
+
+    @Override
     public List<Annotation> getAnnotationPathAt(long position) {
         List<Annotation> fullPath = delegate.getAnnotationPathAt(position);
         if (fullPath == null) {
@@ -92,10 +98,12 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
         return path;
     }
 
+    @Override
     public void add(Annotation annotation) throws OverlappingAnnotationException {
         delegate.add(annotation);
     }
 
+    @Override
     public void remove(Annotation annotation) {
         delegate.remove(annotation);
     }

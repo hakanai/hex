@@ -38,6 +38,7 @@ class CloseNotebookAction extends BaseAction {
                                                          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
     }
 
+    @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame != null) {

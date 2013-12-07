@@ -114,6 +114,7 @@ public class NotebookStorageTest {
     }
 
     private static class BrokenReader extends Reader {
+        @Override
         public int read() throws IOException {
             throw new IOException("Broken");
         }
@@ -133,12 +134,14 @@ public class NotebookStorageTest {
             throw new IOException("Broken");
         }
 
+        @Override
         public void close() throws IOException {
             throw new IOException("Broken");
         }
     }
 
     private static class BrokenWriter extends Writer {
+        @Override
         public void write(int i) throws IOException {
             throw new IOException("Broken");
         }

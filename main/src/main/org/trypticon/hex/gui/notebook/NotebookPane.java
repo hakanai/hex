@@ -58,6 +58,7 @@ public class NotebookPane extends JPanel {
         // TODO: A proper binding API would be nice here...
         setName(notebook.getName());
         notebook.addPropertyChangeListener("name", new PropertyChangeListener() {
+            @Override
             public void propertyChange(PropertyChangeEvent event) {
                 setName((String) event.getNewValue());
             }
@@ -72,6 +73,7 @@ public class NotebookPane extends JPanel {
         viewer.setBinary(notebook.getBinary());
 
         annoPane.addPropertyChangeListener("selectedAnnotationPath", new PropertyChangeListener() {
+            @Override
             public void propertyChange(PropertyChangeEvent event) {
                 @SuppressWarnings("unchecked")
                 List<Annotation> selectedAnnotationPath = (List<Annotation>) event.getNewValue();
@@ -97,6 +99,7 @@ public class NotebookPane extends JPanel {
 
         // Why ComponentListener doesn't work here I will never know.
         addHierarchyListener(new HierarchyListener() {
+            @Override
             public void hierarchyChanged(HierarchyEvent hierarchyEvent) {
                 viewer.requestFocusInWindow();
             }

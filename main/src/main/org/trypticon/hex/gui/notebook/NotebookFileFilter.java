@@ -26,10 +26,12 @@ import org.trypticon.hex.util.swingsupport.FileExtensionFilter;
  * @author trejkaz
  */
 public class NotebookFileFilter extends FileExtensionFilter {
+    @Override
     protected String getExtension() {
         return "hex";
     }
 
+    @Override
     protected String getShortDescription() {
         return "Hex Notebook Files";
     }

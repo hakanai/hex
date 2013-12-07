@@ -63,6 +63,7 @@ public class SaveNotebookAction extends BaseAction {
         }
     }
 
+    @Override
     protected void doAction(ActionEvent event) throws Exception {
         doSave();
     }
