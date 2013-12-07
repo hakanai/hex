@@ -71,7 +71,7 @@ public class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
         HexApplication application = HexApplication.get();
 
         for (int i = 0; i < count; i++) {
-            final Preferences openDocumentPrefs = topPrefs.node("document" + count);
+            final Preferences openDocumentPrefs = topPrefs.node("document" + i);
 
             String location = openDocumentPrefs.get("location", null);
             if (location == null) {

@@ -59,8 +59,19 @@ class ExitAction extends AbstractAction {
      * and {@code false} if it's not OK.
      */
     public void tryToExit(final Callback<Boolean> okToExitCallback) {
+        // This will only be called once even though tryToExitInner will call itself until nothing is unconfirmed.
         WorkspaceStateTracker.create().save();
 
+        tryToExitInner(okToExitCallback);
+    }
+
+    /**
+     * Tries to exit the application.
+     *
+     * @param okToExitCallback a callback which is called with {@code true} if it's OK to exit
+     * and {@code false} if it's not OK.
+     */
+    public void tryToExitInner(final Callback<Boolean> okToExitCallback) {
         final List<HexFrame> frames = HexFrame.findAllFrames();
         if (frames.isEmpty()) {
             // No frames, can exit immediately.
@@ -81,7 +92,7 @@ class ExitAction extends AbstractAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            tryToExit(okToExitCallback);
+                            tryToExitInner(okToExitCallback);
                         }
                     });
                 } else {
