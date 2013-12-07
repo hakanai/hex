@@ -18,15 +18,16 @@
 
 package org.trypticon.hex.formats.ruby;
 
-import org.jruby.embed.PathType;
-import org.jruby.embed.ScriptingContainer;
-import org.trypticon.hex.formats.Structure;
-import org.trypticon.hex.interpreters.MasterInterpreterStorage;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import org.jruby.embed.PathType;
+import org.jruby.embed.ScriptingContainer;
+
+import org.trypticon.hex.formats.Structure;
+import org.trypticon.hex.interpreters.MasterInterpreterStorage;
 
 /**
  * Java entry point to a Ruby DSL for creating structures.
@@ -57,7 +58,7 @@ public class RubyStructureDSL {
         try {
             InputStream stream = location.openStream();
             ByteArrayOutputStream temp = new ByteArrayOutputStream();
-            byte[] buffer = new byte[64*1024];
+            byte[] buffer = new byte[64 * 1024];
             int bytesRead;
             while ((bytesRead = stream.read(buffer)) != -1) {
                 temp.write(buffer, 0, bytesRead);

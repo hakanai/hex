@@ -18,7 +18,10 @@
 
 package org.trypticon.hex.formats.ruby;
 
+import java.util.Arrays;
+
 import org.junit.Test;
+
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
@@ -30,8 +33,6 @@ import org.trypticon.hex.interpreters.primitives.UByteInterpreter;
 import org.trypticon.hex.interpreters.primitives.UIntInterpreterBE;
 import org.trypticon.hex.interpreters.primitives.UShortInterpreterBE;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 

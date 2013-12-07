@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.gui.formats;
 
+import java.awt.event.ActionEvent;
+
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
@@ -26,9 +28,6 @@ import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
-
-import javax.swing.JOptionPane;
-import java.awt.event.ActionEvent;
 
 /**
  * Action which drops annotations for a structure at the selected position.

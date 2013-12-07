@@ -28,10 +28,11 @@ import java.net.URL;
 import java.nio.CharBuffer;
 
 import org.junit.Test;
+
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
-import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
+import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.interpreters.nulls.NullInterpreter;
 import org.trypticon.hex.interpreters.primitives.PrimitiveInterpreters;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
@@ -101,12 +102,12 @@ public class NotebookStorageTest {
         assertEquals("Wrong notebook name", "My Notebook", notebook.getName());
     }
 
-    @Test(expected=IOException.class)
+    @Test(expected = IOException.class)
     public void testIOExceptionOnReading() throws Exception {
         storage.read(new BrokenReader());
     }
 
-    @Test(expected=IOException.class)
+    @Test(expected = IOException.class)
     public void testIOExceptionOnWriting() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"),
                                                 new MemoryAnnotationCollection(100));

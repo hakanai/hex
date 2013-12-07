@@ -18,12 +18,12 @@
 
 package org.trypticon.hex.gui;
 
+import java.awt.event.ActionEvent;
+
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
-
-import java.awt.event.ActionEvent;
 
 /**
  * Action to remove a sub-region.

@@ -44,7 +44,7 @@ class NewNotebookAction extends BaseAction {
         putValue(NAME, "New...");
         putValue(MNEMONIC_KEY, (int) 'n');
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                                                         Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
     }
 
     @Override

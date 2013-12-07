@@ -20,9 +20,11 @@ package org.trypticon.hex.gui;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
+
 import org.trypticon.hex.gui.util.Callback;
 
 /**

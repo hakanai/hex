@@ -18,29 +18,6 @@
 
 package org.trypticon.hex.gui;
 
-import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.MemoryAnnotationCollection;
-import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.binary.EmptyBinary;
-import org.trypticon.hex.datatransfer.DelegatingActionListener;
-import org.trypticon.hex.formats.ruby.RubyStructureDSL;
-import org.trypticon.hex.gui.formats.DropStructureAction;
-import org.trypticon.hex.gui.notebook.Notebook;
-import org.trypticon.hex.gui.notebook.NotebookPane;
-import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
-import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
-import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
-import org.trypticon.hex.util.swingsupport.PLAFUtils;
-
-import javax.swing.Action;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
-import javax.swing.TransferHandler;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Insets;
@@ -57,11 +34,35 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.Action;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+
+import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.binary.EmptyBinary;
+import org.trypticon.hex.datatransfer.DelegatingActionListener;
+import org.trypticon.hex.formats.ruby.RubyStructureDSL;
+import org.trypticon.hex.gui.formats.DropStructureAction;
+import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.NotebookPane;
+import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
+import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
+import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 import org.trypticon.hex.gui.util.Callback;
+import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * A top-level application frame.
- *
+ * <p/>
  * XXX: It probably makes sense to replace this with OpenIDE or some other framework.
  *
  * @author trejkaz
@@ -79,7 +80,7 @@ public class HexFrame extends JFrame {
         setJMenuBar(buildMenuBar(this));
 
         tabbedPane = new JTabbedPane();
-        tabbedPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3,-3,-4,-3));
+        tabbedPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, -3, -4, -3));
 
         // TODO: We should track if any notepads need saving and set Window.documentModified to true/false for Mac.
 
@@ -124,7 +125,7 @@ public class HexFrame extends JFrame {
      * @return a list of all notebook panes.
      */
     public List<NotebookPane> getAllNotebookPanes() {
-        List<NotebookPane> panes = new ArrayList<NotebookPane>(tabbedPane.getTabCount());
+        List<NotebookPane> panes = new ArrayList<>(tabbedPane.getTabCount());
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
             panes.add((NotebookPane) tabbedPane.getComponentAt(i));
         }
@@ -400,17 +401,60 @@ public class HexFrame extends JFrame {
      */
     private class DummyNotebook implements Notebook {
         private final AnnotationCollection noAnnotations = new MemoryAnnotationCollection(1);
-        public void open() {}
-        public void close() {}
-        public URL getNotebookLocation() { return null; }
-        public void setNotebookLocation(URL notebookLocation) {}
-        public URL getBinaryLocation() { return null; }
-        public AnnotationCollection getAnnotations() { return noAnnotations; }
-        public Binary getBinary() { return new EmptyBinary(); }
-        public boolean isOpen() { return false; }
-        public String getName() { return ""; }
-        public boolean isDirty() { return false; }
-        public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {}
-        public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {}
+
+        @Override
+        public void open() {
+        }
+
+        @Override
+        public void close() {
+        }
+
+        @Override
+        public URL getNotebookLocation() {
+            return null;
+        }
+
+        @Override
+        public void setNotebookLocation(URL notebookLocation) {
+        }
+
+        @Override
+        public URL getBinaryLocation() {
+            return null;
+        }
+
+        @Override
+        public AnnotationCollection getAnnotations() {
+            return noAnnotations;
+        }
+
+        @Override
+        public Binary getBinary() {
+            return new EmptyBinary();
+        }
+
+        @Override
+        public boolean isOpen() {
+            return false;
+        }
+
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public boolean isDirty() {
+            return false;
+        }
+
+        @Override
+        public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        }
+
+        @Override
+        public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        }
     }
 }

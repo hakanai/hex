@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui;
 
 import java.util.logging.Level;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.trypticon.gum.MacFactory;
@@ -26,6 +27,8 @@ import org.trypticon.gum.eawt.Application;
 import org.trypticon.gum.eawt.event.QuitEvent;
 import org.trypticon.gum.eawt.event.QuitHandler;
 import org.trypticon.gum.eawt.event.QuitResponse;
+import org.trypticon.hex.gui.util.Callback;
+import org.trypticon.hex.gui.util.DefaultMenuDummyFrame;
 import org.trypticon.hex.util.LoggerUtils;
 
 /**

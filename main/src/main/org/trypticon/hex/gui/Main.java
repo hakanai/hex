@@ -20,7 +20,6 @@ package org.trypticon.hex.gui;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.notebook.Notebook;
@@ -78,7 +77,7 @@ public class Main {
 
         if (openSample) {
             new OpenSampleNotebookAction().actionPerformed(
-                    new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Open Sample Notebook"));
+                new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Open Sample Notebook"));
         }
 
     }

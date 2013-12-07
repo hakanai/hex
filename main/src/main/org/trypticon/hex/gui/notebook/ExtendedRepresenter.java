@@ -18,15 +18,16 @@
 
 package org.trypticon.hex.gui.notebook;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.representer.Representer;
+
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterStorage;
-import org.yaml.snakeyaml.nodes.Node;
-import org.yaml.snakeyaml.representer.Representer;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Extension of the default representer to dodge some issues in the default one.
@@ -76,7 +77,7 @@ class ExtendedRepresenter extends Representer {
     }
 
     private Node representAnnotation(Annotation annotation) {
-        Map<String, Object> fields = new LinkedHashMap<String, Object>(4);
+        Map<String, Object> fields = new LinkedHashMap<>(4);
         fields.put("position", annotation.getPosition());
         fields.put("length", annotation.getLength());
         fields.put("interpreter", annotation.getInterpreter());

@@ -24,10 +24,12 @@
 
     <target name="-determine-platform">
         <condition property="is-mac" value="true">
-             <os family="mac"/>
+            <os family="mac"/>
         </condition>
         <condition property="is-other" value="true">
-            <not><isset property="is-mac"/></not>
+            <not>
+                <isset property="is-mac"/>
+            </not>
         </condition>
     </target>
 

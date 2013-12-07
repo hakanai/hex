@@ -19,8 +19,6 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -28,10 +26,9 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import org.trypticon.hex.interpreters.InterpreterStorage;
-import org.trypticon.hex.interpreters.MasterInterpreterStorage;
-import org.trypticon.hex.util.URLUtils;
 import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Loader;
@@ -39,6 +36,10 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.BaseConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
+
+import org.trypticon.hex.interpreters.InterpreterStorage;
+import org.trypticon.hex.interpreters.MasterInterpreterStorage;
+import org.trypticon.hex.util.URLUtils;
 
 /**
  * Support for reading and writing {@link DefaultNotebook}s to files.

@@ -18,12 +18,12 @@
 
 package org.trypticon.hex.gui;
 
-import org.trypticon.hex.util.swingsupport.BaseAction;
-
-import javax.swing.KeyStroke;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import javax.swing.KeyStroke;
+
+import org.trypticon.hex.util.swingsupport.BaseAction;
 
 /**
  * Action to close the current notebook.

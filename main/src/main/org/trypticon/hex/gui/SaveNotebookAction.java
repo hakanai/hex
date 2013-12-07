@@ -25,7 +25,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URL;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -91,9 +90,9 @@ public class SaveNotebookAction extends BaseAction {
                     chosenFile = chooser.getSelectedFile();
                     if (chosenFile.exists()) {
                         if (JOptionPane.showConfirmDialog(frame, "The file already exists.  Is it OK to overwrite it?",
-                                                         "File Exists",
-                                                         JOptionPane.YES_NO_OPTION,
-                                                         JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
+                                                          "File Exists",
+                                                          JOptionPane.YES_NO_OPTION,
+                                                          JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
                             continue;
                         }
                     }

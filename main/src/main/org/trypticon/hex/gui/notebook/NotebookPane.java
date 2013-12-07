@@ -18,21 +18,22 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.swing.AnnotationPane;
-import org.trypticon.hex.gui.SaveNotebookAction;
-
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+
+import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.swing.AnnotationPane;
+import org.trypticon.hex.gui.SaveNotebookAction;
+import org.trypticon.hex.gui.util.Callback;
 import org.trypticon.hex.gui.util.SaveConfirmation;
 
 /**

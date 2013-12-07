@@ -18,18 +18,18 @@
 
 package org.trypticon.hex.gui.prefs;
 
-import org.trypticon.hex.gui.HexFrame;
-import org.trypticon.hex.gui.notebook.Notebook;
-import org.trypticon.hex.gui.notebook.NotebookPane;
-import org.trypticon.hex.gui.notebook.NotebookStorage;
-import org.trypticon.hex.util.LoggerUtils;
-
-import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.prefs.Preferences;
+import javax.swing.SwingUtilities;
+
+import org.trypticon.hex.gui.HexFrame;
+import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.NotebookPane;
+import org.trypticon.hex.gui.notebook.NotebookStorage;
+import org.trypticon.hex.util.LoggerUtils;
 
 /**
  * Support for loading and saving the state of the workspace.
@@ -103,7 +103,7 @@ public class WorkspaceStateTracker {
                 HexFrame.openNotebook(notebook);
             } catch (MalformedURLException e) {
                 LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
-                        location + ", skipping", e);
+                                                     location + ", skipping", e);
             } catch (IOException e) {
                 LoggerUtils.get().log(Level.WARNING, "Error opening previously-open notebook: " + location + ", skipping");
             }

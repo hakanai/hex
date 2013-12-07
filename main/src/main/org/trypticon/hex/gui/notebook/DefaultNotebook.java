@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
-import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.util.LoggerUtils;
@@ -34,9 +34,6 @@ import org.trypticon.hex.util.URLUtils;
 
 /**
  * Holds a set of annotations along with a reference to the file the user is working on.
- *
- * TODO: I want a better name for this class.  It's a document, but the user won't see
- *       it as a document.  What do you call a collection of annotations?
  *
  * @author trejkaz
  */
@@ -212,10 +209,10 @@ public class DefaultNotebook implements Notebook {
     }
 
     /**
-     * Gets the name of the notebook.  Currently this is derived from the location
-     * of the notebook but it might become custom metadata later.
+     * <p>Gets the name of the notebook.  Currently this is derived from the location
+     *    of the notebook but it might become custom metadata later.</p>
      *
-     * This is a bound JavaBeans property.
+     * <p>This is a bound JavaBeans property.</p>
      *
      * @return the name of the notebook.
      */

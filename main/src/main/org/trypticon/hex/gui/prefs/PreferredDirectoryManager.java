@@ -65,20 +65,17 @@ public class PreferredDirectoryManager {
      * @param key the key to set.
      * @param directory the preferred directory.
      */
-    public void setPreferredDirectory(Key key, File directory)
-    {
+    public void setPreferredDirectory(Key key, File directory) {
         getPrefs().put(key.prefKey, directory.getAbsolutePath());
     }
 
     /**
      * Key for looking up preferred directories.
      */
-    public static class Key
-    {
+    public static class Key {
         private final String prefKey;
 
-        private Key(String prefKey)
-        {
+        private Key(String prefKey) {
             this.prefKey = prefKey;
         }
     }

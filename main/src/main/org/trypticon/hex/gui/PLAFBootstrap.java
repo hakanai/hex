@@ -18,10 +18,10 @@
 
 package org.trypticon.hex.gui;
 
-import org.trypticon.hex.util.LoggerUtils;
-
 import java.util.logging.Level;
 import javax.swing.UIManager;
+
+import org.trypticon.hex.util.LoggerUtils;
 
 /**
  * Utility class for bootstrapping LAF-specific settings.

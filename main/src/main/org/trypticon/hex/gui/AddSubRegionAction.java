@@ -18,13 +18,13 @@
 
 package org.trypticon.hex.gui;
 
+import java.awt.event.ActionEvent;
+
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
-
-import java.awt.event.ActionEvent;
 
 /**
  * Action to add a sub-region.

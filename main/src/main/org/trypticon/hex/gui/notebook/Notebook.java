@@ -18,9 +18,9 @@
 
 package org.trypticon.hex.gui.notebook;
 
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
-import java.beans.PropertyChangeListener;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
@@ -30,8 +30,7 @@ import org.trypticon.hex.binary.Binary;
  *
  * @author trejkaz
  */
-public interface Notebook
-{
+public interface Notebook {
     /**
      * <p>Opens the notebook.  Ultimately this means opening the binary.</p>
      *
@@ -80,10 +79,10 @@ public interface Notebook
     boolean isOpen();
 
     /**
-     * Gets the name of the notebook.  Currently this is derived from the location
-     * of the notebook but it might become custom metadata later.
+     * <p>Gets the name of the notebook.  Currently this is derived from the location
+     *    of the notebook but it might become custom metadata later.</p>
      *
-     * This is a bound JavaBeans property.
+     * <p>This is a bound JavaBeans property.</p>
      *
      * @return the name of the notebook.
      */
@@ -96,7 +95,19 @@ public interface Notebook
      */
     boolean isDirty();
 
+    /**
+     * Adds a listener for property change events.
+     *
+     * @param propertyName the name of the property to listen to.
+     * @param listener the listener to add.
+     */
     void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
 
+    /**
+     * Removes a listener from property change events.
+     *
+     * @param propertyName the name of the property to listen to.
+     * @param listener the listener to remove.
+     */
     void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
 }
