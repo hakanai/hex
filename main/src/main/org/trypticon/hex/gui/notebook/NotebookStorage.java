@@ -70,13 +70,10 @@ public class NotebookStorage {
     }
 
     public Notebook read(URL url) throws IOException {
-        Reader reader = new InputStreamReader(url.openStream(), "UTF-8");
-        try {
+        try (Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
             Notebook notebook = read(reader);
             notebook.setNotebookLocation(url);
             return notebook;
-        } finally {
-            reader.close();
         }
     }
 
@@ -88,12 +85,9 @@ public class NotebookStorage {
         }
     }
 
-    private void write(Notebook notebook, File file) throws IOException {
-        Writer writer = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)), "UTF-8");
-        try {
+    private void write(Notebook notebook, Path file) throws IOException {
+        try (Writer writer = new OutputStreamWriter(new BufferedOutputStream(Files.newOutputStream(file)), "UTF-8")) {
             write(notebook, writer);
-        } finally {
-            writer.close();
         }
     }
 
@@ -101,18 +95,15 @@ public class NotebookStorage {
         // Workaround for Java Bug 4814217 - file protocol writing does not work.
         // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4814217
         if ("file".equals(url.getProtocol())) {
-            write(notebook, URLUtils.toFile(url));
+            write(notebook, URLUtils.toPath(url));
         } else {
             URLConnection connection = url.openConnection();
             connection.setDoInput(false);
             connection.setDoOutput(true);
             connection.connect();
 
-            Writer writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-            try {
+            try (Writer writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8")) {
                 write(notebook, writer);
-            } finally {
-                writer.close();
             }
         }
         notebook.setNotebookLocation(url);
