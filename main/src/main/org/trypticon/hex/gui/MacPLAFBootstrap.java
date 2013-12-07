@@ -21,7 +21,11 @@ package org.trypticon.hex.gui;
 import java.util.logging.Level;
 import javax.swing.UIManager;
 
-import net.roydesign.app.Application;
+import org.trypticon.gum.MacFactory;
+import org.trypticon.gum.eawt.Application;
+import org.trypticon.gum.eawt.event.QuitEvent;
+import org.trypticon.gum.eawt.event.QuitHandler;
+import org.trypticon.gum.eawt.event.QuitResponse;
 import org.trypticon.hex.util.LoggerUtils;
 
 /**
@@ -45,21 +49,33 @@ public class MacPLAFBootstrap {
         // Look and feel tweaks for Apple's runtime.
         // These need to be done before setting the LAF.
 
-        Application application = Application.getInstance();
-        application.setName("Hex");
-        // TODO: MRJAdapter is supposed to do this but setName doesn't appear to work.
-        // Workaround is to keep using the system property.
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Hex");
-
-        // TODO: About (along with Help -> About in main app.)
-        // TODO: Preferences - when we get some. ;-)
-        application.getQuitJMenuItem().addActionListener(new ExitAction());
-
         // When frames are visible this system property will make that menu become the screen menu.
         System.setProperty("apple.laf.useScreenMenuBar", "true");
 
+        final Application application = MacFactory.getApplication();
+
+        // TODO: About (along with Help -> About in main app.)
+        // TODO: Preferences - when we get some. ;-)
+        application.setQuitHandler(new QuitHandler() {
+            @Override
+            public void handleQuitRequestWith(QuitEvent quitEvent, final QuitResponse quitResponse) {
+                new ExitAction().tryToExit(new Callback<Boolean>() {
+                    @Override
+                    public void execute(Boolean okToExit) {
+                        if (okToExit) {
+                            quitResponse.performQuit();
+                        } else {
+                            quitResponse.cancelQuit();
+                        }
+                    }
+                });
+            }
+        });
+
         // And then a different menu when there are no frames visible:
-        application.setFramelessJMenuBar(HexFrame.buildMenuBar(null));
+        // Workaround here for setDefaultMenuBar not working: https://java.net/jira/browse/MACOSX_PORT-775
+        JFrame dummy = new DefaultMenuDummyFrame(HexFrame.buildMenuBar(null));
+        dummy.setVisible(true);
 
         try {
             UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");

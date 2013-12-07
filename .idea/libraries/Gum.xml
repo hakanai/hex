@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="MRJAdapter">
+  <library name="Gum">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/mrjadapter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gum.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

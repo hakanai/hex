@@ -37,7 +37,7 @@ public interface Structure {
     /**
      * Creates an annotation representing the structure.  May be a group annotation containing further annotations.
      *
-     * @param binary the binary to annotate.
+     * @param binary   the binary to annotate.
      * @param position the position to start from.
      * @return the created annotation.
      */
