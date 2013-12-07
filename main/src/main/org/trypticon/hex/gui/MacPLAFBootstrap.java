@@ -83,5 +83,10 @@ public class MacPLAFBootstrap {
             LoggerUtils.get().log(Level.WARNING, "Unexpected error initialising Quaqua, falling back to Aqua", e);
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
+
+        // Workaround for JSheet.showSheet throwing an exception because sheet is not undecorated:
+        // https://java.net/jira/browse/QUAQUA-160
+        UIManager.put("Sheet.showAsSheet", false);
+
     }
 }
