@@ -62,6 +62,12 @@ public class NotebookPane extends JPanel {
                 setName((String) event.getNewValue());
             }
         });
+        notebook.addPropertyChangeListener("dirty", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                firePropertyChange("dirty", event.getOldValue(), event.getNewValue());
+            }
+        });
 
         annoPane = new AnnotationPane();
         annoPane.setAnnotations(notebook.getAnnotations());
@@ -118,6 +124,17 @@ public class NotebookPane extends JPanel {
      */
     public HexViewer getViewer() {
         return viewer;
+    }
+
+    /**
+     * <p>Tests if the notebook has been modified since the last time it was saved.</p>
+     *
+     * <p>This is the same as {@code getNotebook().isDirty()}, but is more convenient for tracking property changes.</p>
+     *
+     * @return {@code true} if the document is dirty, {@code false} otherwise.
+     */
+    public boolean isDirty() {
+        return notebook.isDirty();
     }
 
     /**

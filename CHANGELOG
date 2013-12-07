@@ -1,7 +1,8 @@
 
 Version X.X (XXXX-XX-XX)
 
-     New: Support for binaries larger than 2 GiB (updated hex-components to v0.4)
+     New: Support for binaries larger than 2 GiB (updated hex-components to v0.4.)
+     New: Modification state of the document is property reflected on the window for Mac OS X.
 
    Fixed: NullPointerException for new notebooks due to a lack of annotations.
 

@@ -70,6 +70,7 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
 public class HexFrame extends JFrame {
     private final JTabbedPane tabbedPane;
     private final TabTitleUpdater tabTitleUpdater = new TabTitleUpdater();
+    private final TabDirtyUpdater tabDirtyUpdater = new TabDirtyUpdater();
 
     /**
      * Constructs the top-level frame.
@@ -82,7 +83,7 @@ public class HexFrame extends JFrame {
         tabbedPane = new JTabbedPane();
         tabbedPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, -3, -4, -3));
 
-        // TODO: We should track if any notepads need saving and set Window.documentModified to true/false for Mac.
+        updateDocumentModified();
 
         // We add a dummy pane for size computation purposes only.
         NotebookPane dummyPane = new NotebookPane(new DummyNotebook());
@@ -152,6 +153,24 @@ public class HexFrame extends JFrame {
         tabbedPane.setSelectedComponent(notebookPane);
 
         notebookPane.addPropertyChangeListener("name", tabTitleUpdater);
+        notebookPane.addPropertyChangeListener("dirty", tabDirtyUpdater);
+        updateDocumentModified();
+    }
+
+    /**
+     * Updates the "document modified" status of the window (only visible on Aqua look and feel)
+     * by looking at each notebook and testing whether it is dirty.
+     */
+    private void updateDocumentModified() {
+        boolean dirty = false;
+        for (NotebookPane pane : getAllNotebookPanes()) {
+            if (pane.getNotebook().isDirty()) {
+                dirty = true;
+                break;
+            }
+        }
+
+        getRootPane().putClientProperty("Window.documentModified", dirty);
     }
 
     /**
@@ -165,8 +184,11 @@ public class HexFrame extends JFrame {
                 public void execute(Boolean okToClose) {
                     if (okToClose) {
                         notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
+                        notebookPane.removePropertyChangeListener("dirty", tabDirtyUpdater);
 
                         tabbedPane.remove(notebookPane);
+
+                        updateDocumentModified();
 
                         notebookPane.getNotebook().close();
 
@@ -393,6 +415,16 @@ public class HexFrame extends JFrame {
             String name = (String) event.getNewValue();
             int index = tabbedPane.indexOfComponent((Component) event.getSource());
             tabbedPane.setTitleAt(index, name);
+        }
+    }
+
+    /**
+     * Updates the dirty flag on the window itself when the dirty status of one of the notebooks changes.
+     */
+    private class TabDirtyUpdater implements PropertyChangeListener {
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            updateDocumentModified();
         }
     }
 
