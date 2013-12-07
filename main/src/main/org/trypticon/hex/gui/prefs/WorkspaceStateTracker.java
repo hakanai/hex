@@ -69,20 +69,14 @@ public abstract class WorkspaceStateTracker {
      * @param node the node to restore the location from.
      */
     protected void restoreFrameLocation(final HexFrame frame, final Preferences node) {
-        // Have to give the window system a chance to put the window up, if it just appeared.
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                final int x = node.getInt("x", -1);
-                final int y = node.getInt("y", -1);
-                final int width = node.getInt("width", -1);
-                final int height = node.getInt("height", -1);
+        final int x = node.getInt("x", -1);
+        final int y = node.getInt("y", -1);
+        final int width = node.getInt("width", -1);
+        final int height = node.getInt("height", -1);
 
-                if (x >= 0 && y >= 0 && width >= 0 && height >= 0) {
-                    frame.setBounds(x, y, width, height);
-                }
-            }
-        });
+        if (x >= 0 && y >= 0 && width >= 0 && height >= 0) {
+            frame.setBounds(x, y, width, height);
+        }
     }
 
     /**
