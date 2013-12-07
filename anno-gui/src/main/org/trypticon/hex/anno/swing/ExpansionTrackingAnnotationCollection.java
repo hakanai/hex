@@ -18,7 +18,14 @@
 
 package org.trypticon.hex.anno.swing;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.tree.TreePath;
+
 import org.jdesktop.swingx.JXTreeTable;
+
 import org.trypticon.hex.anno.AbstractAnnotationCollection;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
@@ -26,12 +33,6 @@ import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
-
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.tree.TreePath;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A wrapper annotation model which tracks expansion status of a tree.
@@ -83,7 +84,7 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
             return null;
         }
 
-        List<Annotation> path = new ArrayList<Annotation>(fullPath.size());
+        List<Annotation> path = new ArrayList<>(fullPath.size());
         TreePath treePath = new TreePath(delegate.getRootGroup());
 
         for (Annotation node : fullPath) {

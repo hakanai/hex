@@ -117,7 +117,7 @@ class ExtendedConstructor extends Constructor {
     private class InterpreterConstructor extends SimpleConstructor {
         @Override
         protected Object construct(Map<Object, Object> map) {
-            Map<String, Object> sanitisedMap = new LinkedHashMap<String, Object>(map.size());
+            Map<String, Object> sanitisedMap = new LinkedHashMap<>(map.size());
             for (Map.Entry<Object, Object> entry : map.entrySet()) {
                 sanitisedMap.put((String) entry.getKey(), entry.getValue());
             }

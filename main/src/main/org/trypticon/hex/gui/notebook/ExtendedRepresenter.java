@@ -60,14 +60,14 @@ class ExtendedRepresenter extends Representer {
     }
 
     private Node representNotebook(Notebook notebook) {
-        Map<String, Object> fields = new LinkedHashMap<String, Object>(2);
+        Map<String, Object> fields = new LinkedHashMap<>(2);
         fields.put("binary_location", notebook.getBinaryLocation().toExternalForm());
         fields.put("root_group", notebook.getAnnotations().getRootGroup());
         return representMapping(YamlTags.NOTEBOOK_TAG, fields, false);
     }
 
     private Node representGroupAnnotation(GroupAnnotation groupAnnotation) {
-        Map<String, Object> fields = new LinkedHashMap<String, Object>(2);
+        Map<String, Object> fields = new LinkedHashMap<>(2);
         fields.put("position", groupAnnotation.getPosition());
         fields.put("length", groupAnnotation.getLength());
         fields.put("note", groupAnnotation.getNote());
