@@ -69,10 +69,7 @@
         <copy todir="build/Hex.app">
             <fileset dir="src/mac/app-bundle-stub"/>
         </copy>
-
-        <copy file="/System/Library/Frameworks/JavaVM.framework/Versions/Current/Resources/MacOS/JavaApplicationStub"
-              todir="build/Hex.app/Contents/MacOS"/>
-        <chmod file="build/Hex.app/Contents/MacOS/JavaApplicationStub" perm="ugo+rx"/>
+        <chmod file="build/Hex.app/Contents/MacOS/Hex" perm="ugo+rx"/>
 
         <copy file="src/mac/Info.plist" todir="build/Hex.app/Contents">
             <filterset>
@@ -84,7 +81,7 @@
 
         <!-- TODO: I need an icon file to go into Contents/Resources/Hex.icns :-( -->
 
-        <copy todir="build/Hex.app/Contents/Resources/Java">
+        <copy todir="build/Hex.app/Contents/Java">
             <fileset dir="../anno-gui/build" includes="hex-anno-gui.jar"/>
             <fileset dir="../formats/build" includes="hex-formats.jar"/>
             <fileset dir="../main/build" includes="hex-main.jar"/>
@@ -93,8 +90,17 @@
                                             hex-viewer.jar, snakeyaml.jar, swingx.jar, jruby-complete.jar"/>
 
             <!-- Mac-specific -->
-            <fileset dir="../lib" includes="mrjadapter.jar, quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>
+            <fileset dir="../lib" includes="gum.jar, quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>
         </copy>
+
+        <exec executable="codesign" failonerror="true">
+            <arg value="-s"/>
+            <arg value="${app.signer}"/>
+            <arg value="--timestamp"/>
+            <arg value="build/Hex.app"/>
+            <arg value="--resource-rules"/>
+            <arg value="src/mac/ResourceRules.plist"/>
+        </exec>
     </target>
 
     <target name="test" description="Does nothing.  Exists to make the test target work"/>

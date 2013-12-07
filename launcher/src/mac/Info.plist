@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>JavaApplicationStub</string>
+	<string>Hex</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -22,23 +22,22 @@
 	<string>@app.version@</string>
 	<key>CFBundleVersion</key>
 	<string>@app.version@</string>
-	<key>Java</key>
-	<dict>
-		<key>ClassPath</key>
-		<string>$JAVAROOT/hex-main.jar:$JAVAROOT/hex-viewer.jar:$JAVAROOT/hex-anno.jar:$JAVAROOT/hex-anno-gui.jar:$JAVAROOT/hex-binary.jar:$JAVAROOT/hex-formats.jar:$JAVAROOT/hex-interpreter.jar:$JAVAROOT/hex-util.jar:$JAVAROOT/snakeyaml.jar:$JAVAROOT/swingx.jar:$JAVAROOT/mrjadapter.jar:$JAVAROOT/quaqua.jar:$JAVAROOT/jruby-complete.jar</string>
-		<key>JVMVersion</key>
-		<string>1.5+</string>
-		<key>JVMArchs</key>
-		<array>
-			<string>x86_32</string>
-			<string>x86_64</string>
-		</array>
-		<key>MainClass</key>
-		<string>org.trypticon.hex.gui.Main</string>
-		<key>Properties</key>
-		<dict/>
-		<key>VMOptions</key>
-		<string>-ea</string>
-	</dict>
+
+    <!-- If you specify this, you have to bundle Java itself. Maybe that isn't a bad idea though. TODO: Decide.
+    <key>JVMRuntime</key>
+    <string>jdk1.7.0_45.jdk</string>
+    -->
+
+    <key>JVMArchs</key>
+    <array>
+        <string>x86_64</string>
+    </array>
+    <key>JVMMainClassName</key>
+    <string>org.trypticon.hex.gui.Main</string>
+    <key>JVMOptions</key>
+    <array>
+        <string>-ea</string>
+    </array>
+
 </dict>
 </plist>
