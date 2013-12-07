@@ -77,7 +77,7 @@ public class MacPLAFBootstrap {
 
         // And then a different menu when there are no frames visible:
         // Workaround here for setDefaultMenuBar not working: https://java.net/jira/browse/MACOSX_PORT-775
-        JFrame dummy = new DefaultMenuDummyFrame(HexFrame.buildMenuBar(null));
+        JFrame dummy = new DefaultMenuDummyFrame(new MenuBarBuilder().buildMenuBar(null));
         dummy.setVisible(true);
 
         try {

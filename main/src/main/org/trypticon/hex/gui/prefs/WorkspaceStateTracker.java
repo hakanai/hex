@@ -30,116 +30,83 @@ import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.util.LoggerUtils;
+import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * Support for loading and saving the state of the workspace.
  *
  * @author trejkaz
  */
-public class WorkspaceStateTracker {
+public abstract class WorkspaceStateTracker {
 
     /**
      * Gets the preferences node to use for storing the state.
      *
      * @return the preferences node.
      */
-    private Preferences getPrefs() {
+    protected Preferences getPrefs() {
         return Preferences.userRoot().node("org/trypticon/hex/gui/prefs/workspace");
+    }
+
+    /**
+     * Saves a frame location.
+     *
+     * @param frame the frame.
+     * @param node the node to save the location to.
+     */
+    protected void saveFrameLocation(final HexFrame frame, final Preferences node) {
+        node.putInt("x", frame.getX());
+        node.putInt("y", frame.getY());
+        node.putInt("width", frame.getWidth());
+        node.putInt("height", frame.getHeight());
+    }
+
+    /**
+     * Restores a frame location. This is done on the EDT at a later time so that the
+     * window system gets a chance to make the window visible first.
+     *
+     * @param frame the frame.
+     * @param node the node to restore the location from.
+     */
+    protected void restoreFrameLocation(final HexFrame frame, final Preferences node) {
+        // Have to give the window system a chance to put the window up, if it just appeared.
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                final int x = node.getInt("x", -1);
+                final int y = node.getInt("y", -1);
+                final int width = node.getInt("width", -1);
+                final int height = node.getInt("height", -1);
+
+                if (x >= 0 && y >= 0 && width >= 0 && height >= 0) {
+                    frame.setBounds(x, y, width, height);
+                }
+            }
+        });
     }
 
     /**
      * Saves the workspace state to preferences.
      */
-    public void save() {
-        HexFrame frame = HexFrame.findActiveFrame();
-        if (frame == null) {
-            getPrefs().node("openDocuments").putInt("count", 0);
-            return;
-        }
-
-        Preferences framePositionPrefs = getPrefs().node("framePosition");
-        framePositionPrefs.putInt("x", frame.getX());
-        framePositionPrefs.putInt("y", frame.getY());
-        framePositionPrefs.putInt("width", frame.getWidth());
-        framePositionPrefs.putInt("height", frame.getHeight());
-
-        Preferences openDocumentPrefs = getPrefs().node("openDocuments");
-        int count = 0;
-        for (NotebookPane pane : frame.getAllNotebookPanes()) {
-            if (pane.getNotebook().getNotebookLocation() == null) {
-                // User must have explicitly chosen *not* to save the notebook, so toss it.
-                continue;
-            }
-
-            openDocumentPrefs.put("location" + count, pane.getNotebook().getNotebookLocation().toExternalForm());
-            count++;
-        }
-
-        openDocumentPrefs.putInt("count", count);
-    }
+    public abstract void save();
 
     /**
      * Restores the workspace to the saved state.
      *
      * @return {@code true} if the state was restored, {@code false} if there was no state stored.
      */
-    public boolean restore() {
-        Preferences openDocumentPrefs = getPrefs().node("openDocuments");
-        int count = openDocumentPrefs.getInt("count", -1);
-        if (count < 0) {
-            return false;
-        }
-
-        for (int i = 0; i < count; i++) {
-            String location = openDocumentPrefs.get("location" + i, null);
-            if (location == null) {
-                LoggerUtils.get().warning("Location for open document " + i + " missing, skipping");
-                continue;
-            }
-
-            try {
-                URL url = new URL(location);
-                Notebook notebook = new NotebookStorage().read(url);
-                HexFrame.openNotebook(notebook);
-            } catch (MalformedURLException e) {
-                LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
-                                                     location + ", skipping", e);
-            } catch (IOException e) {
-                LoggerUtils.get().log(Level.WARNING, "Error opening previously-open notebook: " + location + ", skipping");
-            }
-        }
-
-        // Only restore preferences if a frame is open.  A frame is opened by default before this occurs,
-        // for most platforms.  The exception is Mac, where if there were no documents open last session,
-        // the frame will not be open.
-
-        // Have to give the window system a chance to put the window up, if it just appeared.
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                if (HexFrame.findActiveFrame() != null) {
-                    restoreFrameLocation(HexFrame.findActiveFrame());
-                }
-            }
-        });
-
-        return true;
-    }
+    public abstract boolean restore();
 
     /**
-     * Restores the location of the given frame.
+     * Creates an appropriate instance of the workspace state tracker for the current platform.
      *
-     * @param frame the frame.
+     * @return the tracker.
      */
-    public void restoreFrameLocation(final HexFrame frame) {
-        Preferences framePositionPrefs = getPrefs().node("framePosition");
-        final int x = framePositionPrefs.getInt("x", -1);
-        final int y = framePositionPrefs.getInt("y", -1);
-        final int width = framePositionPrefs.getInt("width", -1);
-        final int height = framePositionPrefs.getInt("height", -1);
-
-        if (x >= 0 && y >= 0 && width >= 0 && height >= 0) {
-            frame.setBounds(x, y, width, height);
+    public static WorkspaceStateTracker create() {
+        if (PLAFUtils.isAqua()) {
+            return new AquaWorkspaceStateTracker();
+        } else {
+            return new DefaultWorkspaceStateTracker();
         }
     }
 }

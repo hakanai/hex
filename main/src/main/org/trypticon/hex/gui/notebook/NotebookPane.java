@@ -23,7 +23,9 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -52,6 +54,10 @@ public class NotebookPane extends JPanel {
      * @param notebook the notebook to view.
      */
     public NotebookPane(Notebook notebook) {
+        if (!notebook.isOpen()) {
+            throw new IllegalStateException("The notebook should already be open but wasn't.");
+        }
+
         this.notebook = notebook;
 
         // TODO: A proper binding API would be nice here...

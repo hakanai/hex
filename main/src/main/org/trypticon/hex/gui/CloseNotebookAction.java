@@ -42,7 +42,7 @@ class CloseNotebookAction extends BaseAction {
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame != null) {
-            frame.closeCurrentTab();
+            frame.closeCurrentNotebook();
         }
     }
 }

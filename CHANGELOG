@@ -2,9 +2,12 @@
 Version X.X (XXXX-XX-XX)
 
      New: Support for binaries larger than 2 GiB (updated hex-components to v0.4.)
-     New: Modification state of the document is property reflected on the window for Mac OS X.
+     New: On Mac OS X, each document is now opened in its own window and the modification state of the document
+          is properly reflected.
 
    Fixed: NullPointerException for new notebooks due to a lack of annotations.
+
+ Changed: Document titles now show the file extension.
 
 Version 0.3 (2012-11-10)
 

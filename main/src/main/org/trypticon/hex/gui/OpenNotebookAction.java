@@ -67,7 +67,7 @@ class OpenNotebookAction extends BaseAction {
 
             preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, chooser.getCurrentDirectory());
 
-            HexFrame.openNotebook(new NotebookStorage().read(file.toURI().toURL()));
+            HexApplication.get().openNotebook(new NotebookStorage().read(file.toURI().toURL()));
         }
     }
 }

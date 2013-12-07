@@ -63,7 +63,7 @@ class NewNotebookAction extends BaseAction {
 
             preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.BINARIES, chooser.getCurrentDirectory());
 
-            HexFrame.openNotebook(new DefaultNotebook(file.toURI().toURL()));
+            HexApplication.get().openNotebook(new DefaultNotebook(file.toURI().toURL()));
         }
     }
 }

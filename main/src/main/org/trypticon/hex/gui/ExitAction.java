@@ -22,9 +22,11 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.prefs.Preferences;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
+import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
 import org.trypticon.hex.gui.util.Callback;
 
 /**
@@ -57,13 +59,9 @@ class ExitAction extends AbstractAction {
      * and {@code false} if it's not OK.
      */
     public void tryToExit(final Callback<Boolean> okToExitCallback) {
-        final List<HexFrame> frames = new LinkedList<>();
-        for (Frame frame : Frame.getFrames()) {
-            if (frame instanceof HexFrame && frame.isDisplayable()) {
-                frames.add((HexFrame) frame);
-            }
-        }
+        WorkspaceStateTracker.create().save();
 
+        final List<HexFrame> frames = HexFrame.findAllFrames();
         if (frames.isEmpty()) {
             // No frames, can exit immediately.
             okToExitCallback.execute(true);

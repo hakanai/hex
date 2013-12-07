@@ -173,8 +173,6 @@ public class DefaultNotebook implements Notebook {
             String path = notebookLocation.getPath();
             int lastSlash = path.lastIndexOf('/');
             String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
-            int dot = baseName.indexOf('.');
-            baseName = dot >= 0 ? baseName.substring(0, dot) : baseName;
             baseName = URLUtils.decode(baseName);
 
             setName(baseName);

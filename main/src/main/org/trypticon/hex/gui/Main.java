@@ -20,6 +20,7 @@ package org.trypticon.hex.gui;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.notebook.Notebook;
@@ -60,10 +61,11 @@ public class Main {
         // For now, we will resolve this by opening the sample but another way would be supporting the
         // frame having no documents open (which would be bad on Mac...)
         if (!PLAFUtils.isAqua()) {
-            HexFrame.ensureFrameOpen();
+            JFrame frame = new MultipleHexFrame();
+            frame.setVisible(true);
         }
 
-        final WorkspaceStateTracker stateTracker = new WorkspaceStateTracker();
+        final WorkspaceStateTracker stateTracker = WorkspaceStateTracker.create();
         boolean openSample = !stateTracker.restore();
 
         if (args.length == 1 && args[0] instanceof String) {
@@ -71,7 +73,7 @@ public class Main {
             // TODO: Support binary here too. Find a way to distinguish this in this context.
             File file = new File((String) args[0]);
             Notebook notebook = new NotebookStorage().read(file.toURI().toURL());
-            HexFrame.openNotebook(notebook);
+            HexApplication.get().openNotebook(notebook);
             openSample = false;
         }
 
