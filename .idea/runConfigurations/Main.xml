@@ -1,7 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Main" type="Application" factoryName="Application">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="emma" />
-    <extension name="snapshooter" />
     <option name="MAIN_CLASS_NAME" value="org.trypticon.hex.gui.Main" />
     <option name="VM_PARAMETERS" value="-Djava.library.path=lib" />
     <option name="PROGRAM_PARAMETERS" value="" />

@@ -18,6 +18,7 @@
       <value defaultName="wholeProject" />
     </option>
     <envs />
+    <patterns />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="57299" />
       <option name="TRANSPORT" value="0" />
