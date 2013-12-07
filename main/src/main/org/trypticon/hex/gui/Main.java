@@ -56,10 +56,10 @@ public class Main {
     }
 
     public void execute(Object[] args) throws Exception {
-        // If not running on Quaqua, it is impossible to start up without at least one document open.
+        // If not running on Aqua, it is impossible to start up without at least one document open.
         // For now, we will resolve this by opening the sample but another way would be supporting the
         // frame having no documents open (which would be bad on Mac...)
-        if (!PLAFUtils.isQuaqua()) {
+        if (!PLAFUtils.isAqua()) {
             HexFrame.ensureFrameOpen();
         }
 
