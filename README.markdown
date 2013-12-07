@@ -32,10 +32,8 @@ annotation capabilities.  And that is what I am trying to do here.
 BUILDING
 --------
 
-You'll need a Java build environment.  I'm developing this on Java 5 at
-the moment, but I foresee a shift to Java 6 in the not too distant future.
-At runtime I will have to support Java 5 still because a certain stylish
-computer company has decided we will not get Java 6 on 32-bit hardware.
+You'll need a Java build environment.  I'm developing this on Java 7 at
+the moment.
 
 You'll also need Ant.  All the other dependencies should be bundled.
 If something is missing, prod me to fix it.
