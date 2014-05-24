@@ -34,7 +34,7 @@ import org.trypticon.hex.interpreters.strings.StringInterpreterStorage;
  */
 class AddAnnotationMenu extends JMenu {
     public AddAnnotationMenu() {
-        super("Add Annotation");
+        super(Resources.getString("AddAnnotationMenu.name"));
 
         // TODO: This should go through the MasterInterpreterStorage once we have categories.
 
@@ -48,13 +48,13 @@ class AddAnnotationMenu extends JMenu {
     }
 
     private JMenu buildPrimitivesMenu() {
-        JMenu menu = new JMenu("Primitives");
+        JMenu menu = new JMenu(Resources.getString("AddAnnotationMenu.primitives"));
         addAllToMenu(menu, new PrimitiveInterpreterStorage().getInterpreterInfos());
         return menu;
     }
 
     private JMenu buildDatesMenu() {
-        JMenu menu = new JMenu("Dates");
+        JMenu menu = new JMenu(Resources.getString("AddAnnotationMenu.dates"));
         addAllToMenu(menu, new DateInterpreterStorage().getInterpreterInfos());
         return menu;
     }

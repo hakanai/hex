@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.util.LoggerUtils;
 import org.trypticon.hex.util.swingsupport.SourceWindowFinder;
 
@@ -45,7 +46,8 @@ public abstract class BaseAction extends AbstractAction {
         try {
             doAction(event);
         } catch (ActionException e) {
-            JOptionPane.showMessageDialog(sourceWindow, e.getMessage(), "Hex: Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(sourceWindow, e.getMessage(),
+                                          Resources.getString("Common.Errors.title"), JOptionPane.ERROR_MESSAGE);
         } catch (Throwable t) {
             handleError(sourceWindow, t);
         }
@@ -54,8 +56,8 @@ public abstract class BaseAction extends AbstractAction {
     protected void handleError(Component owner, Throwable t) {
         LoggerUtils.get().log(Level.SEVERE, "Unexpected error in UI action", t);
 
-        JXErrorPane.showDialog(owner, new ErrorInfo("Unexpected Error",
-                                                    "Unexpected error in UI action.",
+        JXErrorPane.showDialog(owner, new ErrorInfo(Resources.getString("UnexpectedError.title"),
+                                                    Resources.getString("UnexpectedError.text"),
                                                     null, null, t, Level.SEVERE, null));
     }
 

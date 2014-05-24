@@ -18,12 +18,9 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
 
-import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.gui.util.BaseAction;
 
 /**
  * Action to close the current notebook.
@@ -32,10 +29,7 @@ import org.trypticon.hex.util.swingsupport.BaseAction;
  */
 class CloseNotebookAction extends BaseAction {
     CloseNotebookAction() {
-        putValue(NAME, "Close");
-        putValue(MNEMONIC_KEY, (int) 'c');
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W,
-                                                         Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Resources.localiseAction(this, "Close");
     }
 
     @Override

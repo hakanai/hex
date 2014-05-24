@@ -27,7 +27,7 @@ import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.gui.notebook.Notebook;
-import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.gui.util.BaseAction;
 
 /**
  * Action to open a sample document.

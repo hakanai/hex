@@ -28,12 +28,12 @@ import javax.swing.SwingUtilities;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
+import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.gui.util.BaseAction;
 import org.trypticon.hex.interpreters.FixedLengthInterpreter;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterInfo;
 import org.trypticon.hex.util.Format;
-import org.trypticon.hex.util.swingsupport.ActionException;
-import org.trypticon.hex.util.swingsupport.BaseAction;
 
 /**
  * Action to add an annotation.  Prompts the user for any options required and then
@@ -54,7 +54,7 @@ class AddAnnotationAction extends BaseAction {
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame == null || frame.getNotebookPane() == null) {
-            throw new ActionException("To add an annotation, focus must be on the hex viewer.");
+            throw new ActionException(Resources.getMessage("AddAnnotation.Errors.notFocused"));
         }
 
         HexViewer viewer = frame.getNotebookPane().getViewer();
@@ -69,9 +69,13 @@ class AddAnnotationAction extends BaseAction {
 
             for (InterpreterInfo.Option option : options) {
                 while (true) {
-                    String value = JOptionPane.showInputDialog(SwingUtilities.getWindowAncestor(viewer),
-                                                               "Enter a value for parameter: " + option.getName() + " (" +
-                                                               (option.isRequired() ? "required" : "optional") + ")");
+                    String requiredOrOptional = option.isRequired() ?
+                                                Resources.getString("AddAnnotation.enterValueForParameter.required") :
+                                                Resources.getString("AddAnnotation.enterValueForParameter.optional");
+                    String message = Resources.getString("AddAnnotation.enterValueForParameter",
+                                                         option.getName(),
+                                                         requiredOrOptional);
+                    String value = JOptionPane.showInputDialog(SwingUtilities.getWindowAncestor(viewer), message);
 
                     if (value == null) {
                         return; // Cancelled.
@@ -113,7 +117,7 @@ class AddAnnotationAction extends BaseAction {
         try {
             viewer.getAnnotations().add(annotation);
         } catch (OverlappingAnnotationException e) {
-            throw new ActionException("You cannot create annotations which overlap each other.", e);
+            throw new ActionException(Resources.getMessage("AddAnnotation.Errors.overlap"), e);
         }
     }
 }

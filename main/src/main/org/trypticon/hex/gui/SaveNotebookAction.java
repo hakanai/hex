@@ -19,22 +19,18 @@
 package org.trypticon.hex.gui;
 
 import java.awt.Component;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
-import org.trypticon.hex.util.swingsupport.ActionException;
-import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.gui.util.BaseAction;
 import org.trypticon.hex.util.swingsupport.ImprovedFileChooser;
 
 /**
@@ -50,16 +46,7 @@ public class SaveNotebookAction extends BaseAction {
         this.preferredDirectoryManager = preferredDirectoryManager;
         this.alwaysAsk = alwaysAsk;
 
-        int baseMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-        if (alwaysAsk) {
-            putValue(NAME, "Save As...");
-            putValue(MNEMONIC_KEY, (int) 'a');
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, baseMask | InputEvent.SHIFT_DOWN_MASK));
-        } else {
-            putValue(NAME, "Save");
-            putValue(MNEMONIC_KEY, (int) 's');
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, baseMask));
-        }
+        Resources.localiseAction(this, alwaysAsk ? "SaveAs" : "Save");
     }
 
     @Override
@@ -70,7 +57,7 @@ public class SaveNotebookAction extends BaseAction {
     private void doSave() throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame == null || frame.getNotebook() == null) {
-            throw new ActionException("Focus is not on a hex viewer window");
+            throw new ActionException(Resources.getMessage("Save.Errors.notFocused"));
         }
 
         Notebook notebook = frame.getNotebook();
@@ -89,8 +76,9 @@ public class SaveNotebookAction extends BaseAction {
                 if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
                     chosenFile = chooser.getSelectedFile();
                     if (chosenFile.exists()) {
-                        if (JOptionPane.showConfirmDialog(frame, "The file already exists.  Is it OK to overwrite it?",
-                                                          "File Exists",
+                        if (JOptionPane.showConfirmDialog(frame,
+                                                          Resources.getString("Save.confirmOverwrite"),
+                                                          Resources.getString("Save.name"),
                                                           JOptionPane.YES_NO_OPTION,
                                                           JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
                             continue;

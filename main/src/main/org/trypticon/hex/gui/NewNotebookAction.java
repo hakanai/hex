@@ -18,18 +18,15 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.KeyStroke;
 
 import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
-import org.trypticon.hex.util.swingsupport.ActionException;
-import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.gui.util.BaseAction;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
@@ -45,10 +42,7 @@ class NewNotebookAction extends BaseAction {
         this.application = application;
         this.preferredDirectoryManager = preferredDirectoryManager;
 
-        putValue(NAME, "New...");
-        putValue(MNEMONIC_KEY, (int) 'n');
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
-                                                         Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Resources.localiseAction(this, "New");
     }
 
     @Override
@@ -63,7 +57,7 @@ class NewNotebookAction extends BaseAction {
         if (chooser.showOpenDialog(activeWindow) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             if (!file.isFile()) {
-                throw new ActionException("Not a file: " + file);
+                throw new ActionException(Resources.getMessage("Common.Errors.notFile"));
             }
 
             preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.BINARIES, chooser.getCurrentDirectory());

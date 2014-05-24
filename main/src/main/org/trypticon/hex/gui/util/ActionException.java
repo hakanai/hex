@@ -18,18 +18,20 @@
 
 package org.trypticon.hex.gui.util;
 
+import org.trypticon.hex.util.Localisable;
+
 /**
  * A user exception thrown by subclasses of {@code BaseAction} to raise a
  * simple error dialog.
  *
  * @author trejkaz
  */
-public class ActionException extends Exception {
-    public ActionException(String message) {
+public class ActionException extends LocalisableException {
+    public ActionException(Localisable message) {
         super(message);
     }
 
-    public ActionException(String message, Throwable cause) {
+    public ActionException(Localisable message, Throwable cause) {
         super(message, cause);
     }
 }

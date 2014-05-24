@@ -26,8 +26,9 @@ import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.gui.HexFrame;
-import org.trypticon.hex.util.swingsupport.ActionException;
-import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.gui.util.BaseAction;
 
 /**
  * Action which drops annotations for a structure at the selected position.
@@ -41,14 +42,14 @@ public class DropStructureAction extends BaseAction {
     public DropStructureAction(Structure structure) {
         this.structure = structure;
 
-        putValue(NAME, "Drop " + structure.getName());
+        putValue(NAME, Resources.getString("DropStructure.nameFormat", structure.getName()));
     }
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame == null || frame.getNotebookPane() == null) {
-            throw new ActionException("To add a structure, focus must be on the hex viewer.");
+            throw new ActionException(Resources.getMessage("DropStructure.Errors.notFocused"));
         }
 
         HexViewer viewer = frame.getNotebookPane().getViewer();
@@ -61,7 +62,7 @@ public class DropStructureAction extends BaseAction {
             Annotation annotation = structure.drop(binary, position);
             annotations.add(annotation);
         } catch (Exception e) {
-            throw new ActionException("An error occurred trying to drop the structure onto the binary.  The most likely cause is that it isn't the structure you're looking for.", e);
+            throw new ActionException(Resources.getMessage("DropStructure.Errors.catchAll"), e);
         }
     }
 }

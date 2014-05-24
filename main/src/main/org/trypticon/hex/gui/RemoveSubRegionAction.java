@@ -22,8 +22,8 @@ import java.awt.event.ActionEvent;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.util.swingsupport.ActionException;
-import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.gui.util.BaseAction;
 
 /**
  * Action to remove a sub-region.
@@ -32,14 +32,14 @@ import org.trypticon.hex.util.swingsupport.BaseAction;
  */
 public class RemoveSubRegionAction extends BaseAction {
     public RemoveSubRegionAction() {
-        putValue(NAME, "Remove Sub-Region");
+        putValue(NAME, Resources.getString("RemoveSubRegion.name"));
     }
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame == null || frame.getNotebookPane() == null) {
-            throw new ActionException("To remove a sub-region, focus must be on the hex viewer.");
+            throw new ActionException(Resources.getMessage("RemoveSubRegion.Errors.notFocused"));
         }
 
         HexViewer viewer = frame.getNotebookPane().getViewer();
@@ -48,7 +48,7 @@ public class RemoveSubRegionAction extends BaseAction {
 
         GroupAnnotation group = viewer.getAnnotations().getRootGroup().findDeepestGroupAnnotationAt(position);
         if (group == null) {
-            throw new ActionException("To remove a group annotation, the cursor must be at a group annotation.");
+            throw new ActionException(Resources.getMessage("RemoveSubRegion.Errors.notAtSubRegion"));
         }
 
         viewer.getAnnotations().remove(group);

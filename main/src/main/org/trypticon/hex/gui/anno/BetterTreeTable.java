@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.swing;
+package org.trypticon.hex.gui.anno;
 
 import java.awt.Graphics;
 import javax.swing.UIManager;

@@ -9,7 +9,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Annotation GUI" />
     <orderEntry type="module" module-name="File Formats" />
     <orderEntry type="library" name="Hex Annotations" level="project" />
     <orderEntry type="library" name="Hex Binary" level="project" />
@@ -22,6 +21,15 @@
     <orderEntry type="library" name="SwingX" level="project" />
     <orderEntry type="library" name="Gum" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Haqua" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/annotations.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

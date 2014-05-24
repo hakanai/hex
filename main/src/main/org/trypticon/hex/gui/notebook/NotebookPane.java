@@ -29,7 +29,7 @@ import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.accessory.AccessoryBar;
 import org.trypticon.hex.accessory.ExpandableAccessoryBar;
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.swing.AnnotationPane;
+import org.trypticon.hex.gui.anno.AnnotationPane;
 import org.trypticon.hex.gui.SaveNotebookAction;
 import org.trypticon.hex.gui.util.Callback;
 import org.trypticon.hex.gui.util.SaveConfirmation;

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.anno.swing;
+package org.trypticon.hex.gui.anno;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.tree.TreePath;
@@ -28,6 +28,7 @@ import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.MutableAnnotation;
 import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.util.swingxsupport.AbstractTreeTableModel;
 
 /**
@@ -41,7 +42,11 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
     static final int NOTE_COLUMN = 2;
     private static final int COLUMN_COUNT = 3;
 
-    private static final String[] COLUMN_NAMES = { "Type", "Value", "Notes" }; // TODO: Localise
+    private static final String[] columnNames = {
+        Resources.getString("AnnotationViewer.Columns.type"),
+        Resources.getString("AnnotationViewer.Columns.value"),
+        Resources.getString("AnnotationViewer.Columns.notes")
+    };
 
     private final AnnotationCollection annotations;
     private final Binary binary;
@@ -112,7 +117,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
 
     @Override
     public String getColumnName(int column) {
-        return COLUMN_NAMES[column];
+        return columnNames[column];
     }
 
     @Override
@@ -135,7 +140,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel implements 
             case TYPE_COLUMN:
                 if (anno instanceof GroupAnnotation) {
                     // TODO: It would be nice if groups could have the name of what they represent.
-                    return "group";
+                    return Resources.getString("AnnotationViewer.Cells.group");
                 } else {
                     return ((Annotation) node).getInterpreter();
                 }

@@ -28,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.TransferHandler;
 
+import org.trypticon.gum.MacFactory;
 import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.formats.DropStructureAction;
@@ -55,7 +56,7 @@ public class MenuBarBuilder {
     public JMenuBar buildMenuBar(JFrame frame) {
         PreferredDirectoryManager preferredDirectoryManager = new PreferredDirectoryManager();
 
-        JMenu fileMenu = new JMenu("File");
+        JMenu fileMenu = new JMenu(Resources.getString(MacFactory.isMac() ? "File.name.mac" : "File.name.other"));
         fileMenu.add(new NewNotebookAction(application, preferredDirectoryManager));
         fileMenu.add(new OpenNotebookAction(application, preferredDirectoryManager));
         // TODO: Open Recent
@@ -70,7 +71,7 @@ public class MenuBarBuilder {
         fileMenu.add(new SaveNotebookAction(preferredDirectoryManager, true));
         // TODO: Revert to Saved
 
-        if (!System.getProperty("os.name").toLowerCase().startsWith("mac")) {
+        if (!MacFactory.isMac()) {
             fileMenu.addSeparator();
             fileMenu.add(new ExitAction(application));
         }
@@ -79,11 +80,11 @@ public class MenuBarBuilder {
         //  - hex
         //  - java source
         //  - ?
-        JMenu editMenu = new JMenu("Edit");
+        JMenu editMenu = new JMenu(Resources.getString("Edit.name"));
 
         DelegatingActionListener actionListener = new DelegatingActionListener();
 
-        JMenuItem copyMenuItem = new JMenuItem("Copy");
+        JMenuItem copyMenuItem = new JMenuItem(Resources.getString("Copy.name"));
         copyMenuItem.setActionCommand((String) TransferHandler.getCopyAction().getValue(Action.NAME));
         copyMenuItem.addActionListener(actionListener);
         copyMenuItem.setMnemonic('c');
@@ -91,7 +92,7 @@ public class MenuBarBuilder {
                                                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         editMenu.add(copyMenuItem);
 
-        JMenuItem selectAllMenuItem = new JMenuItem("Select All");
+        JMenuItem selectAllMenuItem = new JMenuItem(Resources.getString("SelectAll.name"));
         selectAllMenuItem.setActionCommand("select-all");
         selectAllMenuItem.addActionListener(actionListener);
         selectAllMenuItem.setMnemonic('a');
@@ -111,7 +112,7 @@ public class MenuBarBuilder {
         //editMenu.addSeparator();
         //editMenu.add(buildFormatsMenu());
 
-        JMenu helpMenu = new JMenu("Help");
+        JMenu helpMenu = new JMenu(Resources.getString("Help.name"));
         // TODO: Help / User Guide
         helpMenu.add(new OpenSampleNotebookAction(application));
         // TODO: Help / About (non-Mac only.  Mac needs to hook into the app menu.)
@@ -129,7 +130,7 @@ public class MenuBarBuilder {
      * @return the formats menu.
      */
     private JMenu buildFormatsMenu() {
-        JMenu menu = new JMenu("Formats");
+        JMenu menu = new JMenu(Resources.getString("Formats.name"));
         menu.add(new DropStructureAction(RubyStructureDSL.load(SingleHexFrame.class.getResource("/org/trypticon/hex/formats/classfile/class_file.rb"))));
         menu.addSeparator();
         menu.add(new DropStructureAction(RubyStructureDSL.load(SingleHexFrame.class.getResource("/org/trypticon/hex/formats/gif/gif_header.rb"))));

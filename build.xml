@@ -5,7 +5,7 @@
         <attribute name="target"/>
         <![CDATA[
 
-        var builds = new Array("anno-gui", "formats", "main", "launcher");
+        var builds = new Array("formats", "main", "launcher");
         var target = attributes.get("target");
         for (i = 0; i < builds.length; i++) {
             var task = project.createTask("ant");

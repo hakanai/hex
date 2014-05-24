@@ -23,8 +23,8 @@ import java.awt.event.ActionEvent;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
-import org.trypticon.hex.util.swingsupport.ActionException;
-import org.trypticon.hex.util.swingsupport.BaseAction;
+import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.gui.util.BaseAction;
 
 /**
  * Action to add a sub-region.
@@ -33,14 +33,14 @@ import org.trypticon.hex.util.swingsupport.BaseAction;
  */
 public class AddSubRegionAction extends BaseAction {
     public AddSubRegionAction() {
-        putValue(NAME, "Add Sub-Region");
+        Resources.localiseAction(this, "AddSubRegion");
     }
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
         if (frame == null || frame.getNotebookPane() == null) {
-            throw new ActionException("To add a sub-region, focus must be on the hex viewer.");
+            throw new ActionException(Resources.getMessage("AddSubRegion.Errors.notFocused"));
         }
 
         HexViewer viewer = frame.getNotebookPane().getViewer();
@@ -53,7 +53,7 @@ public class AddSubRegionAction extends BaseAction {
         try {
             viewer.getAnnotations().add(new SimpleMutableGroupAnnotation(position, length, null));
         } catch (OverlappingAnnotationException e) {
-            throw new ActionException("You cannot create annotations which overlap each other.", e);
+            throw new ActionException(Resources.getMessage("AddSubRegion.Errors.overlap"), e);
         }
     }
 }
