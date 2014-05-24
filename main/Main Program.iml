@@ -21,6 +21,7 @@
     <orderEntry type="library" name="SnakeYAML" level="project" />
     <orderEntry type="library" name="SwingX" level="project" />
     <orderEntry type="library" name="Gum" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Haqua" level="project" />
   </component>
 </module>
 

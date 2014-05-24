@@ -37,6 +37,7 @@ public abstract class SaveConfirmation {
      */
     public static SaveConfirmation getInstance() {
         if (PLAFUtils.isQuaqua()) {
+            //TODO: Try to use windowStyle = sheet to turn this on for normal Java
             return new QuaquaSaveConfirmation();
         } else {
             return new DefaultSaveConfirmation();

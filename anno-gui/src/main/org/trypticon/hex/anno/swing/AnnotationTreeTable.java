@@ -19,7 +19,6 @@
 package org.trypticon.hex.anno.swing;
 
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.table.ColumnFactory;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -28,7 +27,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  *
  * @author trejkaz
  */
-public class AnnotationTreeTable extends JXTreeTable {
+public class AnnotationTreeTable extends BetterTreeTable {
     public AnnotationTreeTable() {
         // XXX: This doesn't actually work due to a "feature" in Swing.  I originally thought it was a bug in SwingX:
         // https://swingx.dev.java.net/issues/show_bug.cgi?id=1289

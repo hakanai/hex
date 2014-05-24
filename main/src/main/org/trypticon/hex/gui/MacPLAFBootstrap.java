@@ -19,7 +19,6 @@
 package org.trypticon.hex.gui;
 
 import java.util.logging.Level;
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.trypticon.gum.MacFactory;
@@ -28,7 +27,6 @@ import org.trypticon.gum.eawt.event.QuitEvent;
 import org.trypticon.gum.eawt.event.QuitHandler;
 import org.trypticon.gum.eawt.event.QuitResponse;
 import org.trypticon.hex.gui.util.Callback;
-import org.trypticon.hex.gui.util.DefaultMenuDummyFrame;
 import org.trypticon.hex.util.LoggerUtils;
 
 /**
@@ -56,6 +54,13 @@ public class MacPLAFBootstrap {
         // When frames are visible this system property will make that menu become the screen menu.
         System.setProperty("apple.laf.useScreenMenuBar", "true");
 
+        try {
+            UIManager.setLookAndFeel("org.trypticon.haqua.HaquaLookAndFeel");
+        } catch (Exception e) {
+            LoggerUtils.get().log(Level.WARNING, "Unexpected error initialising Haqua, falling back to Aqua", e);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+
         final Application macApplication = MacFactory.getApplication();
 
         // TODO: About (along with Help -> About in main app.)
@@ -76,21 +81,6 @@ public class MacPLAFBootstrap {
             }
         });
 
-        // And then a different menu when there are no frames visible:
-        // Workaround here for setDefaultMenuBar not working: https://java.net/jira/browse/MACOSX_PORT-775
-        JFrame dummy = new DefaultMenuDummyFrame(new MenuBarBuilder(application).buildMenuBar(null));
-        dummy.setVisible(true);
-
-        try {
-            UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
-        } catch (Exception e) {
-            LoggerUtils.get().log(Level.WARNING, "Unexpected error initialising Quaqua, falling back to Aqua", e);
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-
-        // Workaround for JSheet.showSheet throwing an exception because sheet is not undecorated:
-        // https://java.net/jira/browse/QUAQUA-160
-        UIManager.put("Sheet.showAsSheet", false);
-
+        macApplication.setDefaultMenuBar(new MenuBarBuilder(application).buildMenuBar(null));
     }
 }

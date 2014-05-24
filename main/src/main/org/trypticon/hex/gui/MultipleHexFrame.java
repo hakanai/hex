@@ -20,43 +20,23 @@ package org.trypticon.hex.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.Action;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.EmptyBinary;
-import org.trypticon.hex.datatransfer.DelegatingActionListener;
-import org.trypticon.hex.formats.ruby.RubyStructureDSL;
-import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
-import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
-import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
-import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 import org.trypticon.hex.gui.util.Callback;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
@@ -80,7 +60,6 @@ public class MultipleHexFrame extends HexFrame {
         setTitle("Hex");
 
         tabbedPane = new JTabbedPane();
-        tabbedPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, -3, -4, -3));
 
         updateDocumentModified();
 

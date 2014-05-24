@@ -108,7 +108,7 @@
                                             hex-viewer.jar, snakeyaml.jar, swingx.jar, jruby-complete.jar"/>
 
             <!-- Mac-specific -->
-            <fileset dir="../lib" includes="gum.jar, quaqua.jar, libquaqua.jnilib, libquaqua64.jnilib"/>
+            <fileset dir="../lib" includes="gum.jar, haqua.jar"/>
         </copy>
 
         <exec executable="codesign" failonerror="true">
