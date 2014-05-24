@@ -23,7 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.prefs.Preferences;
-import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.HexFrame;

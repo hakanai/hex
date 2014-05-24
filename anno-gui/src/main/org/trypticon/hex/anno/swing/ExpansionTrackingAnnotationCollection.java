@@ -55,9 +55,7 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
             }
         });
 
-        delegate.addAnnotationCollectionListener(event -> {
-            fireAnnotationsChanged();
-        });
+        delegate.addAnnotationCollectionListener(event -> fireAnnotationsChanged());
     }
 
     @Override

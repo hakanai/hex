@@ -177,9 +177,7 @@ public class HexApplication {
 
                 // Depending on the platform, the dialogs may have been modeless, so the user might have opened
                 // new frames while we were prompting them to close the existing ones.
-                SwingUtilities.invokeLater(() -> {
-                    tryToExitInner(okToExitCallback);
-                });
+                SwingUtilities.invokeLater(() -> tryToExitInner(okToExitCallback));
             } else {
                 okToExitCallback.execute(false);
             }
@@ -206,9 +204,7 @@ public class HexApplication {
         firstFrame.prepareForClose(okToClose -> {
             if (okToClose) {
                 // Reducing the risk of a StackOverflowError if there are a large number of frames open.
-                SwingUtilities.invokeLater(() -> {
-                    prepareForExit(remainingFrames, okToExitCallback);
-                });
+                SwingUtilities.invokeLater(() -> prepareForExit(remainingFrames, okToExitCallback));
             } else {
                 okToExitCallback.execute(false);
             }

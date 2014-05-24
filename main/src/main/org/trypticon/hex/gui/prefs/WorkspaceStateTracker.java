@@ -18,19 +18,10 @@
 
 package org.trypticon.hex.gui.prefs;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.logging.Level;
 import java.util.prefs.Preferences;
-import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.HexFrame;
-import org.trypticon.hex.gui.notebook.Notebook;
-import org.trypticon.hex.gui.notebook.NotebookPane;
-import org.trypticon.hex.gui.notebook.NotebookStorage;
-import org.trypticon.hex.util.LoggerUtils;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**

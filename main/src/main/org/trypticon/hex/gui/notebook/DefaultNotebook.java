@@ -117,9 +117,7 @@ public class DefaultNotebook implements Notebook {
 
     private void attachAnnotationCollectionListener() {
         // New annotations appearing mean we need to be saved.
-        annotations.addAnnotationCollectionListener(event -> {
-            setDirty(true);
-        });
+        annotations.addAnnotationCollectionListener(event -> setDirty(true));
     }
 
     /**

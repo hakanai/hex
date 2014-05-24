@@ -25,7 +25,6 @@ import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.HexApplication;
-import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.util.swingsupport.BaseAction;
