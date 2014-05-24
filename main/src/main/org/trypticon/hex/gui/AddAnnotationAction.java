@@ -31,6 +31,7 @@ import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.interpreters.FixedLengthInterpreter;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterInfo;
+import org.trypticon.hex.util.Format;
 import org.trypticon.hex.util.swingsupport.ActionException;
 import org.trypticon.hex.util.swingsupport.BaseAction;
 
@@ -46,7 +47,7 @@ class AddAnnotationAction extends BaseAction {
     public AddAnnotationAction(InterpreterInfo info) {
         this.info = info;
 
-        putValue(NAME, info.getHumanName());
+        putValue(NAME, info.toLocalisedString(Format.LONG));
     }
 
     @Override
@@ -60,7 +61,7 @@ class AddAnnotationAction extends BaseAction {
 
         long position = viewer.getSelectionModel().getSelectionStart();
 
-        List<InterpreterInfo.Option> options = info.getOptions();
+        List<InterpreterInfo.Option<?>> options = info.getOptions();
         Map<String, Object> optionMap = new HashMap<>(options.size());
         if (!options.isEmpty()) {
 

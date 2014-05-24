@@ -29,9 +29,9 @@ import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.formats.Structure;
-import org.trypticon.hex.interpreters.primitives.UByteInterpreter;
-import org.trypticon.hex.interpreters.primitives.UIntInterpreterBE;
-import org.trypticon.hex.interpreters.primitives.UShortInterpreterBE;
+import org.trypticon.hex.interpreters.primitives.unsigned.UByteInterpreter;
+import org.trypticon.hex.interpreters.primitives.unsigned.UIntInterpreterBE;
+import org.trypticon.hex.interpreters.primitives.unsigned.UShortInterpreterBE;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
 import static org.junit.Assert.assertEquals;

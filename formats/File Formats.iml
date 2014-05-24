@@ -19,6 +19,7 @@
     <orderEntry type="library" name="Hex Annotations" level="project" />
     <orderEntry type="library" name="Hex Binary" level="project" />
     <orderEntry type="library" name="Hex Interpreters" level="project" />
+    <orderEntry type="library" name="Hex Utilities" level="project" />
     <orderEntry type="library" name="JRuby" level="project" />
     <orderEntry type="library" name="JUnit" level="project" />
   </component>
