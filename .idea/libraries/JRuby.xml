@@ -1,5 +1,8 @@
 <component name="libraryTable">
   <library name="JRuby">
+    <ANNOTATIONS>
+      <root url="file://$PROJECT_DIR$/lib/annotations" />
+    </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/jruby-complete.jar!/" />
     </CLASSES>

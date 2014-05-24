@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.gui.sample;
 
+import org.jetbrains.annotations.NonNls;
+
 /**
  * This file's sole purpose is to provide some sample binary for the initial
  * file open in the application.
@@ -26,5 +28,7 @@ package org.trypticon.hex.gui.sample;
  */
 public class Sample {
     private static final int SECRET_CODE = 42;
+
+    @NonNls
     private static final String SECRET_MESSAGE = "I am in your application, hacking your bytes.";
 }

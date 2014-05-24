@@ -22,6 +22,7 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
@@ -57,10 +58,7 @@ public abstract class SaveConfirmation {
         if (optionPaneCss == null) {
             optionPaneCss = "";
         }
-        String message = "<html>" + optionPaneCss +
-                         "<b>Do you want to save changes to this document<br>before closing?</b><p>" +
-                         "If you don't save, your changes will be lost.";
-
+        String message = Resources.getString("Notebook.saveConfirmationMessage", optionPaneCss);
         JOptionPane optionPane = new JOptionPane(message, JOptionPane.WARNING_MESSAGE);
 
         Option[] options = { Option.SAVE, Option.CANCEL, Option.DO_NOT_SAVE };
@@ -93,11 +91,11 @@ public abstract class SaveConfirmation {
      * Results of showing the dialog.
      */
     public static enum Option {
-        CANCEL("Cancel"),
+        CANCEL(Resources.getString("Notebook.saveConfirmation.cancel")),
 
-        SAVE("Save"),
+        SAVE(Resources.getString("Notebook.saveConfirmation.save")),
 
-        DO_NOT_SAVE("Don't Save");
+        DO_NOT_SAVE(Resources.getString("Notebook.saveConfirmation.doNotSave"));
 
         private String display;
 

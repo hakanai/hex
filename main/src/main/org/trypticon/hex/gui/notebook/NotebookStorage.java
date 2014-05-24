@@ -26,6 +26,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -71,7 +72,7 @@ public class NotebookStorage {
     }
 
     public Notebook read(URL url) throws IOException {
-        try (Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
             Notebook notebook = read(reader);
             notebook.setNotebookLocation(url);
             return notebook;
@@ -87,7 +88,8 @@ public class NotebookStorage {
     }
 
     private void write(Notebook notebook, Path file) throws IOException {
-        try (Writer writer = new OutputStreamWriter(new BufferedOutputStream(Files.newOutputStream(file)), "UTF-8")) {
+        try (Writer writer = new OutputStreamWriter(
+                new BufferedOutputStream(Files.newOutputStream(file)), StandardCharsets.UTF_8)) {
             write(notebook, writer);
         }
     }
@@ -103,7 +105,7 @@ public class NotebookStorage {
             connection.setDoOutput(true);
             connection.connect();
 
-            try (Writer writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8")) {
+            try (Writer writer = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8)) {
                 write(notebook, writer);
             }
         }

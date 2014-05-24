@@ -57,7 +57,7 @@ public class MultipleHexFrame extends HexFrame {
      */
     public MultipleHexFrame(HexApplication application) {
         super(application);
-        setTitle("Hex");
+        setTitle(Resources.getString("HexFrame.title"));
 
         tabbedPane = new JTabbedPane();
 

@@ -22,6 +22,8 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
+import org.jetbrains.annotations.NonNls;
+
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 
@@ -101,7 +103,7 @@ public interface Notebook {
      * @param propertyName the name of the property to listen to.
      * @param listener the listener to add.
      */
-    void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
+    void addPropertyChangeListener(@NonNls String propertyName, PropertyChangeListener listener);
 
     /**
      * Removes a listener from property change events.

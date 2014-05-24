@@ -20,11 +20,14 @@ package org.trypticon.hex.gui.sample;
 
 import java.awt.event.ActionEvent;
 
+import org.jetbrains.annotations.NonNls;
+
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.HexApplication;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.util.BaseAction;
@@ -39,12 +42,12 @@ public class OpenSampleNotebookAction extends BaseAction {
 
     public OpenSampleNotebookAction(HexApplication application) {
         this.application = application;
-        putValue(NAME, "Open Sample Notebook");
-        putValue(MNEMONIC_KEY, (int) 's');
+        Resources.localiseAction(this, "OpenSampleNotebook");
     }
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
+        @NonNls
         String resourcePath = Sample.class.getName().replace('.', '/') + ".class";
         Notebook notebook = new DefaultNotebook(getClass().getClassLoader().getResource(resourcePath));
 

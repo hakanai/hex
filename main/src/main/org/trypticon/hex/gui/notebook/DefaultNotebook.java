@@ -23,10 +23,13 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.URL;
 
+import org.jetbrains.annotations.NonNls;
+
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.util.LoggerUtils;
 import org.trypticon.hex.util.URLUtils;
 
@@ -79,7 +82,7 @@ public class DefaultNotebook implements Notebook {
         String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
         baseName = URLUtils.decode(baseName);
 
-        this.name = "New: " + baseName;
+        this.name = Resources.getString("Notebook.defaultName", baseName);
 
         // Presumed dirty until someone sets the location.
         setDirty(true);
@@ -257,7 +260,7 @@ public class DefaultNotebook implements Notebook {
         }
     }
 
-    private void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+    private void firePropertyChange(@NonNls String propertyName, Object oldValue, Object newValue) {
         if (propertyChanges != null) {
             propertyChanges.firePropertyChange(propertyName, oldValue, newValue);
         }

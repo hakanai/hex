@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.List;
+import javax.swing.Action;
 import javax.swing.DefaultFocusManager;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -67,8 +68,9 @@ public class HexApplication {
 
         // Open a sample notebook if this is the first time the application was ever opened.
         if (!restoredState) {
-            new OpenSampleNotebookAction(this).actionPerformed(
-                new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Open Sample Notebook"));
+            Action action = new OpenSampleNotebookAction(this);
+            action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+                                                   (String) action.getValue(Action.NAME)));
         }
     }
 
@@ -87,8 +89,10 @@ public class HexApplication {
             throw new IllegalStateException("The JRE created a URL which was malformed: " + notebookPath, e);
         } catch (IOException e) {
             Window activeWindow = DefaultFocusManager.getCurrentManager().getActiveWindow();
-            JOptionPane.showMessageDialog(activeWindow, "There was a problem opening the notebook: " + e.getMessage(),
-                                          "Error Opening File", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(activeWindow,
+                                          Resources.getString("Notebook.errorOpening", e.getLocalizedMessage()),
+                                          Resources.getString("Notebook.errorOpeningTitle"),
+                                          JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
@@ -123,8 +127,10 @@ public class HexApplication {
         try {
             notebook.open();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(activeWindow, "There was a problem opening the notebook: " + e.getMessage(),
-                                          "Error Opening File", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(activeWindow,
+                                          Resources.getString("Notebook.errorOpening", e.getLocalizedMessage()),
+                                          Resources.getString("Notebook.errorOpeningTitle"),
+                                          JOptionPane.ERROR_MESSAGE);
             return null;
         }
 

@@ -21,15 +21,7 @@
     <orderEntry type="library" name="SwingX" level="project" />
     <orderEntry type="library" name="Gum" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Haqua" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/annotations.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="JetBrains Annotations" level="project" />
   </component>
 </module>
 

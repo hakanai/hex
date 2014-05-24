@@ -22,6 +22,8 @@ import java.awt.Component;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import org.trypticon.hex.gui.Resources;
+
 /**
  * Default save confirmation support, using the option pane's built-in dialog support.
  *
@@ -30,7 +32,7 @@ import javax.swing.JOptionPane;
 public class DefaultSaveConfirmation extends SaveConfirmation {
     @Override
     protected void showOptionPane(Component owner, JOptionPane optionPane, Callback<Object> callback) {
-        JDialog dialog = optionPane.createDialog(owner, "Save Confirmation");
+        JDialog dialog = optionPane.createDialog(owner, Resources.getString("Notebook.saveConfirmationTitle"));
         dialog.setVisible(true);
         // setVisible is synchronous so the value will have already been set by this point.
         callback.execute(optionPane.getValue());

@@ -22,6 +22,8 @@ import java.io.File;
 import java.util.prefs.Preferences;
 import javax.swing.filechooser.FileSystemView;
 
+import org.jetbrains.annotations.NonNls;
+
 /**
  * Support for tracking preferred directories.
  *
@@ -75,7 +77,7 @@ public class PreferredDirectoryManager {
     public static class Key {
         private final String prefKey;
 
-        private Key(String prefKey) {
+        private Key(@NonNls String prefKey) {
             this.prefKey = prefKey;
         }
     }

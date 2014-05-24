@@ -18,6 +18,9 @@
 
 package org.trypticon.hex.gui.notebook;
 
+import org.jetbrains.annotations.NonNls;
+
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.util.swingsupport.FileExtensionFilter;
 
 /**
@@ -26,6 +29,7 @@ import org.trypticon.hex.util.swingsupport.FileExtensionFilter;
  * @author trejkaz
  */
 public class NotebookFileFilter extends FileExtensionFilter {
+    @NonNls
     @Override
     protected String getExtension() {
         return "hex";
@@ -33,6 +37,6 @@ public class NotebookFileFilter extends FileExtensionFilter {
 
     @Override
     protected String getShortDescription() {
-        return "Hex Notebook Files";
+        return Resources.getString("Notebook.fileFilterDescription");
     }
 }

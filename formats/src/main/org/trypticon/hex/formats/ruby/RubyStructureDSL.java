@@ -22,7 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
+import org.jetbrains.annotations.NonNls;
 import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 
@@ -37,7 +39,7 @@ import org.trypticon.hex.interpreters.MasterInterpreterStorage;
 public class RubyStructureDSL {
     private final String scriptlet;
 
-    private RubyStructureDSL(String scriptlet) {
+    private RubyStructureDSL(@NonNls String scriptlet) {
         this.scriptlet = scriptlet;
     }
 
@@ -46,7 +48,7 @@ public class RubyStructureDSL {
         this(loadURL(scriptLocation));
     }
 
-    public static Structure load(String scriptlet) {
+    public static Structure load(@NonNls String scriptlet) {
         return new RubyStructureDSL(scriptlet).createStructure();
     }
 
@@ -63,7 +65,7 @@ public class RubyStructureDSL {
             while ((bytesRead = stream.read(buffer)) != -1) {
                 temp.write(buffer, 0, bytesRead);
             }
-            return temp.toString("UTF-8");
+            return temp.toString(StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             throw new RuntimeException("URL was not accessible: " + location, e);
         }
@@ -75,8 +77,10 @@ public class RubyStructureDSL {
 
         // Set up the library scripts will have by default.
         String basePath = RubyStructureDSL.class.getPackage().getName().replace('.', '/');
+        @NonNls
+        String fileName = basePath + "/structure_dsl.rb";
         container.put("$interpreter_storage", new MasterInterpreterStorage());
-        container.runScriptlet(PathType.CLASSPATH, basePath + "/structure_dsl.rb");
+        container.runScriptlet(PathType.CLASSPATH, fileName);
 
         // Run the script itself, which should return a Structure instance.
         try {
