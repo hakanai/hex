@@ -1,0 +1,5 @@
+<root>
+    <item name='java.net.URL java.lang.String getProtocol()'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+</root>

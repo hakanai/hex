@@ -1,0 +1,14 @@
+<root>
+    <item name='java.util.Map V get(java.lang.Object) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='java.util.Map V put(K, V) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='java.util.ResourceBundle java.util.ResourceBundle getBundle(java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='java.util.ResourceBundle java.util.ResourceBundle getBundle(java.lang.String, java.util.Locale) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+</root>

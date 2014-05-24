@@ -21,6 +21,8 @@
 
     <target name="build" description="Runs each build in series">
         <run-all/>
+
+        <echo message="${java.home}"/>
     </target>
 
     <target name="test" description="Tests each build in series">

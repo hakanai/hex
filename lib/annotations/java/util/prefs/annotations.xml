@@ -1,0 +1,17 @@
+<root>
+    <item name='java.util.prefs.Preferences int getInt(java.lang.String, int) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='java.util.prefs.Preferences java.lang.String get(java.lang.String, java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='java.util.prefs.Preferences java.util.prefs.Preferences node(java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='java.util.prefs.Preferences void put(java.lang.String, java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='java.util.prefs.Preferences void putInt(java.lang.String, int) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+</root>

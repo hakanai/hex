@@ -21,10 +21,6 @@ package org.trypticon.hex.gui.util;
 import java.awt.Component;
 import javax.swing.JOptionPane;
 
-import ch.randelshofer.quaqua.JSheet;
-import ch.randelshofer.quaqua.SheetEvent;
-import ch.randelshofer.quaqua.SheetListener;
-
 /**
  * Save confirmation implementation for Mac, where using a sheet is more friendly.
  *
@@ -33,15 +29,17 @@ import ch.randelshofer.quaqua.SheetListener;
 public class QuaquaSaveConfirmation extends SaveConfirmation {
     @Override
     protected void showOptionPane(Component owner, JOptionPane optionPane, final Callback<Object> callback) {
-        class SaveSheetListener implements SheetListener {
-            @Override
-            public void optionSelected(SheetEvent event) {
-                callback.execute(event.getValue());
-            }
-        }
+        throw new UnsupportedOperationException("Temporarily unsupported");
 
-        SaveSheetListener listener = new SaveSheetListener();
-
-        JSheet.showSheet(optionPane, owner, listener);
+//        class SaveSheetListener implements SheetListener {
+//            @Override
+//            public void optionSelected(SheetEvent event) {
+//                callback.execute(event.getValue());
+//            }
+//        }
+//
+//        SaveSheetListener listener = new SaveSheetListener();
+//
+//        JSheet.showSheet(optionPane, owner, listener);
     }
 }

@@ -40,7 +40,6 @@
     <target name="executable-jar" description="Builds a cross-platform executable JAR file">
         <mkdir dir="build"/>
         <jar jarfile="build/hex-${app.version}.jar">
-            <zipfileset src="../anno-gui/build/hex-anno-gui.jar"/>
             <zipfileset src="../formats/build/hex-formats.jar"/>
             <zipfileset src="../main/build/hex-main.jar"/>
 
@@ -69,7 +68,6 @@
             <srcfiles dir="src/mac" includes="Info.plist"/>
             <srcfiles dir="." includes="build.xml"/>
             <srcfiles dir=".." includes="app.properties"/>
-            <srcfiles dir="../anno-gui/build" includes="hex-anno-gui.jar"/>
             <srcfiles dir="../formats/build" includes="hex-formats.jar"/>
             <srcfiles dir="../main/build" includes="hex-main.jar"/>
             <srcfiles dir="../lib" includes="*.jar"/>
@@ -100,7 +98,6 @@
         <!-- TODO: I need an icon file to go into Contents/Resources/Hex.icns :-( -->
 
         <copy todir="build/Hex.app/Contents/Java">
-            <fileset dir="../anno-gui/build" includes="hex-anno-gui.jar"/>
             <fileset dir="../formats/build" includes="hex-formats.jar"/>
             <fileset dir="../main/build" includes="hex-main.jar"/>
 
