@@ -26,9 +26,7 @@ import java.beans.PropertyChangeListener;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
-import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
 import org.trypticon.hex.gui.util.Callback;
-import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * A top-level application frame capable of opening a single document.
@@ -61,12 +59,9 @@ public class SingleHexFrame extends HexFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                prepareForClose(new Callback<Boolean>() {
-                    @Override
-                    public void execute(Boolean okToClose) {
-                        if (okToClose) {
-                            dispose();
-                        }
+                prepareForClose(okToClose -> {
+                    if (okToClose) {
+                        dispose();
                     }
                 });
             }
@@ -80,12 +75,9 @@ public class SingleHexFrame extends HexFrame {
 
     @Override
     public void closeCurrentNotebook() {
-        notebookPane.prepareForClose(new Callback<Boolean>() {
-            @Override
-            public void execute(Boolean okToClose) {
-                if (okToClose) {
-                    dispose();
-                }
+        notebookPane.prepareForClose(okToClose -> {
+            if (okToClose) {
+                dispose();
             }
         });
     }

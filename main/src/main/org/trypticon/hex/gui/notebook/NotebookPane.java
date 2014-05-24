@@ -19,13 +19,7 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.awt.BorderLayout;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -62,18 +56,10 @@ public class NotebookPane extends JPanel {
 
         // TODO: A proper binding API would be nice here...
         setName(notebook.getName());
-        notebook.addPropertyChangeListener("name", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent event) {
-                setName((String) event.getNewValue());
-            }
-        });
-        notebook.addPropertyChangeListener("dirty", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent event) {
-                firePropertyChange("dirty", event.getOldValue(), event.getNewValue());
-            }
-        });
+        notebook.addPropertyChangeListener(
+            "name", event -> setName((String) event.getNewValue()));
+        notebook.addPropertyChangeListener(
+            "dirty", event -> firePropertyChange("dirty", event.getOldValue(), event.getNewValue()));
 
         annoPane = new AnnotationPane();
         annoPane.setAnnotations(notebook.getAnnotations());
@@ -83,16 +69,13 @@ public class NotebookPane extends JPanel {
         viewer.setAnnotations(annoPane.getExpandedAnnotations());
         viewer.setBinary(notebook.getBinary());
 
-        annoPane.addPropertyChangeListener("selectedAnnotationPath", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent event) {
-                @SuppressWarnings("unchecked")
-                List<Annotation> selectedAnnotationPath = (List<Annotation>) event.getNewValue();
-                if (selectedAnnotationPath != null) {
-                    Annotation annotation = selectedAnnotationPath.get(selectedAnnotationPath.size() - 1);
-                    viewer.getSelectionModel().setCursor(annotation.getPosition());
-                    viewer.getSelectionModel().setCursorAndExtendSelection(annotation.getPosition() + annotation.getLength() - 1);
-                }
+        annoPane.addPropertyChangeListener("selectedAnnotationPath", event -> {
+            @SuppressWarnings("unchecked")
+            List<Annotation> selectedAnnotationPath = (List<Annotation>) event.getNewValue();
+            if (selectedAnnotationPath != null) {
+                Annotation annotation = selectedAnnotationPath.get(selectedAnnotationPath.size() - 1);
+                viewer.getSelectionModel().setCursor(annotation.getPosition());
+                viewer.getSelectionModel().setCursorAndExtendSelection(annotation.getPosition() + annotation.getLength() - 1);
             }
         });
 
@@ -106,11 +89,8 @@ public class NotebookPane extends JPanel {
         add(splitPane, BorderLayout.CENTER);
 
         // Why ComponentListener doesn't work here I will never know.
-        addHierarchyListener(new HierarchyListener() {
-            @Override
-            public void hierarchyChanged(HierarchyEvent hierarchyEvent) {
-                viewer.requestFocusInWindow();
-            }
+        addHierarchyListener(hierarchyEvent -> {
+            viewer.requestFocusInWindow();
         });
     }
 
@@ -158,24 +138,21 @@ public class NotebookPane extends JPanel {
                 tabbedPane.setSelectedComponent(this);
             }
 
-            SaveConfirmation.getInstance().show(getRootPane(), new Callback<SaveConfirmation.Option>() {
-                @Override
-                public void execute(SaveConfirmation.Option option) {
-                    switch (option) {
-                        case CANCEL:
-                            okToCloseCallback.execute(false);
-                            break;
-                        case DO_NOT_SAVE:
-                            okToCloseCallback.execute(true);
-                            break;
-                        case SAVE:
-                            SaveNotebookAction saveAction = (SaveNotebookAction) getRootPane().getActionMap().get("save");
-                            boolean saveSucceeded = saveAction.save(getRootPane());
-                            okToCloseCallback.execute(saveSucceeded);
-                            break;
-                        default:
-                            throw new IllegalStateException("Impossible save confirmation option found");
-                    }
+            SaveConfirmation.getInstance().show(getRootPane(), option -> {
+                switch (option) {
+                    case CANCEL:
+                        okToCloseCallback.execute(false);
+                        break;
+                    case DO_NOT_SAVE:
+                        okToCloseCallback.execute(true);
+                        break;
+                    case SAVE:
+                        SaveNotebookAction saveAction = (SaveNotebookAction) getRootPane().getActionMap().get("save");
+                        boolean saveSucceeded = saveAction.save(getRootPane());
+                        okToCloseCallback.execute(saveSucceeded);
+                        break;
+                    default:
+                        throw new IllegalStateException("Impossible save confirmation option found");
                 }
             });
         } else {

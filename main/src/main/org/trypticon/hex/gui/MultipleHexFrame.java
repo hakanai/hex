@@ -77,12 +77,9 @@ public class MultipleHexFrame extends HexFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                prepareForClose(new Callback<Boolean>() {
-                    @Override
-                    public void execute(Boolean okToClose) {
-                        if (okToClose) {
-                            dispose();
-                        }
+                prepareForClose(okToClose -> {
+                    if (okToClose) {
+                        dispose();
                     }
                 });
             }
@@ -142,23 +139,20 @@ public class MultipleHexFrame extends HexFrame {
     public void closeCurrentNotebook() {
         final NotebookPane notebookPane = (NotebookPane) tabbedPane.getSelectedComponent();
         if (notebookPane != null) {
-            notebookPane.prepareForClose(new Callback<Boolean>() {
-                @Override
-                public void execute(Boolean okToClose) {
-                    if (okToClose) {
-                        notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
-                        notebookPane.removePropertyChangeListener("dirty", tabDirtyUpdater);
+            notebookPane.prepareForClose(okToClose -> {
+                if (okToClose) {
+                    notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
+                    notebookPane.removePropertyChangeListener("dirty", tabDirtyUpdater);
 
-                        tabbedPane.remove(notebookPane);
+                    tabbedPane.remove(notebookPane);
 
-                        updateDocumentModified();
+                    updateDocumentModified();
 
-                        notebookPane.getNotebook().close();
+                    notebookPane.getNotebook().close();
 
-                        // Dispose the frame if there are no tabs left, for Mac only, as empty windows do not exist on Mac.
-                        if (PLAFUtils.isAqua()) {
-                            dispose();
-                        }
+                    // Dispose the frame if there are no tabs left, for Mac only, as empty windows do not exist on Mac.
+                    if (PLAFUtils.isAqua()) {
+                        dispose();
                     }
                 }
             });
@@ -204,20 +198,12 @@ public class MultipleHexFrame extends HexFrame {
         NotebookPane firstPane = panes.get(0);
         final List<NotebookPane> remainingPanes = panes.subList(1, panes.size());
 
-        firstPane.prepareForClose(new Callback<Boolean>() {
-            @Override
-            public void execute(Boolean okToClose) {
-                if (okToClose) {
-                    // Reducing the risk of a StackOverflowError if there are a large number of panes open.
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            prepareForClose(remainingPanes, okToCloseCallback);
-                        }
-                    });
-                } else {
-                    okToCloseCallback.execute(false);
-                }
+        firstPane.prepareForClose(okToClose -> {
+            if (okToClose) {
+                // Reducing the risk of a StackOverflowError if there are a large number of panes open.
+                SwingUtilities.invokeLater(() -> prepareForClose(remainingPanes, okToCloseCallback));
+            } else {
+                okToCloseCallback.execute(false);
             }
         });
     }

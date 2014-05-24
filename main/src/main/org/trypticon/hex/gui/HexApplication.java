@@ -169,25 +169,19 @@ public class HexApplication {
             return;
         }
 
-        prepareForExit(frames, new Callback<Boolean>() {
-            @Override
-            public void execute(Boolean okToExit) {
-                if (okToExit) {
-                    for (Frame frame : frames) {
-                        frame.dispose();
-                    }
-
-                    // Depending on the platform, the dialogs may have been modeless, so the user might have opened
-                    // new frames while we were prompting them to close the existing ones.
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            tryToExitInner(okToExitCallback);
-                        }
-                    });
-                } else {
-                    okToExitCallback.execute(false);
+        prepareForExit(frames, okToExit -> {
+            if (okToExit) {
+                for (Frame frame : frames) {
+                    frame.dispose();
                 }
+
+                // Depending on the platform, the dialogs may have been modeless, so the user might have opened
+                // new frames while we were prompting them to close the existing ones.
+                SwingUtilities.invokeLater(() -> {
+                    tryToExitInner(okToExitCallback);
+                });
+            } else {
+                okToExitCallback.execute(false);
             }
         });
     }
@@ -209,20 +203,14 @@ public class HexApplication {
         HexFrame firstFrame = frames.get(0);
         final List<HexFrame> remainingFrames = frames.subList(1, frames.size());
 
-        firstFrame.prepareForClose(new Callback<Boolean>() {
-            @Override
-            public void execute(Boolean okToClose) {
-                if (okToClose) {
-                    // Reducing the risk of a StackOverflowError if there are a large number of frames open.
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            prepareForExit(remainingFrames, okToExitCallback);
-                        }
-                    });
-                } else {
-                    okToExitCallback.execute(false);
-                }
+        firstFrame.prepareForClose(okToClose -> {
+            if (okToClose) {
+                // Reducing the risk of a StackOverflowError if there are a large number of frames open.
+                SwingUtilities.invokeLater(() -> {
+                    prepareForExit(remainingFrames, okToExitCallback);
+                });
+            } else {
+                okToExitCallback.execute(false);
             }
         });
     }

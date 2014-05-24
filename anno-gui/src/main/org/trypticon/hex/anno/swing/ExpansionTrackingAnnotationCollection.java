@@ -29,8 +29,6 @@ import org.jdesktop.swingx.JXTreeTable;
 import org.trypticon.hex.anno.AbstractAnnotationCollection;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.AnnotationCollectionEvent;
-import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 
@@ -57,11 +55,8 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
             }
         });
 
-        delegate.addAnnotationCollectionListener(new AnnotationCollectionListener() {
-            @Override
-            public void annotationsChanged(AnnotationCollectionEvent event) {
-                fireAnnotationsChanged();
-            }
+        delegate.addAnnotationCollectionListener(event -> {
+            fireAnnotationsChanged();
         });
     }
 

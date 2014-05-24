@@ -68,14 +68,11 @@ public abstract class SaveConfirmation {
         optionPane.setInitialValue(options[0]);
         optionPane.putClientProperty("Quaqua.OptionPane.destructiveOption", 2);
 
-        showOptionPane(owner, optionPane, new Callback<Object>() {
-            @Override
-            public void execute(Object option) {
-                if (option instanceof Option) {
-                    callback.execute((Option) option);
-                } else {
-                    callback.execute(Option.CANCEL);
-                }
+        showOptionPane(owner, optionPane, option -> {
+            if (option instanceof Option) {
+                callback.execute((Option) option);
+            } else {
+                callback.execute(Option.CANCEL);
             }
         });
     }

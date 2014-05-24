@@ -18,19 +18,10 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.event.ActionEvent;
-import java.io.File;
 import java.nio.file.Paths;
-import java.util.List;
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.trypticon.hex.gui.notebook.Notebook;
-import org.trypticon.hex.gui.notebook.NotebookStorage;
-import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
-import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 import org.trypticon.hex.gui.warmup.JRubyWarmup;
-import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * Main entry point.
@@ -42,17 +33,14 @@ public class Main {
 
         new JRubyWarmup().start();
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    new Main().execute(args);
-                } catch (RuntimeException e) {
-                    throw e;
-                } catch (Exception e) {
-                    // TODO: Generic error dialog.  Need a utility for this.
-                    throw new RuntimeException(e);
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new Main().execute(args);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                // TODO: Generic error dialog.  Need a utility for this.
+                throw new RuntimeException(e);
             }
         });
     }

@@ -25,8 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -55,18 +53,15 @@ public class AnnotationPane extends JPanel {
     public AnnotationPane() {
         annoTreeTable = new AnnotationTreeTable();
 
-        annoTreeTable.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
-                TreePath treePath = annoTreeTable.getTreeSelectionModel().getSelectionPath();
-                if (treePath == null) {
-                    setSelectedAnnotationPath(null);
-                } else {
-                    Object[] treePathArray = treePath.getPath();
-                    Annotation[] pathArray = new Annotation[treePathArray.length - 1];
-                    System.arraycopy(treePathArray, 1, pathArray, 0, pathArray.length);
-                    setSelectedAnnotationPath(Arrays.asList(pathArray));
-                }
+        annoTreeTable.addTreeSelectionListener(treeSelectionEvent -> {
+            TreePath treePath = annoTreeTable.getTreeSelectionModel().getSelectionPath();
+            if (treePath == null) {
+                setSelectedAnnotationPath(null);
+            } else {
+                Object[] treePathArray = treePath.getPath();
+                Annotation[] pathArray = new Annotation[treePathArray.length - 1];
+                System.arraycopy(treePathArray, 1, pathArray, 0, pathArray.length);
+                setSelectedAnnotationPath(Arrays.asList(pathArray));
             }
         });
 

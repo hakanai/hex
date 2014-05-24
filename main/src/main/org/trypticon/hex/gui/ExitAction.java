@@ -18,16 +18,8 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.prefs.Preferences;
 import javax.swing.AbstractAction;
-import javax.swing.SwingUtilities;
-
-import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
-import org.trypticon.hex.gui.util.Callback;
 
 /**
  * Action to exit the application.
@@ -45,12 +37,9 @@ class ExitAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        application.tryToExit(new Callback<Boolean>() {
-            @Override
-            public void execute(Boolean okToExit) {
-                if (okToExit) {
-                    System.exit(0);
-                }
+        application.tryToExit(okToExit -> {
+            if (okToExit) {
+                System.exit(0);
             }
         });
     }

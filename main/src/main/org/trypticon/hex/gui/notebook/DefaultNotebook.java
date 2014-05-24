@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.AnnotationCollectionEvent;
-import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
@@ -119,11 +117,8 @@ public class DefaultNotebook implements Notebook {
 
     private void attachAnnotationCollectionListener() {
         // New annotations appearing mean we need to be saved.
-        annotations.addAnnotationCollectionListener(new AnnotationCollectionListener() {
-            @Override
-            public void annotationsChanged(AnnotationCollectionEvent event) {
-                setDirty(true);
-            }
+        annotations.addAnnotationCollectionListener(event -> {
+            setDirty(true);
         });
     }
 

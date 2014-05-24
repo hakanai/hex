@@ -23,10 +23,6 @@ import javax.swing.UIManager;
 
 import org.trypticon.gum.MacFactory;
 import org.trypticon.gum.eawt.Application;
-import org.trypticon.gum.eawt.event.QuitEvent;
-import org.trypticon.gum.eawt.event.QuitHandler;
-import org.trypticon.gum.eawt.event.QuitResponse;
-import org.trypticon.hex.gui.util.Callback;
 import org.trypticon.hex.util.LoggerUtils;
 
 /**
@@ -65,21 +61,13 @@ public class MacPLAFBootstrap {
 
         // TODO: About (along with Help -> About in main app.)
         // TODO: Preferences - when we get some. ;-)
-        macApplication.setQuitHandler(new QuitHandler() {
-            @Override
-            public void handleQuitRequestWith(QuitEvent quitEvent, final QuitResponse quitResponse) {
-                application.tryToExit(new Callback<Boolean>() {
-                    @Override
-                    public void execute(Boolean okToExit) {
-                        if (okToExit) {
-                            quitResponse.performQuit();
-                        } else {
-                            quitResponse.cancelQuit();
-                        }
-                    }
-                });
+        macApplication.setQuitHandler((quitEvent, quitResponse) -> application.tryToExit(okToExit -> {
+            if (okToExit) {
+                quitResponse.performQuit();
+            } else {
+                quitResponse.cancelQuit();
             }
-        });
+        }));
 
         macApplication.setDefaultMenuBar(new MenuBarBuilder(application).buildMenuBar(null));
     }
