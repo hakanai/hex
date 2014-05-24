@@ -21,7 +21,6 @@ package org.trypticon.hex.gui;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -104,6 +103,21 @@ public class HexApplication {
      *         (in this situation the user would have been alerted already.)
      */
     public HexFrame openNotebook(Notebook notebook) {
+        return openNotebook(notebook, true);
+    }
+
+    /**
+     * <p>Opens a notebook.</p>
+     *
+     * <p>May open a new frame or may use an existing frame. This depends on what platform you're running on.</p>
+     *
+     * @param notebook the notebook.
+     * @param openFrameImmediately if {@code true}, the frame will be opened immediately. If {@code false},
+     *        it will not be opened, allowing the caller to possibly change it before making it visible.
+     * @return the frame the notebook was opened in, or {@code null} if there was a problem opening it
+     *         (in this situation the user would have been alerted already.)
+     */
+    public HexFrame openNotebook(Notebook notebook, boolean openFrameImmediately) {
         Window activeWindow = DefaultFocusManager.getCurrentManager().getActiveWindow();
 
         try {
@@ -117,7 +131,9 @@ public class HexApplication {
         if (PLAFUtils.isAqua()) {
             // Try to mimic document-based Mac applications better by using a separate frame per notebook.
             SingleHexFrame frame = new SingleHexFrame(this, notebook);
-            frame.setVisible(true);
+            if (openFrameImmediately) {
+                frame.setVisible(true);
+            }
             return frame;
         } else {
             MultipleHexFrame frame = (MultipleHexFrame) HexFrame.findActiveFrame();

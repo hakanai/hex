@@ -23,7 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.prefs.Preferences;
-import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.HexFrame;
@@ -85,9 +84,10 @@ class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
             try {
                 URL url = new URL(location);
                 Notebook notebook = new NotebookStorage().read(url);
-                HexFrame frame = application.openNotebook(notebook);
+                HexFrame frame = application.openNotebook(notebook, false);
                 if (frame != null) {
                     restoreFrameLocation(frame, openDocumentPrefs);
+                    frame.setVisible(true);
                 }
             } catch (MalformedURLException e) {
                 LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
