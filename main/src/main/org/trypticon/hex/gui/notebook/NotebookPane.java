@@ -26,6 +26,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.accessory.AccessoryBar;
+import org.trypticon.hex.accessory.ExpandableAccessoryBar;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.swing.AnnotationPane;
 import org.trypticon.hex.gui.SaveNotebookAction;
@@ -40,6 +42,7 @@ import org.trypticon.hex.gui.util.SaveConfirmation;
 public class NotebookPane extends JPanel {
     private final Notebook notebook;
     private final HexViewer viewer;
+    private final AccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
 
     /**
@@ -69,6 +72,12 @@ public class NotebookPane extends JPanel {
         viewer.setAnnotations(annoPane.getExpandedAnnotations());
         viewer.setBinary(notebook.getBinary());
 
+        accessoryBar = new ExpandableAccessoryBar(viewer);
+
+        JPanel viewerWrapper = new JPanel(new BorderLayout());
+        viewerWrapper.add(viewer, BorderLayout.CENTER);
+        viewerWrapper.add(accessoryBar, BorderLayout.PAGE_END);
+
         annoPane.addPropertyChangeListener("selectedAnnotationPath", event -> {
             @SuppressWarnings("unchecked")
             List<Annotation> selectedAnnotationPath = (List<Annotation>) event.getNewValue();
@@ -81,7 +90,7 @@ public class NotebookPane extends JPanel {
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setLeftComponent(annoPane);
-        splitPane.setRightComponent(viewer);
+        splitPane.setRightComponent(viewerWrapper);
         splitPane.setDividerLocation(annoPane.getPreferredSize().width);
         splitPane.setResizeWeight(1.0); // left component gets all the extra space
 
