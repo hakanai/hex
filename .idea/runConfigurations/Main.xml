@@ -18,8 +18,10 @@
       <option name="LOCAL" value="true" />
     </RunnerSettings>
     <RunnerSettings RunnerId="Run" />
+    <RunnerSettings RunnerId="RunWithSEClass" />
     <ConfigurationWrapper RunnerId="Debug" />
     <ConfigurationWrapper RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="RunWithSEClass" />
     <method />
   </configuration>
 </component>

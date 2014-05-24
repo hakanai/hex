@@ -32,8 +32,8 @@ annotation capabilities.  And that is what I am trying to do here.
 BUILDING
 --------
 
-You'll need a Java build environment.  I'm developing this on Java 7 at
-the moment.
+You'll need a Java build environment.  I'm developing this on Java 8,
+because it fixes some severe problems with Mac applications.
 
 You'll also need Ant.  All the other dependencies should be bundled.
 If something is missing, prod me to fix it.
