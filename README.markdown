@@ -1,6 +1,6 @@
 Hex - A simple hex viewer written in Java.
 
-Copyright (C) 2009  Trejkaz, Hex Project
+Copyright (C) 2009-2014  Trejkaz, Hex Project
 
 Now accepting contributions for a Mac icon file for this project! ;-)
 
