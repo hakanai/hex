@@ -21,7 +21,7 @@ package org.trypticon.hex.gui.notebook;
 import org.jetbrains.annotations.NonNls;
 
 import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.util.swingsupport.FileExtensionFilter;
+import org.trypticon.hex.gui.util.FileExtensionFilter;
 
 /**
  * File filter matching notebook files (and directories...)

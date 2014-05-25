@@ -22,7 +22,6 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URL;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.trypticon.hex.gui.notebook.Notebook;
@@ -31,7 +30,9 @@ import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.util.ActionException;
 import org.trypticon.hex.gui.util.BaseAction;
-import org.trypticon.hex.util.swingsupport.ImprovedFileChooser;
+import org.trypticon.hex.gui.util.FileExtensionFilter;
+import org.trypticon.hex.gui.util.FileSelection;
+import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * Action to save the notebook.
@@ -66,16 +67,18 @@ public class SaveNotebookAction extends BaseAction {
         if (!alwaysAsk && notebook.getNotebookLocation() != null) {
             location = notebook.getNotebookLocation();
         } else {
-            JFileChooser chooser = new ImprovedFileChooser();
-            chooser.setFileFilter(new NotebookFileFilter());
-
-            chooser.setCurrentDirectory(preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS));
+            FileSelection fileSelection = FileSelection.getInstance();
+            File directory = preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS);
+            FileExtensionFilter filter = new NotebookFileFilter();
 
             while (true) {
-                File chosenFile;
-                if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
-                    chosenFile = chooser.getSelectedFile();
-                    if (chosenFile.exists()) {
+                File chosenFile = fileSelection.selectFile(frame, FileSelection.Mode.SAVE, directory, filter);
+                if (chosenFile != null) {
+                    // So that next iteration defaults to the right location.
+                    directory = chosenFile.getParentFile();
+
+                    // Aqua already confirms this for us.
+                    if (chosenFile.exists() && !PLAFUtils.isAqua()) {
                         if (JOptionPane.showConfirmDialog(frame,
                                                           Resources.getString("Save.confirmOverwrite"),
                                                           Resources.getString("Save.name"),
@@ -85,7 +88,7 @@ public class SaveNotebookAction extends BaseAction {
                         }
                     }
 
-                    preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, chooser.getCurrentDirectory());
+                    preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, directory);
 
                     location = chosenFile.toURI().toURL();
                     break;

@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui.util;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -26,7 +27,7 @@ import javax.swing.filechooser.FileFilter;
  *
  * @author trejkaz
  */
-public abstract class FileExtensionFilter extends FileFilter {
+public abstract class FileExtensionFilter extends FileFilter implements FilenameFilter {
 
     /**
      * Gets the description without the bit at the end which has the file extensions.
@@ -41,6 +42,11 @@ public abstract class FileExtensionFilter extends FileFilter {
      * @return the file extension.
      */
     protected abstract String getExtension();
+
+    @Override
+    public boolean accept(File dir, String name) {
+        return accept(new File(dir, name));
+    }
 
     @Override
     public boolean accept(File file) {

@@ -21,13 +21,13 @@ package org.trypticon.hex.gui;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import javax.swing.JFileChooser;
 
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.util.ActionException;
 import org.trypticon.hex.gui.util.BaseAction;
+import org.trypticon.hex.gui.util.FileSelection;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
@@ -51,18 +51,18 @@ class OpenNotebookAction extends BaseAction {
         // For Mac OS X, when opening files, the file chooser is *not* parented by the current window.
         Window activeWindow = PLAFUtils.isAqua() ? null : HexFrame.findActiveFrame();
 
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileFilter(new NotebookFileFilter());
+        FileSelection fileSelection = FileSelection.getInstance();
 
-        chooser.setCurrentDirectory(preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS));
-
-        if (chooser.showOpenDialog(activeWindow) == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
+        File file = fileSelection.selectFile(
+                activeWindow, FileSelection.Mode.LOAD,
+                preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS),
+                new NotebookFileFilter());
+        if (file != null) {
             if (!file.isFile()) {
                 throw new ActionException(Resources.getMessage("Common.Errors.notFile"));
             }
 
-            preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, chooser.getCurrentDirectory());
+            preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, file.getParentFile());
 
             application.openNotebook(new NotebookStorage().read(file.toURI().toURL()));
         }
