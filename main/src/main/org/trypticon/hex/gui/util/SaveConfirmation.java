@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * Support for showing a confirmation dialog for saving the current document.
@@ -37,12 +36,7 @@ public abstract class SaveConfirmation {
      * @return a new save confirmation support object.
      */
     public static SaveConfirmation getInstance() {
-        if (PLAFUtils.isQuaqua()) {
-            //TODO: Try to use windowStyle = sheet to turn this on for normal Java
-            return new QuaquaSaveConfirmation();
-        } else {
-            return new DefaultSaveConfirmation();
-        }
+        return new DefaultSaveConfirmation();
     }
 
     /**

@@ -38,13 +38,19 @@ public class AwtFileSelection extends FileSelection {
                            @NotNull Mode mode,
                            @NotNull File initialDirectory,
                            @NotNull FileExtensionFilter fileFilter) {
-        Window window = parentComponent == null ? null : SwingUtilities.getWindowAncestor(parentComponent);
-        FileDialog dialog = window instanceof Frame ? new FileDialog((Frame) window)
-                                                    : new FileDialog((Dialog) window);
+        Window owner = parentComponent == null ? null :
+                       parentComponent instanceof Window ? (Window) parentComponent :
+                       SwingUtilities.getWindowAncestor(parentComponent);
+        FileDialog dialog = owner instanceof Frame ? new FileDialog((Frame) owner)
+                                                   : new FileDialog((Dialog) owner);
+        dialog.pack();
+        dialog.setLocationRelativeTo(owner);
+        if (owner != null) {
+            SheetHack.makeSheet(dialog);
+        }
         dialog.setMode(mode == Mode.LOAD ? FileDialog.LOAD : FileDialog.SAVE);
         dialog.setDirectory(initialDirectory.getAbsolutePath());
         dialog.setFilenameFilter(fileFilter);
-        dialog.setLocationRelativeTo(window);
         dialog.setVisible(true);
         File[] files = dialog.getFiles();
         return files.length == 0 ? null : files[0];
