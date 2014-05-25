@@ -111,5 +111,5 @@ public interface Notebook {
      * @param propertyName the name of the property to listen to.
      * @param listener the listener to remove.
      */
-    void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
+    void removePropertyChangeListener(@NonNls String propertyName, PropertyChangeListener listener);
 }

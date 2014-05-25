@@ -164,6 +164,7 @@ public class DefaultNotebook implements Notebook {
         }
 
         if (!notebookLocation.equals(this.notebookLocation)) {
+            URL oldNotebookLocation = this.notebookLocation;
             this.notebookLocation = notebookLocation;
 
             String path = notebookLocation.getPath();
@@ -172,6 +173,7 @@ public class DefaultNotebook implements Notebook {
             baseName = URLUtils.decode(baseName);
 
             setName(baseName);
+            firePropertyChange("notebookLocation", oldNotebookLocation, notebookLocation);
         }
 
         setDirty(false);

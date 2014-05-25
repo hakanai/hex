@@ -21,8 +21,9 @@ package org.trypticon.hex.gui;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
@@ -43,11 +44,12 @@ public class SingleHexFrame extends HexFrame {
      */
     public SingleHexFrame(HexApplication application, Notebook notebook) {
         super(application);
-        setTitle(notebook.getName());
 
         notebookPane = new NotebookPane(notebook);
-        notebookPane.addPropertyChangeListener("name", new TitleUpdater());
-        notebookPane.removePropertyChangeListener("dirty", new DirtyUpdater());
+        notebookPane.removePropertyChangeListener("dirty", event -> updateDocumentModified());
+
+        updateTitle();
+        notebookPane.getNotebook().addPropertyChangeListener("notebookLocation", event -> updateTitle());
 
         setLayout(new BorderLayout());
         add(notebookPane, BorderLayout.CENTER);
@@ -82,6 +84,27 @@ public class SingleHexFrame extends HexFrame {
         });
     }
 
+    private void updateTitle() {
+        URL location = notebookPane.getNotebook().getNotebookLocation();
+        if (location == null) {
+            setTitle(Resources.getString("HexFrame.titleFormat", Resources.getString("HexFrame.untitledFilename")));
+            getRootPane().putClientProperty("Window.documentFile", null);
+        } else if ("file".equals(location.getProtocol())) {
+            try {
+                File file = new File(location.toURI());
+                setTitle(Resources.getString("HexFrame.titleFormat", file.getName()));
+                getRootPane().putClientProperty("Window.documentFile", file);
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException("Illegal URI but it came from a URL: " + location, e);
+            }
+        } else {
+            String path = location.getPath();
+            int lastSlash = path.lastIndexOf('/');
+            setTitle(Resources.getString("HexFrame.titleFormat", path.substring(lastSlash + 1)));
+            getRootPane().putClientProperty("Window.documentFile", null);
+        }
+    }
+
     /**
      * Updates the "document modified" status of the window (only visible on Aqua look and feel)
      * by looking at each notebook and testing whether it is dirty.
@@ -105,27 +128,5 @@ public class SingleHexFrame extends HexFrame {
     @Override
     public void prepareForClose(final Callback<Boolean> okToCloseCallback) {
         notebookPane.prepareForClose(okToCloseCallback);
-    }
-
-    /**
-     * Updates the tab title when the name of the component changes.  Should have been
-     * the responsibility of {@code JTabbedPane} but Sun forgot to implement it.
-     */
-    private class TitleUpdater implements PropertyChangeListener {
-        @Override
-        public void propertyChange(PropertyChangeEvent event) {
-            String name = (String) event.getNewValue();
-            setTitle(name);
-        }
-    }
-
-    /**
-     * Updates the dirty flag on the window itself when the dirty status of one of the notebooks changes.
-     */
-    private class DirtyUpdater implements PropertyChangeListener {
-        @Override
-        public void propertyChange(PropertyChangeEvent event) {
-            updateDocumentModified();
-        }
     }
 }
