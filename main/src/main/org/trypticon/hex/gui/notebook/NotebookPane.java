@@ -69,6 +69,7 @@ public class NotebookPane extends JPanel {
         annoPane.setBinary(notebook.getBinary());
 
         viewer = new HexViewer();
+        viewer.setPreferredVisibleRowCount(36);
         viewer.setAnnotations(annoPane.getExpandedAnnotations());
         viewer.setBinary(notebook.getBinary());
 
