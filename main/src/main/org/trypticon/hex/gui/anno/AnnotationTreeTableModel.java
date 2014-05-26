@@ -29,7 +29,7 @@ import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.MutableAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.util.swingxsupport.AbstractTreeTableModel;
+import org.trypticon.hex.gui.util.AbstractTreeTableModel;
 
 /**
  * Tree model for annotations.

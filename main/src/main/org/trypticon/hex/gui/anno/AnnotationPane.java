@@ -33,7 +33,7 @@ import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
-import org.trypticon.hex.util.swingxsupport.NullTreeTableModel;
+import org.trypticon.hex.gui.util.NullTreeTableModel;
 
 /**
  * Panel displaying the annotations.

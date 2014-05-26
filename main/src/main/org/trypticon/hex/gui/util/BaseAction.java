@@ -30,7 +30,6 @@ import org.jdesktop.swingx.error.ErrorInfo;
 
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.util.LoggerUtils;
-import org.trypticon.hex.util.swingsupport.SourceWindowFinder;
 
 /**
  * A convenience action class with some facility for catching errors.
