@@ -18,64 +18,49 @@
 
 package org.trypticon.hex.gui.util;
 
-import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
 /**
- * Base class for implementing custom tree models, since Sun forgot to implement one.
+ * Base class for implementing custom tree models, adding some convenience methods onto the basic one
+ * provided by SwingX.
  *
  * @author trejkaz
  */
-public abstract class AbstractTreeTableModel implements TreeTableModel {
-    private EventListenerList listenerList;
+public abstract class AbstractTreeTableModel extends org.jdesktop.swingx.treetable.AbstractTreeTableModel
+        implements TreeTableModel {
+
+    public AbstractTreeTableModel() {
+        super();
+    }
+
+    public AbstractTreeTableModel(Object root) {
+        super(root);
+    }
 
     protected void fireTreeNodesInserted(TreeModelEvent event) {
-        if (listenerList != null) {
-            for (TreeModelListener listener : listenerList.getListeners(TreeModelListener.class)) {
-                listener.treeNodesInserted(event);
-            }
+        for (TreeModelListener listener : getTreeModelListeners()) {
+            listener.treeNodesInserted(event);
         }
     }
 
     protected void fireTreeNodesRemoved(TreeModelEvent event) {
-        if (listenerList != null) {
-            for (TreeModelListener listener : listenerList.getListeners(TreeModelListener.class)) {
-                listener.treeNodesRemoved(event);
-            }
+        for (TreeModelListener listener : getTreeModelListeners()) {
+            listener.treeNodesRemoved(event);
         }
     }
 
     protected void fireTreeNodesChanged(TreeModelEvent event) {
-        if (listenerList != null) {
-            for (TreeModelListener listener : listenerList.getListeners(TreeModelListener.class)) {
-                listener.treeNodesChanged(event);
-            }
+        for (TreeModelListener listener : getTreeModelListeners()) {
+            listener.treeNodesChanged(event);
         }
     }
 
     protected void fireTreeStructureChanged(TreeModelEvent event) {
-        if (listenerList != null) {
-            for (TreeModelListener listener : listenerList.getListeners(TreeModelListener.class)) {
-                listener.treeStructureChanged(event);
-            }
-        }
-    }
-
-    @Override
-    public void addTreeModelListener(TreeModelListener listener) {
-        if (listenerList == null) {
-            listenerList = new EventListenerList();
-        }
-        listenerList.add(TreeModelListener.class, listener);
-    }
-
-    @Override
-    public void removeTreeModelListener(TreeModelListener listener) {
-        if (listenerList != null) {
-            listenerList.remove(TreeModelListener.class, listener);
+        for (TreeModelListener listener : getTreeModelListeners()) {
+            listener.treeStructureChanged(event);
         }
     }
 }

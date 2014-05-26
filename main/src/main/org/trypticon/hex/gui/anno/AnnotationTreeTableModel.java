@@ -36,7 +36,9 @@ import org.trypticon.hex.gui.util.AbstractTreeTableModel;
  *
  * @author trejkaz
  */
-public class AnnotationTreeTableModel extends AbstractTreeTableModel implements AnnotationCollectionListener {
+public class AnnotationTreeTableModel extends AbstractTreeTableModel
+    implements AnnotationCollectionListener {
+
     static final int TYPE_COLUMN = 0;
     static final int VALUE_COLUMN = 1;
     static final int NOTE_COLUMN = 2;
