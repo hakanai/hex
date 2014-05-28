@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ICU4j">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/icu4j-charset.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/icu4j.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

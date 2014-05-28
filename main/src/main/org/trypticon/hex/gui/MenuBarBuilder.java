@@ -101,7 +101,7 @@ public class MenuBarBuilder {
         editMenu.add(selectAllMenuItem);
 
         editMenu.addSeparator();
-        editMenu.add(new AddAnnotationMenu());
+        editMenu.add(new AddAnnotationAction());
         editMenu.add(new RemoveAnnotationAction());
 
         editMenu.addSeparator();

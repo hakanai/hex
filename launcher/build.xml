@@ -50,6 +50,8 @@
             <zipfileset src="../lib/hex-viewer.jar"/>
             <zipfileset src="../lib/snakeyaml.jar"/>
             <zipfileset src="../lib/swingx.jar"/>
+            <zipfileset src="../lib/icu4j.jar"/>
+            <zipfileset src="../lib/icu4j-charset.jar"/>
             <zipfileset src="../lib/jruby-complete.jar"/>
 
             <manifest>
@@ -102,7 +104,8 @@
             <fileset dir="../main/build" includes="hex-main.jar"/>
 
             <fileset dir="../lib" includes="hex-anno.jar, hex-binary.jar, hex-interpreter.jar, hex-util.jar,
-                                            hex-viewer.jar, snakeyaml.jar, swingx.jar, jruby-complete.jar"/>
+                                            hex-viewer.jar, snakeyaml.jar, swingx.jar, icu4j.jar,
+                                            icu4j-charset.jar, jruby-complete.jar"/>
 
             <!-- Mac-specific -->
             <fileset dir="../lib" includes="gum.jar, haqua.jar"/>

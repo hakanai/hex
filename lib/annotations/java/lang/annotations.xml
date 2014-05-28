@@ -5,4 +5,7 @@
     <item name='java.lang.String java.lang.String format(java.lang.String, java.lang.Object...) 0'>
         <annotation name='org.jetbrains.annotations.NonNls'/>
     </item>
+    <item name='java.lang.String java.lang.String[] split(java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
 </root>

@@ -1,4 +1,7 @@
 <root>
+    <item name='java.awt.Component java.lang.String getName()'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
     <item name='java.awt.Component void firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object) 0'>
         <annotation name='org.jetbrains.annotations.NonNls'/>
     </item>

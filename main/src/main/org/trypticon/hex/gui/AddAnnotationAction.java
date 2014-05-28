@@ -28,12 +28,12 @@ import javax.swing.SwingUtilities;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
+import org.trypticon.hex.gui.anno.AddAnnotationPane;
 import org.trypticon.hex.gui.util.ActionException;
 import org.trypticon.hex.gui.util.BaseAction;
 import org.trypticon.hex.interpreters.FixedLengthInterpreter;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterInfo;
-import org.trypticon.hex.util.Format;
 
 /**
  * Action to add an annotation.  Prompts the user for any options required and then
@@ -42,12 +42,10 @@ import org.trypticon.hex.util.Format;
  * @author trejkaz
  */
 class AddAnnotationAction extends BaseAction {
-    private final InterpreterInfo info;
+    private final AddAnnotationPane pane = new AddAnnotationPane();
 
-    public AddAnnotationAction(InterpreterInfo info) {
-        this.info = info;
-
-        putValue(NAME, info.toLocalisedString(Format.LONG));
+    public AddAnnotationAction() {
+        Resources.localiseAction(this, "AddAnnotation");
     }
 
     @Override
@@ -57,67 +55,72 @@ class AddAnnotationAction extends BaseAction {
             throw new ActionException(Resources.getMessage("AddAnnotation.Errors.notFocused"));
         }
 
-        HexViewer viewer = frame.getNotebookPane().getViewer();
+        InterpreterInfo info = pane.showDialog(frame);
+        if (info != null) {
+            HexViewer viewer = frame.getNotebookPane().getViewer();
 
-        long position = viewer.getSelectionModel().getSelectionStart();
+            long position = viewer.getSelectionModel().getSelectionStart();
 
-        List<InterpreterInfo.Option<?>> options = info.getOptions();
-        Map<String, Object> optionMap = new HashMap<>(options.size());
-        if (!options.isEmpty()) {
+            List<InterpreterInfo.Option<?>> options = info.getOptions();
+            Map<String, Object> optionMap = new HashMap<>(options.size());
+            if (!options.isEmpty()) {
 
-            // TODO: We should do this in a single form, I'm just lazy right now.
+                // TODO: We should do this in a single form, I'm just lazy right now.
 
-            for (InterpreterInfo.Option option : options) {
-                while (true) {
-                    String requiredOrOptional = option.isRequired() ?
-                                                Resources.getString("AddAnnotation.enterValueForParameter.required") :
-                                                Resources.getString("AddAnnotation.enterValueForParameter.optional");
-                    String message = Resources.getString("AddAnnotation.enterValueForParameter",
-                                                         option.getName(),
-                                                         requiredOrOptional);
-                    String value = JOptionPane.showInputDialog(SwingUtilities.getWindowAncestor(viewer), message);
+                for (InterpreterInfo.Option option : options) {
+                    while (true) {
+                        String requiredOrOptional = option.isRequired() ?
+                                                    Resources.getString("AddAnnotation.enterValueForParameter.required") :
+                                                    Resources.getString("AddAnnotation.enterValueForParameter.optional");
+                        String message = Resources.getString("AddAnnotation.enterValueForParameter",
+                                                             option.getName(),
+                                                             requiredOrOptional);
+                        String value = JOptionPane.showInputDialog(SwingUtilities.getWindowAncestor(viewer), message);
 
-                    if (value == null) {
-                        return; // Cancelled.
-                    }
-
-                    value = value.trim();
-                    if (!value.isEmpty()) {
-
-                        // TODO: Support more types in a more generic way.  Forms will help.
-
-                        if (String.class == option.getType()) {
-                            optionMap.put(option.getName(), value);
-                            break;
-                        } else if (Integer.class == option.getType()) {
-                            optionMap.put(option.getName(), Integer.valueOf(value));
-                            break; // the while loop
+                        if (value == null) {
+                            return; // Cancelled.
                         }
-                    } else {
-                        if (!option.isRequired()) {
-                            break;
+
+                        value = value.trim();
+                        if (!value.isEmpty()) {
+
+                            // TODO: Support more types in a more generic way.  Forms will help.
+
+                            if (String.class == option.getType()) {
+                                optionMap.put(option.getName(), value);
+                                break;
+                            } else if (Integer.class == option.getType()) {
+                                optionMap.put(option.getName(), Integer.valueOf(value));
+                                break; // the while loop
+                            }
+                        } else {
+                            if (!option.isRequired()) {
+                                break;
+                            }
                         }
                     }
                 }
             }
+
+            Interpreter interpreter = info.create(optionMap);
+
+            long length;
+            if (interpreter instanceof FixedLengthInterpreter) {
+                length = ((FixedLengthInterpreter) interpreter).getValueLength();
+            } else {
+                length = (viewer.getSelectionModel().getSelectionEnd() -
+                          viewer.getSelectionModel().getSelectionStart()) + 1;
+            }
+
+            SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpreter, null);
+
+            try {
+                viewer.getAnnotations().add(annotation);
+            } catch (OverlappingAnnotationException e) {
+                throw new ActionException(Resources.getMessage("AddAnnotation.Errors.overlap"), e);
+            }
         }
 
-        Interpreter interpreter = info.create(optionMap);
-
-        long length;
-        if (interpreter instanceof FixedLengthInterpreter) {
-            length = ((FixedLengthInterpreter) interpreter).getValueLength();
-        } else {
-            length = (viewer.getSelectionModel().getSelectionEnd() -
-                      viewer.getSelectionModel().getSelectionStart()) + 1;
-        }
-
-        SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpreter, null);
-
-        try {
-            viewer.getAnnotations().add(annotation);
-        } catch (OverlappingAnnotationException e) {
-            throw new ActionException(Resources.getMessage("AddAnnotation.Errors.overlap"), e);
-        }
+//
     }
 }

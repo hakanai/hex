@@ -22,6 +22,7 @@
     <orderEntry type="library" name="Gum" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Haqua" level="project" />
     <orderEntry type="library" name="JetBrains Annotations" level="project" />
+    <orderEntry type="library" name="ICU4j" level="project" />
   </component>
 </module>
 
