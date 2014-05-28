@@ -92,6 +92,8 @@ public class MenuBarBuilder {
                                                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         editMenu.add(copyMenuItem);
 
+        editMenu.add(new DeleteAction());
+
         JMenuItem selectAllMenuItem = new JMenuItem(Resources.getString("SelectAll.name"));
         selectAllMenuItem.setActionCommand("select-all");
         selectAllMenuItem.addActionListener(actionListener);
@@ -102,11 +104,7 @@ public class MenuBarBuilder {
 
         editMenu.addSeparator();
         editMenu.add(new AddAnnotationAction());
-        editMenu.add(new RemoveAnnotationAction());
-
-        editMenu.addSeparator();
         editMenu.add(new AddSubRegionAction());
-        editMenu.add(new RemoveSubRegionAction());
 
         // Temporarily disabled until more things are sorted out.
         //editMenu.addSeparator();

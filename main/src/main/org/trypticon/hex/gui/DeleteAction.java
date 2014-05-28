@@ -24,32 +24,27 @@ import java.util.List;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.gui.util.ActionException;
-import org.trypticon.hex.gui.util.BaseAction;
 
 /**
  * Action to remove an annotation
  *
  * @author trejkaz
  */
-class RemoveAnnotationAction extends BaseAction {
-    RemoveAnnotationAction() {
-        Resources.localiseAction(this, "RemoveAnnotation");
+class DeleteAction extends HexFrameAction {
+    DeleteAction() {
+        Resources.localiseAction(this, "Delete");
     }
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
-        if (frame == null || frame.getNotebookPane() == null) {
-            throw new ActionException(Resources.getMessage("RemoveAnnotation.Errors.notFocused"));
-        }
-
         HexViewer viewer = frame.getNotebookPane().getViewer();
 
         long position = viewer.getSelectionModel().getCursor();
 
         List<Annotation> annotationPath = viewer.getAnnotations().getAnnotationPathAt(position);
         if (annotationPath == null) {
-            throw new ActionException(Resources.getMessage("RemoveAnnotation.Errors.notAtAnnotation"));
+            throw new ActionException(Resources.getMessage("Delete.Errors.notAtAnnotation"));
         }
 
         // TODO: This results in a search but we already know the parent.  We could add a method which takes the parent.

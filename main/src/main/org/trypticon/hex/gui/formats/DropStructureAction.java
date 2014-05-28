@@ -26,16 +26,16 @@ import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.gui.HexFrame;
+import org.trypticon.hex.gui.HexFrameAction;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.util.ActionException;
-import org.trypticon.hex.gui.util.BaseAction;
 
 /**
  * Action which drops annotations for a structure at the selected position.
  *
  * @author trejkaz
  */
-public class DropStructureAction extends BaseAction {
+public class DropStructureAction extends HexFrameAction {
 
     private final Structure structure;
 

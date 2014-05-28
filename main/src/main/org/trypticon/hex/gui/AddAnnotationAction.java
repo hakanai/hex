@@ -30,7 +30,6 @@ import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.gui.anno.AddAnnotationPane;
 import org.trypticon.hex.gui.util.ActionException;
-import org.trypticon.hex.gui.util.BaseAction;
 import org.trypticon.hex.interpreters.FixedLengthInterpreter;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterInfo;
@@ -41,7 +40,7 @@ import org.trypticon.hex.interpreters.InterpreterInfo;
  *
  * @author trejkaz
  */
-class AddAnnotationAction extends BaseAction {
+class AddAnnotationAction extends HexFrameAction {
     private final AddAnnotationPane pane = new AddAnnotationPane();
 
     public AddAnnotationAction() {
@@ -51,10 +50,6 @@ class AddAnnotationAction extends BaseAction {
     @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
-        if (frame == null || frame.getNotebookPane() == null) {
-            throw new ActionException(Resources.getMessage("AddAnnotation.Errors.notFocused"));
-        }
-
         InterpreterInfo info = pane.showDialog(frame);
         if (info != null) {
             HexViewer viewer = frame.getNotebookPane().getViewer();

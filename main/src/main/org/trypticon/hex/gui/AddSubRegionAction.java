@@ -24,14 +24,13 @@ import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.gui.util.ActionException;
-import org.trypticon.hex.gui.util.BaseAction;
 
 /**
  * Action to add a sub-region.
  *
  * @author trejkaz
  */
-public class AddSubRegionAction extends BaseAction {
+public class AddSubRegionAction extends HexFrameAction {
     public AddSubRegionAction() {
         Resources.localiseAction(this, "AddSubRegion");
     }
@@ -39,10 +38,6 @@ public class AddSubRegionAction extends BaseAction {
     @Override
     protected void doAction(ActionEvent event) throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
-        if (frame == null || frame.getNotebookPane() == null) {
-            throw new ActionException(Resources.getMessage("AddSubRegion.Errors.notFocused"));
-        }
-
         HexViewer viewer = frame.getNotebookPane().getViewer();
 
         // TODO: Check that it's legal, or have the model throw an exception if it isn't.

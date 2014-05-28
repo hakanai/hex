@@ -28,8 +28,6 @@ import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
-import org.trypticon.hex.gui.util.ActionException;
-import org.trypticon.hex.gui.util.BaseAction;
 import org.trypticon.hex.gui.util.FileExtensionFilter;
 import org.trypticon.hex.gui.util.FileSelection;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
@@ -39,7 +37,7 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  *
  * @author trejkaz
  */
-public class SaveNotebookAction extends BaseAction {
+public class SaveNotebookAction extends HexFrameAction {
     private final PreferredDirectoryManager preferredDirectoryManager;
     private final boolean alwaysAsk;
 
@@ -57,10 +55,6 @@ public class SaveNotebookAction extends BaseAction {
 
     private void doSave() throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
-        if (frame == null || frame.getNotebook() == null) {
-            throw new ActionException(Resources.getMessage("Save.Errors.notFocused"));
-        }
-
         Notebook notebook = frame.getNotebook();
 
         URL location;

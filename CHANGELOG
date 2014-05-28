@@ -5,11 +5,16 @@ Version X.X (XXXX-XX-XX)
      New: On Mac OS X, each document is now opened in its own window, the modification state of the document
           is properly reflected and the title bar contains the file icon.
      New: Using the more native file dialog on Mac OS X.
+     New: Replaced Add Annotation menus with a dialog and filterable list to aid keyboard usage.
+     New: Added keyboard accelerators for Add Annotation and Add Sub-Region
 
    Fixed: NullPointerException for new notebooks due to a lack of annotations.
    Fixed: Various application behaviour issues for Mac OS X.
 
  Changed: Document titles now show the file extension.
+ Changed: Actions which require focus now disable when the required focus is not available.
+ Changed: Renamed Remove Annotation to Delete and removed Remove Sub-Region since it can be achieved
+          via Remove Annotation anyway.
 
 Version 0.3 (2012-11-10)
 
