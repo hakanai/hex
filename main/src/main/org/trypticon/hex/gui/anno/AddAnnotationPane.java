@@ -55,8 +55,6 @@ public class AddAnnotationPane extends ValidatingPanel {
                 super.addNotify();
                 textField.requestFocus();
             }
-
-
         };
         textField.selectAll();
         textField.setColumns(30);
@@ -117,7 +115,7 @@ public class AddAnnotationPane extends ValidatingPanel {
      */
     public InterpreterInfo showDialog(Component parentComponent) {
         if (OptionPanes.showInputDialog(parentComponent, this, textField,
-                                        Resources.getString("AddAnnotation.dialogTitle"),
+                                        Resources.getString("AddAnnotation.nameWithoutEllipsis"),
                                         Resources.getString("AddAnnotation.okButton"),
                                         UIManager.getString("OptionPane.cancelButtonText"))) {
             int modelIndex;
