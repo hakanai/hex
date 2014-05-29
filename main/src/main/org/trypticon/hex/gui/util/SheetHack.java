@@ -18,15 +18,12 @@
 
 package org.trypticon.hex.gui.util;
 
-import java.awt.Dialog;
 import java.awt.Window;
 import java.awt.peer.ComponentPeer;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import sun.lwawt.LWWindowPeer;
-import sun.lwawt.macosx.CPlatformWindow;
+import javax.swing.JDialog;
 
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
@@ -39,21 +36,30 @@ public class SheetHack {
      *
      * @param dialog the dialog.
      */
-    public static void makeSheet(Dialog dialog) {
+    public static void makeSheet(JDialog dialog) {
         //HACK: Set the window to display as a sheet.
         if (PLAFUtils.isAqua()) {
-            dialog.addNotify();
+
+            // This hack *should* work, but doesn't, and I can't figure out why.
+//            dialog.removeNotify();
+//            dialog.setModalityType(Dialog.ModalityType.DOCUMENT_MODAL);
+//            dialog.getRootPane().putClientProperty("apple.awt.documentModalSheet", Boolean.TRUE);
+//            dialog.addNotify();
+
+            dialog.pack();
             ComponentPeer peer = dialog.getPeer();
 
             // File dialogs are CFileDialog instead. Unfortunately this means this hack can't work for those. :(
-            if (peer instanceof LWWindowPeer) {
-                LWWindowPeer windowPeer = (LWWindowPeer) dialog.getPeer();
-
-                CPlatformWindow platformWindow = (CPlatformWindow) windowPeer.getPlatformWindow();
+            if ("sun.lwawt.LWWindowPeer".equals(peer.getClass().getName())) {
                 try {
-                    Method method = CPlatformWindow.class.getDeclaredMethod("setStyleBits", int.class, boolean.class);
-                    method.setAccessible(true);
-                    method.invoke(platformWindow, 64 /* CPlatformWindow.SHEET */, true);
+                    Method getPlatformWindowMethod = peer.getClass().getMethod("getPlatformWindow");
+                    Object platformWindow = getPlatformWindowMethod.invoke(peer);
+
+                    if ("sun.lwawt.macosx.CPlatformWindow".equals(platformWindow.getClass().getName())) {
+                        Method setStyleBitsMethod = platformWindow.getClass().getDeclaredMethod("setStyleBits", int.class, boolean.class);
+                        setStyleBitsMethod.setAccessible(true);
+                        setStyleBitsMethod.invoke(platformWindow, 64 /* CPlatformWindow.SHEET */, true);
+                    }
 
                     Window parent = dialog.getOwner();
                     dialog.setLocation(dialog.getLocation().x, parent.getLocation().y + parent.getInsets().top);

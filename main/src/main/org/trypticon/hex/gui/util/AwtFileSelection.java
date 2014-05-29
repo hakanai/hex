@@ -46,7 +46,7 @@ public class AwtFileSelection extends FileSelection {
         dialog.pack();
         dialog.setLocationRelativeTo(owner);
         if (owner != null) {
-            SheetHack.makeSheet(dialog);
+//            SheetHack.makeSheet(dialog);
         }
         dialog.setMode(mode == Mode.LOAD ? FileDialog.LOAD : FileDialog.SAVE);
         dialog.setDirectory(initialDirectory.getAbsolutePath());
