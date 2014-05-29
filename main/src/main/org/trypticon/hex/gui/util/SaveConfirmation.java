@@ -58,7 +58,7 @@ public abstract class SaveConfirmation {
         Option[] options = { Option.SAVE, Option.CANCEL, Option.DO_NOT_SAVE };
         optionPane.setOptions(options);
         optionPane.setInitialValue(options[0]);
-        optionPane.putClientProperty("Quaqua.OptionPane.destructiveOption", 2);
+        optionPane.putClientProperty("JOptionPane.destructiveOption", 2);
 
         showOptionPane(owner, optionPane, option -> {
             if (option instanceof Option) {
