@@ -55,7 +55,7 @@ public abstract class HexFrame extends JFrame {
      *
      * @return the application.
      */
-    protected HexApplication getApplication() {
+    public HexApplication getApplication() {
         return application;
     }
 

@@ -18,22 +18,17 @@
 
 package org.trypticon.hex.gui;
 
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-import javax.swing.TransferHandler;
 
 import org.trypticon.gum.MacFactory;
-import org.trypticon.hex.datatransfer.DelegatingActionListener;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
+import org.trypticon.hex.gui.util.DelegatingAction;
 
 /**
  * Builds the application menu bar.
@@ -82,25 +77,14 @@ public class MenuBarBuilder {
         //  - ?
         JMenu editMenu = new JMenu(Resources.getString("Edit.name"));
 
-        DelegatingActionListener actionListener = new DelegatingActionListener();
+        UndoHelper undoHelper = application.getUndoHelper();
+        editMenu.add(undoHelper.getUndoAction());
+        editMenu.add(undoHelper.getRedoAction());
 
-        JMenuItem copyMenuItem = new JMenuItem(Resources.getString("Copy.name"));
-        copyMenuItem.setActionCommand((String) TransferHandler.getCopyAction().getValue(Action.NAME));
-        copyMenuItem.addActionListener(actionListener);
-        copyMenuItem.setMnemonic('c');
-        copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
-                                                           Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        editMenu.add(copyMenuItem);
-
+        editMenu.addSeparator();
+        editMenu.add(new DelegatingAction("Copy", "copy-to-clipboard"));
         editMenu.add(new DeleteAction());
-
-        JMenuItem selectAllMenuItem = new JMenuItem(Resources.getString("SelectAll.name"));
-        selectAllMenuItem.setActionCommand("select-all");
-        selectAllMenuItem.addActionListener(actionListener);
-        selectAllMenuItem.setMnemonic('a');
-        selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-                                                                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        editMenu.add(selectAllMenuItem);
+        editMenu.add(new DelegatingAction("SelectAll", "select-all"));
 
         editMenu.addSeparator();
         editMenu.add(new AddAnnotationAction());

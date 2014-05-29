@@ -25,9 +25,9 @@ import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
-import org.trypticon.hex.gui.HexFrame;
-import org.trypticon.hex.gui.HexFrameAction;
+import org.trypticon.hex.gui.NotebookPaneAction;
 import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.util.ActionException;
 
 /**
@@ -35,7 +35,7 @@ import org.trypticon.hex.gui.util.ActionException;
  *
  * @author trejkaz
  */
-public class DropStructureAction extends HexFrameAction {
+public class DropStructureAction extends NotebookPaneAction {
 
     private final Structure structure;
 
@@ -46,13 +46,8 @@ public class DropStructureAction extends HexFrameAction {
     }
 
     @Override
-    protected void doAction(ActionEvent event) throws Exception {
-        HexFrame frame = HexFrame.findActiveFrame();
-        if (frame == null || frame.getNotebookPane() == null) {
-            throw new ActionException(Resources.getMessage("DropStructure.Errors.notFocused"));
-        }
-
-        HexViewer viewer = frame.getNotebookPane().getViewer();
+    protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
+        HexViewer viewer = notebookPane.getViewer();
 
         Binary binary = viewer.getBinary();
         AnnotationCollection annotations = viewer.getAnnotations();

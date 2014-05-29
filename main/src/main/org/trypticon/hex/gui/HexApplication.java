@@ -44,11 +44,22 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  * @author trejkaz
  */
 public class HexApplication {
+    private final UndoHelper undoHelper = new UndoHelper();
+
     /**
      * Constructs the application.
      */
     public HexApplication() {
         new PLAFBootstrap().init(this);
+    }
+
+    /**
+     * Gets the Undo helper.
+     *
+     * @return the Undo helper.
+     */
+    public UndoHelper getUndoHelper() {
+        return undoHelper;
     }
 
     /**

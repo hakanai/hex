@@ -26,8 +26,10 @@ import javax.swing.JOptionPane;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
+import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
+import org.trypticon.hex.gui.util.ActionException;
 import org.trypticon.hex.gui.util.FileExtensionFilter;
 import org.trypticon.hex.gui.util.FileSelection;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
@@ -37,7 +39,7 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  *
  * @author trejkaz
  */
-public class SaveNotebookAction extends HexFrameAction {
+public class SaveNotebookAction extends NotebookPaneAction {
     private final PreferredDirectoryManager preferredDirectoryManager;
     private final boolean alwaysAsk;
 
@@ -49,7 +51,7 @@ public class SaveNotebookAction extends HexFrameAction {
     }
 
     @Override
-    protected void doAction(ActionEvent event) throws Exception {
+    protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
         doSave();
     }
 

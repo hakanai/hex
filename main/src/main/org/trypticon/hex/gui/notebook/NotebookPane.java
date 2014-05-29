@@ -24,13 +24,16 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.undo.UndoManager;
+import javax.swing.undo.UndoableEdit;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.accessory.AccessoryBar;
 import org.trypticon.hex.accessory.ExpandableAccessoryBar;
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.gui.anno.AnnotationPane;
+import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.SaveNotebookAction;
+import org.trypticon.hex.gui.anno.AnnotationPane;
 import org.trypticon.hex.gui.util.Callback;
 import org.trypticon.hex.gui.util.SaveConfirmation;
 
@@ -44,6 +47,7 @@ public class NotebookPane extends JPanel {
     private final HexViewer viewer;
     private final AccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
+    private final UndoManager undoManager = new UndoManager();
 
     /**
      * Constructs the notebook pane.
@@ -123,6 +127,15 @@ public class NotebookPane extends JPanel {
     }
 
     /**
+     * Gets the undo manager.
+     *
+     * @return the undo manager.
+     */
+    public UndoManager getUndoManager() {
+        return undoManager;
+    }
+
+    /**
      * <p>Tests if the notebook has been modified since the last time it was saved.</p>
      *
      * <p>This is the same as {@code getNotebook().isDirty()}, but is more convenient for tracking property changes.</p>
@@ -170,4 +183,15 @@ public class NotebookPane extends JPanel {
         }
     }
 
+    /**
+     * Adds an edit to the Undo/Redo stack and notifies interested parties.
+     *
+     * @param edit the edit to add.
+     */
+    public void addEdit(UndoableEdit edit) {
+        undoManager.addEdit(edit);
+
+        HexFrame frame = (HexFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getApplication().getUndoHelper().updateActions();
+    }
 }

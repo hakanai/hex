@@ -50,6 +50,8 @@ public class MultipleHexFrame extends HexFrame {
     private final TabTitleUpdater tabTitleUpdater = new TabTitleUpdater();
     private final TabDirtyUpdater tabDirtyUpdater = new TabDirtyUpdater();
 
+    private NotebookPane notebookPane;
+
     /**
      * Constructs the top-level frame.
      *
@@ -73,6 +75,8 @@ public class MultipleHexFrame extends HexFrame {
 
         tabbedPane.removeTabAt(0);
 
+        tabbedPane.addChangeListener(event -> setNotebookPane((NotebookPane) tabbedPane.getSelectedComponent()));
+
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -88,7 +92,13 @@ public class MultipleHexFrame extends HexFrame {
 
     @Override
     public NotebookPane getNotebookPane() {
-        return (NotebookPane) tabbedPane.getSelectedComponent();
+        return notebookPane;
+    }
+
+    private void setNotebookPane(NotebookPane notebookPane) {
+        NotebookPane oldNotebookPane = this.notebookPane;
+        this.notebookPane = notebookPane;
+        firePropertyChange("notebookPane", oldNotebookPane, notebookPane);
     }
 
     /**

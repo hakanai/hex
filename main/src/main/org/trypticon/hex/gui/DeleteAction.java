@@ -23,6 +23,9 @@ import java.util.List;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.gui.notebook.NotebookPane;
+import org.trypticon.hex.gui.undo.DeleteEdit;
 import org.trypticon.hex.gui.util.ActionException;
 
 /**
@@ -30,15 +33,14 @@ import org.trypticon.hex.gui.util.ActionException;
  *
  * @author trejkaz
  */
-class DeleteAction extends HexFrameAction {
+class DeleteAction extends NotebookPaneAction {
     DeleteAction() {
         Resources.localiseAction(this, "Delete");
     }
 
     @Override
-    protected void doAction(ActionEvent event) throws Exception {
-        HexFrame frame = HexFrame.findActiveFrame();
-        HexViewer viewer = frame.getNotebookPane().getViewer();
+    protected void doAction(ActionEvent event, NotebookPane notebookPane) throws ActionException {
+        HexViewer viewer = notebookPane.getViewer();
 
         long position = viewer.getSelectionModel().getCursor();
 
@@ -48,6 +50,9 @@ class DeleteAction extends HexFrameAction {
         }
 
         // TODO: This results in a search but we already know the parent.  We could add a method which takes the parent.
-        viewer.getAnnotations().remove(annotationPath.get(annotationPath.size() - 1));
+        Annotation annotation = annotationPath.get(annotationPath.size() - 1);
+        AnnotationCollection annotationCollection = viewer.getAnnotations();
+        annotationCollection.remove(annotation);
+        notebookPane.addEdit(new DeleteEdit(annotationCollection, annotation));
     }
 }
