@@ -37,6 +37,9 @@ import org.trypticon.hex.util.LoggerUtils;
  * @author trejkaz
  */
 public abstract class BaseAction extends AbstractAction {
+    public BaseAction() {
+        updateEnabled();
+    }
 
     @Override
     public void actionPerformed(ActionEvent event) {

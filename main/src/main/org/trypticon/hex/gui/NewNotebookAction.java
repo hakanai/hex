@@ -38,9 +38,9 @@ class NewNotebookAction extends BaseAction {
     private final HexApplication application;
     private final PreferredDirectoryManager preferredDirectoryManager;
 
-    NewNotebookAction(HexApplication application, PreferredDirectoryManager preferredDirectoryManager) {
+    NewNotebookAction(HexApplication application) {
         this.application = application;
-        this.preferredDirectoryManager = preferredDirectoryManager;
+        this.preferredDirectoryManager = application.getPreferredDirectoryManager();
 
         Resources.localiseAction(this, "New");
     }

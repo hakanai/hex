@@ -29,7 +29,7 @@ import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
-import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.gui.recent.RecentDocumentsModel;
 import org.trypticon.hex.gui.util.FileExtensionFilter;
 import org.trypticon.hex.gui.util.FileSelection;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
@@ -41,10 +41,12 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  */
 public class SaveNotebookAction extends NotebookPaneAction {
     private final PreferredDirectoryManager preferredDirectoryManager;
+    private final RecentDocumentsModel recentDocumentsModel;
     private final boolean alwaysAsk;
 
-    SaveNotebookAction(PreferredDirectoryManager preferredDirectoryManager, boolean alwaysAsk) {
-        this.preferredDirectoryManager = preferredDirectoryManager;
+    SaveNotebookAction(HexApplication application, boolean alwaysAsk) {
+        this.preferredDirectoryManager = application.getPreferredDirectoryManager();
+        this.recentDocumentsModel = application.getRecentDocumentsModel();
         this.alwaysAsk = alwaysAsk;
 
         Resources.localiseAction(this, alwaysAsk ? "SaveAs" : "Save");
@@ -85,6 +87,7 @@ public class SaveNotebookAction extends NotebookPaneAction {
                     }
 
                     preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, directory);
+                    recentDocumentsModel.addRecentDocument(chosenFile.toPath());
 
                     location = chosenFile.toURI().toURL();
                     break;

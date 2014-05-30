@@ -25,6 +25,7 @@ import java.io.File;
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
+import org.trypticon.hex.gui.recent.RecentDocumentsModel;
 import org.trypticon.hex.gui.util.ActionException;
 import org.trypticon.hex.gui.util.BaseAction;
 import org.trypticon.hex.gui.util.FileSelection;
@@ -38,10 +39,12 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
 class OpenNotebookAction extends BaseAction {
     private final HexApplication application;
     private final PreferredDirectoryManager preferredDirectoryManager;
+    private final RecentDocumentsModel recentDocumentsModel;
 
-    public OpenNotebookAction(HexApplication application, PreferredDirectoryManager preferredDirectoryManager) {
+    public OpenNotebookAction(HexApplication application) {
         this.application = application;
-        this.preferredDirectoryManager = preferredDirectoryManager;
+        this.preferredDirectoryManager = application.getPreferredDirectoryManager();
+        this.recentDocumentsModel = application.getRecentDocumentsModel();
 
         Resources.localiseAction(this, "Open");
     }
@@ -63,6 +66,7 @@ class OpenNotebookAction extends BaseAction {
             }
 
             preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, file.getParentFile());
+            recentDocumentsModel.addRecentDocument(file.toPath());
 
             application.openNotebook(new NotebookStorage().read(file.toURI().toURL()));
         }

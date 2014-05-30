@@ -23,6 +23,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 import javax.swing.Action;
@@ -33,7 +34,9 @@ import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
+import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
+import org.trypticon.hex.gui.recent.RecentDocumentsModel;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 import org.trypticon.hex.gui.util.Callback;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
@@ -44,6 +47,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  * @author trejkaz
  */
 public class HexApplication {
+    private final RecentDocumentsModel recentDocumentsModel = new RecentDocumentsModel();
+    private final PreferredDirectoryManager preferredDirectoryManager = new PreferredDirectoryManager();
     private final UndoHelper undoHelper = new UndoHelper();
 
     /**
@@ -51,6 +56,24 @@ public class HexApplication {
      */
     public HexApplication() {
         new PLAFBootstrap().init(this);
+    }
+
+    /**
+     * Gets the recent documents model.
+     *
+     * @return the recent documents model.
+     */
+    public RecentDocumentsModel getRecentDocumentsModel() {
+        return recentDocumentsModel;
+    }
+
+    /**
+     * Gets the preferred directory manager.
+     *
+     * @return the preferred directory manager.
+     */
+    public PreferredDirectoryManager getPreferredDirectoryManager() {
+        return preferredDirectoryManager;
     }
 
     /**
@@ -93,6 +116,22 @@ public class HexApplication {
      *         (in this situation the user would have been alerted already.)
      */
     public HexFrame openNotebook(Path notebookPath) {
+        //TODO: Just switch to path...
+        URL notebookUrl;
+        try {
+            notebookUrl = notebookPath.toUri().toURL();
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("The JRE created a URL which was malformed: " + notebookPath, e);
+        }
+
+        // The notebook might already be open. If it is, it is customary to just focus the appropriate frame.
+        for (HexFrame frame : HexFrame.findAllFrames()) {
+            if (notebookUrl.equals(frame.getNotebook().getNotebookLocation())) {
+                frame.requestFocus();
+                return frame;
+            }
+        }
+
         try {
             Notebook notebook = new NotebookStorage().read(notebookPath.toUri().toURL());
             return openNotebook(notebook);

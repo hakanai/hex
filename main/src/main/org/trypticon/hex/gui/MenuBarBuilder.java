@@ -29,6 +29,7 @@ import org.trypticon.gum.MacFactory;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
+import org.trypticon.hex.gui.recent.OpenRecentMenu;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 import org.trypticon.hex.gui.util.DelegatingAction;
 import org.trypticon.hex.gui.util.MenuAdapter;
@@ -55,18 +56,18 @@ public class MenuBarBuilder {
         PreferredDirectoryManager preferredDirectoryManager = new PreferredDirectoryManager();
 
         JMenu fileMenu = new JMenu(Resources.getString(MacFactory.isMac() ? "File.name.mac" : "File.name.other"));
-        fileMenu.add(new NewNotebookAction(application, preferredDirectoryManager));
-        fileMenu.add(new OpenNotebookAction(application, preferredDirectoryManager));
-        // TODO: Open Recent
+        fileMenu.add(new NewNotebookAction(application));
+        fileMenu.add(new OpenNotebookAction(application));
+        fileMenu.add(new OpenRecentMenu(application));
 
         fileMenu.addSeparator();
         fileMenu.add(new CloseNotebookAction());
-        Action saveAction = new SaveNotebookAction(preferredDirectoryManager, false);
+        Action saveAction = new SaveNotebookAction(application, false);
         if (frame != null) {
             frame.getRootPane().getActionMap().put("save", saveAction);
         }
         fileMenu.add(saveAction);
-        fileMenu.add(new SaveNotebookAction(preferredDirectoryManager, true));
+        fileMenu.add(new SaveNotebookAction(application, true));
         // TODO: Revert to Saved
 
         if (!MacFactory.isMac()) {
