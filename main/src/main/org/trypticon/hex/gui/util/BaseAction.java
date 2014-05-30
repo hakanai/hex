@@ -61,4 +61,12 @@ public abstract class BaseAction extends AbstractAction {
     }
 
     protected abstract void doAction(ActionEvent event) throws Exception;
+
+    public final void updateEnabled() {
+        setEnabled(shouldBeEnabled());
+    }
+
+    protected boolean shouldBeEnabled() {
+        return true;
+    }
 }

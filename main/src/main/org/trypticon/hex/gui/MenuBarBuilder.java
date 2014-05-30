@@ -94,6 +94,17 @@ public class MenuBarBuilder {
         //editMenu.addSeparator();
         //editMenu.add(buildFormatsMenu());
 
+        JMenu windowMenu = null;
+        if (MacFactory.isMac()) {
+            windowMenu = new JMenu(Resources.getString("Window.name"));
+            windowMenu.add(new MinimiseAction());
+            windowMenu.add(new MaximiseAction());
+
+            //TODO
+            //windowMenu.addSeparator();
+            // then window actions here
+        }
+
         JMenu helpMenu = new JMenu(Resources.getString("Help.name"));
         // TODO: Help / User Guide
         helpMenu.add(new OpenSampleNotebookAction(application));
@@ -102,6 +113,9 @@ public class MenuBarBuilder {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
+        if (windowMenu != null) {
+            menuBar.add(windowMenu);
+        }
         menuBar.add(helpMenu);
         return menuBar;
     }

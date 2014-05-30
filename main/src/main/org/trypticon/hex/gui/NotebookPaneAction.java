@@ -68,12 +68,9 @@ public abstract class NotebookPaneAction extends BaseAction {
         updateEnabled();
     }
 
-    protected final void updateEnabled() {
-        if (currentNotebookPane == null) {
-            setEnabled(false);
-        } else {
-            setEnabled(shouldBeEnabled(currentNotebookPane));
-        }
+    @Override
+    protected final boolean shouldBeEnabled() {
+        return currentNotebookPane != null && shouldBeEnabled(currentNotebookPane);
     }
 
     protected boolean shouldBeEnabled(NotebookPane notebookPane) {
