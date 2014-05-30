@@ -68,7 +68,7 @@ public class MenuBarBuilder {
         }
         fileMenu.add(saveAction);
         fileMenu.add(new SaveNotebookAction(application, true));
-        // TODO: Revert to Saved
+        fileMenu.add(new RevertToSavedAction());
 
         if (!MacFactory.isMac()) {
             fileMenu.addSeparator();

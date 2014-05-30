@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -26,6 +27,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
+
+import org.jetbrains.annotations.NotNull;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.accessory.AccessoryBar;
@@ -43,11 +46,17 @@ import org.trypticon.hex.gui.util.SaveConfirmation;
  * @author trejkaz
  */
 public class NotebookPane extends JPanel {
-    private final Notebook notebook;
     private final HexViewer viewer;
     private final AccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
     private final UndoManager undoManager = new UndoManager();
+
+    PropertyChangeListener nameListener = event ->
+        setName((String) event.getNewValue());
+    PropertyChangeListener dirtyListener = event ->
+        firePropertyChange("dirty", event.getOldValue(), event.getNewValue());
+
+    private Notebook notebook;
 
     /**
      * Constructs the notebook pane.
@@ -55,27 +64,10 @@ public class NotebookPane extends JPanel {
      * @param notebook the notebook to view.
      */
     public NotebookPane(Notebook notebook) {
-        if (!notebook.isOpen()) {
-            throw new IllegalStateException("The notebook should already be open but wasn't.");
-        }
-
-        this.notebook = notebook;
-
-        // TODO: A proper binding API would be nice here...
-        setName(notebook.getName());
-        notebook.addPropertyChangeListener(
-            "name", event -> setName((String) event.getNewValue()));
-        notebook.addPropertyChangeListener(
-            "dirty", event -> firePropertyChange("dirty", event.getOldValue(), event.getNewValue()));
-
         annoPane = new AnnotationPane();
-        annoPane.setAnnotations(notebook.getAnnotations());
-        annoPane.setBinary(notebook.getBinary());
 
         viewer = new HexViewer();
         viewer.setPreferredVisibleRowCount(36);
-        viewer.setAnnotations(annoPane.getExpandedAnnotations());
-        viewer.setBinary(notebook.getBinary());
 
         accessoryBar = new ExpandableAccessoryBar(viewer);
 
@@ -106,6 +98,8 @@ public class NotebookPane extends JPanel {
         addHierarchyListener(hierarchyEvent -> {
             viewer.requestFocusInWindow();
         });
+
+        setNotebook(notebook);
     }
 
     /**
@@ -115,6 +109,44 @@ public class NotebookPane extends JPanel {
      */
     public Notebook getNotebook() {
         return notebook;
+    }
+
+    /**
+     * Sets a new notebook to view.
+     *
+     * @param notebook the new notebook to view.
+     */
+    public void setNotebook(@NotNull Notebook notebook) {
+        if (!notebook.isOpen()) {
+            throw new IllegalStateException("The notebook should already be open but wasn't.");
+        }
+
+        if (this.notebook != null) {
+            detachListeners();
+        }
+
+        this.notebook = notebook;
+
+        // TODO: A proper binding API would be nice here...
+        setName(notebook.getName());
+
+        annoPane.setAnnotations(notebook.getAnnotations());
+        annoPane.setBinary(notebook.getBinary());
+
+        viewer.setAnnotations(annoPane.getExpandedAnnotations());
+        viewer.setBinary(notebook.getBinary());
+
+        attachListeners();
+    }
+
+    private void detachListeners() {
+        notebook.removePropertyChangeListener("name", nameListener);
+        notebook.removePropertyChangeListener("dirty", dirtyListener);
+    }
+
+    private void attachListeners() {
+        notebook.addPropertyChangeListener("name", nameListener);
+        notebook.addPropertyChangeListener("dirty", dirtyListener);
     }
 
     /**
@@ -161,7 +193,7 @@ public class NotebookPane extends JPanel {
                 tabbedPane.setSelectedComponent(this);
             }
 
-            SaveConfirmation.getInstance().show(getRootPane(), option -> {
+            new SaveConfirmation().show(getRootPane(), option -> {
                 switch (option) {
                     case CANCEL:
                         okToCloseCallback.execute(false);

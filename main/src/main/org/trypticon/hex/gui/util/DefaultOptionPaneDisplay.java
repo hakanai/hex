@@ -22,17 +22,15 @@ import java.awt.Component;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import org.trypticon.hex.gui.Resources;
-
 /**
  * Default save confirmation support, using the option pane's built-in dialog support.
  *
  * @author trejkaz
  */
-public class DefaultSaveConfirmation extends SaveConfirmation {
+public class DefaultOptionPaneDisplay extends OptionPaneDisplayer {
     @Override
-    protected void showOptionPane(Component owner, JOptionPane optionPane, Callback<Object> callback) {
-        JDialog dialog = optionPane.createDialog(owner, Resources.getString("Notebook.saveConfirmationTitle"));
+    public void showOptionPane(Component owner, String dialogTitle, JOptionPane optionPane, Callback<Object> callback) {
+        JDialog dialog = optionPane.createDialog(owner, dialogTitle);
         dialog.setLocationRelativeTo(owner);
         SheetHack.makeSheet(dialog);
         dialog.setVisible(true);

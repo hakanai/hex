@@ -16,44 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.util;
+package org.trypticon.hex.gui.file;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.gui.util.Callback;
+import org.trypticon.hex.gui.util.OptionPaneDisplayer;
 
 /**
- * Support for showing a confirmation dialog for saving the current document.
+ * Displays the appropriate confirmation for a Revert to Saved operation.
  *
  * @author trejkaz
  */
-public class SaveConfirmation {
-
+public class RevertToSavedConfirmation {
     /**
      * Shows the confirmation pane.
      *
      * @param owner a component relative to which this will be displayed.  Generally a root pane.
+     * @param documentName the name of the document.
      * @param callback a callback which is called with the option the user chose.
      */
-    public void show(Component owner, final Callback<Option> callback) {
+    public void show(Component owner, String documentName, final Callback<Option> callback) {
+        //TODO: Unify code which is similar to SaveConfirmation.
+
         // XXX: It might be OK to put the name of the pane into the message, but
         // other apps don't appear to do this.
         String optionPaneCss = UIManager.getString("OptionPane.css");
         if (optionPaneCss == null) {
             optionPaneCss = "";
         }
-        String message = Resources.getString("Notebook.saveConfirmationMessage", optionPaneCss);
+        String message = Resources.getString("RevertToSaved.confirmationMessage", optionPaneCss, documentName);
         JOptionPane optionPane = new JOptionPane(message, JOptionPane.WARNING_MESSAGE);
 
-        Option[] options = { Option.SAVE, Option.CANCEL, Option.DO_NOT_SAVE };
+        Option[] options = { Option.REVERT, Option.CANCEL };
         optionPane.setOptions(options);
         optionPane.setInitialValue(options[0]);
-        optionPane.putClientProperty("JOptionPane.destructiveOption", 2);
 
         OptionPaneDisplayer.getInstance().showOptionPane(
-            owner, Resources.getString("Notebook.saveConfirmationTitle"), optionPane, option -> {
+            owner, Resources.getString("RevertToSaved.name"), optionPane, option -> {
             if (option instanceof Option) {
                 callback.execute((Option) option);
             } else {
@@ -66,11 +69,9 @@ public class SaveConfirmation {
      * Results of showing the dialog.
      */
     public static enum Option {
-        CANCEL(Resources.getString("Notebook.saveConfirmation.cancel")),
+        CANCEL(Resources.getString("RevertToSaved.confirmation.cancel")),
 
-        SAVE(Resources.getString("Notebook.saveConfirmation.save")),
-
-        DO_NOT_SAVE(Resources.getString("Notebook.saveConfirmation.doNotSave"));
+        REVERT(Resources.getString("RevertToSaved.confirmation.revert"));
 
         private String display;
 
