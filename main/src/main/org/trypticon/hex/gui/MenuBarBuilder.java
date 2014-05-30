@@ -103,6 +103,9 @@ public class MenuBarBuilder {
             windowMenu.add(new MinimiseAction());
             windowMenu.add(new MaximiseAction());
 
+            windowMenu.addSeparator();
+            windowMenu.add(new BringAllToFrontAction());
+
             // Populate the rest of the Window menu just before it appears.
             final int numFixedItems = windowMenu.getMenuComponentCount();
             final JMenu finalWindowMenu = windowMenu;
