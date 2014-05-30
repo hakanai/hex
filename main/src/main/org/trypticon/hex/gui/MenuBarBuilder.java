@@ -18,10 +18,12 @@
 
 package org.trypticon.hex.gui;
 
+import java.util.List;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.event.MenuEvent;
 
 import org.trypticon.gum.MacFactory;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
@@ -29,6 +31,7 @@ import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 import org.trypticon.hex.gui.util.DelegatingAction;
+import org.trypticon.hex.gui.util.MenuAdapter;
 
 /**
  * Builds the application menu bar.
@@ -100,9 +103,25 @@ public class MenuBarBuilder {
             windowMenu.add(new MinimiseAction());
             windowMenu.add(new MaximiseAction());
 
-            //TODO
-            //windowMenu.addSeparator();
-            // then window actions here
+            // Populate the rest of the Window menu just before it appears.
+            final int numFixedItems = windowMenu.getMenuComponentCount();
+            final JMenu finalWindowMenu = windowMenu;
+            windowMenu.addMenuListener(new MenuAdapter() {
+                @Override
+                public void menuSelected(MenuEvent event) {
+                    while (finalWindowMenu.getMenuComponentCount() > numFixedItems) {
+                        finalWindowMenu.remove(numFixedItems);
+                    }
+
+                    List<HexFrame> allFrames = HexFrame.findAllFrames();
+                    if (!allFrames.isEmpty()) {
+                        finalWindowMenu.addSeparator();
+                    }
+                    for (HexFrame frame : allFrames) {
+                        finalWindowMenu.add(new ActivateWindowMenuItem(frame));
+                    }
+                }
+            });
         }
 
         JMenu helpMenu = new JMenu(Resources.getString("Help.name"));
