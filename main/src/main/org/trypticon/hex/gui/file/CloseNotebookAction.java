@@ -16,10 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui;
+package org.trypticon.hex.gui.file;
 
 import java.awt.event.ActionEvent;
 
+import org.trypticon.hex.gui.HexFrame;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.util.BaseAction;
 
 /**
@@ -27,8 +29,8 @@ import org.trypticon.hex.gui.util.BaseAction;
  *
  * @author trejkaz
  */
-class CloseNotebookAction extends BaseAction {
-    CloseNotebookAction() {
+public class CloseNotebookAction extends BaseAction {
+    public CloseNotebookAction() {
         Resources.localiseAction(this, "Close");
     }
 

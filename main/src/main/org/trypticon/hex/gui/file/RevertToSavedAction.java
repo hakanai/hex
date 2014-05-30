@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui;
+package org.trypticon.hex.gui.file;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -28,6 +28,8 @@ import javax.swing.JOptionPane;
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
+import org.trypticon.hex.gui.NotebookPaneAction;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.file.RevertToSavedConfirmation;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;

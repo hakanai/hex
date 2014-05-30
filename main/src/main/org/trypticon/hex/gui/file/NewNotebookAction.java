@@ -16,13 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui;
+package org.trypticon.hex.gui.file;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
 
+import org.trypticon.hex.gui.HexApplication;
+import org.trypticon.hex.gui.HexFrame;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.util.ActionException;
@@ -34,11 +37,11 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  *
  * @author trejkaz
  */
-class NewNotebookAction extends BaseAction {
+public class NewNotebookAction extends BaseAction {
     private final HexApplication application;
     private final PreferredDirectoryManager preferredDirectoryManager;
 
-    NewNotebookAction(HexApplication application) {
+    public NewNotebookAction(HexApplication application) {
         this.application = application;
         this.preferredDirectoryManager = application.getPreferredDirectoryManager();
 

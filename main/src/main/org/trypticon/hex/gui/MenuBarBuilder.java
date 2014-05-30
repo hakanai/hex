@@ -27,8 +27,12 @@ import javax.swing.event.MenuEvent;
 
 import org.trypticon.gum.MacFactory;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
+import org.trypticon.hex.gui.file.CloseNotebookAction;
+import org.trypticon.hex.gui.file.NewNotebookAction;
+import org.trypticon.hex.gui.file.OpenNotebookAction;
+import org.trypticon.hex.gui.file.RevertToSavedAction;
+import org.trypticon.hex.gui.file.SaveNotebookAction;
 import org.trypticon.hex.gui.formats.DropStructureAction;
-import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.recent.OpenRecentMenu;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
 import org.trypticon.hex.gui.util.DelegatingAction;
@@ -53,8 +57,6 @@ public class MenuBarBuilder {
      * @return the menu bar.
      */
     public JMenuBar buildMenuBar(JFrame frame) {
-        PreferredDirectoryManager preferredDirectoryManager = new PreferredDirectoryManager();
-
         JMenu fileMenu = new JMenu(Resources.getString(MacFactory.isMac() ? "File.name.mac" : "File.name.other"));
         fileMenu.add(new NewNotebookAction(application));
         fileMenu.add(new OpenNotebookAction(application));

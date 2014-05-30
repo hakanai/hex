@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui;
+package org.trypticon.hex.gui.file;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -24,6 +24,10 @@ import java.io.File;
 import java.net.URL;
 import javax.swing.JOptionPane;
 
+import org.trypticon.hex.gui.HexApplication;
+import org.trypticon.hex.gui.HexFrame;
+import org.trypticon.hex.gui.NotebookPaneAction;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
 import org.trypticon.hex.gui.notebook.NotebookPane;
@@ -44,7 +48,7 @@ public class SaveNotebookAction extends NotebookPaneAction {
     private final RecentDocumentsModel recentDocumentsModel;
     private final boolean alwaysAsk;
 
-    SaveNotebookAction(HexApplication application, boolean alwaysAsk) {
+    public SaveNotebookAction(HexApplication application, boolean alwaysAsk) {
         this.preferredDirectoryManager = application.getPreferredDirectoryManager();
         this.recentDocumentsModel = application.getRecentDocumentsModel();
         this.alwaysAsk = alwaysAsk;

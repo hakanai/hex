@@ -35,10 +35,10 @@ import org.trypticon.hex.accessory.AccessoryBar;
 import org.trypticon.hex.accessory.ExpandableAccessoryBar;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.gui.HexFrame;
-import org.trypticon.hex.gui.SaveNotebookAction;
+import org.trypticon.hex.gui.file.SaveNotebookAction;
 import org.trypticon.hex.gui.anno.AnnotationPane;
 import org.trypticon.hex.gui.util.Callback;
-import org.trypticon.hex.gui.util.SaveConfirmation;
+import org.trypticon.hex.gui.file.SaveConfirmation;
 
 /**
  * Pane for working with a single notebook.

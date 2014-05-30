@@ -16,13 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.util;
+package org.trypticon.hex.gui.file;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.gui.util.Callback;
+import org.trypticon.hex.gui.util.OptionPaneDisplayer;
 
 /**
  * Support for showing a confirmation dialog for saving the current document.
