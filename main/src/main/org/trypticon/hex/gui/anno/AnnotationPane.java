@@ -19,7 +19,6 @@
 package org.trypticon.hex.gui.anno;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +29,7 @@ import javax.swing.tree.TreePath;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
+import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
@@ -50,8 +50,8 @@ public class AnnotationPane extends JPanel {
 
     private List<Annotation> selectedAnnotationPath;
 
-    public AnnotationPane() {
-        annoTreeTable = new AnnotationTreeTable();
+    public AnnotationPane(AnnotationStyleScheme annotationStyleScheme) {
+        annoTreeTable = new AnnotationTreeTable(annotationStyleScheme);
 
         annoTreeTable.addTreeSelectionListener(treeSelectionEvent -> {
             TreePath treePath = annoTreeTable.getTreeSelectionModel().getSelectionPath();
@@ -66,11 +66,7 @@ public class AnnotationPane extends JPanel {
         });
 
         setLayout(new BorderLayout());
-        JScrollPane annoTreeTableScroll = new JScrollPane(annoTreeTable);
-        Dimension preferredSize = annoTreeTableScroll.getPreferredSize();
-        preferredSize.width = 400;
-        annoTreeTableScroll.setPreferredSize(preferredSize);
-        add(annoTreeTableScroll, BorderLayout.CENTER);
+        add(new JScrollPane(annoTreeTable), BorderLayout.CENTER);
     }
 
     public AnnotationCollection getAnnotations() {

@@ -42,12 +42,14 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
     static final int TYPE_COLUMN = 0;
     static final int VALUE_COLUMN = 1;
     static final int NOTE_COLUMN = 2;
-    private static final int COLUMN_COUNT = 3;
+    static final int STYLE_COLUMN = 3;
+    private static final int COLUMN_COUNT = 4;
 
     private static final String[] columnNames = {
         Resources.getString("AnnotationViewer.Columns.type"),
         Resources.getString("AnnotationViewer.Columns.value"),
-        Resources.getString("AnnotationViewer.Columns.notes")
+        Resources.getString("AnnotationViewer.Columns.notes"),
+        Resources.getString("AnnotationViewer.Columns.style")
     };
 
     private final AnnotationCollection annotations;
@@ -130,6 +132,8 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
                 return Object.class;
             case NOTE_COLUMN:
                 return String.class;
+            case STYLE_COLUMN:
+                return Annotation.class;
             default:
                 throw new IllegalArgumentException("Column " + column + " is out of bounds");
         }
@@ -155,6 +159,8 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
                 }
             case NOTE_COLUMN:
                 return anno.getNote();
+            case STYLE_COLUMN:
+                return anno;
             default:
                 throw new IllegalArgumentException("Column " + column + " is out of bounds");
         }
@@ -171,6 +177,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
             if (node instanceof MutableAnnotation) {
                 ((MutableAnnotation) node).setNote((String) value);
                 // TODO: Set a dirty flag somewhere.
+                // TODO: Undo
             } else {
                 // TODO
             }

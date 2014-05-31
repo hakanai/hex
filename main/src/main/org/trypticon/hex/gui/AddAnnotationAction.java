@@ -28,8 +28,8 @@ import javax.swing.SwingUtilities;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.gui.anno.AddAnnotationPane;
+import org.trypticon.hex.gui.anno.ExtendedAnnotation;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.undo.AddEdit;
 import org.trypticon.hex.gui.util.ActionException;
@@ -109,7 +109,7 @@ class AddAnnotationAction extends NotebookPaneAction {
                           viewer.getSelectionModel().getSelectionStart()) + 1;
             }
 
-            SimpleMutableAnnotation annotation = new SimpleMutableAnnotation(position, length, interpreter, null);
+            ExtendedAnnotation annotation = new ExtendedAnnotation(position, length, interpreter, null);
             AnnotationCollection annotationCollection = viewer.getAnnotations();
 
             try {

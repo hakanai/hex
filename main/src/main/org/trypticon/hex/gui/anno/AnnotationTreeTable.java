@@ -18,9 +18,23 @@
 
 package org.trypticon.hex.gui.anno;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
+
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.decorator.AbstractHighlighter;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.renderer.JRendererLabel;
 import org.jdesktop.swingx.table.ColumnFactory;
 import org.jdesktop.swingx.table.TableColumnExt;
+
+import org.trypticon.hex.AnnotationStyle;
+import org.trypticon.hex.AnnotationStyleScheme;
+import org.trypticon.hex.anno.Annotation;
 
 /**
  * Customisations for the annotation tree table.
@@ -28,7 +42,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * @author trejkaz
  */
 public class AnnotationTreeTable extends BetterTreeTable {
-    public AnnotationTreeTable() {
+    public AnnotationTreeTable(AnnotationStyleScheme annotationStyleScheme) {
         // XXX: This doesn't actually work due to a "feature" in Swing.  I originally thought it was a bug in SwingX:
         // https://swingx.dev.java.net/issues/show_bug.cgi?id=1289
         //setAutoResizeMode(AUTO_RESIZE_LAST_COLUMN);
@@ -44,19 +58,89 @@ public class AnnotationTreeTable extends BetterTreeTable {
             public void configureColumnWidths(JXTable table, TableColumnExt columnExt) {
                 super.configureColumnWidths(table, columnExt);
 
+                //HACK: setMaxWidth() stops the component resizing when the tree resizes.
+
                 switch (columnExt.getModelIndex()) {
                     case AnnotationTreeTableModel.TYPE_COLUMN:
                     case AnnotationTreeTableModel.VALUE_COLUMN:
-                        columnExt.setPreferredWidth(100);
-
-                        //HACK: Setting this appears to solve the problem where these columns will resize when the
-                        //   containing component resizes.
+                        columnExt.setPreferredWidth(150);
                         columnExt.setMaxWidth(Short.MAX_VALUE);
                         break;
+
                     case AnnotationTreeTableModel.NOTE_COLUMN:
-                        columnExt.setPreferredWidth(200);
+                        columnExt.setPreferredWidth(250);
+                        break;
+
+                    case AnnotationTreeTableModel.STYLE_COLUMN:
+                        int width = getRowHeight();
+                        columnExt.setTitle(null);
+                        columnExt.setMinWidth(width);
+                        columnExt.setPreferredWidth(width);
+                        columnExt.setMaxWidth(width);
+                        columnExt.setResizable(false);
+                        columnExt.addHighlighter(new AnnotationStyleHighlighter(annotationStyleScheme));
+                        break;
                 }
             }
         });
+    }
+
+    @Override
+    public Dimension getPreferredScrollableViewportSize() {
+        Dimension size = super.getPreferredScrollableViewportSize();
+        int scrollbarWidth = getEnclosingScrollPane().getVerticalScrollBar().getPreferredSize().width;
+        // Sums the values in the column factory.
+        size.width = 150 + 150 + 250 + getRowHeight() + scrollbarWidth;
+        return size;
+    }
+
+    private class AnnotationStyleHighlighter extends AbstractHighlighter {
+        private final AnnotationStyleScheme annotationStyleScheme;
+        private final AnnotationStyleRendererComponent renderer = new AnnotationStyleRendererComponent();
+
+        private AnnotationStyleHighlighter(AnnotationStyleScheme annotationStyleScheme) {
+            this.annotationStyleScheme = annotationStyleScheme;
+        }
+
+        @Override
+        protected Component doHighlight(Component component, ComponentAdapter adapter) {
+            JRendererLabel oldRenderer = (JRendererLabel) component;
+            renderer.setBackground(oldRenderer.getBackground());
+            renderer.setForeground(oldRenderer.getForeground());
+            renderer.setBorder(oldRenderer.getBorder());
+
+            Annotation annotation = (Annotation) adapter.getValue();
+            renderer.annotationStyle = annotationStyleScheme.getStyle(annotation);
+            renderer.setSize(adapter.getCellBounds().getSize());
+            return renderer;
+        }
+    }
+
+    private class AnnotationStyleRendererComponent extends JRendererLabel {
+        private AnnotationStyle annotationStyle;
+
+        public AnnotationStyleRendererComponent() {
+//            setOpaque(false);
+        }
+
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+
+            if (annotationStyle == null) {
+                return;
+            }
+
+            Graphics2D g2 = (Graphics2D) g;
+            int width = getWidth();
+            int height = getHeight();
+            Shape shape = new Rectangle(2, 2, width - 5, height - 5);
+
+            g2.setPaint(annotationStyle.getBackgroundPaint());
+            g2.fill(shape);
+            g2.setStroke(annotationStyle.getBorderStroke());
+            g2.setPaint(annotationStyle.getBorderPaint());
+            g2.draw(shape);
+        }
     }
 }

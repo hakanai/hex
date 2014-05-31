@@ -18,6 +18,7 @@
 
 package org.trypticon.hex.gui.notebook;
 
+import java.awt.Color;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
@@ -33,8 +34,9 @@ import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
+import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterStorage;
 
@@ -53,6 +55,7 @@ class ExtendedConstructor extends Constructor {
         yamlConstructors.put(YamlTags.GROUP_ANNOTATION_TAG, new GroupAnnotationConstructor());
         yamlConstructors.put(YamlTags.ANNOTATION_TAG, new AnnotationConstructor());
         yamlConstructors.put(YamlTags.INTERPRETER_TAG, new InterpreterConstructor());
+        yamlConstructors.put(YamlTags.PARAMETRIC_STYLE_TAG, new ParametricStyleConstructor());
     }
 
     private abstract class SimpleConstructor implements Construct {
@@ -108,8 +111,9 @@ class ExtendedConstructor extends Constructor {
             int length = ((Number) map.get("length")).intValue();
             Interpreter interpreter = (Interpreter) map.get("interpreter");
             String note = (String) map.get("note");
+            ParametricStyle customStyle = (ParametricStyle) map.get("style");
 
-            return new SimpleMutableAnnotation(position, length, interpreter, note);
+            return new ExtendedAnnotation(position, length, interpreter, note, customStyle);
         }
     }
 
@@ -127,6 +131,18 @@ class ExtendedConstructor extends Constructor {
             }
 
             return interpreter;
+        }
+    }
+
+    private class ParametricStyleConstructor extends SimpleConstructor {
+        @Override
+        protected Object construct(Map<Object, Object> map) {
+            ParametricStyle.StrokeStyle borderStrokeStyle = ParametricStyle.StrokeStyle.valueOf(
+                ((String) map.get("borderStrokeStyle")));
+            Color borderColor = new Color(((Number) map.get("borderColor")).intValue(), true);
+            Color backgroundColor = new Color(((Number) map.get("backgroundColor")).intValue(), true);
+
+            return new ParametricStyle(borderStrokeStyle, borderColor, backgroundColor);
         }
     }
 }

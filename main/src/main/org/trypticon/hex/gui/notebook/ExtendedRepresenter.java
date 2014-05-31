@@ -26,6 +26,8 @@ import org.yaml.snakeyaml.representer.Representer;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterStorage;
 
@@ -55,6 +57,8 @@ class ExtendedRepresenter extends Representer {
             return representAnnotation((Annotation) data);
         } else if (data instanceof Interpreter) {
             return representInterpreter((Interpreter) data);
+        } else if (data instanceof ParametricStyle) {
+            return representParametricStyle((ParametricStyle) data);
         } else {
             return super.representData(data);
         }
@@ -82,6 +86,9 @@ class ExtendedRepresenter extends Representer {
         fields.put("length", annotation.getLength());
         fields.put("interpreter", annotation.getInterpreter());
         fields.put("note", annotation.getNote());
+        if (annotation instanceof ExtendedAnnotation) {
+            fields.put("customStyle", ((ExtendedAnnotation) annotation).getCustomStyle());
+        }
         return representMapping(YamlTags.ANNOTATION_TAG, fields, false);
     }
 
@@ -90,4 +97,11 @@ class ExtendedRepresenter extends Representer {
         return representMapping(YamlTags.INTERPRETER_TAG, fields, true); // true to format on one line
     }
 
+    private Node representParametricStyle(ParametricStyle parametricStyle) {
+        Map<String, Object> fields = new LinkedHashMap<>(4);
+        fields.put("borderStrokeStyle", parametricStyle.getBorderStrokeStyle());
+        fields.put("borderColor", parametricStyle.getBorderColor());
+        fields.put("backgroundColor", parametricStyle.getBackgroundColor());
+        return representMapping(YamlTags.PARAMETRIC_STYLE_TAG, fields, true);
+    }
 }

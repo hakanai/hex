@@ -30,15 +30,17 @@ import javax.swing.undo.UndoableEdit;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.accessory.AccessoryBar;
 import org.trypticon.hex.accessory.ExpandableAccessoryBar;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.gui.HexFrame;
-import org.trypticon.hex.gui.file.SaveNotebookAction;
 import org.trypticon.hex.gui.anno.AnnotationPane;
-import org.trypticon.hex.gui.util.Callback;
+import org.trypticon.hex.gui.anno.CustomAnnotationStyleScheme;
 import org.trypticon.hex.gui.file.SaveConfirmation;
+import org.trypticon.hex.gui.file.SaveNotebookAction;
+import org.trypticon.hex.gui.util.Callback;
 
 /**
  * Pane for working with a single notebook.
@@ -64,10 +66,13 @@ public class NotebookPane extends JPanel {
      * @param notebook the notebook to view.
      */
     public NotebookPane(Notebook notebook) {
-        annoPane = new AnnotationPane();
+        AnnotationStyleScheme annotationStyleScheme = new CustomAnnotationStyleScheme();
+
+        annoPane = new AnnotationPane(annotationStyleScheme);
 
         viewer = new HexViewer();
         viewer.setPreferredVisibleRowCount(36);
+        viewer.setAnnotationStyleScheme(annotationStyleScheme);
 
         accessoryBar = new ExpandableAccessoryBar(viewer);
 
