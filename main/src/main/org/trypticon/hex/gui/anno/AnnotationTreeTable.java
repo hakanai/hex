@@ -24,6 +24,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.AbstractHighlighter;
@@ -109,7 +110,10 @@ public class AnnotationTreeTable extends BetterTreeTable {
             renderer.setForeground(oldRenderer.getForeground());
             renderer.setBorder(oldRenderer.getBorder());
 
-            Annotation annotation = (Annotation) adapter.getValue();
+            // Use a back door in the adapter to get at the annotation object.
+            TreePath path = ((TreeTableDataAdapter) adapter).getTreeTable().getPathForRow(adapter.row);
+            Annotation annotation = (Annotation) path.getLastPathComponent();
+
             renderer.annotationStyle = annotationStyleScheme.getStyle(annotation);
             renderer.setSize(adapter.getCellBounds().getSize());
             return renderer;
@@ -119,13 +123,9 @@ public class AnnotationTreeTable extends BetterTreeTable {
     private class AnnotationStyleRendererComponent extends JRendererLabel {
         private AnnotationStyle annotationStyle;
 
-        public AnnotationStyleRendererComponent() {
-//            setOpaque(false);
-        }
-
         @Override
-        public void paint(Graphics g) {
-            super.paint(g);
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
 
             if (annotationStyle == null) {
                 return;

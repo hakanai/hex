@@ -133,7 +133,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
             case NOTE_COLUMN:
                 return String.class;
             case STYLE_COLUMN:
-                return Annotation.class;
+                return ParametricStyle.class;
             default:
                 throw new IllegalArgumentException("Column " + column + " is out of bounds");
         }
@@ -160,7 +160,11 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
             case NOTE_COLUMN:
                 return anno.getNote();
             case STYLE_COLUMN:
-                return anno;
+                if (anno instanceof ExtendedAnnotation) {
+                    return ((ExtendedAnnotation) anno).getCustomStyle();
+                } else {
+                    return null;
+                }
             default:
                 throw new IllegalArgumentException("Column " + column + " is out of bounds");
         }
@@ -168,7 +172,14 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
 
     @Override
     public boolean isCellEditable(Object node, int column) {
-        return column == NOTE_COLUMN;
+        switch (column) {
+            case NOTE_COLUMN:
+            case STYLE_COLUMN:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     @Override
