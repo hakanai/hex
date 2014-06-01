@@ -24,7 +24,7 @@ import java.net.URL;
 
 import org.jetbrains.annotations.NonNls;
 
-import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 
 /**
@@ -69,7 +69,7 @@ public interface Notebook {
 
     URL getBinaryLocation();
 
-    AnnotationCollection getAnnotations();
+    MutableAnnotationCollection getAnnotations();
 
     Binary getBinary();
 

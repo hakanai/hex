@@ -31,9 +31,9 @@ import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.gui.anno.ExtendedAnnotation;
 import org.trypticon.hex.gui.anno.ExtendedGroupAnnotation;
 import org.trypticon.hex.gui.anno.ParametricStyle;
@@ -84,7 +84,7 @@ class ExtendedConstructor extends Constructor {
 
             GroupAnnotation rootGroup = (GroupAnnotation) map.get("root_group");
 
-            AnnotationCollection annotations = new MemoryAnnotationCollection(rootGroup);
+            MutableAnnotationCollection annotations = new MemoryAnnotationCollection(rootGroup);
 
             return new DefaultNotebook(binaryLocation, annotations);
         }

@@ -28,34 +28,75 @@ import org.jdesktop.swingx.JXTreeTable;
 
 import org.trypticon.hex.anno.AbstractAnnotationCollection;
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.AnnotationCollectionEvent;
+import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.anno.MutableAnnotation;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
+import org.trypticon.hex.anno.MutableGroupAnnotation;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 
 /**
  * A wrapper annotation model which tracks expansion status of a tree.
  */
-public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCollection {
-    private final JXTreeTable treeTable;
-    private final AnnotationCollection delegate;
+public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCollection
+        implements MutableAnnotationCollection {
 
-    public ExpansionTrackingAnnotationCollection(JXTreeTable treeTable, AnnotationCollection delegate) {
+    private final JXTreeTable treeTable;
+    private final MutableAnnotationCollection delegate;
+
+    public ExpansionTrackingAnnotationCollection(JXTreeTable treeTable, MutableAnnotationCollection delegate) {
         this.treeTable = treeTable;
         this.delegate = delegate;
 
         treeTable.addTreeExpansionListener(new TreeExpansionListener() {
             @Override
-            public void treeExpanded(TreeExpansionEvent treeExpansionEvent) {
-                fireAnnotationsChanged();
+            public void treeExpanded(TreeExpansionEvent event) {
+                fireAnnotationsAdded(convertEvent(event));
             }
 
             @Override
-            public void treeCollapsed(TreeExpansionEvent treeExpansionEvent) {
-                fireAnnotationsChanged();
+            public void treeCollapsed(TreeExpansionEvent event) {
+                fireAnnotationsRemoved(convertEvent(event));
+            }
+
+            private AnnotationCollectionEvent convertEvent(TreeExpansionEvent treeExpansionEvent) {
+                TreePath path = treeExpansionEvent.getPath();
+                Object[] pathObjects = path.getPath();
+
+                List<GroupAnnotation> parentPath = new ArrayList<>(pathObjects.length);
+                for (Object object : pathObjects) {
+                    parentPath.add((GroupAnnotation) object);
+                }
+
+                List<Integer> childIndices = new ArrayList<>(pathObjects.length);
+                for (int i = 0; i < pathObjects.length; i++) {
+                    childIndices.add(i);
+                }
+
+                MutableGroupAnnotation groupAnnotation = (MutableGroupAnnotation) path.getLastPathComponent();
+                List<Annotation> children = groupAnnotation.getAnnotations();
+
+                return new AnnotationCollectionEvent(ExpansionTrackingAnnotationCollection.this,
+                                                     parentPath, childIndices, children);
             }
         });
 
-        delegate.addAnnotationCollectionListener(event -> fireAnnotationsChanged());
+        delegate.addAnnotationCollectionListener(new AnnotationCollectionListener() {
+            @Override
+            public void annotationsAdded(AnnotationCollectionEvent event) {
+                if (treeTable.isExpanded(new TreePath(event.getParentPath().toArray()))) {
+                    fireAnnotationsAdded(event.getParentPath(), event.getChildIndices(), event.getChildren());
+                }
+            }
+
+            @Override
+            public void annotationsRemoved(AnnotationCollectionEvent event) {
+                if (treeTable.isExpanded(new TreePath(event.getParentPath().toArray()))) {
+                    fireAnnotationsRemoved(event.getParentPath(), event.getChildIndices(), event.getChildren());
+                }
+            }
+        });
     }
 
     @Override
@@ -93,12 +134,12 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
     }
 
     @Override
-    public void add(Annotation annotation) throws OverlappingAnnotationException {
+    public void add(MutableAnnotation annotation) throws OverlappingAnnotationException {
         delegate.add(annotation);
     }
 
     @Override
-    public void remove(Annotation annotation) {
+    public void remove(MutableAnnotation annotation) {
         delegate.remove(annotation);
     }
 }

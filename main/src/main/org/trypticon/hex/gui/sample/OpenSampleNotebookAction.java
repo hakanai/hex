@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 
 import org.jetbrains.annotations.NonNls;
 
-import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
@@ -54,7 +54,7 @@ public class OpenSampleNotebookAction extends BaseAction {
         application.openNotebook(notebook);
 
         Binary binary = notebook.getBinary();
-        AnnotationCollection annotations = notebook.getAnnotations();
+        MutableAnnotationCollection annotations = notebook.getAnnotations();
 
         Structure structure = RubyStructureDSL.load(getClass().getResource("/org/trypticon/hex/formats/classfile/class_file.rb"));
         if (structure == null) {

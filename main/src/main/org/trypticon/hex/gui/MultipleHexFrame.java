@@ -31,8 +31,8 @@ import java.util.List;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.gui.notebook.Notebook;
@@ -245,7 +245,7 @@ public class MultipleHexFrame extends HexFrame {
      * A dummy notebook class we can use for size computation.
      */
     private class DummyNotebook implements Notebook {
-        private final AnnotationCollection noAnnotations = new MemoryAnnotationCollection(1);
+        private final MutableAnnotationCollection noAnnotations = new MemoryAnnotationCollection(1);
 
         @Override
         public void open() {
@@ -270,7 +270,7 @@ public class MultipleHexFrame extends HexFrame {
         }
 
         @Override
-        public AnnotationCollection getAnnotations() {
+        public MutableAnnotationCollection getAnnotations() {
             return noAnnotations;
         }
 

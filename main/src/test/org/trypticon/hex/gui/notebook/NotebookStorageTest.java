@@ -31,8 +31,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.gui.anno.ExtendedAnnotation;
 import org.trypticon.hex.gui.anno.ExtendedGroupAnnotation;
 import org.trypticon.hex.gui.anno.ParametricStyle;
@@ -54,7 +54,7 @@ public class NotebookStorageTest {
     @Test
     public void testRoundTrip() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new MemoryAnnotationCollection(100));
-        AnnotationCollection annotations = notebook.getAnnotations();
+        MutableAnnotationCollection annotations = notebook.getAnnotations();
         annotations.add(new ExtendedAnnotation(5, 4, new NullInterpreter(), "Test",
                                                new ParametricStyle(ParametricStyle.StrokeStyle.DASHED,
                                                                    Color.red, Color.white)));

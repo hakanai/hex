@@ -204,8 +204,18 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
     }
 
     @Override
-    public void annotationsChanged(AnnotationCollectionEvent event) {
-        // TODO: This will change a bit once we have some more structure.
-        fireTreeStructureChanged(new TreeModelEvent(this, new Object[] { getRoot() }));
+    public void annotationsAdded(AnnotationCollectionEvent event) {
+        Object[] path = event.getParentPath().toArray();
+        int[] childIndices = event.getChildIndices().stream().mapToInt(i -> i).toArray();
+        Object[] children = event.getChildren().toArray();
+        fireTreeNodesInserted(new TreeModelEvent(this, path, childIndices, children));
+    }
+
+    @Override
+    public void annotationsRemoved(AnnotationCollectionEvent event) {
+        Object[] path = event.getParentPath().toArray();
+        int[] childIndices = event.getChildIndices().stream().mapToInt(i -> i).toArray();
+        Object[] children = event.getChildren().toArray();
+        fireTreeNodesRemoved(new TreeModelEvent(this, path, childIndices, children));
     }
 }

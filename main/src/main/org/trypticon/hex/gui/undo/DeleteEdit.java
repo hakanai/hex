@@ -22,8 +22,8 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotation;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.gui.Resources;
 
@@ -33,8 +33,8 @@ import org.trypticon.hex.gui.Resources;
  * @author trejkaz
  */
 public class DeleteEdit extends AbstractUndoableEdit {
-    private final AnnotationCollection annotationCollection;
-    private final Annotation annotation;
+    private final MutableAnnotationCollection annotationCollection;
+    private final MutableAnnotation annotation;
 
     /**
      * Constructs the edit.
@@ -42,7 +42,7 @@ public class DeleteEdit extends AbstractUndoableEdit {
      * @param annotationCollection the annotation collection we removed the annotation from.
      * @param annotation the annotation which was deleted.
      */
-    public DeleteEdit(AnnotationCollection annotationCollection, Annotation annotation) {
+    public DeleteEdit(MutableAnnotationCollection annotationCollection, MutableAnnotation annotation) {
         this.annotationCollection = annotationCollection;
         this.annotation = annotation;
     }

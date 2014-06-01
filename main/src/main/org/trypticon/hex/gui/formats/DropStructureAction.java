@@ -21,8 +21,8 @@ package org.trypticon.hex.gui.formats;
 import java.awt.event.ActionEvent;
 
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotation;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.gui.NotebookPaneAction;
@@ -50,11 +50,11 @@ public class DropStructureAction extends NotebookPaneAction {
         HexViewer viewer = notebookPane.getViewer();
 
         Binary binary = viewer.getBinary();
-        AnnotationCollection annotations = viewer.getAnnotations();
+        MutableAnnotationCollection annotations = (MutableAnnotationCollection) viewer.getAnnotations();
         long position = viewer.getSelectionModel().getSelectionStart();
 
         try {
-            Annotation annotation = structure.drop(binary, position);
+            MutableAnnotation annotation = structure.drop(binary, position);
             annotations.add(annotation);
         } catch (Exception e) {
             throw new ActionException(Resources.getMessage("DropStructure.Errors.catchAll"), e);

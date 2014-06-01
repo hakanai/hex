@@ -25,8 +25,10 @@ import java.net.URL;
 
 import org.jetbrains.annotations.NonNls;
 
-import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.AnnotationCollectionEvent;
+import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.gui.Resources;
@@ -44,7 +46,7 @@ public class DefaultNotebook implements Notebook {
     private URL notebookLocation;
     private String name;
     private final URL binaryLocation;
-    private AnnotationCollection annotations;
+    private MutableAnnotationCollection annotations;
     private Binary binary;
 
     private final Object openLock = new Object();
@@ -69,7 +71,7 @@ public class DefaultNotebook implements Notebook {
      * @param binaryLocation the location of the binary.
      * @param annotations the annotation collection.
      */
-    public DefaultNotebook(URL binaryLocation, AnnotationCollection annotations) {
+    public DefaultNotebook(URL binaryLocation, MutableAnnotationCollection annotations) {
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
 
@@ -119,8 +121,18 @@ public class DefaultNotebook implements Notebook {
     }
 
     private void attachAnnotationCollectionListener() {
-        // New annotations appearing mean we need to be saved.
-        annotations.addAnnotationCollectionListener(event -> setDirty(true));
+        // Annotations changing in any way means we need to be saved.
+        annotations.addAnnotationCollectionListener(new AnnotationCollectionListener() {
+            @Override
+            public void annotationsAdded(AnnotationCollectionEvent event) {
+                setDirty(true);
+            }
+
+            @Override
+            public void annotationsRemoved(AnnotationCollectionEvent event) {
+                setDirty(true);
+            }
+        });
     }
 
     /**
@@ -185,7 +197,7 @@ public class DefaultNotebook implements Notebook {
     }
 
     @Override
-    public AnnotationCollection getAnnotations() {
+    public MutableAnnotationCollection getAnnotations() {
         return annotations;
     }
 

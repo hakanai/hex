@@ -32,6 +32,7 @@ import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.gui.util.NullTreeTableModel;
 
@@ -45,7 +46,7 @@ public class AnnotationPane extends JPanel {
     private JXTreeTable annoTreeTable;
     private TreeTableModel annoTreeTableModel;
 
-    private AnnotationCollection annotations;
+    private MutableAnnotationCollection annotations;
     private Binary binary;
 
     private List<Annotation> selectedAnnotationPath;
@@ -77,7 +78,7 @@ public class AnnotationPane extends JPanel {
         }
     }
 
-    public void setAnnotations(AnnotationCollection annotations) {
+    public void setAnnotations(MutableAnnotationCollection annotations) {
         this.annotations = annotations;
         createModelIfComplete();
     }
