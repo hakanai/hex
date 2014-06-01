@@ -28,6 +28,7 @@ import org.jdesktop.swingx.renderer.JRendererLabel;
 import org.trypticon.hex.AnnotationStyle;
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.GroupAnnotation;
 
 /**
  * A component to use for rendering which shows the annotation style.
@@ -38,34 +39,33 @@ import org.trypticon.hex.anno.Annotation;
 class ParametricStyleRendererComponent extends JRendererLabel {
     private final AnnotationStyleScheme annotationStyleScheme;
 
-    private Annotation annotation;
-    private AnnotationStyle annotationStyle;
-    private ParametricStyle parametricStyle;
+    private Annotation annotationCopy;
 
     ParametricStyleRendererComponent(AnnotationStyleScheme annotationStyleScheme) {
         setOpaque(true);
         this.annotationStyleScheme = annotationStyleScheme;
     }
 
-    public Annotation getAnnotation() {
-        return annotation;
-    }
-
     public void setAnnotation(Annotation annotation) {
-        this.annotation = annotation;
-        annotationStyle = annotationStyleScheme.getStyle(annotation);
-    }
-
-    public ParametricStyle getParametricStyle() {
-        return parametricStyle;
+        // Creating a copy of the annotation which we can mess with for rendering.
+        if (annotation instanceof GroupAnnotation) {
+            annotationCopy = new ExtendedGroupAnnotation(annotation.getPosition(),
+                                                         annotation.getLength(),
+                                                         annotation.getNote(),
+                                                         ((GroupAnnotation) annotation).getAnnotations(),
+                                                         ((AnnotationExtensions) annotation).getCustomStyle());
+        } else {
+            annotationCopy = new ExtendedAnnotation(annotation.getPosition(),
+                                                    annotation.getLength(),
+                                                    annotation.getInterpreter(),
+                                                    annotation.getNote(),
+                                                    ((AnnotationExtensions) annotation).getCustomStyle());
+        }
     }
 
     public void setParametricStyle(ParametricStyle parametricStyle) {
-        if (parametricStyle != null) {
-            annotationStyle = parametricStyle.toAnnotationStyle();
-        } else {
-            annotationStyle = annotationStyleScheme.getStyle(annotation);
-        }
+        ((AnnotationExtensions) annotationCopy).setCustomStyle(parametricStyle);
+        // repaint() has no effect in JRendererLabel, so we paint immediately.
         paintImmediately(0, 0, getWidth(), getHeight());
     }
 
@@ -73,9 +73,11 @@ class ParametricStyleRendererComponent extends JRendererLabel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (annotation == null) {
+        if (annotationCopy == null) {
             return;
         }
+
+        AnnotationStyle annotationStyle = annotationStyleScheme.getStyle(annotationCopy);
 
         Graphics2D g2 = (Graphics2D) g;
         int width = getWidth();

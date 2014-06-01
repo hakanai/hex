@@ -31,6 +31,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTreeTable;
+import org.jetbrains.annotations.Nullable;
 
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.anno.Annotation;
@@ -44,6 +45,7 @@ import org.trypticon.hex.gui.util.Dialogs;
 class ParametricStyleEditor extends AbstractCellEditor implements TableCellEditor {
     private final ParametricStyleRendererComponent component;
 
+    @Nullable
     private ParametricStyle currentValue;
 
     ParametricStyleEditor(AnnotationStyleScheme annotationStyleScheme) {
