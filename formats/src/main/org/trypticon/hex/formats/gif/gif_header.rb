@@ -22,8 +22,8 @@ structure :rgb do
   uint8 :b
 end
 
-structure :colour_table do
-  array :colour, :size => '2 ** ((:colour_bits & 0x7) + 1)', :element_type => :rgb
+structure :color_table do
+  array :color, :size => '2 ** ((:color_bits & 0x7) + 1)', :element_type => :rgb
 end
 
 structure :gif_header do
@@ -35,19 +35,19 @@ structure :gif_header do
   uint16_le :logical_screen_width
   uint16_le :logical_screen_height
 
-  uint8 :colour_bits
-    # 0        Global Colour Table Flag (GCTF)
-    # 1..3     Colour Resolution
-    # 4        Sort Flag to Global Colour Table
-    # 5..7     Size of Global Colour Table, n where size = 2^(1+n)
+  uint8 :color_bits
+    # 0        Global Color Table Flag (GCTF)
+    # 1..3     Color Resolution
+    # 4        Sort Flag to Global Color Table
+    # 5..7     Size of Global Color Table, n where size = 2^(1+n)
 
-  uint8 :background_colour_index
+  uint8 :background_color_index
 
   uint8 :pixel_aspect_ratio
 
-  switch :colour_bits do |value|
+  switch :color_bits do |value|
     if value & 0x80 != 0
-      :colour_table
+      :color_table
     else
       nil
     end

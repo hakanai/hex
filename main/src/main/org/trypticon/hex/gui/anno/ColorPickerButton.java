@@ -32,10 +32,10 @@ import org.trypticon.hex.gui.util.Dialogs;
  *
  * @author trejkaz
  */
-public class ColourPickerButton extends JButton {
+public class ColorPickerButton extends JButton {
     private final AbstractColorChooserPanel chooserPanel;
 
-    public ColourPickerButton() {
+    public ColorPickerButton() {
         setText("          ");
 
         // Aqua look and feel sets buttons to non-opaque by default which causes the background

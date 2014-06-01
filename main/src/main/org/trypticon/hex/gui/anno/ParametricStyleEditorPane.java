@@ -38,10 +38,10 @@ public class ParametricStyleEditorPane extends JPanel {
     private final JCheckBox customCheckBox;
     private final JLabel borderStrokeStyleLabel;
     private final JComboBox<ParametricStyle.StrokeStyle> borderStrokeStyleComboBox;
-    private final JLabel borderColourLabel;
-    private final ColourPickerButton borderColourButton;
-    private final JLabel backgroundColourLabel;
-    private final ColourPickerButton backgroundColourButton;
+    private final JLabel borderColorLabel;
+    private final ColorPickerButton borderColorButton;
+    private final JLabel backgroundColorLabel;
+    private final ColorPickerButton backgroundColorButton;
 
     // State variables.
     private boolean custom;
@@ -60,14 +60,14 @@ public class ParametricStyleEditorPane extends JPanel {
         customCheckBox = new JCheckBox(Resources.getString("ParametricStyleEditor.overrideDefaultStyle"));
         borderStrokeStyleLabel = new JLabel(Resources.getString("ParametricStyleEditor.borderStyle"));
         borderStrokeStyleComboBox = new JComboBox<>(ParametricStyle.StrokeStyle.values());
-        borderColourLabel = new JLabel(Resources.getString("ParametricStyleEditor.borderColour"));
-        borderColourButton = new ColourPickerButton();
-        backgroundColourLabel = new JLabel(Resources.getString("ParametricStyleEditor.backgroundColour"));
-        backgroundColourButton = new ColourPickerButton();
+        borderColorLabel = new JLabel(Resources.getString("ParametricStyleEditor.borderColor"));
+        borderColorButton = new ColorPickerButton();
+        backgroundColorLabel = new JLabel(Resources.getString("ParametricStyleEditor.backgroundColor"));
+        backgroundColorButton = new ColorPickerButton();
 
         borderStrokeStyleComboBox.setSelectedItem(workingStyle.getBorderStrokeStyle());
-        borderColourButton.setBackground(workingStyle.getBorderColor());
-        backgroundColourButton.setBackground(workingStyle.getBackgroundColor());
+        borderColorButton.setBackground(workingStyle.getBorderColor());
+        backgroundColorButton.setBackground(workingStyle.getBackgroundColor());
 
         customCheckBox.addItemListener(event -> {
             setCustom(event.getStateChange() == ItemEvent.SELECTED);
@@ -79,12 +79,12 @@ public class ParametricStyleEditorPane extends JPanel {
                                                     workingStyle.getBackgroundColor()));
             }
         });
-        borderColourButton.addPropertyChangeListener("background", event -> {
+        borderColorButton.addPropertyChangeListener("background", event -> {
             setWorkingStyle(new ParametricStyle(workingStyle.getBorderStrokeStyle(),
                                                 (Color) event.getNewValue(),
                                                 workingStyle.getBackgroundColor()));
         });
-        backgroundColourButton.addPropertyChangeListener("background", event -> {
+        backgroundColorButton.addPropertyChangeListener("background", event -> {
             setWorkingStyle(new ParametricStyle(workingStyle.getBorderStrokeStyle(),
                                                 workingStyle.getBorderColor(),
                                                 (Color) event.getNewValue()));
@@ -96,8 +96,8 @@ public class ParametricStyleEditorPane extends JPanel {
         if (style != null) {
             customCheckBox.setSelected(true);
             borderStrokeStyleComboBox.setSelectedItem(style.getBorderStrokeStyle());
-            borderColourButton.setBackground(style.getBorderColor());
-            backgroundColourButton.setBackground(style.getBackgroundColor());
+            borderColorButton.setBackground(style.getBorderColor());
+            backgroundColorButton.setBackground(style.getBackgroundColor());
         }
 
         GroupLayout layout = new GroupLayout(this);
@@ -108,13 +108,13 @@ public class ParametricStyleEditorPane extends JPanel {
         layout.setHorizontalGroup(layout.createSequentialGroup()
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                           .addComponent(borderStrokeStyleLabel)
-                          .addComponent(borderColourLabel)
-                          .addComponent(backgroundColourLabel))
+                          .addComponent(borderColorLabel)
+                          .addComponent(backgroundColorLabel))
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                           .addComponent(customCheckBox)
                           .addComponent(borderStrokeStyleComboBox)
-                          .addComponent(borderColourButton)
-                          .addComponent(backgroundColourButton)));
+                          .addComponent(borderColorButton)
+                          .addComponent(backgroundColorButton)));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
             .addComponent(customCheckBox)
@@ -122,11 +122,11 @@ public class ParametricStyleEditorPane extends JPanel {
                 .addComponent(borderStrokeStyleLabel)
                 .addComponent(borderStrokeStyleComboBox))
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(borderColourLabel)
-                .addComponent(borderColourButton))
+                .addComponent(borderColorLabel)
+                .addComponent(borderColorButton))
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(backgroundColourLabel)
-                .addComponent(backgroundColourButton)));
+                .addComponent(backgroundColorLabel)
+                .addComponent(backgroundColorButton)));
     }
 
     private void syncEnabledState() {
@@ -135,13 +135,13 @@ public class ParametricStyleEditorPane extends JPanel {
         borderStrokeStyleLabel.setEnabled(selected);
         borderStrokeStyleComboBox.setEnabled(selected);
 
-        borderColourLabel.setEnabled(selected);
-        borderColourButton.setEnabled(selected);
-        borderColourButton.setOpaque(selected);
+        borderColorLabel.setEnabled(selected);
+        borderColorButton.setEnabled(selected);
+        borderColorButton.setOpaque(selected);
 
-        backgroundColourLabel.setEnabled(selected);
-        backgroundColourButton.setEnabled(selected);
-        backgroundColourButton.setOpaque(selected);
+        backgroundColorLabel.setEnabled(selected);
+        backgroundColorButton.setEnabled(selected);
+        backgroundColorButton.setOpaque(selected);
     }
 
     /**
