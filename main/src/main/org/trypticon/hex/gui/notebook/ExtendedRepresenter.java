@@ -18,6 +18,7 @@
 
 package org.trypticon.hex.gui.notebook;
 
+import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ import org.yaml.snakeyaml.representer.Representer;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.gui.anno.AnnotationExtensions;
 import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterStorage;
@@ -77,6 +78,9 @@ class ExtendedRepresenter extends Representer {
         fields.put("length", groupAnnotation.getLength());
         fields.put("note", groupAnnotation.getNote());
         fields.put("annotations", groupAnnotation.getAnnotations());
+        if (groupAnnotation instanceof AnnotationExtensions) {
+            fields.put("custom_style", ((AnnotationExtensions) groupAnnotation).getCustomStyle());
+        }
         return representMapping(YamlTags.GROUP_ANNOTATION_TAG, fields, false);
     }
 
@@ -86,8 +90,8 @@ class ExtendedRepresenter extends Representer {
         fields.put("length", annotation.getLength());
         fields.put("interpreter", annotation.getInterpreter());
         fields.put("note", annotation.getNote());
-        if (annotation instanceof ExtendedAnnotation) {
-            fields.put("customStyle", ((ExtendedAnnotation) annotation).getCustomStyle());
+        if (annotation instanceof AnnotationExtensions) {
+            fields.put("custom_style", ((AnnotationExtensions) annotation).getCustomStyle());
         }
         return representMapping(YamlTags.ANNOTATION_TAG, fields, false);
     }
@@ -99,9 +103,18 @@ class ExtendedRepresenter extends Representer {
 
     private Node representParametricStyle(ParametricStyle parametricStyle) {
         Map<String, Object> fields = new LinkedHashMap<>(4);
-        fields.put("borderStrokeStyle", parametricStyle.getBorderStrokeStyle());
-        fields.put("borderColor", parametricStyle.getBorderColor());
-        fields.put("backgroundColor", parametricStyle.getBackgroundColor());
+        fields.put("border_stroke_style", parametricStyle.getBorderStrokeStyle().toString());
+        fields.put("border_color", colorToMap(parametricStyle.getBorderColor()));
+        fields.put("background_color", colorToMap(parametricStyle.getBackgroundColor()));
         return representMapping(YamlTags.PARAMETRIC_STYLE_TAG, fields, true);
+    }
+
+    private Map<String, Object> colorToMap(Color color) {
+        Map<String, Object> fields = new LinkedHashMap<>(4);
+        fields.put("r", color.getRed());
+        fields.put("g", color.getGreen());
+        fields.put("b", color.getBlue());
+        fields.put("a", color.getAlpha());
+        return fields;
     }
 }

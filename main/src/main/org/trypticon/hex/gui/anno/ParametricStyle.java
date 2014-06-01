@@ -21,6 +21,7 @@ package org.trypticon.hex.gui.anno;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
+import java.util.Objects;
 
 import org.trypticon.hex.AnnotationStyle;
 
@@ -62,6 +63,25 @@ public class ParametricStyle {
 
     public Color getBackgroundColor() {
         return backgroundColor;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof ParametricStyle)) {
+            return false;
+        }
+        ParametricStyle that = (ParametricStyle) obj;
+        return borderStrokeStyle.equals(that.borderStrokeStyle) &&
+               borderColor.equals(that.borderColor) &&
+               backgroundColor.equals(that.backgroundColor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(borderStrokeStyle, borderColor, backgroundColor);
     }
 
     public static enum StrokeStyle {

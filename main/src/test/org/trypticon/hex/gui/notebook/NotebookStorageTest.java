@@ -18,6 +18,7 @@
 
 package org.trypticon.hex.gui.notebook;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -26,13 +27,15 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
+import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.gui.anno.ExtendedGroupAnnotation;
+import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.nulls.NullInterpreter;
 import org.trypticon.hex.interpreters.primitives.PrimitiveInterpreters;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
@@ -52,10 +55,14 @@ public class NotebookStorageTest {
     public void testRoundTrip() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new MemoryAnnotationCollection(100));
         AnnotationCollection annotations = notebook.getAnnotations();
-        annotations.add(new SimpleMutableAnnotation(5, 4, new NullInterpreter(), "Test"));
-        annotations.add(new SimpleMutableAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE, null));
-        annotations.add(new SimpleMutableAnnotation(13, 4, new StringInterpreter("utf8"), null));
-        annotations.add(new SimpleMutableGroupAnnotation(9, 8, "Test Group"));
+        annotations.add(new ExtendedAnnotation(5, 4, new NullInterpreter(), "Test",
+                                               new ParametricStyle(ParametricStyle.StrokeStyle.DASHED,
+                                                                   Color.red, Color.white)));
+        annotations.add(new ExtendedAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE, null));
+        annotations.add(new ExtendedAnnotation(13, 4, new StringInterpreter("utf8"), null));
+        annotations.add(new ExtendedGroupAnnotation(9, 8, "Test Group", new ArrayList<>(4),
+                                                    new ParametricStyle(ParametricStyle.StrokeStyle.SOLID,
+                                                                        Color.lightGray, Color.white)));
 
         StringWriter writer = new StringWriter();
         storage.write(notebook, writer);
@@ -99,7 +106,7 @@ public class NotebookStorageTest {
     public void testSpaceInName_SavedNotebook() throws Exception {
         Notebook notebook = new DefaultNotebook(new File("some file.dat").toURI().toURL());
         notebook.setNotebookLocation(new File("My Notebook.hex").toURI().toURL());
-        assertEquals("Wrong notebook name", "My Notebook", notebook.getName());
+        assertEquals("Wrong notebook name", "My Notebook.hex", notebook.getName());
     }
 
     @Test(expected = IOException.class)

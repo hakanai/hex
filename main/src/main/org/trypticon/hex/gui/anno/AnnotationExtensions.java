@@ -18,27 +18,24 @@
 
 package org.trypticon.hex.gui.anno;
 
-import org.trypticon.hex.AnnotationStyle;
-import org.trypticon.hex.DefaultAnnotationStyleScheme;
-import org.trypticon.hex.anno.Annotation;
-
 /**
- * Customised annotation style scheme to allow for more style customisation.
+ * Interface containing all the additional methods we add to both {@link ExtendedAnnotation}
+ * and {@link ExtendedGroupAnnotation}.
  *
  * @author trejkaz
  */
-public class CustomAnnotationStyleScheme extends DefaultAnnotationStyleScheme {
-    @Override
-    public AnnotationStyle getStyle(Annotation annotation) {
-        if (annotation instanceof AnnotationExtensions) {
-            ParametricStyle customStyle = ((AnnotationExtensions) annotation).getCustomStyle();
-            if (customStyle != null) {
-                return customStyle.toAnnotationStyle();
-            }
-        }
+public interface AnnotationExtensions {
+    /**
+     * Gets the custom style for the annotation.
+     *
+     * @return the custom style.
+     */
+    ParametricStyle getCustomStyle();
 
-        //TODO: A configurable colour scheme based on the interpreter type would be nice too.
-
-        return super.getStyle(annotation);
-    }
+    /**
+     * Sets the custom style for the annotation.
+     *
+     * @param customStyle the custom style.
+     */
+    void setCustomStyle(ParametricStyle customStyle);
 }

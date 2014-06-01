@@ -18,27 +18,33 @@
 
 package org.trypticon.hex.gui.anno;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 
 /**
- * Annotation with additional methods.
+ * Group annotation with additional methods.
  *
  * @author trejkaz
  */
-public class ExtendedAnnotation extends SimpleMutableAnnotation implements AnnotationExtensions {
+public class ExtendedGroupAnnotation extends SimpleMutableGroupAnnotation implements AnnotationExtensions {
     private ParametricStyle customStyle;
 
-    public ExtendedAnnotation(long position, long length, Interpreter interpreter, String note) {
-        this(position, length, interpreter, note, null);
+    public ExtendedGroupAnnotation(long position, long length, String note) {
+        this(position, length, note, new ArrayList<>(4));
     }
 
-    public ExtendedAnnotation(long position, long length, Interpreter interpreter, String note,
-                              ParametricStyle customStyle) {
-        super(position, length, interpreter, note);
-        setCustomStyle(customStyle);
+    public ExtendedGroupAnnotation(long position, long length, String note, List<Annotation> annotations) {
+        this(position, length, note, annotations, null);
+    }
+
+    public ExtendedGroupAnnotation(long position, long length, String note, List<Annotation> annotations,
+                                   ParametricStyle customStyle) {
+        super(position, length, note, annotations);
+        this.customStyle = customStyle;
     }
 
     @Override
@@ -56,10 +62,10 @@ public class ExtendedAnnotation extends SimpleMutableAnnotation implements Annot
         if (o == this) {
             return true;
         }
-        if (!(o instanceof ExtendedAnnotation)) {
+        if (!(o instanceof ExtendedGroupAnnotation)) {
             return false;
         }
-        ExtendedAnnotation that = (ExtendedAnnotation) o;
+        ExtendedGroupAnnotation that = (ExtendedGroupAnnotation) o;
         return super.equals(that) &&
                Objects.equals(getCustomStyle(), that.getCustomStyle());
     }

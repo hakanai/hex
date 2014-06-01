@@ -57,6 +57,7 @@ public class NotebookStorage {
 
         Representer representer = new ExtendedRepresenter(interpreterStorage);
         DumperOptions dumperOptions = new DumperOptions();
+        dumperOptions.setWidth(Integer.MAX_VALUE);
 
         yaml = new Yaml(new Loader(constructor),
                         new Dumper(representer, dumperOptions));

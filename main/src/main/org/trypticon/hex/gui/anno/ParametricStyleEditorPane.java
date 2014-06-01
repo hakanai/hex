@@ -54,7 +54,7 @@ public class ParametricStyleEditorPane extends JPanel {
             workingStyle = style;
         } else {
             workingStyle = new ParametricStyle(ParametricStyle.StrokeStyle.SOLID,
-                                               Color.BLACK, Color.WHITE);
+                                               Color.black, Color.white);
         }
 
         customCheckBox = new JCheckBox(Resources.getString("ParametricStyleEditor.overrideDefaultStyle"));

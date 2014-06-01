@@ -160,8 +160,8 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
             case NOTE_COLUMN:
                 return anno.getNote();
             case STYLE_COLUMN:
-                if (anno instanceof ExtendedAnnotation) {
-                    return ((ExtendedAnnotation) anno).getCustomStyle();
+                if (anno instanceof AnnotationExtensions) {
+                    return ((AnnotationExtensions) anno).getCustomStyle();
                 } else {
                     return null;
                 }
@@ -193,8 +193,8 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
                 break;
 
             case STYLE_COLUMN:
-                if (node instanceof ExtendedAnnotation) {
-                    ((ExtendedAnnotation) node).setCustomStyle((ParametricStyle) value);
+                if (node instanceof AnnotationExtensions) {
+                    ((AnnotationExtensions) node).setCustomStyle((ParametricStyle) value);
                 }
                 break;
 
