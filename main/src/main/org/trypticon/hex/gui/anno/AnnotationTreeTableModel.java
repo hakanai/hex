@@ -184,16 +184,22 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
 
     @Override
     public void setValueAt(Object value, Object node, int column) {
-        if (column == NOTE_COLUMN) {
-            if (node instanceof MutableAnnotation) {
+        switch (column)
+        {
+            case NOTE_COLUMN:
                 ((MutableAnnotation) node).setNote((String) value);
                 // TODO: Set a dirty flag somewhere.
                 // TODO: Undo
-            } else {
-                // TODO
-            }
-        } else {
-            throw new UnsupportedOperationException("Editing not supported on column " + column);
+                break;
+
+            case STYLE_COLUMN:
+                if (node instanceof ExtendedAnnotation) {
+                    ((ExtendedAnnotation) node).setCustomStyle((ParametricStyle) value);
+                }
+                break;
+
+            default:
+                throw new IllegalArgumentException("Column " + column + " is not editable");
         }
     }
 

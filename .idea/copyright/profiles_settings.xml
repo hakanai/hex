@@ -1,5 +1,3 @@
 <component name="CopyrightManager">
-  <settings default="GPL3">
-    <module2copyright />
-  </settings>
+  <settings default="GPL3" />
 </component>

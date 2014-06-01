@@ -18,24 +18,13 @@
 
 package org.trypticon.hex.gui.anno;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.AbstractHighlighter;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.renderer.JRendererLabel;
 import org.jdesktop.swingx.table.ColumnFactory;
 import org.jdesktop.swingx.table.TableColumnExt;
 
-import org.trypticon.hex.AnnotationStyle;
 import org.trypticon.hex.AnnotationStyleScheme;
-import org.trypticon.hex.anno.Annotation;
 
 /**
  * Customisations for the annotation tree table.
@@ -53,6 +42,9 @@ public class AnnotationTreeTable extends BetterTreeTable {
         // This method is misleadingly named but it makes the table fill the available width automatically
         // if the viewport width is greater than the table width.
         setHorizontalScrollEnabled(true);
+
+        setDefaultRenderer(ParametricStyle.class, new ParametricStyleRenderer(annotationStyleScheme));
+        setDefaultEditor(ParametricStyle.class, new ParametricStyleEditor(annotationStyleScheme));
 
         setColumnFactory(new ColumnFactory() {
             @Override
@@ -79,7 +71,6 @@ public class AnnotationTreeTable extends BetterTreeTable {
                         columnExt.setPreferredWidth(width);
                         columnExt.setMaxWidth(width);
                         columnExt.setResizable(false);
-                        columnExt.addHighlighter(new AnnotationStyleHighlighter(annotationStyleScheme));
                         break;
                 }
             }
@@ -95,52 +86,4 @@ public class AnnotationTreeTable extends BetterTreeTable {
         return size;
     }
 
-    private class AnnotationStyleHighlighter extends AbstractHighlighter {
-        private final AnnotationStyleScheme annotationStyleScheme;
-        private final AnnotationStyleRendererComponent renderer = new AnnotationStyleRendererComponent();
-
-        private AnnotationStyleHighlighter(AnnotationStyleScheme annotationStyleScheme) {
-            this.annotationStyleScheme = annotationStyleScheme;
-        }
-
-        @Override
-        protected Component doHighlight(Component component, ComponentAdapter adapter) {
-            JRendererLabel oldRenderer = (JRendererLabel) component;
-            renderer.setBackground(oldRenderer.getBackground());
-            renderer.setForeground(oldRenderer.getForeground());
-            renderer.setBorder(oldRenderer.getBorder());
-
-            // Use a back door in the adapter to get at the annotation object.
-            TreePath path = ((TreeTableDataAdapter) adapter).getTreeTable().getPathForRow(adapter.row);
-            Annotation annotation = (Annotation) path.getLastPathComponent();
-
-            renderer.annotationStyle = annotationStyleScheme.getStyle(annotation);
-            renderer.setSize(adapter.getCellBounds().getSize());
-            return renderer;
-        }
-    }
-
-    private class AnnotationStyleRendererComponent extends JRendererLabel {
-        private AnnotationStyle annotationStyle;
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-
-            if (annotationStyle == null) {
-                return;
-            }
-
-            Graphics2D g2 = (Graphics2D) g;
-            int width = getWidth();
-            int height = getHeight();
-            Shape shape = new Rectangle(2, 2, width - 5, height - 5);
-
-            g2.setPaint(annotationStyle.getBackgroundPaint());
-            g2.fill(shape);
-            g2.setStroke(annotationStyle.getBorderStroke());
-            g2.setPaint(annotationStyle.getBorderPaint());
-            g2.draw(shape);
-        }
-    }
 }
