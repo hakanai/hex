@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * Pane for editing parametric style values.
@@ -99,6 +100,11 @@ public class ParametricStyleEditorPane extends JPanel {
             borderColorButton.setBackground(style.getBorderColor());
             backgroundColorButton.setBackground(style.getBackgroundColor());
         }
+
+        PLAFUtils.makeSmall(this, customCheckBox,
+                            borderStrokeStyleLabel, borderStrokeStyleComboBox,
+                            borderColorLabel, borderColorButton,
+                            backgroundColorLabel, backgroundColorButton);
 
         GroupLayout layout = new GroupLayout(this);
         layout.setAutoCreateContainerGaps(true);
