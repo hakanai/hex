@@ -8,4 +8,7 @@
     <item name='java.awt.Component void removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener) 0'>
         <annotation name='org.jetbrains.annotations.NonNls'/>
     </item>
+    <item name='java.awt.KeyboardFocusManager void removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
 </root>
