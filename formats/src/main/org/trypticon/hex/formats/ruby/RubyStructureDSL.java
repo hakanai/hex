@@ -25,6 +25,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import org.jetbrains.annotations.NonNls;
+import org.jruby.embed.LocalContextScope;
+import org.jruby.embed.LocalVariableBehavior;
 import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 
@@ -72,22 +74,28 @@ public class RubyStructureDSL {
     }
 
     private Structure createStructure() {
-        ScriptingContainer container = new ScriptingContainer();
-        container.setOutput(System.out);
-
-        // Set up the library scripts will have by default.
-        String basePath = RubyStructureDSL.class.getPackage().getName().replace('.', '/');
-        @NonNls
-        String fileName = basePath + "/structure_dsl.rb";
-        container.put("$interpreter_storage", new MasterInterpreterStorage());
-        container.runScriptlet(PathType.CLASSPATH, fileName);
-
-        // Run the script itself, which should return a Structure instance.
+        // Default behaviour of ScriptingContainer seems broken, but we can improve it.
+        ScriptingContainer container = new ScriptingContainer(LocalContextScope.THREADSAFE,
+                                                              LocalVariableBehavior.PERSISTENT);
         try {
-            Object instance = container.runScriptlet(scriptlet);
-            return container.getInstance(instance, Structure.class);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Error loading script: \n" + scriptlet, e);
+            container.put("$interpreter_storage", new MasterInterpreterStorage());
+
+            // Set up the library scripts will have by default.
+            String basePath = RubyStructureDSL.class.getPackage().getName().replace('.', '/');
+            @NonNls
+            String fileName = basePath + "/structure_dsl.rb";
+            container.runScriptlet(PathType.CLASSPATH, fileName);
+
+            // Run the script itself, which should return a Structure instance.
+            try {
+                Object instance = container.runScriptlet(scriptlet);
+
+                return container.getInstance(instance, Structure.class);
+            } catch (RuntimeException e) {
+                throw new RuntimeException("Error loading script: \n" + scriptlet, e);
+            }
+        } finally {
+            container.terminate();
         }
     }
 }
