@@ -18,60 +18,16 @@
 
 package org.trypticon.hex.gui.anno;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
+import org.trypticon.hex.anno.MutableGroupAnnotation;
 
 /**
  * Group annotation with additional methods.
  *
  * @author trejkaz
  */
-public class ExtendedGroupAnnotation extends SimpleMutableGroupAnnotation implements AnnotationExtensions {
-    private ParametricStyle customStyle;
-
-    public ExtendedGroupAnnotation(long position, long length, String note) {
-        this(position, length, note, new ArrayList<>(4));
-    }
-
-    public ExtendedGroupAnnotation(long position, long length, String note, List<Annotation> annotations) {
-        this(position, length, note, annotations, null);
-    }
-
-    public ExtendedGroupAnnotation(long position, long length, String note, List<Annotation> annotations,
-                                   ParametricStyle customStyle) {
-        super(position, length, note, annotations);
-        this.customStyle = customStyle;
-    }
-
+public interface ExtendedGroupAnnotation extends MutableGroupAnnotation, ExtendedAnnotation {
     @Override
-    public ParametricStyle getCustomStyle() {
-        return customStyle;
-    }
-
-    @Override
-    public void setCustomStyle(ParametricStyle customStyle) {
-        this.customStyle = customStyle;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof ExtendedGroupAnnotation)) {
-            return false;
-        }
-        ExtendedGroupAnnotation that = (ExtendedGroupAnnotation) o;
-        return super.equals(that) &&
-               Objects.equals(getCustomStyle(), that.getCustomStyle());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getCustomStyle());
-    }
+    List<? extends ExtendedAnnotation> getAnnotations();
 }

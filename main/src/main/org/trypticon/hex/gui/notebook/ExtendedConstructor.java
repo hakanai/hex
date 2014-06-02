@@ -30,11 +30,10 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.anno.MemoryAnnotationCollection;
-import org.trypticon.hex.anno.MutableAnnotationCollection;
+import org.trypticon.hex.gui.anno.DefaultExtendedAnnotation;
+import org.trypticon.hex.gui.anno.DefaultExtendedGroupAnnotation;
 import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
 import org.trypticon.hex.gui.anno.ExtendedGroupAnnotation;
 import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.Interpreter;
@@ -52,8 +51,8 @@ class ExtendedConstructor extends Constructor {
         this.interpreterStorage = interpreterStorage;
 
         yamlConstructors.put(YamlTags.NOTEBOOK_TAG, new NotebookConstructor());
-        yamlConstructors.put(YamlTags.GROUP_ANNOTATION_TAG, new GroupAnnotationConstructor());
-        yamlConstructors.put(YamlTags.ANNOTATION_TAG, new AnnotationConstructor());
+        yamlConstructors.put(YamlTags.GROUP_ANNOTATION_TAG, new ExtendedGroupAnnotationConstructor());
+        yamlConstructors.put(YamlTags.ANNOTATION_TAG, new ExtendedAnnotationConstructor());
         yamlConstructors.put(YamlTags.INTERPRETER_TAG, new InterpreterConstructor());
         yamlConstructors.put(YamlTags.PARAMETRIC_STYLE_TAG, new ParametricStyleConstructor());
     }
@@ -82,30 +81,30 @@ class ExtendedConstructor extends Constructor {
                 throw new IllegalArgumentException("Invalid URL: " + binaryLocationURL);
             }
 
-            GroupAnnotation rootGroup = (GroupAnnotation) map.get("root_group");
+            ExtendedGroupAnnotation rootGroup = (ExtendedGroupAnnotation) map.get("root_group");
 
-            MutableAnnotationCollection annotations = new MemoryAnnotationCollection(rootGroup);
+            ExtendedAnnotationCollection annotations = new ExtendedAnnotationCollection(rootGroup);
 
             return new DefaultNotebook(binaryLocation, annotations);
         }
 
     }
 
-    private class GroupAnnotationConstructor extends SimpleConstructor {
+    private class ExtendedGroupAnnotationConstructor extends SimpleConstructor {
         @Override
         protected Object construct(Map<Object, Object> map) {
             long position = ((Number) map.get("position")).longValue();
             int length = ((Number) map.get("length")).intValue();
             String note = (String) map.get("note");
             @SuppressWarnings("unchecked")
-            List<Annotation> annotations = (List<Annotation>) map.get("annotations");
+            List<ExtendedAnnotation> annotations = (List<ExtendedAnnotation>) map.get("annotations");
             ParametricStyle customStyle = (ParametricStyle) map.get("custom_style");
 
-            return new ExtendedGroupAnnotation(position, length, note, annotations, customStyle);
+            return new DefaultExtendedGroupAnnotation(position, length, note, annotations, customStyle);
         }
     }
 
-    private class AnnotationConstructor extends SimpleConstructor {
+    private class ExtendedAnnotationConstructor extends SimpleConstructor {
         @Override
         protected Object construct(Map<Object, Object> map) {
             long position = ((Number) map.get("position")).longValue();
@@ -114,7 +113,7 @@ class ExtendedConstructor extends Constructor {
             String note = (String) map.get("note");
             ParametricStyle customStyle = (ParametricStyle) map.get("custom_style");
 
-            return new ExtendedAnnotation(position, length, interpreter, note, customStyle);
+            return new DefaultExtendedAnnotation(position, length, interpreter, note, customStyle);
         }
     }
 

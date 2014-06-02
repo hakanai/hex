@@ -18,24 +18,19 @@
 
 package org.trypticon.hex.gui.anno;
 
+import org.trypticon.hex.anno.MemoryAnnotationCollection;
+
 /**
- * Interface containing all the additional methods we add to both {@link ExtendedAnnotation}
- * and {@link ExtendedGroupAnnotation}.
+ * Extensions to the basic annotation collection.
  *
  * @author trejkaz
  */
-public interface AnnotationExtensions {
-    /**
-     * Gets the custom style for the annotation.
-     *
-     * @return the custom style.
-     */
-    ParametricStyle getCustomStyle();
+public class ExtendedAnnotationCollection extends MemoryAnnotationCollection {
+    public ExtendedAnnotationCollection(long length) {
+        super(new DefaultExtendedGroupAnnotation(0, length, null));
+    }
 
-    /**
-     * Sets the custom style for the annotation.
-     *
-     * @param customStyle the custom style.
-     */
-    void setCustomStyle(ParametricStyle customStyle);
+    public ExtendedAnnotationCollection(ExtendedGroupAnnotation rootGroup) {
+        super(rootGroup);
+    }
 }

@@ -75,7 +75,7 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
                 }
 
                 MutableGroupAnnotation groupAnnotation = (MutableGroupAnnotation) path.getLastPathComponent();
-                List<Annotation> children = groupAnnotation.getAnnotations();
+                List<? extends Annotation> children = groupAnnotation.getAnnotations();
 
                 return new AnnotationCollectionEvent(ExpansionTrackingAnnotationCollection.this,
                                                      parentPath, childIndices, children);
@@ -105,15 +105,15 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
     }
 
     @Override
-    public List<Annotation> getTopLevel() {
+    public List<? extends Annotation> getTopLevel() {
         return delegate.getTopLevel();
     }
 
     // TODO: Methods to get the children of a node, so that it can be intercepted.
 
     @Override
-    public List<Annotation> getAnnotationPathAt(long position) {
-        List<Annotation> fullPath = delegate.getAnnotationPathAt(position);
+    public List<? extends Annotation> getAnnotationPathAt(long position) {
+        List<? extends Annotation> fullPath = delegate.getAnnotationPathAt(position);
         if (fullPath == null) {
             return null;
         }

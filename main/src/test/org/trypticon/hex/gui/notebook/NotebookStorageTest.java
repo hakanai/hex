@@ -31,10 +31,10 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.anno.MutableAnnotationCollection;
-import org.trypticon.hex.gui.anno.ExtendedAnnotation;
-import org.trypticon.hex.gui.anno.ExtendedGroupAnnotation;
+import org.trypticon.hex.gui.anno.DefaultExtendedAnnotation;
+import org.trypticon.hex.gui.anno.DefaultExtendedGroupAnnotation;
+import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
 import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.nulls.NullInterpreter;
 import org.trypticon.hex.interpreters.primitives.PrimitiveInterpreters;
@@ -53,16 +53,17 @@ public class NotebookStorageTest {
 
     @Test
     public void testRoundTrip() throws Exception {
-        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new MemoryAnnotationCollection(100));
+        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"),
+                                                new ExtendedAnnotationCollection(100));
         MutableAnnotationCollection annotations = notebook.getAnnotations();
-        annotations.add(new ExtendedAnnotation(5, 4, new NullInterpreter(), "Test",
-                                               new ParametricStyle(ParametricStyle.StrokeStyle.DASHED,
-                                                                   Color.red, Color.white)));
-        annotations.add(new ExtendedAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE, null));
-        annotations.add(new ExtendedAnnotation(13, 4, new StringInterpreter("utf8"), null));
-        annotations.add(new ExtendedGroupAnnotation(9, 8, "Test Group", new ArrayList<>(4),
-                                                    new ParametricStyle(ParametricStyle.StrokeStyle.SOLID,
-                                                                        Color.lightGray, Color.white)));
+        annotations.add(new DefaultExtendedAnnotation(5, 4, new NullInterpreter(), "Test",
+                                                      new ParametricStyle(ParametricStyle.StrokeStyle.DASHED,
+                                                                          Color.red, Color.white)));
+        annotations.add(new DefaultExtendedAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE, null));
+        annotations.add(new DefaultExtendedAnnotation(13, 4, new StringInterpreter("utf8"), null));
+        annotations.add(new DefaultExtendedGroupAnnotation(9, 8, "Test Group", new ArrayList<>(4),
+                                                           new ParametricStyle(ParametricStyle.StrokeStyle.SOLID,
+                                                                               Color.lightGray, Color.white)));
 
         StringWriter writer = new StringWriter();
         storage.write(notebook, writer);
@@ -75,7 +76,8 @@ public class NotebookStorageTest {
         Notebook churned = storage.read(reader);
 
         assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
-        assertEquals("Wrong annotations", notebook.getAnnotations().getRootGroup(), churned.getAnnotations().getRootGroup());
+        assertEquals("Wrong annotations", notebook.getAnnotations().getRootGroup(),
+                     churned.getAnnotations().getRootGroup());
     }
 
     @Test
@@ -83,7 +85,7 @@ public class NotebookStorageTest {
         File tmpFile = File.createTempFile("temp", ".xml");
         try {
             URL tmpFileURL = tmpFile.toURI().toURL();
-            Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new MemoryAnnotationCollection(100));
+            Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new ExtendedAnnotationCollection(100));
 
             storage.write(notebook, tmpFileURL);
 
@@ -117,7 +119,7 @@ public class NotebookStorageTest {
     @Test(expected = IOException.class)
     public void testIOExceptionOnWriting() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"),
-                                                new MemoryAnnotationCollection(100));
+                                                new ExtendedAnnotationCollection(100));
         storage.write(notebook, new BrokenWriter());
     }
 

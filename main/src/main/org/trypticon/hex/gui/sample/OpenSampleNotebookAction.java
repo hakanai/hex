@@ -19,15 +19,22 @@
 package org.trypticon.hex.gui.sample;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jetbrains.annotations.NonNls;
 
+import org.trypticon.hex.anno.MutableAnnotation;
 import org.trypticon.hex.anno.MutableAnnotationCollection;
+import org.trypticon.hex.anno.MutableGroupAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.gui.anno.DefaultExtendedAnnotation;
+import org.trypticon.hex.gui.anno.DefaultExtendedGroupAnnotation;
+import org.trypticon.hex.gui.anno.ExtendedAnnotation;
 import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.util.BaseAction;
@@ -61,6 +68,27 @@ public class OpenSampleNotebookAction extends BaseAction {
             throw new IllegalStateException("class_file.rb couldn't be loaded");
         }
 
-        annotations.add(structure.drop(binary, 0));
+        annotations.add(extend(structure.drop(binary, 0)));
+    }
+
+    private ExtendedAnnotation extend(MutableAnnotation annotation) {
+        if (annotation instanceof MutableGroupAnnotation) {
+            List<? extends MutableAnnotation> annotations = ((MutableGroupAnnotation) annotation).getAnnotations();
+            List<ExtendedAnnotation> extendedAnnotations = new ArrayList<>(annotations.size());
+            for (MutableAnnotation child : annotations) {
+                extendedAnnotations.add(extend(child));
+            }
+
+            return new DefaultExtendedGroupAnnotation(annotation.getPosition(),
+                                                      annotation.getLength(),
+                                                      annotation.getNote(),
+                                                      extendedAnnotations, null);
+        } else {
+            return new DefaultExtendedAnnotation(annotation.getPosition(),
+                                                 annotation.getLength(),
+                                                 annotation.getInterpreter(),
+                                                 annotation.getNote(),
+                                                 null);
+        }
     }
 }

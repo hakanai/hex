@@ -30,8 +30,8 @@ import org.trypticon.hex.anno.Annotation;
 public class CustomAnnotationStyleScheme extends DefaultAnnotationStyleScheme {
     @Override
     public AnnotationStyle getStyle(Annotation annotation) {
-        if (annotation instanceof AnnotationExtensions) {
-            ParametricStyle customStyle = ((AnnotationExtensions) annotation).getCustomStyle();
+        if (annotation instanceof ExtendedAnnotation) {
+            ParametricStyle customStyle = ((ExtendedAnnotation) annotation).getCustomStyle();
             if (customStyle != null) {
                 return customStyle.toAnnotationStyle();
             }

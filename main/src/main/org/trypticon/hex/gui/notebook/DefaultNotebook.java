@@ -27,11 +27,11 @@ import org.jetbrains.annotations.NonNls;
 
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
-import org.trypticon.hex.anno.MemoryAnnotationCollection;
 import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
 import org.trypticon.hex.util.LoggerUtils;
 import org.trypticon.hex.util.URLUtils;
 
@@ -46,7 +46,7 @@ public class DefaultNotebook implements Notebook {
     private URL notebookLocation;
     private String name;
     private final URL binaryLocation;
-    private MutableAnnotationCollection annotations;
+    private ExtendedAnnotationCollection annotations;
     private Binary binary;
 
     private final Object openLock = new Object();
@@ -71,7 +71,7 @@ public class DefaultNotebook implements Notebook {
      * @param binaryLocation the location of the binary.
      * @param annotations the annotation collection.
      */
-    public DefaultNotebook(URL binaryLocation, MutableAnnotationCollection annotations) {
+    public DefaultNotebook(URL binaryLocation, ExtendedAnnotationCollection annotations) {
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
 
@@ -114,7 +114,7 @@ public class DefaultNotebook implements Notebook {
 
         if (annotations == null) {
             // Happens on first creation because we need to know the length of the file.
-            annotations = new MemoryAnnotationCollection(binary.length());
+            annotations = new ExtendedAnnotationCollection(binary.length());
 
             attachAnnotationCollectionListener();
         }

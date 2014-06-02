@@ -22,8 +22,8 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.anno.MutableAnnotation;
 import org.trypticon.hex.anno.SimpleMutableAnnotation;
 import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
 import org.trypticon.hex.binary.Binary;
@@ -59,7 +59,7 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        Annotation[] children = {
+        MutableAnnotation[] children = {
             new SimpleMutableAnnotation(0, 2, new UShortInterpreterBE(), "length"),
             new SimpleMutableAnnotation(2, 4, new StringInterpreter("UTF-8"), "bytes"),
         };
@@ -85,12 +85,12 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        Annotation[] arrayElements = {
+        MutableAnnotation[] arrayElements = {
             new SimpleMutableAnnotation(2, 2, new UShortInterpreterBE(), "elements[1]"),
             new SimpleMutableAnnotation(4, 2, new UShortInterpreterBE(), "elements[2]"),
             new SimpleMutableAnnotation(6, 2, new UShortInterpreterBE(), "elements[3]"),
         };
-        Annotation[] children = {
+        MutableAnnotation[] children = {
             new SimpleMutableAnnotation(0, 2, new UShortInterpreterBE(), "size"),
             new SimpleMutableGroupAnnotation(2, 6, "elements", Arrays.asList(arrayElements)),
         };
@@ -133,10 +133,10 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        Annotation[] grandchildren = {
+        MutableAnnotation[] grandchildren = {
             new SimpleMutableAnnotation(1, 2, new UShortInterpreterBE(), "value"),
         };
-        Annotation[] children = {
+        MutableAnnotation[] children = {
             new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
             new SimpleMutableGroupAnnotation(1, 2, "option1", Arrays.asList(grandchildren)),
         };
@@ -156,10 +156,10 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        Annotation[] grandchildren = {
+        MutableAnnotation[] grandchildren = {
             new SimpleMutableAnnotation(1, 4, new UIntInterpreterBE(), "value"),
         };
-        Annotation[] children = {
+        MutableAnnotation[] children = {
             new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
             new SimpleMutableGroupAnnotation(1, 4, "option2", Arrays.asList(grandchildren)),
         };
@@ -203,7 +203,7 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        Annotation[] children = {
+        MutableAnnotation[] children = {
             new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
             new SimpleMutableAnnotation(1, 2, new UShortInterpreterBE(), "value"),
         };
@@ -223,7 +223,7 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        Annotation[] children = {
+        MutableAnnotation[] children = {
             new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
             new SimpleMutableAnnotation(1, 4, new UIntInterpreterBE(), "value"),
         };
@@ -257,7 +257,7 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        Annotation[] children = {
+        MutableAnnotation[] children = {
             new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "bit_field"),
         };
 

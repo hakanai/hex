@@ -25,9 +25,8 @@ import java.util.Map;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Representer;
 
-import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.gui.anno.AnnotationExtensions;
+import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.gui.anno.ExtendedGroupAnnotation;
 import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterStorage;
@@ -52,10 +51,10 @@ class ExtendedRepresenter extends Representer {
 
         if (data instanceof Notebook) {
             return representNotebook((Notebook) data);
-        } else if (data instanceof GroupAnnotation) {
-            return representGroupAnnotation((GroupAnnotation) data);
-        } else if (data instanceof Annotation) {
-            return representAnnotation((Annotation) data);
+        } else if (data instanceof ExtendedGroupAnnotation) {
+            return representGroupAnnotation((ExtendedGroupAnnotation) data);
+        } else if (data instanceof ExtendedAnnotation) {
+            return representAnnotation((ExtendedAnnotation) data);
         } else if (data instanceof Interpreter) {
             return representInterpreter((Interpreter) data);
         } else if (data instanceof ParametricStyle) {
@@ -72,27 +71,23 @@ class ExtendedRepresenter extends Representer {
         return representMapping(YamlTags.NOTEBOOK_TAG, fields, false);
     }
 
-    private Node representGroupAnnotation(GroupAnnotation groupAnnotation) {
+    private Node representGroupAnnotation(ExtendedGroupAnnotation groupAnnotation) {
         Map<String, Object> fields = new LinkedHashMap<>(2);
         fields.put("position", groupAnnotation.getPosition());
         fields.put("length", groupAnnotation.getLength());
         fields.put("note", groupAnnotation.getNote());
         fields.put("annotations", groupAnnotation.getAnnotations());
-        if (groupAnnotation instanceof AnnotationExtensions) {
-            fields.put("custom_style", ((AnnotationExtensions) groupAnnotation).getCustomStyle());
-        }
+        fields.put("custom_style", groupAnnotation.getCustomStyle());
         return representMapping(YamlTags.GROUP_ANNOTATION_TAG, fields, false);
     }
 
-    private Node representAnnotation(Annotation annotation) {
+    private Node representAnnotation(ExtendedAnnotation annotation) {
         Map<String, Object> fields = new LinkedHashMap<>(4);
         fields.put("position", annotation.getPosition());
         fields.put("length", annotation.getLength());
         fields.put("interpreter", annotation.getInterpreter());
         fields.put("note", annotation.getNote());
-        if (annotation instanceof AnnotationExtensions) {
-            fields.put("custom_style", ((AnnotationExtensions) annotation).getCustomStyle());
-        }
+        fields.put("custom_style", annotation.getCustomStyle());
         return representMapping(YamlTags.ANNOTATION_TAG, fields, false);
     }
 

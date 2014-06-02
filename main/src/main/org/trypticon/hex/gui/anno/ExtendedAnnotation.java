@@ -18,54 +18,25 @@
 
 package org.trypticon.hex.gui.anno;
 
-import java.util.Objects;
-
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.interpreters.Interpreter;
+import org.trypticon.hex.anno.MutableAnnotation;
 
 /**
  * Annotation with additional methods.
  *
  * @author trejkaz
  */
-public class ExtendedAnnotation extends SimpleMutableAnnotation implements AnnotationExtensions {
-    private ParametricStyle customStyle;
+public interface ExtendedAnnotation extends MutableAnnotation {
+    /**
+     * Gets the custom style for the annotation.
+     *
+     * @return the custom style.
+     */
+    ParametricStyle getCustomStyle();
 
-    public ExtendedAnnotation(long position, long length, Interpreter interpreter, String note) {
-        this(position, length, interpreter, note, null);
-    }
-
-    public ExtendedAnnotation(long position, long length, Interpreter interpreter, String note,
-                              ParametricStyle customStyle) {
-        super(position, length, interpreter, note);
-        setCustomStyle(customStyle);
-    }
-
-    @Override
-    public ParametricStyle getCustomStyle() {
-        return customStyle;
-    }
-
-    @Override
-    public void setCustomStyle(ParametricStyle customStyle) {
-        this.customStyle = customStyle;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof ExtendedAnnotation)) {
-            return false;
-        }
-        ExtendedAnnotation that = (ExtendedAnnotation) o;
-        return super.equals(that) &&
-               Objects.equals(getCustomStyle(), that.getCustomStyle());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getCustomStyle());
-    }
+    /**
+     * Sets the custom style for the annotation.
+     *
+     * @param customStyle the custom style.
+     */
+    void setCustomStyle(ParametricStyle customStyle);
 }

@@ -49,22 +49,22 @@ class ParametricStyleRendererComponent extends JRendererLabel {
     public void setAnnotation(Annotation annotation) {
         // Creating a copy of the annotation which we can mess with for rendering.
         if (annotation instanceof GroupAnnotation) {
-            annotationCopy = new ExtendedGroupAnnotation(annotation.getPosition(),
-                                                         annotation.getLength(),
-                                                         annotation.getNote(),
-                                                         ((GroupAnnotation) annotation).getAnnotations(),
-                                                         ((AnnotationExtensions) annotation).getCustomStyle());
+            annotationCopy = new DefaultExtendedGroupAnnotation(annotation.getPosition(),
+                                                                annotation.getLength(),
+                                                                annotation.getNote(),
+                                                                ((ExtendedGroupAnnotation) annotation).getAnnotations(),
+                                                                ((ExtendedAnnotation) annotation).getCustomStyle());
         } else {
-            annotationCopy = new ExtendedAnnotation(annotation.getPosition(),
-                                                    annotation.getLength(),
-                                                    annotation.getInterpreter(),
-                                                    annotation.getNote(),
-                                                    ((AnnotationExtensions) annotation).getCustomStyle());
+            annotationCopy = new DefaultExtendedAnnotation(annotation.getPosition(),
+                                                           annotation.getLength(),
+                                                           annotation.getInterpreter(),
+                                                           annotation.getNote(),
+                                                           ((ExtendedAnnotation) annotation).getCustomStyle());
         }
     }
 
     public void setParametricStyle(ParametricStyle parametricStyle) {
-        ((AnnotationExtensions) annotationCopy).setCustomStyle(parametricStyle);
+        ((ExtendedAnnotation) annotationCopy).setCustomStyle(parametricStyle);
         // repaint() has no effect in JRendererLabel, so we paint immediately.
         paintImmediately(0, 0, getWidth(), getHeight());
     }
