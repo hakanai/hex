@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui;
+package org.trypticon.hex.gui.undo;
 
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
@@ -26,27 +26,36 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import org.trypticon.hex.gui.NotebookPaneAction;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.util.ActionException;
 
 /**
- * Helper to bring the Undo functionality into a single location so that each action can update the other.
+ * Implements the global undo tracking.
  *
  * @author trejkaz
  */
-public class UndoHelper {
+public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
     private final UndoAction undoAction = new UndoAction();
     private final RedoAction redoAction = new RedoAction();
 
+    @Override
+    public UndoHelper createUndoHelper() {
+        return new DefaultUndoHelper(this);
+    }
+
+    @Override
     public Action getUndoAction() {
         return undoAction;
     }
 
+    @Override
     public Action getRedoAction() {
         return redoAction;
     }
 
-    public void updateActions() {
+    void updateActions() {
         undoAction.updateEnabled();
         redoAction.updateEnabled();
     }
@@ -58,27 +67,21 @@ public class UndoHelper {
 
         @Override
         protected void doAction(ActionEvent event, NotebookPane notebookPane) throws ActionException {
-            UndoManager undoManager = notebookPane.getUndoManager();
-
+            UndoManager undoManager = notebookPane.getUndoHelper().getUndoManager();
             try {
                 undoManager.undo();
             } catch (CannotUndoException e) {
                 Logger.getLogger(getClass().getName()).log(Level.WARNING, "Unable to undo", e);
             }
-            updateEnabled();
-            redoAction.updateEnabled();
+
+            updateActions();
         }
 
         @Override
         protected boolean shouldBeEnabled(NotebookPane notebookPane) {
-            UndoManager undoManager = notebookPane.getUndoManager();
-            if (undoManager.canUndo()) {
-                putValue(NAME, undoManager.getUndoPresentationName());
-                return true;
-            } else {
-                putValue(NAME, Resources.getString("Undo.name"));
-                return false;
-            }
+            UndoManager undoManager = notebookPane.getUndoHelper().getUndoManager();
+            putValue(NAME, undoManager.getUndoPresentationName());
+            return undoManager.canUndo();
         }
     }
 
@@ -89,28 +92,21 @@ public class UndoHelper {
 
         @Override
         protected void doAction(ActionEvent event, NotebookPane notebookPane) throws ActionException {
-            UndoManager undoManager = notebookPane.getUndoManager();
-
+            UndoManager undoManager = notebookPane.getUndoHelper().getUndoManager();
             try {
                 undoManager.redo();
             } catch (CannotRedoException e) {
                 Logger.getLogger(getClass().getName()).log(Level.WARNING, "Unable to redo", e);
             }
 
-            updateEnabled();
-            undoAction.updateEnabled();
+            updateActions();
         }
 
         @Override
         protected boolean shouldBeEnabled(NotebookPane notebookPane) {
-            UndoManager undoManager = notebookPane.getUndoManager();
-            if (undoManager.canRedo()) {
-                putValue(NAME, undoManager.getRedoPresentationName());
-                return true;
-            } else {
-                putValue(NAME, Resources.getString("Redo.name"));
-                return false;
-            }
+            UndoManager undoManager = notebookPane.getUndoHelper().getUndoManager();
+            putValue(NAME, undoManager.getRedoPresentationName());
+            return undoManager.canRedo();
         }
     }
 }

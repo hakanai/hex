@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NonNls;
 
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
-import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.gui.Resources;
@@ -132,6 +131,9 @@ public class DefaultNotebook implements Notebook {
             public void annotationsRemoved(AnnotationCollectionEvent event) {
                 setDirty(true);
             }
+
+            @Override
+            public void annotationsChanged(AnnotationCollectionEvent event) { setDirty(true); }
         });
     }
 
@@ -197,7 +199,7 @@ public class DefaultNotebook implements Notebook {
     }
 
     @Override
-    public MutableAnnotationCollection getAnnotations() {
+    public ExtendedAnnotationCollection getAnnotations() {
         return annotations;
     }
 

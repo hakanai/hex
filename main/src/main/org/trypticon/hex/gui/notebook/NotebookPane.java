@@ -25,8 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
-import javax.swing.undo.UndoManager;
-import javax.swing.undo.UndoableEdit;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,11 +33,12 @@ import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.accessory.AccessoryBar;
 import org.trypticon.hex.accessory.ExpandableAccessoryBar;
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.anno.AnnotationPane;
 import org.trypticon.hex.gui.anno.CustomAnnotationStyleScheme;
 import org.trypticon.hex.gui.file.SaveConfirmation;
 import org.trypticon.hex.gui.file.SaveNotebookAction;
+import org.trypticon.hex.gui.undo.GlobalUndoHelper;
+import org.trypticon.hex.gui.undo.UndoHelper;
 import org.trypticon.hex.gui.util.Callback;
 
 /**
@@ -48,10 +47,10 @@ import org.trypticon.hex.gui.util.Callback;
  * @author trejkaz
  */
 public class NotebookPane extends JPanel {
+    private final UndoHelper undoHelper;
     private final HexViewer viewer;
     private final AccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
-    private final UndoManager undoManager = new UndoManager();
 
     PropertyChangeListener nameListener = event ->
         setName((String) event.getNewValue());
@@ -65,10 +64,12 @@ public class NotebookPane extends JPanel {
      *
      * @param notebook the notebook to view.
      */
-    public NotebookPane(Notebook notebook) {
+    public NotebookPane(Notebook notebook, GlobalUndoHelper globalUndoHelper) {
         AnnotationStyleScheme annotationStyleScheme = new CustomAnnotationStyleScheme();
 
-        annoPane = new AnnotationPane(annotationStyleScheme);
+        undoHelper = globalUndoHelper.createUndoHelper();
+
+        annoPane = new AnnotationPane(annotationStyleScheme, undoHelper);
 
         viewer = new HexViewer();
         viewer.setPreferredVisibleRowCount(36);
@@ -166,10 +167,10 @@ public class NotebookPane extends JPanel {
     /**
      * Gets the undo manager.
      *
-     * @return the undo manager.
+     * @return the undo h.
      */
-    public UndoManager getUndoManager() {
-        return undoManager;
+    public UndoHelper getUndoHelper() {
+        return undoHelper;
     }
 
     /**
@@ -218,17 +219,5 @@ public class NotebookPane extends JPanel {
         } else {
             okToCloseCallback.execute(true);
         }
-    }
-
-    /**
-     * Adds an edit to the Undo/Redo stack and notifies interested parties.
-     *
-     * @param edit the edit to add.
-     */
-    public void addEdit(UndoableEdit edit) {
-        undoManager.addEdit(edit);
-
-        HexFrame frame = (HexFrame) SwingUtilities.getWindowAncestor(this);
-        frame.getApplication().getUndoHelper().updateActions();
     }
 }

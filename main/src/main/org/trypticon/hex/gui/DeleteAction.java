@@ -40,7 +40,7 @@ class DeleteAction extends NotebookPaneAction {
     }
 
     @Override
-    protected void doAction(ActionEvent event, NotebookPane notebookPane) throws ActionException {
+    protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
         HexViewer viewer = notebookPane.getViewer();
 
         long position = viewer.getSelectionModel().getCursor();
@@ -53,7 +53,6 @@ class DeleteAction extends NotebookPaneAction {
         // TODO: This results in a search but we already know the parent.  We could add a method which takes the parent.
         MutableAnnotation annotation = (MutableAnnotation) annotationPath.get(annotationPath.size() - 1);
         MutableAnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
-        annotationCollection.remove(annotation);
-        notebookPane.addEdit(new DeleteEdit(annotationCollection, annotation));
+        notebookPane.getUndoHelper().perform(new DeleteEdit(annotationCollection, annotation));
     }
 }

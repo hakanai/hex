@@ -114,14 +114,10 @@ class AddAnnotationAction extends NotebookPaneAction {
             MutableAnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
 
             try {
-                annotationCollection.add(annotation);
+                notebookPane.getUndoHelper().perform(new AddEdit(annotationCollection, annotation));
             } catch (OverlappingAnnotationException e) {
                 throw new ActionException(Resources.getMessage("AddAnnotation.Errors.overlap"), e);
             }
-            
-            notebookPane.addEdit(new AddEdit(annotationCollection, annotation));
         }
-
-//
     }
 }

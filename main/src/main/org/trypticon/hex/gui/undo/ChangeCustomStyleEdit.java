@@ -21,48 +21,51 @@ package org.trypticon.hex.gui.undo;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import org.trypticon.hex.anno.MutableAnnotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.MutableAnnotationCollection;
-import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.gui.anno.ParametricStyle;
 
 /**
- * Undoable edit implementation for deleting an annotation.
+ * Undoable edit implementation for changing a custom style.
  *
  * @author trejkaz
  */
-public class DeleteEdit implements DryUndoableEdit {
-    private final MutableAnnotationCollection annotationCollection;
-    private final MutableAnnotation annotation;
+public class ChangeCustomStyleEdit implements DryUndoableEdit {
+    private final AnnotationCollection annotationCollection;
+    private final ExtendedAnnotation annotation;
+    private final ParametricStyle oldCustomStyle;
+    private final ParametricStyle newCustomStyle;
 
     /**
      * Constructs the edit.
      *
-     * @param annotationCollection the annotation collection we removed the annotation from.
-     * @param annotation the annotation which was deleted.
+     * @param annotationCollection the annotation collection containing the annotation.
+     * @param annotation the annotation to change.
+     * @param oldCustomStyle the old custom style.
+     * @param newCustomStyle the new custom style.
      */
-    public DeleteEdit(MutableAnnotationCollection annotationCollection, MutableAnnotation annotation) {
+    public ChangeCustomStyleEdit(MutableAnnotationCollection annotationCollection, ExtendedAnnotation annotation,
+                                 ParametricStyle oldCustomStyle, ParametricStyle newCustomStyle) {
         this.annotationCollection = annotationCollection;
         this.annotation = annotation;
+        this.oldCustomStyle = oldCustomStyle;
+        this.newCustomStyle = newCustomStyle;
     }
 
     @Override
     public void execute() throws CannotRedoException {
-        annotationCollection.remove(annotation);
+        annotation.setCustomStyle(newCustomStyle);
     }
 
     @Override
     public void undo() throws CannotUndoException {
-        try {
-            annotationCollection.add(annotation);
-        } catch (OverlappingAnnotationException e) {
-            // Should be impossible.
-            throw new IllegalStateException(e);
-        }
+        annotation.setCustomStyle(oldCustomStyle);
     }
 
     @Override
     public String getPresentationName() {
-        return Resources.getString("Delete.name");
+        return Resources.getString("AnnotationViewer.Edits.changeCustomStyle");
     }
 }

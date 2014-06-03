@@ -35,6 +35,7 @@ import org.trypticon.hex.gui.file.SaveNotebookAction;
 import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.recent.OpenRecentMenu;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
+import org.trypticon.hex.gui.undo.GlobalUndoHelper;
 import org.trypticon.hex.gui.util.DelegatingAction;
 import org.trypticon.hex.gui.util.MenuAdapter;
 
@@ -83,7 +84,7 @@ public class MenuBarBuilder {
         //  - ?
         JMenu editMenu = new JMenu(Resources.getString("Edit.name"));
 
-        UndoHelper undoHelper = application.getUndoHelper();
+        GlobalUndoHelper undoHelper = application.getGlobalUndoHelper();
         editMenu.add(undoHelper.getUndoAction());
         editMenu.add(undoHelper.getRedoAction());
 

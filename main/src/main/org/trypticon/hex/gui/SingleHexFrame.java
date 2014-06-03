@@ -45,7 +45,7 @@ public class SingleHexFrame extends HexFrame {
     public SingleHexFrame(HexApplication application, Notebook notebook) {
         super(application);
 
-        notebookPane = new NotebookPane(notebook);
+        notebookPane = new NotebookPane(notebook, application.getGlobalUndoHelper());
         notebookPane.removePropertyChangeListener("dirty", event -> updateDocumentModified());
 
         updateTitle();

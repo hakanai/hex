@@ -32,8 +32,8 @@ import org.jdesktop.swingx.treetable.TreeTableModel;
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
-import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.gui.undo.UndoHelper;
 import org.trypticon.hex.gui.util.NullTreeTableModel;
 
 /**
@@ -43,16 +43,19 @@ import org.trypticon.hex.gui.util.NullTreeTableModel;
  */
 public class AnnotationPane extends JPanel {
 
+    private final UndoHelper undoHelper;
+
     private JXTreeTable annoTreeTable;
     private TreeTableModel annoTreeTableModel;
 
-    private MutableAnnotationCollection annotations;
+    private ExtendedAnnotationCollection annotations;
     private Binary binary;
 
     private List<Annotation> selectedAnnotationPath;
 
-    public AnnotationPane(AnnotationStyleScheme annotationStyleScheme) {
+    public AnnotationPane(AnnotationStyleScheme annotationStyleScheme, UndoHelper undoHelper) {
         annoTreeTable = new AnnotationTreeTable(annotationStyleScheme);
+        this.undoHelper = undoHelper;
 
         annoTreeTable.addTreeSelectionListener(treeSelectionEvent -> {
             TreePath treePath = annoTreeTable.getTreeSelectionModel().getSelectionPath();
@@ -78,7 +81,7 @@ public class AnnotationPane extends JPanel {
         }
     }
 
-    public void setAnnotations(MutableAnnotationCollection annotations) {
+    public void setAnnotations(ExtendedAnnotationCollection annotations) {
         this.annotations = annotations;
         createModelIfComplete();
     }
@@ -100,7 +103,7 @@ public class AnnotationPane extends JPanel {
 
     private void createModelIfComplete() {
         if (annotations != null && binary != null) {
-            annoTreeTableModel = new AnnotationTreeTableModel(annotations, binary);
+            annoTreeTableModel = new AnnotationTreeTableModel(annotations, binary, undoHelper);
         } else {
             annoTreeTableModel = new NullTreeTableModel();
         }

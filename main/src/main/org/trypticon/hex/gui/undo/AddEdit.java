@@ -18,8 +18,6 @@
 
 package org.trypticon.hex.gui.undo;
 
-import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 import org.trypticon.hex.anno.GroupAnnotation;
@@ -33,7 +31,7 @@ import org.trypticon.hex.gui.Resources;
  *
  * @author trejkaz
  */
-public class AddEdit extends AbstractUndoableEdit {
+public class AddEdit implements DryUndoableEdit {
     private final MutableAnnotationCollection annotationCollection;
     private final MutableAnnotation annotation;
 
@@ -49,20 +47,18 @@ public class AddEdit extends AbstractUndoableEdit {
     }
 
     @Override
-    public void undo() throws CannotUndoException {
-        super.undo();
-        annotationCollection.remove(annotation);
-    }
-
-    @Override
-    public void redo() throws CannotRedoException {
-        super.redo();
+    public void execute() throws Exception {
         try {
             annotationCollection.add(annotation);
         } catch (OverlappingAnnotationException e) {
             // Should be impossible.
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public void undo() throws CannotUndoException {
+        annotationCollection.remove(annotation);
     }
 
     @Override

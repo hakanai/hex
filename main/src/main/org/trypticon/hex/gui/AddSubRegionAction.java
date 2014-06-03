@@ -52,11 +52,9 @@ public class AddSubRegionAction extends NotebookPaneAction {
         MutableAnnotation annotation = new DefaultExtendedGroupAnnotation(position, length, null);
 
         try {
-            annotationCollection.add(annotation);
+            notebookPane.getUndoHelper().perform(new AddEdit(annotationCollection, annotation));
         } catch (OverlappingAnnotationException e) {
             throw new ActionException(Resources.getMessage("AddSubRegion.Errors.overlap"), e);
         }
-
-        notebookPane.addEdit(new AddEdit(annotationCollection, annotation));
     }
 }

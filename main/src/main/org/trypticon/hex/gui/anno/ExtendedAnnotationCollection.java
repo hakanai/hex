@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.gui.anno;
 
+import java.util.Objects;
+
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
 
 /**
@@ -32,5 +34,33 @@ public class ExtendedAnnotationCollection extends MemoryAnnotationCollection {
 
     public ExtendedAnnotationCollection(ExtendedGroupAnnotation rootGroup) {
         super(rootGroup);
+    }
+
+    /**
+     * Changes the note on an annotation and fires an event about it.
+     *
+     * @param annotation the annotation.
+     * @param newNote the new note.
+     */
+    public void changeNote(ExtendedAnnotation annotation, String newNote) {
+        String oldNote = annotation.getNote();
+        annotation.setNote(newNote);
+        if (!Objects.equals(oldNote, newNote)) {
+            fireAnnotationChanged(annotation);
+        }
+    }
+
+    /**
+     * Changes the custom style on an annotation and fires an event about it.
+     *
+     * @param annotation the annotation.
+     * @param newCustomStyle the new custom style.
+     */
+    public void changeCustomStyle(ExtendedAnnotation annotation, ParametricStyle newCustomStyle) {
+        ParametricStyle oldCustomStyle = annotation.getCustomStyle();
+        annotation.setCustomStyle(newCustomStyle);
+        if (!Objects.equals(oldCustomStyle, newCustomStyle)) {
+            fireAnnotationChanged(annotation);
+        }
     }
 }

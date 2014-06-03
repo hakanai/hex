@@ -38,6 +38,8 @@ import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
 import org.trypticon.hex.gui.recent.RecentDocumentsModel;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
+import org.trypticon.hex.gui.undo.DefaultGlobalUndoHelper;
+import org.trypticon.hex.gui.undo.GlobalUndoHelper;
 import org.trypticon.hex.gui.util.Callback;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
@@ -49,7 +51,7 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
 public class HexApplication {
     private final RecentDocumentsModel recentDocumentsModel = new RecentDocumentsModel();
     private final PreferredDirectoryManager preferredDirectoryManager = new PreferredDirectoryManager();
-    private final UndoHelper undoHelper = new UndoHelper();
+    private final GlobalUndoHelper undoHelper = new DefaultGlobalUndoHelper();
 
     /**
      * Constructs the application.
@@ -81,7 +83,7 @@ public class HexApplication {
      *
      * @return the Undo helper.
      */
-    public UndoHelper getUndoHelper() {
+    public GlobalUndoHelper getGlobalUndoHelper() {
         return undoHelper;
     }
 

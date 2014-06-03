@@ -18,6 +18,7 @@
 
 package org.trypticon.hex.gui.anno;
 
+import java.util.Objects;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.tree.TreePath;
 
@@ -26,9 +27,11 @@ import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.anno.MutableAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.gui.Resources;
+import org.trypticon.hex.gui.undo.ChangeCustomStyleEdit;
+import org.trypticon.hex.gui.undo.ChangeNoteEdit;
+import org.trypticon.hex.gui.undo.UndoHelper;
 import org.trypticon.hex.gui.util.AbstractTreeTableModel;
 
 /**
@@ -52,12 +55,14 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
         Resources.getString("AnnotationViewer.Columns.style")
     };
 
-    private final AnnotationCollection annotations;
+    private final ExtendedAnnotationCollection annotations;
     private final Binary binary;
+    private final UndoHelper undoHelper;
 
-    public AnnotationTreeTableModel(AnnotationCollection annotations, Binary binary) {
+    public AnnotationTreeTableModel(ExtendedAnnotationCollection annotations, Binary binary, UndoHelper undoHelper) {
         this.annotations = annotations;
         this.binary = binary;
+        this.undoHelper = undoHelper;
 
         annotations.addAnnotationCollectionListener(this);
     }
@@ -184,38 +189,54 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
 
     @Override
     public void setValueAt(Object value, Object node, int column) {
-        switch (column)
-        {
-            case NOTE_COLUMN:
-                ((MutableAnnotation) node).setNote((String) value);
-                // TODO: Set a dirty flag somewhere.
-                // TODO: Undo
-                break;
+        ExtendedAnnotation annotation = (ExtendedAnnotation) node;
+        try {
+            switch (column) {
+                case NOTE_COLUMN:
+                    String oldNote = annotation.getNote();
+                    String newNote = (String) value;
+                    if (!Objects.equals(oldNote, newNote)) {
+                        undoHelper.perform(new ChangeNoteEdit(annotations, annotation, oldNote, newNote));
+                    }
+                    break;
 
-            case STYLE_COLUMN:
-                if (node instanceof ExtendedAnnotation) {
-                    ((ExtendedAnnotation) node).setCustomStyle((ParametricStyle) value);
-                }
-                break;
+                case STYLE_COLUMN:
+                    ParametricStyle oldCustomStyle = annotation.getCustomStyle();
+                    ParametricStyle newCustomStyle = (ParametricStyle) value;
+                    if (!Objects.equals(oldCustomStyle, newCustomStyle)) {
+                        undoHelper.perform(
+                            new ChangeCustomStyleEdit(annotations, annotation, oldCustomStyle, newCustomStyle));
+                    }
+                    break;
 
-            default:
-                throw new IllegalArgumentException("Column " + column + " is not editable");
+                default:
+                    throw new IllegalArgumentException("Column " + column + " is not editable");
+            }
+        } catch (Exception e) {
+            // Should never get an exception, we expect anything in this method to be calling basic setters.
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void annotationsAdded(AnnotationCollectionEvent event) {
-        Object[] path = event.getParentPath().toArray();
-        int[] childIndices = event.getChildIndices().stream().mapToInt(i -> i).toArray();
-        Object[] children = event.getChildren().toArray();
-        fireTreeNodesInserted(new TreeModelEvent(this, path, childIndices, children));
+        fireTreeNodesInserted(convertEvent(event));
     }
 
     @Override
     public void annotationsRemoved(AnnotationCollectionEvent event) {
+        fireTreeNodesRemoved(convertEvent(event));
+    }
+
+    @Override
+    public void annotationsChanged(AnnotationCollectionEvent event) {
+        fireTreeNodesChanged(convertEvent(event));
+    }
+
+    private TreeModelEvent convertEvent(AnnotationCollectionEvent event) {
         Object[] path = event.getParentPath().toArray();
         int[] childIndices = event.getChildIndices().stream().mapToInt(i -> i).toArray();
         Object[] children = event.getChildren().toArray();
-        fireTreeNodesRemoved(new TreeModelEvent(this, path, childIndices, children));
+        return new TreeModelEvent(this, path, childIndices, children);
     }
 }

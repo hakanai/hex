@@ -96,6 +96,13 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
                     fireAnnotationsRemoved(event.getParentPath(), event.getChildIndices(), event.getChildren());
                 }
             }
+
+            @Override
+            public void annotationsChanged(AnnotationCollectionEvent event) {
+                if (treeTable.isExpanded(new TreePath(event.getParentPath().toArray()))) {
+                    fireAnnotationsChanged(event.getParentPath(), event.getChildIndices(), event.getChildren());
+                }
+            }
         });
     }
 
@@ -113,7 +120,15 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
 
     @Override
     public List<? extends Annotation> getAnnotationPathAt(long position) {
-        List<? extends Annotation> fullPath = delegate.getAnnotationPathAt(position);
+        return getExpandedAnnotationPath(delegate.getAnnotationPathAt(position));
+    }
+
+    @Override
+    public List<? extends Annotation> getAnnotationPathFor(Annotation annotation) {
+        return getExpandedAnnotationPath(delegate.getAnnotationPathFor(annotation));
+    }
+
+    private List<? extends Annotation> getExpandedAnnotationPath(List<? extends Annotation> fullPath) {
         if (fullPath == null) {
             return null;
         }

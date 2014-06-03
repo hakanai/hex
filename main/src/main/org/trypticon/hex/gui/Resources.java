@@ -73,7 +73,11 @@ public class Resources {
     }
 
     public static void localiseAction(Action action, @NonNls String baseKey) {
-        action.putValue(Action.NAME, getString(baseKey + NAME_SUFFIX));
+        try {
+            action.putValue(Action.NAME, getString(baseKey + NAME_SUFFIX));
+        } catch (MissingResourceException e) {
+            // Not a problem.
+        }
         try {
             action.putValue(Action.MNEMONIC_KEY, (int) getString(baseKey + MNEMONIC_SUFFIX).charAt(0));
         } catch (MissingResourceException e) {

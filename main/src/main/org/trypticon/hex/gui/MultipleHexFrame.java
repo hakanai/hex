@@ -31,7 +31,6 @@ import java.util.List;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
@@ -66,7 +65,7 @@ public class MultipleHexFrame extends HexFrame {
         updateDocumentModified();
 
         // We add a dummy pane for size computation purposes only.
-        NotebookPane dummyPane = new NotebookPane(new DummyNotebook());
+        NotebookPane dummyPane = new NotebookPane(new DummyNotebook(), getApplication().getGlobalUndoHelper());
         tabbedPane.addTab("", dummyPane);
 
         setLayout(new BorderLayout());
@@ -120,7 +119,7 @@ public class MultipleHexFrame extends HexFrame {
      * @param notebook the notebook to view.
      */
     public void addTab(Notebook notebook) {
-        NotebookPane notebookPane = new NotebookPane(notebook);
+        NotebookPane notebookPane = new NotebookPane(notebook, getApplication().getGlobalUndoHelper());
         tabbedPane.add(notebookPane);
         tabbedPane.setSelectedComponent(notebookPane);
 
@@ -245,7 +244,7 @@ public class MultipleHexFrame extends HexFrame {
      * A dummy notebook class we can use for size computation.
      */
     private class DummyNotebook implements Notebook {
-        private final MutableAnnotationCollection noAnnotations = new ExtendedAnnotationCollection(1);
+        private final ExtendedAnnotationCollection noAnnotations = new ExtendedAnnotationCollection(1);
 
         @Override
         public void open() {
@@ -270,7 +269,7 @@ public class MultipleHexFrame extends HexFrame {
         }
 
         @Override
-        public MutableAnnotationCollection getAnnotations() {
+        public ExtendedAnnotationCollection getAnnotations() {
             return noAnnotations;
         }
 
