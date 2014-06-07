@@ -18,14 +18,22 @@
 
 package org.trypticon.hex.gui.anno;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Point;
+import java.awt.SystemColor;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.colorchooser.ColorChooserComponentFactory;
 import javax.swing.colorchooser.ColorSelectionModel;
 
 import org.trypticon.hex.gui.util.Dialogs;
+import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
  * A button to pick a colour.
@@ -35,12 +43,10 @@ import org.trypticon.hex.gui.util.Dialogs;
 public class ColorPickerButton extends JButton {
     private final AbstractColorChooserPanel chooserPanel;
 
-    public ColorPickerButton() {
-        setText("          ");
+    private Color color;
 
-        // Aqua look and feel sets buttons to non-opaque by default which causes the background
-        // colour not to be painted.
-        setOpaque(true);
+    public ColorPickerButton() {
+        setIcon(new WellIcon());
 
         //XXX: A "well" button type would be nice. Quaqua had it, but Aqua doesn't. :(
         putClientProperty("JButton.buttonType", "square");
@@ -53,10 +59,64 @@ public class ColorPickerButton extends JButton {
         chooserPanel = ColorChooserComponentFactory.getDefaultChooserPanels()[0];
         chooserPanel.installChooserPanel(chooser);
         ColorSelectionModel chooserModel = chooserPanel.getColorSelectionModel();
-        chooserModel.addChangeListener(event -> setBackground(chooserModel.getSelectedColor()));
+        chooserModel.addChangeListener(event -> setColor(chooserModel.getSelectedColor()));
+    }
+
+    /**
+     * Gets the current selected colour.
+     *
+     * @return the current selected colour.
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
+     * Sets the current selected colour.
+     *
+     * @param color the current selected colour.
+     */
+    public void setColor(Color color) {
+        Color oldColor = this.color;
+        this.color = color;
+        firePropertyChange("color", oldColor, color);
+        repaint();
+    }
+
+    @Override
+    public void updateUI() {
+        super.updateUI();
+        if (PLAFUtils.isAqua()) {
+            setMargin(new Insets(4, 2, 5, 3)); // visually 4,4,4,4 on all sides
+        } else {
+            setMargin(new Insets(4, 4, 4, 4));
+        }
     }
 
     private void buttonPressed() {
         Dialogs.popupAutoClosingModalDialog(this, chooserPanel, new Point(0, getHeight()));
+    }
+
+    private class WellIcon implements Icon {
+        private static final int WIDTH = 34;
+        private static final int HEIGHT = 13;
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            g.setColor(color);
+            g.fillRect(x, y, WIDTH, HEIGHT);
+            g.setColor(c.isEnabled() ? SystemColor.controlShadow : UIManager.getColor("Button.background"));
+            g.drawRect(x, y, WIDTH, HEIGHT);
+        }
+
+        @Override
+        public int getIconWidth() {
+            return WIDTH;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return HEIGHT;
+        }
     }
 }

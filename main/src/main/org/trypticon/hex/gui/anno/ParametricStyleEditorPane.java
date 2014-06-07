@@ -67,8 +67,8 @@ public class ParametricStyleEditorPane extends JPanel {
         backgroundColorButton = new ColorPickerButton();
 
         borderStrokeStyleComboBox.setSelectedItem(workingStyle.getBorderStrokeStyle());
-        borderColorButton.setBackground(workingStyle.getBorderColor());
-        backgroundColorButton.setBackground(workingStyle.getBackgroundColor());
+        borderColorButton.setColor(workingStyle.getBorderColor());
+        backgroundColorButton.setColor(workingStyle.getBackgroundColor());
 
         customCheckBox.addItemListener(event -> {
             setCustom(event.getStateChange() == ItemEvent.SELECTED);
@@ -80,12 +80,12 @@ public class ParametricStyleEditorPane extends JPanel {
                                                     workingStyle.getBackgroundColor()));
             }
         });
-        borderColorButton.addPropertyChangeListener("background", event -> {
+        borderColorButton.addPropertyChangeListener("color", event -> {
             setWorkingStyle(new ParametricStyle(workingStyle.getBorderStrokeStyle(),
                                                 (Color) event.getNewValue(),
                                                 workingStyle.getBackgroundColor()));
         });
-        backgroundColorButton.addPropertyChangeListener("background", event -> {
+        backgroundColorButton.addPropertyChangeListener("color", event -> {
             setWorkingStyle(new ParametricStyle(workingStyle.getBorderStrokeStyle(),
                                                 workingStyle.getBorderColor(),
                                                 (Color) event.getNewValue()));
@@ -97,8 +97,8 @@ public class ParametricStyleEditorPane extends JPanel {
         if (style != null) {
             customCheckBox.setSelected(true);
             borderStrokeStyleComboBox.setSelectedItem(style.getBorderStrokeStyle());
-            borderColorButton.setBackground(style.getBorderColor());
-            backgroundColorButton.setBackground(style.getBackgroundColor());
+            borderColorButton.setColor(style.getBorderColor());
+            backgroundColorButton.setColor(style.getBackgroundColor());
         }
 
         PLAFUtils.makeSmall(this, customCheckBox,
@@ -140,14 +140,10 @@ public class ParametricStyleEditorPane extends JPanel {
 
         borderStrokeStyleLabel.setEnabled(selected);
         borderStrokeStyleComboBox.setEnabled(selected);
-
         borderColorLabel.setEnabled(selected);
         borderColorButton.setEnabled(selected);
-        borderColorButton.setOpaque(selected);
-
         backgroundColorLabel.setEnabled(selected);
         backgroundColorButton.setEnabled(selected);
-        backgroundColorButton.setOpaque(selected);
     }
 
     /**
