@@ -18,9 +18,9 @@
 
 require 'java'
 
-include_class org.trypticon.hex.anno.SimpleMutableAnnotation
-include_class org.trypticon.hex.anno.SimpleMutableGroupAnnotation
-include_class org.trypticon.hex.interpreters.FixedLengthInterpreter
+java_import org.trypticon.hex.anno.SimpleMutableAnnotation
+java_import org.trypticon.hex.anno.SimpleMutableGroupAnnotation
+java_import org.trypticon.hex.interpreters.FixedLengthInterpreter
 
 require 'org/trypticon/hex/formats/ruby/drop_context'
 require 'org/trypticon/hex/formats/ruby/simple_structure'
