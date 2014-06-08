@@ -127,10 +127,10 @@ public class ParametricStyleEditorPane extends JPanel {
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(borderStrokeStyleLabel)
                 .addComponent(borderStrokeStyleComboBox))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addComponent(borderColorLabel)
                 .addComponent(borderColorButton))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addComponent(backgroundColorLabel)
                 .addComponent(backgroundColorButton)));
     }
