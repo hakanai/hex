@@ -10,7 +10,9 @@ repositories.remote << 'http://mirrors.ibiblio.org/pub/mirrors/maven2/'
 repositories.remote << 'http://repo1.maven.org/maven2/'
 
 INTELLIJ_ANNOTATIONS  =   artifact('com.intellij:annotations:jar:12.0')
-SWINGX                = [ artifact('org.swinglabs.swingx:swingx-core:jar:1.6.4-SNAPSHOT').from('lib/swingx-core-1.6.4-SNAPSHOT.jar'),
+SWINGX                = [ artifact('org.swinglabs.swingx:swingx-action:jar:1.6.4-SNAPSHOT').from('lib/swingx-action-1.6.4-SNAPSHOT.jar'),
+                          artifact('org.swinglabs.swingx:swingx-common:jar:1.6.4-SNAPSHOT').from('lib/swingx-common-1.6.4-SNAPSHOT.jar'),
+                          artifact('org.swinglabs.swingx:swingx-core:jar:1.6.4-SNAPSHOT').from('lib/swingx-core-1.6.4-SNAPSHOT.jar'),
                           artifact('org.swinglabs.swingx:swingx-painters:jar:1.6.4-SNAPSHOT').from('lib/swingx-painters-1.6.4-SNAPSHOT.jar'),
                           artifact('org.swinglabs.swingx:swingx-plaf:jar:1.6.4-SNAPSHOT').from('lib/swingx-plaf-1.6.4-SNAPSHOT.jar')]
 JRUBY                 =   artifact('org.jruby:jruby-complete:jar:1.7.12')
@@ -46,6 +48,15 @@ define 'hex' do
     compile.with projects('formats')
     test.with project('formats').test.compile.target
     package :jar
+  end
+
+  # Executable jar file for the application.
+  package(:jar).tap do |pkg|
+    %w{formats main}.each do |p|
+      pkg.merge project(p)
+      pkg.merge project(p).compile.dependencies
+    end
+    pkg.with manifest: manifest.merge('Main-Class' => 'org.trypticon.hex.gui.Main')
   end
 
 #  binaries_id = "#{id}-components-#{version}"
