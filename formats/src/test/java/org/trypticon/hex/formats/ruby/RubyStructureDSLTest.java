@@ -34,7 +34,9 @@ import org.trypticon.hex.interpreters.primitives.unsigned.UIntInterpreterBE;
 import org.trypticon.hex.interpreters.primitives.unsigned.UShortInterpreterBE;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.trypticon.hex.formats.ruby.AnnotationTestUtils.sameAnnotation;
 
 /**
  * Tests for {@link RubyStructureDSL}.
@@ -65,8 +67,7 @@ public class RubyStructureDSLTest {
         };
 
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 6, "string_with_length", Arrays.asList(children));
-
-        assertEquals("Wrong annotations created", expected, group);
+        assertThat(group, is(sameAnnotation(expected)));
     }
 
     @Test
@@ -96,8 +97,7 @@ public class RubyStructureDSLTest {
         };
 
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 8, "array_with_size", Arrays.asList(children));
-
-        assertEquals("Wrong annotations created", expected, group);
+        assertThat(group, is(sameAnnotation(expected)));
     }
 
     private Structure createSwitchNotReplacingStructure() {
@@ -142,7 +142,7 @@ public class RubyStructureDSLTest {
         };
 
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 3, "one_or_the_other", Arrays.asList(children));
-        assertEquals("Wrong annotations created", expected, group);
+        assertThat(group, is(sameAnnotation(expected)));
     }
 
     @Test
@@ -165,7 +165,7 @@ public class RubyStructureDSLTest {
         };
 
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 5, "one_or_the_other", Arrays.asList(children));
-        assertEquals("Wrong annotations created", expected, group);
+        assertThat(group, is(sameAnnotation(expected)));
     }
 
     private Structure createSwitchReplacingStructure() {
@@ -209,7 +209,7 @@ public class RubyStructureDSLTest {
         };
 
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 3, "option1", Arrays.asList(children));
-        assertEquals("Wrong annotations created", expected, group);
+        assertThat(group, is(sameAnnotation(expected)));
     }
 
     @Test
@@ -229,7 +229,7 @@ public class RubyStructureDSLTest {
         };
 
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 5, "option2", Arrays.asList(children));
-        assertEquals("Wrong annotations created", expected, group);
+        assertThat(group, is(sameAnnotation(expected)));
     }
 
     @Test
@@ -262,6 +262,6 @@ public class RubyStructureDSLTest {
         };
 
         GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 1, "some_header", Arrays.asList(children));
-        assertEquals("Wrong annotations created", expected, group);
+        assertThat(group, is(sameAnnotation(expected)));
     }
 }
