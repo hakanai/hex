@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Hex Components">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/hex-anno-0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hex-binary-0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hex-interpreter-0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hex-util-0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hex-viewer-0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../hex-components/anno/src/main" />
+    </SOURCES>
+  </library>
+</component>

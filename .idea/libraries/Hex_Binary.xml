@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Hex Binary">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/hex-binary.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

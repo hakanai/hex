@@ -1,5 +1,5 @@
-/build
-/*/build
+**/target
+**/reports
 /.idea/out
 /.idea/workspace.xml
 /.idea/dictionaries/trejkaz.xml

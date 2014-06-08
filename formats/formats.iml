@@ -1,0 +1,141 @@
+<module relativePaths="true" type="JAVA_MODULE" version="4"><component name="FacetManager">
+    <facet name="JRuby" type="JRUBY">
+      <configuration number="0">
+        <JRUBY_FACET_CONFIG_ID NAME="JRUBY_SDK_NAME" VALUE="" />
+      </configuration>
+    </facet>
+  </component><component inherit-compiler-output="false" name="NewModuleRootManager">
+  <output url="file://$MODULE_DIR$/target/idea/classes" />
+  <output-test url="file://$MODULE_DIR$/target/test/idea/classes" />
+  <exclude-output />
+  <content url="file://$MODULE_DIR$">
+    <sourceFolder isTestSource="false" url="file://$MODULE_DIR$/src/main/java" />
+    <sourceFolder isTestSource="false" url="file://$MODULE_DIR$/src/main/resources" />
+    <sourceFolder isTestSource="true" url="file://$MODULE_DIR$/src/test/java" />
+    <excludeFolder url="file://$MODULE_DIR$/reports" />
+    <excludeFolder url="file://$MODULE_DIR$/target" />
+  </content>
+  <orderEntry forTests="false" type="sourceFolder" />
+  <orderEntry jdkName="1.8" jdkType="JavaSDK" type="jdk" />
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/intellij/annotations/12.0/annotations-12.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6/hex-anno-0.6.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6/hex-binary-0.6.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6/hex-interpreter-0.6.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6/hex-viewer-0.6.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6/hex-util-0.6.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jruby/jruby-complete/1.7.12/jruby-complete-1.7.12.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.8.2/junit-4.8.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jmock/jmock/2.5.1/jmock-2.5.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntryProperties />
+</component></module>
