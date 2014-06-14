@@ -30,9 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.BaseConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -59,8 +57,7 @@ public class NotebookStorage {
         DumperOptions dumperOptions = new DumperOptions();
         dumperOptions.setWidth(Integer.MAX_VALUE);
 
-        yaml = new Yaml(new Loader(constructor),
-                        new Dumper(representer, dumperOptions));
+        yaml = new Yaml(constructor, representer, dumperOptions);
     }
 
     public Notebook read(Reader reader) throws IOException {
