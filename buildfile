@@ -25,7 +25,8 @@ HEX_COMPONENTS        = [ artifact('org.trypticon.hex:hex-anno:jar:0.6').from('l
 GUM                   =   artifact('org.trypticon.gum:gum:jar:0.1-SNAPSHOT').from('lib/gum-0.1-SNAPSHOT.jar')
 HAQUA                 =   artifact('org.trypticon.haqua:haqua:jar:0.1-SNAPSHOT').from('lib/haqua-0.1-SNAPSHOT.jar')
 ICU4J                 = [ artifact('com.ibm.icu:icu4j:jar:53.1'),
-                          artifact('com.ibm.icu:icu4j-charsets:jar:53.1').from('lib/icu4j-charsets-53.1.jar') ]
+                          artifact('com.ibm.icu:icu4j-charsets:jar:53.1') ]
+
 download artifact("com.ibm.icu:icu4j-charsets:jar:53.1") => 'http://download.icu-project.org/files/icu4j/53.1/icu4j-charset-53_1.jar'
 
 SNAKEYAML             =   artifact('org.yaml:snakeyaml:jar:1.13')
