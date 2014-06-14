@@ -20,9 +20,9 @@ package org.trypticon.hex.gui.undo;
 
 import javax.swing.undo.CannotUndoException;
 
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.anno.MutableAnnotation;
-import org.trypticon.hex.anno.MutableAnnotationCollection;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.gui.Resources;
 
@@ -32,8 +32,8 @@ import org.trypticon.hex.gui.Resources;
  * @author trejkaz
  */
 public class AddEdit implements DryUndoableEdit {
-    private final MutableAnnotationCollection annotationCollection;
-    private final MutableAnnotation annotation;
+    private final AnnotationCollection annotationCollection;
+    private final Annotation annotation;
 
     /**
      * Constructs the edit.
@@ -41,7 +41,7 @@ public class AddEdit implements DryUndoableEdit {
      * @param annotationCollection the annotation collection we removed the annotation from.
      * @param annotation the annotation which was deleted.
      */
-    public AddEdit(MutableAnnotationCollection annotationCollection, MutableAnnotation annotation) {
+    public AddEdit(AnnotationCollection annotationCollection, Annotation annotation) {
         this.annotationCollection = annotationCollection;
         this.annotation = annotation;
     }

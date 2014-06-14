@@ -28,7 +28,10 @@ import org.jdesktop.swingx.renderer.JRendererLabel;
 import org.trypticon.hex.AnnotationStyle;
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.CommonAttributes;
 import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.anno.SimpleAnnotation;
+import org.trypticon.hex.anno.SimpleGroupAnnotation;
 
 /**
  * A component to use for rendering which shows the annotation style.
@@ -49,22 +52,19 @@ class ParametricStyleRendererComponent extends JRendererLabel {
     public void setAnnotation(Annotation annotation) {
         // Creating a copy of the annotation which we can mess with for rendering.
         if (annotation instanceof GroupAnnotation) {
-            annotationCopy = new DefaultExtendedGroupAnnotation(annotation.getPosition(),
-                                                                annotation.getLength(),
-                                                                annotation.getNote(),
-                                                                ((ExtendedGroupAnnotation) annotation).getAnnotations(),
-                                                                ((ExtendedAnnotation) annotation).getCustomStyle());
+            annotationCopy = new SimpleGroupAnnotation(annotation.getPosition(),
+                                                       annotation.getLength());
         } else {
-            annotationCopy = new DefaultExtendedAnnotation(annotation.getPosition(),
-                                                           annotation.getLength(),
-                                                           annotation.getInterpreter(),
-                                                           annotation.getNote(),
-                                                           ((ExtendedAnnotation) annotation).getCustomStyle());
+            annotationCopy = new SimpleAnnotation(annotation.getPosition(),
+                                                  annotation.getLength(),
+                                                  annotation.getInterpreter());
         }
+        annotationCopy.set(CommonAttributes.NOTE, annotation.get(CommonAttributes.NOTE));
+        annotationCopy.set(CustomAttributes.CUSTOM_STYLE, annotation.get(CustomAttributes.CUSTOM_STYLE));
     }
 
     public void setParametricStyle(ParametricStyle parametricStyle) {
-        ((ExtendedAnnotation) annotationCopy).setCustomStyle(parametricStyle);
+        annotationCopy.set(CustomAttributes.CUSTOM_STYLE, parametricStyle);
         // repaint() has no effect in JRendererLabel, so we paint immediately.
         paintImmediately(0, 0, getWidth(), getHeight());
     }

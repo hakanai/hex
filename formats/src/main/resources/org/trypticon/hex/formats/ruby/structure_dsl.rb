@@ -18,8 +18,8 @@
 
 require 'java'
 
-java_import org.trypticon.hex.anno.SimpleMutableAnnotation
-java_import org.trypticon.hex.anno.SimpleMutableGroupAnnotation
+java_import org.trypticon.hex.anno.SimpleAnnotation
+java_import org.trypticon.hex.anno.SimpleGroupAnnotation
 java_import org.trypticon.hex.interpreters.FixedLengthInterpreter
 
 require 'org/trypticon/hex/formats/ruby/drop_context'
@@ -150,7 +150,7 @@ class StructureDSL
     end
 
     length = pos - position
-    SimpleMutableGroupAnnotation.new(position, length, self.name.to_s, annotations)
+    SimpleGroupAnnotation.new(position, length, self.name.to_s, annotations)
   end
 
   # Implements Structure

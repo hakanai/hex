@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.MutableAnnotation;
-import org.trypticon.hex.anno.MutableAnnotationCollection;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.undo.DeleteEdit;
 import org.trypticon.hex.gui.util.ActionException;
@@ -51,8 +51,8 @@ class DeleteAction extends NotebookPaneAction {
         }
 
         // TODO: This results in a search but we already know the parent.  We could add a method which takes the parent.
-        MutableAnnotation annotation = (MutableAnnotation) annotationPath.get(annotationPath.size() - 1);
-        MutableAnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
+        Annotation annotation = (Annotation) annotationPath.get(annotationPath.size() - 1);
+        AnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
         notebookPane.getUndoHelper().perform(new DeleteEdit(annotationCollection, annotation));
     }
 }

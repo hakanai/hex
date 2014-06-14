@@ -18,7 +18,7 @@
 
 package org.trypticon.hex.formats;
 
-import org.trypticon.hex.anno.MutableAnnotation;
+import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.binary.Binary;
 
 /**
@@ -41,5 +41,5 @@ public interface Structure {
      * @param position the position to start from.
      * @return the created annotation.
      */
-    MutableAnnotation drop(Binary binary, long position);
+    Annotation drop(Binary binary, long position);
 }

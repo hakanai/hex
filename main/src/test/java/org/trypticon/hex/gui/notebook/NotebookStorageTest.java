@@ -27,13 +27,15 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.CharBuffer;
-import java.util.ArrayList;
 
 import org.junit.Test;
 
-import org.trypticon.hex.anno.MutableAnnotationCollection;
-import org.trypticon.hex.gui.anno.DefaultExtendedAnnotation;
-import org.trypticon.hex.gui.anno.DefaultExtendedGroupAnnotation;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.CommonAttributes;
+import org.trypticon.hex.anno.SimpleAnnotation;
+import org.trypticon.hex.anno.SimpleGroupAnnotation;
+import org.trypticon.hex.gui.anno.CustomAttributes;
 import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
 import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.nulls.NullInterpreter;
@@ -58,15 +60,19 @@ public class NotebookStorageTest {
     public void testRoundTrip() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"),
                                                 new ExtendedAnnotationCollection(100));
-        MutableAnnotationCollection annotations = notebook.getAnnotations();
-        annotations.add(new DefaultExtendedAnnotation(5, 4, new NullInterpreter(), "Test",
-                                                      new ParametricStyle(ParametricStyle.StrokeStyle.DASHED,
-                                                                          Color.red, Color.white)));
-        annotations.add(new DefaultExtendedAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE, null));
-        annotations.add(new DefaultExtendedAnnotation(13, 4, new StringInterpreter("utf8"), null));
-        annotations.add(new DefaultExtendedGroupAnnotation(9, 8, "Test Group", new ArrayList<>(4),
-                                                           new ParametricStyle(ParametricStyle.StrokeStyle.SOLID,
-                                                                               Color.lightGray, Color.white)));
+        AnnotationCollection annotations = notebook.getAnnotations();
+        Annotation leaf1 = new SimpleAnnotation(5, 4, new NullInterpreter());
+        leaf1.set(CommonAttributes.NOTE, "Test");
+        leaf1.set(CustomAttributes.CUSTOM_STYLE, new ParametricStyle(ParametricStyle.StrokeStyle.DASHED,
+                                                                     Color.red, Color.white));
+        annotations.add(leaf1);
+        annotations.add(new SimpleAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE));
+        annotations.add(new SimpleAnnotation(13, 4, new StringInterpreter("utf8")));
+        Annotation group1 = new SimpleGroupAnnotation(9, 8);
+        group1.set(CommonAttributes.NOTE, "Test Group");
+        group1.set(CustomAttributes.CUSTOM_STYLE, new ParametricStyle(ParametricStyle.StrokeStyle.SOLID,
+                                                                      Color.lightGray, Color.white));
+        annotations.add(group1);
 
         StringWriter writer = new StringWriter();
         storage.write(notebook, writer);

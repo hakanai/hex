@@ -20,49 +20,58 @@ package org.trypticon.hex.gui.undo;
 
 import javax.swing.undo.CannotUndoException;
 
-import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.Attribute;
 import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
 
 /**
- * Undoable edit implementation for changing a note.
+ * Undoable edit implementation for changing an attribute on an annotation.
  *
+ * @param <V> the type of the attribute value.
  * @author trejkaz
  */
-public class ChangeNoteEdit implements DryUndoableEdit {
+public class ChangeAttributeValueEdit<V> implements DryUndoableEdit {
     private final ExtendedAnnotationCollection annotationCollection;
-    private final ExtendedAnnotation annotation;
-    private final String oldNote;
-    private final String newNote;
+    private final Annotation annotation;
+    private final Attribute<V> attribute;
+    private final V oldValue;
+    private final V newValue;
+    private final String presentationName;
 
     /**
      * Constructs the edit.
      *
      * @param annotationCollection the annotation collection containing the annotation.
      * @param annotation the annotation to change.
-     * @param oldNote the old note.
-     * @param newNote the new note.
+     * @param attribute the attribute to change.
+     * @param oldValue the old value.
+     * @param newValue the new value.
+     * @param presentationName a name to call the edit (e.g. "Change Note".)
      */
-    public ChangeNoteEdit(ExtendedAnnotationCollection annotationCollection, ExtendedAnnotation annotation,
-                          String oldNote, String newNote) {
+    public ChangeAttributeValueEdit(ExtendedAnnotationCollection annotationCollection,
+                                    Annotation annotation, Attribute<V> attribute,
+                                    V oldValue, V newValue,
+                                    String presentationName) {
         this.annotationCollection = annotationCollection;
         this.annotation = annotation;
-        this.oldNote = oldNote;
-        this.newNote = newNote;
+        this.attribute = attribute;
+        this.oldValue = oldValue;
+        this.newValue = newValue;
+        this.presentationName = presentationName;
     }
 
     @Override
     public void execute() {
-        annotationCollection.changeNote(annotation, newNote);
+        annotationCollection.changeAttributeValue(annotation, attribute, newValue);
     }
 
     @Override
     public void undo() throws CannotUndoException {
-        annotationCollection.changeNote(annotation, oldNote);
+        annotationCollection.changeAttributeValue(annotation, attribute, oldValue);
     }
 
     @Override
     public String getPresentationName() {
-        return Resources.getString("AnnotationViewer.Edits.changeNote");
+        return presentationName;
     }
 }

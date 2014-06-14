@@ -18,25 +18,22 @@
 
 package org.trypticon.hex.gui.anno;
 
-import org.trypticon.hex.anno.MutableAnnotation;
+import org.jetbrains.annotations.NonNls;
+
+import org.trypticon.hex.anno.Attribute;
 
 /**
- * Annotation with additional methods.
+ * Custom annotation attributes used by this application.
  *
  * @author trejkaz
  */
-public interface ExtendedAnnotation extends MutableAnnotation {
-    /**
-     * Gets the custom style for the annotation.
-     *
-     * @return the custom style.
-     */
-    ParametricStyle getCustomStyle();
+public class CustomAttributes {
+    private CustomAttributes() {
+    }
 
     /**
-     * Sets the custom style for the annotation.
-     *
-     * @param customStyle the custom style.
+     * A custom style to use when rendering the attribute.
      */
-    void setCustomStyle(ParametricStyle customStyle);
+    @NonNls
+    public static Attribute<ParametricStyle> CUSTOM_STYLE = Attribute.named("org.trypticon.hex.gui.anno.customStyle");
 }

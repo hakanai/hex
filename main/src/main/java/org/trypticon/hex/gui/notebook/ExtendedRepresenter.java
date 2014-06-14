@@ -26,8 +26,10 @@ import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
-import org.trypticon.hex.gui.anno.ExtendedAnnotation;
-import org.trypticon.hex.gui.anno.ExtendedGroupAnnotation;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.CommonAttributes;
+import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.gui.anno.CustomAttributes;
 import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterStorage;
@@ -44,8 +46,8 @@ class ExtendedRepresenter extends Representer {
         this.interpreterStorage = interpreterStorage;
 
         multiRepresenters.put(Notebook.class, new NotebookRepresenter());
-        multiRepresenters.put(ExtendedGroupAnnotation.class, new GroupAnnotationRepresenter());
-        multiRepresenters.put(ExtendedAnnotation.class, new AnnotationRepresenter());
+        multiRepresenters.put(GroupAnnotation.class, new GroupAnnotationRepresenter());
+        multiRepresenters.put(Annotation.class, new AnnotationRepresenter());
         multiRepresenters.put(Interpreter.class, new InterpreterRepresenter());
         multiRepresenters.put(ParametricStyle.class, new ParametricStyleRepresenter());
     }
@@ -64,13 +66,13 @@ class ExtendedRepresenter extends Representer {
     private class GroupAnnotationRepresenter implements Represent {
         @Override
         public Node representData(Object object) {
-            ExtendedGroupAnnotation groupAnnotation = (ExtendedGroupAnnotation) object;
+            GroupAnnotation groupAnnotation = (GroupAnnotation) object;
             Map<String, Object> fields = new LinkedHashMap<>(2);
             fields.put("position", groupAnnotation.getPosition());
             fields.put("length", groupAnnotation.getLength());
-            fields.put("note", groupAnnotation.getNote());
             fields.put("annotations", groupAnnotation.getAnnotations());
-            fields.put("custom_style", groupAnnotation.getCustomStyle());
+            fields.put("note", groupAnnotation.get(CommonAttributes.NOTE));
+            fields.put("custom_style", groupAnnotation.get(CustomAttributes.CUSTOM_STYLE));
             return representMapping(YamlTags.GROUP_ANNOTATION_TAG, fields, false);
         }
     }
@@ -78,13 +80,13 @@ class ExtendedRepresenter extends Representer {
     private class AnnotationRepresenter implements Represent {
         @Override
         public Node representData(Object object) {
-            ExtendedAnnotation annotation = (ExtendedAnnotation) object;
+            Annotation annotation = (Annotation) object;
             Map<String, Object> fields = new LinkedHashMap<>(4);
             fields.put("position", annotation.getPosition());
             fields.put("length", annotation.getLength());
             fields.put("interpreter", annotation.getInterpreter());
-            fields.put("note", annotation.getNote());
-            fields.put("custom_style", annotation.getCustomStyle());
+            fields.put("note", annotation.get(CommonAttributes.NOTE));
+            fields.put("custom_style", annotation.get(CustomAttributes.CUSTOM_STYLE));
             return representMapping(YamlTags.ANNOTATION_TAG, fields, false);
         }
     }

@@ -21,10 +21,10 @@ package org.trypticon.hex.gui;
 import java.awt.event.ActionEvent;
 
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.MutableAnnotation;
-import org.trypticon.hex.anno.MutableAnnotationCollection;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
-import org.trypticon.hex.gui.anno.DefaultExtendedGroupAnnotation;
+import org.trypticon.hex.anno.SimpleGroupAnnotation;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.undo.AddEdit;
 import org.trypticon.hex.gui.util.ActionException;
@@ -48,8 +48,8 @@ public class AddSubRegionAction extends NotebookPaneAction {
         long position = viewer.getSelectionModel().getSelectionStart();
         int length = (int) (viewer.getSelectionModel().getSelectionEnd() - position) + 1;
 
-        MutableAnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
-        MutableAnnotation annotation = new DefaultExtendedGroupAnnotation(position, length, null);
+        AnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
+        Annotation annotation = new SimpleGroupAnnotation(position, length, null);
 
         try {
             notebookPane.getUndoHelper().perform(new AddEdit(annotationCollection, annotation));

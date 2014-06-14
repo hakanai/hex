@@ -20,7 +20,11 @@ package org.trypticon.hex.gui.anno;
 
 import java.util.Objects;
 
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.Attribute;
+import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.anno.MemoryAnnotationCollection;
+import org.trypticon.hex.anno.SimpleGroupAnnotation;
 
 /**
  * Extensions to the basic annotation collection.
@@ -29,37 +33,25 @@ import org.trypticon.hex.anno.MemoryAnnotationCollection;
  */
 public class ExtendedAnnotationCollection extends MemoryAnnotationCollection {
     public ExtendedAnnotationCollection(long length) {
-        super(new DefaultExtendedGroupAnnotation(0, length, null));
+        super(new SimpleGroupAnnotation(0, length));
     }
 
-    public ExtendedAnnotationCollection(ExtendedGroupAnnotation rootGroup) {
+    public ExtendedAnnotationCollection(GroupAnnotation rootGroup) {
         super(rootGroup);
     }
 
     /**
-     * Changes the note on an annotation and fires an event about it.
+     * Changes an attribute on an annotation and fires an event about it.
      *
      * @param annotation the annotation.
-     * @param newNote the new note.
+     * @param attribute the attribute to change.
+     * @param newValue the new value for the attribute.
+     * @param <V> the type of the attribute.
      */
-    public void changeNote(ExtendedAnnotation annotation, String newNote) {
-        String oldNote = annotation.getNote();
-        annotation.setNote(newNote);
-        if (!Objects.equals(oldNote, newNote)) {
-            fireAnnotationChanged(annotation);
-        }
-    }
-
-    /**
-     * Changes the custom style on an annotation and fires an event about it.
-     *
-     * @param annotation the annotation.
-     * @param newCustomStyle the new custom style.
-     */
-    public void changeCustomStyle(ExtendedAnnotation annotation, ParametricStyle newCustomStyle) {
-        ParametricStyle oldCustomStyle = annotation.getCustomStyle();
-        annotation.setCustomStyle(newCustomStyle);
-        if (!Objects.equals(oldCustomStyle, newCustomStyle)) {
+    public <V> void changeAttributeValue(Annotation annotation, Attribute<V> attribute, V newValue) {
+        V oldValue = annotation.get(attribute);
+        annotation.set(attribute, newValue);
+        if (!Objects.equals(oldValue, newValue)) {
             fireAnnotationChanged(annotation);
         }
     }

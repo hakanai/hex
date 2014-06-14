@@ -26,11 +26,11 @@ import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
+import org.trypticon.hex.anno.CommonAttributes;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.gui.undo.ChangeCustomStyleEdit;
-import org.trypticon.hex.gui.undo.ChangeNoteEdit;
+import org.trypticon.hex.gui.undo.ChangeAttributeValueEdit;
 import org.trypticon.hex.gui.undo.UndoHelper;
 import org.trypticon.hex.gui.util.AbstractTreeTableModel;
 
@@ -163,13 +163,9 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
                     return anno.interpret(binary);
                 }
             case NOTE_COLUMN:
-                return anno.getNote();
+                return anno.get(CommonAttributes.NOTE);
             case STYLE_COLUMN:
-                if (anno instanceof ExtendedAnnotation) {
-                    return ((ExtendedAnnotation) anno).getCustomStyle();
-                } else {
-                    return null;
-                }
+                return anno.get(CustomAttributes.CUSTOM_STYLE);
             default:
                 throw new IllegalArgumentException("Column " + column + " is out of bounds");
         }
@@ -189,23 +185,28 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
 
     @Override
     public void setValueAt(Object value, Object node, int column) {
-        ExtendedAnnotation annotation = (ExtendedAnnotation) node;
+        Annotation annotation = (Annotation) node;
         try {
             switch (column) {
                 case NOTE_COLUMN:
-                    String oldNote = annotation.getNote();
+                    String oldNote = annotation.get(CommonAttributes.NOTE);
                     String newNote = (String) value;
                     if (!Objects.equals(oldNote, newNote)) {
-                        undoHelper.perform(new ChangeNoteEdit(annotations, annotation, oldNote, newNote));
+                        undoHelper.perform(new ChangeAttributeValueEdit<>(
+                            annotations, annotation, CommonAttributes.NOTE,
+                            oldNote, newNote,
+                            Resources.getString("AnnotationViewer.Edits.changeNote")));
                     }
                     break;
 
                 case STYLE_COLUMN:
-                    ParametricStyle oldCustomStyle = annotation.getCustomStyle();
+                    ParametricStyle oldCustomStyle = annotation.get(CustomAttributes.CUSTOM_STYLE);
                     ParametricStyle newCustomStyle = (ParametricStyle) value;
                     if (!Objects.equals(oldCustomStyle, newCustomStyle)) {
-                        undoHelper.perform(
-                            new ChangeCustomStyleEdit(annotations, annotation, oldCustomStyle, newCustomStyle));
+                        undoHelper.perform(new ChangeAttributeValueEdit<>(
+                            annotations, annotation, CustomAttributes.CUSTOM_STYLE,
+                            oldCustomStyle, newCustomStyle,
+                            Resources.getString("AnnotationViewer.Edits.changeCustomStyle")));
                     }
                     break;
 

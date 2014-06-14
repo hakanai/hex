@@ -30,11 +30,13 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 
-import org.trypticon.hex.gui.anno.DefaultExtendedAnnotation;
-import org.trypticon.hex.gui.anno.DefaultExtendedGroupAnnotation;
-import org.trypticon.hex.gui.anno.ExtendedAnnotation;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.CommonAttributes;
+import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.anno.SimpleAnnotation;
+import org.trypticon.hex.anno.SimpleGroupAnnotation;
+import org.trypticon.hex.gui.anno.CustomAttributes;
 import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
-import org.trypticon.hex.gui.anno.ExtendedGroupAnnotation;
 import org.trypticon.hex.gui.anno.ParametricStyle;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterStorage;
@@ -81,7 +83,7 @@ class ExtendedConstructor extends Constructor {
                 throw new IllegalArgumentException("Invalid URL: " + binaryLocationURL);
             }
 
-            ExtendedGroupAnnotation rootGroup = (ExtendedGroupAnnotation) map.get("root_group");
+            GroupAnnotation rootGroup = (GroupAnnotation) map.get("root_group");
 
             ExtendedAnnotationCollection annotations = new ExtendedAnnotationCollection(rootGroup);
 
@@ -97,10 +99,13 @@ class ExtendedConstructor extends Constructor {
             int length = ((Number) map.get("length")).intValue();
             String note = (String) map.get("note");
             @SuppressWarnings("unchecked")
-            List<ExtendedAnnotation> annotations = (List<ExtendedAnnotation>) map.get("annotations");
+            List<Annotation> annotations = (List<Annotation>) map.get("annotations");
             ParametricStyle customStyle = (ParametricStyle) map.get("custom_style");
 
-            return new DefaultExtendedGroupAnnotation(position, length, note, annotations, customStyle);
+            GroupAnnotation annotation = new SimpleGroupAnnotation(position, length, annotations);
+            annotation.set(CommonAttributes.NOTE, note);
+            annotation.set(CustomAttributes.CUSTOM_STYLE, customStyle);
+            return annotation;
         }
     }
 
@@ -113,7 +118,10 @@ class ExtendedConstructor extends Constructor {
             String note = (String) map.get("note");
             ParametricStyle customStyle = (ParametricStyle) map.get("custom_style");
 
-            return new DefaultExtendedAnnotation(position, length, interpreter, note, customStyle);
+            Annotation annotation = new SimpleAnnotation(position, length, interpreter);
+            annotation.set(CommonAttributes.NOTE, note);
+            annotation.set(CustomAttributes.CUSTOM_STYLE, customStyle);
+            return annotation;
         }
     }
 

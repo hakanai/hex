@@ -27,6 +27,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.jetbrains.annotations.NonNls;
 
 import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.CommonAttributes;
 import org.trypticon.hex.anno.GroupAnnotation;
 
 /**
@@ -63,7 +64,7 @@ public class AnnotationTestUtils {
         if (annotation1.getPosition() != annotation2.getPosition() ||
             annotation1.getLength() != annotation2.getLength() ||
             !Objects.equals(annotation1.getInterpreter(), annotation2.getInterpreter()) ||
-            !Objects.equals(annotation1.getNote(), annotation2.getNote())) {
+            !Objects.equals(annotation1.get(CommonAttributes.NOTE), annotation2.get(CommonAttributes.NOTE))) {
             return false;
         }
 

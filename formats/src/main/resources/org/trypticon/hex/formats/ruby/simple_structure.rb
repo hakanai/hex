@@ -59,6 +59,6 @@ class SimpleStructure
 
     raise("length is negative (#{length})") if length < 0
 
-    SimpleMutableAnnotation.new(position, length, @interpreter, @name)
+    SimpleAnnotation.new(position, length, @interpreter, @name)
   end
 end

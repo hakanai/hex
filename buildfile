@@ -1,3 +1,4 @@
+require_relative 'launcher/src/buildr/mac_app_bundle_extension'
 
 NAME = 'Hex'
 VERSION_NUMBER = '0.4'
@@ -25,6 +26,8 @@ GUM                   =   artifact('org.trypticon.gum:gum:jar:0.1-SNAPSHOT').fro
 HAQUA                 =   artifact('org.trypticon.haqua:haqua:jar:0.1-SNAPSHOT').from('lib/haqua-0.1-SNAPSHOT.jar')
 ICU4J                 = [ artifact('com.ibm.icu:icu4j:jar:53.1'),
                           artifact('com.ibm.icu:icu4j-charsets:jar:53.1').from('lib/icu4j-charsets-53.1.jar') ]
+download artifact("com.ibm.icu:icu4j-charsets:jar:53.1") => 'http://download.icu-project.org/files/icu4j/53.1/icu4j-charset-53_1.jar'
+
 SNAKEYAML             =   artifact('org.yaml:snakeyaml:jar:1.13')
 
 desc 'Main project'
@@ -59,23 +62,8 @@ define 'hex' do
     pkg.with manifest: manifest.merge('Main-Class' => 'org.trypticon.hex.gui.Main')
   end
 
-#  binaries_id = "#{id}-components-#{version}"
-#  package(:zip, :file => _("target/#{binaries_id}.zip")).path(binaries_id).tap do |path|
-#    path.include 'COPYING', 'COPYING.LESSER', 'CHANGELOG', 'README.markdown'
-#
-#    %w{anno binary interpreter util viewer}.each do |p|
-#      path.include project(p).package(:jar)
-#    end
-#
-##    path.include project('anno').packages.map{|p| "#{p}" }
-##    path.include project('binary').packages.map{|p| "#{p}" }
-##    path.include project('interpreter').packages.map{|p| "#{p}" }
-##    path.include project('util').packages.map{|p| "#{p}" }
-##    path.include project('viewer').packages.map{|p| "#{p}" }
-#
-#    path.include 'examples'
-#    path.exclude 'examples/examples.iml'
-#    path.exclude '**/target', '**/reports'
-#  end
+  if RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    mac_app_bundle.app_name = 'Hex.app'
+  end
 
 end

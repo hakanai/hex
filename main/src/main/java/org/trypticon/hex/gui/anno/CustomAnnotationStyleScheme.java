@@ -102,11 +102,9 @@ public class CustomAnnotationStyleScheme extends DefaultAnnotationStyleScheme {
 
     @Override
     public AnnotationStyle getStyle(Annotation annotation) {
-        if (annotation instanceof ExtendedAnnotation) {
-            ParametricStyle customStyle = ((ExtendedAnnotation) annotation).getCustomStyle();
-            if (customStyle != null) {
-                return customStyle.toAnnotationStyle();
-            }
+        ParametricStyle customStyle = annotation.get(CustomAttributes.CUSTOM_STYLE);
+        if (customStyle != null) {
+            return customStyle.toAnnotationStyle();
         }
 
         if (annotation instanceof GroupAnnotation) {

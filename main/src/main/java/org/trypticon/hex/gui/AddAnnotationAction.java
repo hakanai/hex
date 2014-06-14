@@ -26,11 +26,11 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.anno.MutableAnnotationCollection;
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
+import org.trypticon.hex.anno.SimpleAnnotation;
 import org.trypticon.hex.gui.anno.AddAnnotationPane;
-import org.trypticon.hex.gui.anno.DefaultExtendedAnnotation;
-import org.trypticon.hex.gui.anno.ExtendedAnnotation;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.undo.AddEdit;
 import org.trypticon.hex.gui.util.ActionException;
@@ -110,8 +110,8 @@ class AddAnnotationAction extends NotebookPaneAction {
                           viewer.getSelectionModel().getSelectionStart()) + 1;
             }
 
-            ExtendedAnnotation annotation = new DefaultExtendedAnnotation(position, length, interpreter, null);
-            MutableAnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
+            Annotation annotation = new SimpleAnnotation(position, length, interpreter);
+            AnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
 
             try {
                 notebookPane.getUndoHelper().perform(new AddEdit(annotationCollection, annotation));

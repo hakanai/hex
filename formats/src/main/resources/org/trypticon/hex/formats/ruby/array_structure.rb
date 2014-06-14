@@ -48,7 +48,7 @@ class ArrayStructure
     length = pos - position
 
     if length > 0
-      SimpleMutableGroupAnnotation.new(position, length, self.name.to_s, annotations)
+      SimpleGroupAnnotation.new(position, length, self.name.to_s, annotations)
     else
       nil
     end

@@ -19,7 +19,8 @@
 package org.trypticon.hex.formats;
 
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
+import org.trypticon.hex.anno.CommonAttributes;
+import org.trypticon.hex.anno.SimpleAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.interpreters.FixedLengthInterpreter;
 import org.trypticon.hex.interpreters.Value;
@@ -47,7 +48,8 @@ public abstract class ConvenienceStructure extends AbstractStructure {
     protected Annotation magic(Binary binary, long position, FixedLengthInterpreter interpreter, String name, int magicValue) {
         long valueLength = interpreter.getValueLength();
         //TODO: Might be worth making Annotation and GroupAnnotation factories via AnnotationCollection.
-        Annotation magicAnnotation = new SimpleMutableAnnotation(position, valueLength, interpreter, name);
+        Annotation magicAnnotation = new SimpleAnnotation(position, valueLength, interpreter);
+        magicAnnotation.set(CommonAttributes.NOTE, name);
         checkMagic(binary, magicAnnotation, magicValue);
         return magicAnnotation;
     }

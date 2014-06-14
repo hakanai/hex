@@ -19,16 +19,19 @@
 package org.trypticon.hex.formats.ruby;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
+import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.CommonAttributes;
 import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.anno.MutableAnnotation;
-import org.trypticon.hex.anno.SimpleMutableAnnotation;
-import org.trypticon.hex.anno.SimpleMutableGroupAnnotation;
+import org.trypticon.hex.anno.SimpleAnnotation;
+import org.trypticon.hex.anno.SimpleGroupAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.formats.Structure;
+import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.primitives.unsigned.UByteInterpreter;
 import org.trypticon.hex.interpreters.primitives.unsigned.UIntInterpreterBE;
 import org.trypticon.hex.interpreters.primitives.unsigned.UShortInterpreterBE;
@@ -61,12 +64,12 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        MutableAnnotation[] children = {
-            new SimpleMutableAnnotation(0, 2, new UShortInterpreterBE(), "length"),
-            new SimpleMutableAnnotation(2, 4, new StringInterpreter("UTF-8"), "bytes"),
+        Annotation[] children = {
+            createAnnotation(0, 2, new UShortInterpreterBE(), "length"),
+            createAnnotation(2, 4, new StringInterpreter("UTF-8"), "bytes"),
         };
 
-        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 6, "string_with_length", Arrays.asList(children));
+        GroupAnnotation expected = createGroupAnnotation(0, 6, "string_with_length", Arrays.asList(children));
         assertThat(group, is(sameAnnotation(expected)));
     }
 
@@ -86,17 +89,17 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        MutableAnnotation[] arrayElements = {
-            new SimpleMutableAnnotation(2, 2, new UShortInterpreterBE(), "elements[1]"),
-            new SimpleMutableAnnotation(4, 2, new UShortInterpreterBE(), "elements[2]"),
-            new SimpleMutableAnnotation(6, 2, new UShortInterpreterBE(), "elements[3]"),
+        Annotation[] arrayElements = {
+            createAnnotation(2, 2, new UShortInterpreterBE(), "elements[1]"),
+            createAnnotation(4, 2, new UShortInterpreterBE(), "elements[2]"),
+            createAnnotation(6, 2, new UShortInterpreterBE(), "elements[3]"),
         };
-        MutableAnnotation[] children = {
-            new SimpleMutableAnnotation(0, 2, new UShortInterpreterBE(), "size"),
-            new SimpleMutableGroupAnnotation(2, 6, "elements", Arrays.asList(arrayElements)),
+        Annotation[] children = {
+            createAnnotation(0, 2, new UShortInterpreterBE(), "size"),
+            createGroupAnnotation(2, 6, "elements", Arrays.asList(arrayElements)),
         };
 
-        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 8, "array_with_size", Arrays.asList(children));
+        GroupAnnotation expected = createGroupAnnotation(0, 8, "array_with_size", Arrays.asList(children));
         assertThat(group, is(sameAnnotation(expected)));
     }
 
@@ -133,15 +136,15 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        MutableAnnotation[] grandchildren = {
-            new SimpleMutableAnnotation(1, 2, new UShortInterpreterBE(), "value"),
+        Annotation[] grandchildren = {
+            createAnnotation(1, 2, new UShortInterpreterBE(), "value"),
         };
-        MutableAnnotation[] children = {
-            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
-            new SimpleMutableGroupAnnotation(1, 2, "option1", Arrays.asList(grandchildren)),
+        Annotation[] children = {
+            createAnnotation(0, 1, new UByteInterpreter(), "tag"),
+            createGroupAnnotation(1, 2, "option1", Arrays.asList(grandchildren)),
         };
 
-        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 3, "one_or_the_other", Arrays.asList(children));
+        GroupAnnotation expected = createGroupAnnotation(0, 3, "one_or_the_other", Arrays.asList(children));
         assertThat(group, is(sameAnnotation(expected)));
     }
 
@@ -156,15 +159,15 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        MutableAnnotation[] grandchildren = {
-            new SimpleMutableAnnotation(1, 4, new UIntInterpreterBE(), "value"),
+        Annotation[] grandchildren = {
+            createAnnotation(1, 4, new UIntInterpreterBE(), "value"),
         };
-        MutableAnnotation[] children = {
-            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
-            new SimpleMutableGroupAnnotation(1, 4, "option2", Arrays.asList(grandchildren)),
+        Annotation[] children = {
+            createAnnotation(0, 1, new UByteInterpreter(), "tag"),
+            createGroupAnnotation(1, 4, "option2", Arrays.asList(grandchildren)),
         };
 
-        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 5, "one_or_the_other", Arrays.asList(children));
+        GroupAnnotation expected = createGroupAnnotation(0, 5, "one_or_the_other", Arrays.asList(children));
         assertThat(group, is(sameAnnotation(expected)));
     }
 
@@ -203,12 +206,12 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        MutableAnnotation[] children = {
-            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
-            new SimpleMutableAnnotation(1, 2, new UShortInterpreterBE(), "value"),
+        Annotation[] children = {
+            createAnnotation(0, 1, new UByteInterpreter(), "tag"),
+            createAnnotation(1, 2, new UShortInterpreterBE(), "value"),
         };
 
-        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 3, "option1", Arrays.asList(children));
+        GroupAnnotation expected = createGroupAnnotation(0, 3, "option1", Arrays.asList(children));
         assertThat(group, is(sameAnnotation(expected)));
     }
 
@@ -223,12 +226,12 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        MutableAnnotation[] children = {
-            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "tag"),
-            new SimpleMutableAnnotation(1, 4, new UIntInterpreterBE(), "value"),
+        Annotation[] children = {
+            createAnnotation(0, 1, new UByteInterpreter(), "tag"),
+            createAnnotation(1, 4, new UIntInterpreterBE(), "value"),
         };
 
-        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 5, "option2", Arrays.asList(children));
+        GroupAnnotation expected = createGroupAnnotation(0, 5, "option2", Arrays.asList(children));
         assertThat(group, is(sameAnnotation(expected)));
     }
 
@@ -257,11 +260,24 @@ public class RubyStructureDSLTest {
 
         GroupAnnotation group = (GroupAnnotation) structure.drop(binary, 0);
 
-        MutableAnnotation[] children = {
-            new SimpleMutableAnnotation(0, 1, new UByteInterpreter(), "bit_field"),
+        Annotation[] children = {
+            createAnnotation(0, 1, new UByteInterpreter(), "bit_field"),
         };
 
-        GroupAnnotation expected = new SimpleMutableGroupAnnotation(0, 1, "some_header", Arrays.asList(children));
+        GroupAnnotation expected = createGroupAnnotation(0, 1, "some_header", Arrays.asList(children));
         assertThat(group, is(sameAnnotation(expected)));
+    }
+
+    private static Annotation createAnnotation(long position, long length, Interpreter<?> interpreter,
+                                                     String note) {
+        Annotation annotation = new SimpleAnnotation(position, length, interpreter);
+        annotation.set(CommonAttributes.NOTE, note);
+        return annotation;
+    }
+
+    private static GroupAnnotation createGroupAnnotation(long position, long length, String note, List<Annotation> children) {
+        GroupAnnotation annotation = new SimpleGroupAnnotation(position, length, children);
+        annotation.set(CommonAttributes.NOTE, note);
+        return annotation;
     }
 }

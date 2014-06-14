@@ -28,24 +28,22 @@ import org.jdesktop.swingx.JXTreeTable;
 
 import org.trypticon.hex.anno.AbstractAnnotationCollection;
 import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.AnnotationCollectionEvent;
 import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.anno.GroupAnnotation;
-import org.trypticon.hex.anno.MutableAnnotation;
-import org.trypticon.hex.anno.MutableAnnotationCollection;
-import org.trypticon.hex.anno.MutableGroupAnnotation;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 
 /**
  * A wrapper annotation model which tracks expansion status of a tree.
  */
 public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCollection
-        implements MutableAnnotationCollection {
+        implements AnnotationCollection {
 
     private final JXTreeTable treeTable;
-    private final MutableAnnotationCollection delegate;
+    private final AnnotationCollection delegate;
 
-    public ExpansionTrackingAnnotationCollection(JXTreeTable treeTable, MutableAnnotationCollection delegate) {
+    public ExpansionTrackingAnnotationCollection(JXTreeTable treeTable, AnnotationCollection delegate) {
         this.treeTable = treeTable;
         this.delegate = delegate;
 
@@ -74,7 +72,7 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
                     childIndices.add(i);
                 }
 
-                MutableGroupAnnotation groupAnnotation = (MutableGroupAnnotation) path.getLastPathComponent();
+                GroupAnnotation groupAnnotation = (GroupAnnotation) path.getLastPathComponent();
                 List<? extends Annotation> children = groupAnnotation.getAnnotations();
 
                 return new AnnotationCollectionEvent(ExpansionTrackingAnnotationCollection.this,
@@ -149,12 +147,12 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
     }
 
     @Override
-    public void add(MutableAnnotation annotation) throws OverlappingAnnotationException {
+    public void add(Annotation annotation) throws OverlappingAnnotationException {
         delegate.add(annotation);
     }
 
     @Override
-    public void remove(MutableAnnotation annotation) {
+    public void remove(Annotation annotation) {
         delegate.remove(annotation);
     }
 }
