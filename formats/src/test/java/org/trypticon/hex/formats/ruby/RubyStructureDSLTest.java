@@ -268,8 +268,7 @@ public class RubyStructureDSLTest {
         assertThat(group, is(sameAnnotation(expected)));
     }
 
-    private static Annotation createAnnotation(long position, long length, Interpreter<?> interpreter,
-                                                     String note) {
+    private static Annotation createAnnotation(long position, long length, Interpreter<?> interpreter, String note) {
         Annotation annotation = new SimpleAnnotation(position, length, interpreter);
         annotation.set(CommonAttributes.NOTE, note);
         return annotation;

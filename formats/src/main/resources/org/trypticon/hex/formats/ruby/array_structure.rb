@@ -38,8 +38,9 @@ class ArrayStructure
 
     # Size object determines the logic for the loop itself.
     @size_type_object.drop_elements(child_drop_context, @start_index, binary) do |i|
-      annotation = @element_structure.do_drop(child_drop_context, binary, pos)
-      annotation.note = "#{self.name}[#{i}]"
+      annotation = @element_structure.do_drop(child_drop_context, binary, pos).tap do |a|
+        a.note = "#{self.name}[#{i}]"
+      end
       annotations << annotation
       pos += annotation.length
       annotation
@@ -48,7 +49,9 @@ class ArrayStructure
     length = pos - position
 
     if length > 0
-      SimpleGroupAnnotation.new(position, length, self.name.to_s, annotations)
+      SimpleGroupAnnotation.new(position, length, annotations).tap do |a|
+        a.note = self.name.to_s
+      end
     else
       nil
     end

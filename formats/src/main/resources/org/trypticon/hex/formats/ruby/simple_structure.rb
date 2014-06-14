@@ -59,6 +59,8 @@ class SimpleStructure
 
     raise("length is negative (#{length})") if length < 0
 
-    SimpleAnnotation.new(position, length, @interpreter, @name)
+    SimpleAnnotation.new(position, length, @interpreter).tap do |a|
+      a.note = @name.to_s
+    end
   end
 end

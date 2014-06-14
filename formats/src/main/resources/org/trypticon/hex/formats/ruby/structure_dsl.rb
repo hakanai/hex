@@ -18,6 +18,7 @@
 
 require 'java'
 
+java_import org.trypticon.hex.anno.CommonAttributes
 java_import org.trypticon.hex.anno.SimpleAnnotation
 java_import org.trypticon.hex.anno.SimpleGroupAnnotation
 java_import org.trypticon.hex.interpreters.FixedLengthInterpreter
@@ -31,6 +32,19 @@ require 'org/trypticon/hex/formats/ruby/switch_structure'
 # $interpreter_storage is defined by the container.  We define a local structure storage here for
 # structures which are defined in the script.
 $local_structure_storage ||= {}
+
+
+# Extensions for SimpleAnnotation to reduce boilerplate.
+class SimpleAnnotation
+  def note
+    # Workaround here for weird JRuby behaviour. Somehow this method returns Symbol
+    self.get(CommonAttributes.NOTE).to_s
+  end
+
+  def note=(note)
+    self.set(CommonAttributes.NOTE, note)
+  end
+end
 
 
 #
@@ -150,7 +164,9 @@ class StructureDSL
     end
 
     length = pos - position
-    SimpleGroupAnnotation.new(position, length, self.name.to_s, annotations)
+    SimpleGroupAnnotation.new(position, length, annotations).tap do |a|
+      a.note = self.name.to_s
+    end
   end
 
   # Implements Structure
