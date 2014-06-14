@@ -70,9 +70,7 @@ public class ParametricStyleEditorPane extends JPanel {
         borderColorButton.setColor(workingStyle.getBorderColor());
         backgroundColorButton.setColor(workingStyle.getBackgroundColor());
 
-        customCheckBox.addItemListener(event -> {
-            setCustom(event.getStateChange() == ItemEvent.SELECTED);
-        });
+        customCheckBox.addItemListener(event -> setCustom(event.getStateChange() == ItemEvent.SELECTED));
         borderStrokeStyleComboBox.addItemListener(event -> {
             if (event.getStateChange() == ItemEvent.SELECTED) {
                 setWorkingStyle(new ParametricStyle((ParametricStyle.StrokeStyle) event.getItem(),
@@ -80,16 +78,14 @@ public class ParametricStyleEditorPane extends JPanel {
                                                     workingStyle.getBackgroundColor()));
             }
         });
-        borderColorButton.addPropertyChangeListener("color", event -> {
+        borderColorButton.addPropertyChangeListener("color", event ->
             setWorkingStyle(new ParametricStyle(workingStyle.getBorderStrokeStyle(),
                                                 (Color) event.getNewValue(),
-                                                workingStyle.getBackgroundColor()));
-        });
-        backgroundColorButton.addPropertyChangeListener("color", event -> {
+                                                workingStyle.getBackgroundColor())));
+        backgroundColorButton.addPropertyChangeListener("color", event ->
             setWorkingStyle(new ParametricStyle(workingStyle.getBorderStrokeStyle(),
                                                 workingStyle.getBorderColor(),
-                                                (Color) event.getNewValue()));
-        });
+                                                (Color) event.getNewValue())));
 
         syncEnabledState();
         customCheckBox.addItemListener(event -> syncEnabledState());

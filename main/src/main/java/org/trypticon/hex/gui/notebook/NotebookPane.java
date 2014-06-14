@@ -101,9 +101,7 @@ public class NotebookPane extends JPanel {
         add(splitPane, BorderLayout.CENTER);
 
         // Why ComponentListener doesn't work here I will never know.
-        addHierarchyListener(hierarchyEvent -> {
-            viewer.requestFocusInWindow();
-        });
+        addHierarchyListener(hierarchyEvent -> viewer.requestFocusInWindow());
 
         setNotebook(notebook);
     }

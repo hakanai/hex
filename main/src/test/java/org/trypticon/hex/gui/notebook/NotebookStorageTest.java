@@ -28,6 +28,7 @@ import java.io.Writer;
 import java.net.URL;
 import java.nio.CharBuffer;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import org.trypticon.hex.anno.Annotation;
@@ -139,17 +140,17 @@ public class NotebookStorageTest {
         }
 
         @Override
-        public int read(CharBuffer target) throws IOException {
+        public int read(@NotNull CharBuffer target) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public int read(char[] cbuf) throws IOException {
+        public int read(@NotNull char[] cbuf) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public int read(char[] cbuf, int off, int len) throws IOException {
+        public int read(@NotNull char[] cbuf, int off, int len) throws IOException {
             throw new IOException("Broken");
         }
 
@@ -166,22 +167,22 @@ public class NotebookStorageTest {
         }
 
         @Override
-        public void write(char[] cbuf) throws IOException {
+        public void write(@NotNull char[] cbuf) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public void write(char[] cbuf, int off, int len) throws IOException {
+        public void write(@NotNull char[] cbuf, int off, int len) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public void write(String str) throws IOException {
+        public void write(@NotNull String str) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public void write(String str, int off, int len) throws IOException {
+        public void write(@NotNull String str, int off, int len) throws IOException {
             throw new IOException("Broken");
         }
 

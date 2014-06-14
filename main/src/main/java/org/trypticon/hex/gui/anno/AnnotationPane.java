@@ -64,6 +64,8 @@ public class AnnotationPane extends JPanel {
             } else {
                 Object[] treePathArray = treePath.getPath();
                 Annotation[] pathArray = new Annotation[treePathArray.length - 1];
+                // We know every element will really be Annotation.
+                //noinspection SuspiciousSystemArraycopy
                 System.arraycopy(treePathArray, 1, pathArray, 0, pathArray.length);
                 setSelectedAnnotationPath(Arrays.asList(pathArray));
             }

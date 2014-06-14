@@ -45,7 +45,7 @@ public class Main {
         });
     }
 
-    public void execute(String[] args) throws Exception {
+    public void execute(String[] args) {
         HexApplication application = new HexApplication();
 
         application.openInitialWindows();

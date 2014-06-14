@@ -77,9 +77,7 @@ public class AddAnnotationPane extends ValidatingPanel {
         });
 
         DefaultListModel<InterpreterInfo> listModel = new DefaultListModel<>();
-        for (InterpreterInfo info : new MasterInterpreterStorage().getInterpreterInfos()) {
-            listModel.addElement(info);
-        }
+        new MasterInterpreterStorage().getInterpreterInfos().forEach(listModel::addElement);
         list = new JXList(listModel);
         list.setCellRenderer(new DefaultListRenderer(info -> ((InterpreterInfo) info).toLocalisedString(Format.LONG)));
         list.setAutoCreateRowSorter(true);

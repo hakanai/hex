@@ -19,8 +19,6 @@
 package org.trypticon.hex.gui;
 
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JRadioButtonMenuItem;
 
 /**
@@ -36,11 +34,6 @@ public class ActivateWindowMenuItem extends JRadioButtonMenuItem {
 
         setText(frame.getTitle());
         setSelected(frame.isActive());
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.requestFocus();
-            }
-        });
+        addActionListener(e -> frame.requestFocus());
     }
 }

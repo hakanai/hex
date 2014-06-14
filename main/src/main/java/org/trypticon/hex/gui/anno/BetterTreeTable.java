@@ -18,13 +18,11 @@
 
 package org.trypticon.hex.gui.anno;
 
-import java.awt.Graphics;
 import javax.swing.UIManager;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.swingx.treetable.TreeTableModel;
 
 /**
  * Workarounds for issues in {@link JXTreeTable}.
@@ -33,18 +31,6 @@ import org.jdesktop.swingx.treetable.TreeTableModel;
  */
 public class BetterTreeTable extends JXTreeTable {
     private Highlighter oddRowHighlighter;
-
-    public BetterTreeTable() {
-    }
-
-    public BetterTreeTable(TreeTableModel treeModel) {
-        super(treeModel);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-    }
 
     @Override
     public void updateUI() {

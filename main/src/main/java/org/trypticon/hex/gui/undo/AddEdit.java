@@ -47,13 +47,8 @@ public class AddEdit implements DryUndoableEdit {
     }
 
     @Override
-    public void execute() throws Exception {
-        try {
-            annotationCollection.add(annotation);
-        } catch (OverlappingAnnotationException e) {
-            // Should be impossible.
-            throw new IllegalStateException(e);
-        }
+    public void execute() throws OverlappingAnnotationException {
+        annotationCollection.add(annotation);
     }
 
     @Override
