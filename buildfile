@@ -31,7 +31,7 @@ download artifact("com.ibm.icu:icu4j-charsets:jar:53.1") => 'http://download.icu
 
 SNAKEYAML             =   artifact('org.yaml:snakeyaml:jar:1.13')
 
-desc 'Main project'
+desc 'Hex'
 define 'hex' do
   project.version = VERSION_NUMBER
   project.group = 'org.trypticon.hex'
