@@ -2,7 +2,7 @@ require_relative 'launcher/src/buildr/mac_app_bundle_extension'
 
 NAME = 'Hex'
 VERSION_NUMBER = '0.4'
-COPYRIGHT = 'Copyright (C) 2009-2014  Trejkaz, Hex Project'
+COPYRIGHT = "Copyright \u00A9 2009-2014  Trejkaz, Hex Project"
 
 ENV['JAVA_HOME'] = ENV['JAVA_HOME_8']
 
@@ -64,7 +64,10 @@ define 'hex' do
   end
 
   if RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    mac_app_bundle.app_name = 'Hex.app'
+    mac_app_bundle.app_name = 'Hex'
+    mac_app_bundle.bundle_identifier = 'org.trypticon.Hex'
+    mac_app_bundle.main_class = 'org.trypticon.hex.gui.Main'
+    mac_app_bundle.signing_identity = 'Trejkaz'
   end
 
 end

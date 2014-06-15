@@ -3,77 +3,133 @@
 
 module MacAppBundle
 
-  include Buildr::Extension
+  include Extension
+
+  class PlistBuilder
+    def initialize(target)
+      @target = target
+    end
+
+    def build(hash)
+      xm = Builder::XmlMarkup.new(target: @target, indent: 2)
+      xm.instruct!
+      xm.declare! :DOCTYPE, :plist, :PUBLIC, '-//Apple//DTD PLIST 1.0//EN', 'http://www.apple.com/DTDs/PropertyList-1.0.dtd'
+      xm.plist(version: '1.0') do
+        recurse xm, hash
+      end
+    end
+
+  protected
+
+    def recurse(xm, obj)
+      if obj.is_a?(String)
+        xm.string obj
+      elsif obj.is_a?(Array)
+        xm.array do
+          obj.each do |value|
+            recurse xm, value
+          end
+        end
+      elsif obj.is_a?(Hash)
+        xm.dict do
+          obj.each_pair do |key, value|
+            xm.key key.to_s
+            recurse xm, value
+          end
+        end
+      else
+        # Float   => <real>
+        # Integer => <integer>
+        # Time?   => <date>
+        # Boolean => <true/> or <false/>
+        # ???     => <data>
+        raise "Not supported yet: #{obj} type: #{obj.class}"
+      end
+    end
+  end
 
   class MacAppBundleTask < Rake::Task
+    # The human-readable name of the app.
     attr_accessor :app_name
+
+    # Unique Java package-like ID identifying the bundle.
+    attr_accessor :bundle_identifier
+
+    # The main class to run the application, dot-separated.
+    attr_accessor :main_class
+
+    # Identity to use for signing the app.
+    attr_accessor :signing_identity
 
     def initialize(*args)
       super
 
       enhance do |task|
-        #TODO: @project is always nil. Why?
-        app = @project.path_to("target/#{app_name}.app")
-        if File.exists?(app)
-          FileUtils.rm_rf(app)
+        [:app_name, :bundle_identifier, :main_class, :signing_identity].each do |attr|
+          raise "#{attr} not specified" unless send(attr)
         end
-        Dir.mkdir(app)
-        #TODO: Path here would be part of the external project.
-        FileUtils.cp_r(@project.path_to('launcher/src/mac/app-bundle-stub'), app)
+
+        puts "Creating #{app_name}.app"
+
+        # Clean out any partial results from the previous run.
+        #TODO: Apple's tools to build apps seem to copy only what has been modified, so that would be nice.
+        app = @project.path_to("target/#{app_name}.app")
+        FileUtils.rm_rf(app) if File.exists?(app)
+
+        # Stub containing a ton of static files.
+        #TODO: These would all move to the external project.
+        Buildr::Filter.new.
+          from('launcher/src/mac/app-bundle-stub').
+          into("#{app}/").
+          run
+
+        FileUtils.mkdir_p("#{app}/Contents/Java/")
+        FileUtils.cp(@project.package(:jar).to_s, "#{app}/Contents/Java/")
+
+        File.open("#{app}/Contents/Info.plist", 'w') do |io|
+          PlistBuilder.new(io).build(
+            CFBundleDevelopmentRegion:      'English',
+            CFBundleExecutable:             app_name,
+            CFBundleInfoDictionaryVersion:  '6.0',
+            CFBundleName:                   app_name,
+            CFBundlePackageType:            'APPL',
+            CFBundleIdentifier:             bundle_identifier,
+            CFBundleSignature:              '????',
+            CFBundleGetInfoString:          "#{app_name} #{@project.version} - #{@project.manifest['Copyright']}",
+            CFBundleShortVersionString:     @project.version,
+            CFBundleVersion:                @project.version,
+            # If you specify this, you have to bundle Java itself. Maybe that isn't a bad idea though. TODO: Decide.
+            #JVMRuntime: 'jdk1.7.0_45.jdk',
+            JVMArchs:                       ['x86_64'],
+            JVMMainClassName:               main_class,
+            JVMOptions:                     ['-ea']
+          )
+        end
+
+        # TODO: Program icon for Contents/Resources/Hex.icns :-(
+
+        puts "Signing #{app_name}.app"
+        system "codesign -s \"#{signing_identity}\" --timestamp \"#{app}\""
       end
-
-#          <chmod file="build/Hex.app/Contents/MacOS/Hex" perm="ugo+rx"/>
-#
-#          <copy file="src/mac/Info.plist" todir="build/Hex.app/Contents">
-#              <filterset>
-#                  <filter token="app.name" value="${app.name}"/>
-#                  <filter token="app.version" value="${app.version}"/>
-#                  <filter token="app.copyright" value="${app.copyright}"/>
-#              </filterset>
-#          </copy>
-#
-#          <!-- TODO: I need an icon file to go into Contents/Resources/Hex.icns :-( -->
-#
-#          <copy todir="build/Hex.app/Contents/Java">
-#              <fileset dir="../formats/build" includes="hex-formats.jar"/>
-#              <fileset dir="../main/build" includes="hex-main.jar"/>
-#
-#              <fileset dir="../lib" includes="hex-anno.jar, hex-binary.jar, hex-interpreter.jar, hex-util.jar,
-#                                              hex-viewer.jar, snakeyaml.jar, swingx.jar, icu4j.jar,
-#                                              icu4j-charset.jar, jruby-complete.jar"/>
-#
-#              <!-- Mac-specific -->
-#              <fileset dir="../lib" includes="gum.jar, haqua.jar"/>
-#          </copy>
-#
-#          <exec executable="codesign" failonerror="true">
-#              <arg value="-s"/>
-#              <arg value="${app.signer}"/>
-#              <arg value="--timestamp"/>
-#              <arg value="build/Hex.app"/>
-#          </exec>
-#      </target>
-
     end
-
-    # Extra methods here
 
   protected
 
-    # Associates this task with project and particular usage (:main, :test).
-    def associate_with(project, usage) #:nodoc:
-      @project, @usage = project, usage
+    def associate_with(project)
+      @project = project
     end
+  end
+
+
+  first_time do
+    desc 'Create a Mac OS X app bundle'
+    Project.local_task('mac_app_bundle')
   end
 
   before_define do |project|
     mac_app_bundle = MacAppBundleTask.define_task('mac_app_bundle')
-
-    project.task 'mac_app_bundle' do |task|
-      #TODO: This never executes. Why?
-      mac_app_bundle.send :associate_with, project, :main
-      project.local_task('mac_app_bundle')
-    end
+    mac_app_bundle.send :associate_with, project
+    project.task(mac_app_bundle)
   end
 
   after_define do |project|
@@ -86,10 +142,5 @@ module MacAppBundle
 end
 
 class Buildr::Project
-    include MacAppBundle
+  include MacAppBundle
 end
-
-Project.local_task('mac_app_bundle') do |name|
-  puts "Creating Mac OS X app bundle for #{name}"
-end
-
