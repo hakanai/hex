@@ -2,20 +2,11 @@ Hex - A simple hex viewer written in Java.
 
 Copyright (C) 2009-2014  Trejkaz, Hex Project
 
+<a href="http://i.imgur.com/o4op2K5.png">
+  <img src="http://i.imgur.com/o4op2K5.png" alt="Drawing" style="width: 730px;"/>
+</a>
+
 Now accepting contributions for a Mac icon file for this project! ;-)
-
-
-WHAT I AM TRYING TO GET WORKING NOW
------------------------------------
-
-* The road to file format parsing
-    * TODO - Pick some structs and make an action which can create that struct at a given location
-        * DONE - JPEG header
-        * DONE - Java class file
-        * TODO - BMP header
-    * TODO - Come up with a simpler API for defining structs in a declarative way
-    * TODO - More formats (still to be decided but will depend on what I'm looking at at the time.)
-
 
 WHAT IS IT AND WHY
 ------------------
@@ -25,7 +16,7 @@ As such, I use a hex viewer quite a lot, but all the free ones seem to
 be too limited and don't do the type of annotation I want, and all the
 full featured ones seem to cost money.
 
-I don't need a full blown hex editor, I need a hex viewer with full blown
+I don't want a full blown hex editor, I want a hex viewer with full blown
 annotation capabilities.  And that is what I am trying to do here.
 
 
@@ -35,61 +26,25 @@ BUILDING
 You'll need a Java build environment.  I'm developing this on Java 8,
 because it fixes some severe problems with Mac applications.
 
-You'll also need Ant.  All the other dependencies should be bundled.
-If something is missing, prod me to fix it.
+You'll also need [Buildr][] and the following additional gems:
 
-To build, execute 'ant' in the top directory.
+    gem install nokogiri-plist
 
-A file you can run will appear in the launcher/build directory.
+To build, execute `buildr package` in the top directory. An executable
+jar file will be created in the top-level target directory.
 
-If you are a Mac user you will get a proper .app bundle, but you will
-have to edit app.properties at the root to reference your own code
-signing key before the build process will produce a usable app.
-
-If you are not a Mac user, the build will create an executable .jar
-file until a better option emerges (pro-tip: contribute!)
-
-
-WHAT WORKS
-----------
-
-You can open files and look around (see CAVEATS below.)
-
-Cursor and mouse input is all done as far as cursor/selection movement
-is concerned.  Copy also works, currently it copies the selection as
-hexadecimal.  Annotation works but the number of types of annotation
-is still a little limiting.
-
-
-CAVEATS
--------
-
-Files over 2G will not work.  Actually the real limit is lower than this.
-If you are on Windows and using a 32-bit JRE, the limit will be the
-longest block of contiguous memory remaining from the initial 2G limit,
-after all DLLs and the JVM heap have already taken their share.
-
-Even if you are on 64-bit, Swing and Java2D dimensions are in 32-bit, so
-you will get a negative size exception at some large amount of data.
-So beware.
-
-To fix that, I need to write JScrollPane from scratch but instead of
-moving a viewport, it has to move a long number of lines.  And I will
-have to make the scrollbars appear to be the correct size for small files,
-to maintain the illusion.
+If you are a Mac user, execute `buildr mac_app_bundle` and you will get
+a proper .app bundle, but you will have to edit `buildfile` to
+reference your own code signing key before the build process will
+produce a usable app.
 
 
 BEYOND
 ------
 
-* More data types (the list will grow as I need them.)
-* Structs - a hard one but I have some ideas
-* *Scriptable* structs (because I want to put a Ruby DSL in here.)
-* Sub-stream support
-    * Ability to mark a stream as a sub-stream, possibly processed in some way (e.g. zlib inflate)
-    * Ability to open that stream separately
-    * Ability to annotate that stream
-* Directory abstraction
-    * Ability to layer a directory abstraction on top of a file format (e.g. OLE2)
-    * Ability to inspect files in the abstracted directory like ordinary binaries
+An up-to-date list of future ideas is being maintained on the
+[GitHub issues page][issues].
 
+
+[Buildr]: http://buildr.apache.org/
+[issues]: https://github.com/trejkaz/hex/issues
