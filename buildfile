@@ -21,7 +21,7 @@ HEX_COMPONENTS        = [ artifact('org.trypticon.hex:hex-anno:jar:0.6').from('l
                           artifact('org.trypticon.hex:hex-interpreter:jar:0.6').from('lib/hex-interpreter-0.6.jar'),
                           artifact('org.trypticon.hex:hex-viewer:jar:0.6').from('lib/hex-viewer-0.6.jar'),
                           artifact('org.trypticon.hex:hex-util:jar:0.6').from('lib/hex-util-0.6.jar') ]
-GUM                   =   artifact('org.trypticon.gum:gum:jar:0.1-SNAPSHOT').from('lib/gum-0.1-SNAPSHOT.jar')
+GUM                   =   artifact('org.trypticon.gum:gum:jar:0.1-SNAPSHOT')
 HAQUA                 =   artifact('org.trypticon.haqua:haqua:jar:0.1-SNAPSHOT').from('lib/haqua-0.1-SNAPSHOT.jar')
 ICU4J                 = [ artifact('com.ibm.icu:icu4j:jar:53.1'),
                           artifact('com.ibm.icu:icu4j-charsets:jar:53.1') ]
@@ -36,8 +36,10 @@ download artifact('org.swinglabs.swingx:swingx-painters:jar:1.6.6-SNAPSHOT') =>
   'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-painters-1.6.6-SNAPSHOT.jar'
 download artifact('org.swinglabs.swingx:swingx-plaf:jar:1.6.6-SNAPSHOT') =>
   'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-plaf-1.6.6-SNAPSHOT.jar'
-download artifact("com.ibm.icu:icu4j-charsets:jar:53.1") =>
+download artifact('com.ibm.icu:icu4j-charsets:jar:53.1') =>
   'http://download.icu-project.org/files/icu4j/53.1/icu4j-charset-53_1.jar'
+download artifact('org.trypticon.gum:gum:jar:0.1') =>
+  'https://github.com/trejkaz/gum/releases/download/v0.1/gum-bin-0.1.zip'
 
 SNAKEYAML             =   artifact('org.yaml:snakeyaml:jar:1.13')
 
