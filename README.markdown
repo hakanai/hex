@@ -26,9 +26,7 @@ BUILDING
 You'll need a Java build environment.  I'm developing this on Java 8,
 because it fixes some severe problems with Mac applications.
 
-You'll also need [Buildr][] and the following additional gems:
-
-    gem install nokogiri-plist
+You'll also need [Buildr][].
 
 To build, execute `buildr package` in the top directory. An executable
 jar file will be created in the top-level target directory.
