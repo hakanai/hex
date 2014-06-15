@@ -88,6 +88,24 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-action/1.6.4-SNAPSHOT/swingx-action-1.6.4-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-common/1.6.4-SNAPSHOT/swingx-common-1.6.4-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-core/1.6.4-SNAPSHOT/swingx-core-1.6.4-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />

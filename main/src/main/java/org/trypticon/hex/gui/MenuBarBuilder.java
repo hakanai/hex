@@ -134,7 +134,9 @@ public class MenuBarBuilder {
         JMenu helpMenu = new JMenu(Resources.getString("Help.name"));
         // TODO: Help / User Guide
         helpMenu.add(new OpenSampleNotebookAction(application));
-        // TODO: Help / About (non-Mac only.  Mac needs to hook into the app menu.)
+        if (!MacFactory.isMac()) {
+            helpMenu.add(new AboutAction());
+        }
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);

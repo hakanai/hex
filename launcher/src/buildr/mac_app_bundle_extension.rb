@@ -103,7 +103,7 @@ module MacAppBundle
             #JVMRuntime: 'jdk1.7.0_45.jdk',
             JVMArchs:                       ['x86_64'],
             JVMMainClassName:               main_class,
-            JVMOptions:                     ['-ea']
+            JVMOptions:                     ['-ea', "-Xdock:name=#{app_name}"]
           )
         end
 
