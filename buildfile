@@ -1,6 +1,5 @@
 require_relative 'launcher/src/buildr/mac_app_bundle_extension'
 
-NAME = 'Hex'
 VERSION_NUMBER = '0.4'
 COPYRIGHT = "Copyright \u00A9 2009-2014  Hex Project"
 
