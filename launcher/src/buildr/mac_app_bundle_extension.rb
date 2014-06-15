@@ -98,6 +98,7 @@ module MacAppBundle
             CFBundleGetInfoString:          "#{app_name} #{@project.version} - #{@project.manifest['Copyright']}",
             CFBundleShortVersionString:     @project.version,
             CFBundleVersion:                @project.version,
+            NSHumanReadableCopyright:       @project.manifest['Copyright'],
             # If you specify this, you have to bundle Java itself. Maybe that isn't a bad idea though. TODO: Decide.
             #JVMRuntime: 'jdk1.7.0_45.jdk',
             JVMArchs:                       ['x86_64'],
