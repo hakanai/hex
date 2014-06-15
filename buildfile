@@ -2,7 +2,7 @@ require_relative 'launcher/src/buildr/mac_app_bundle_extension'
 
 NAME = 'Hex'
 VERSION_NUMBER = '0.4'
-COPYRIGHT = "\u00A9 2009-2014  Hex Project"
+COPYRIGHT = "Copyright \u00A9 2009-2014  Hex Project"
 
 ENV['JAVA_HOME'] = ENV['JAVA_HOME_8']
 
