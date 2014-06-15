@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
-import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.undo.DeleteEdit;
