@@ -5,6 +5,9 @@
     <item name='java.util.Map V put(K, V) 0'>
         <annotation name='org.jetbrains.annotations.NonNls'/>
     </item>
+    <item name='java.util.Properties java.lang.String getProperty(java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
     <item name='java.util.ResourceBundle java.util.ResourceBundle getBundle(java.lang.String) 0'>
         <annotation name='org.jetbrains.annotations.NonNls'/>
     </item>

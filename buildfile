@@ -10,11 +10,11 @@ repositories.remote << 'http://mirrors.ibiblio.org/pub/mirrors/maven2/'
 repositories.remote << 'http://repo1.maven.org/maven2/'
 
 INTELLIJ_ANNOTATIONS  =   artifact('com.intellij:annotations:jar:12.0')
-SWINGX                = [ artifact('org.swinglabs.swingx:swingx-action:jar:1.6.4-SNAPSHOT').from('lib/swingx-action-1.6.4-SNAPSHOT.jar'),
-                          artifact('org.swinglabs.swingx:swingx-common:jar:1.6.4-SNAPSHOT').from('lib/swingx-common-1.6.4-SNAPSHOT.jar'),
-                          artifact('org.swinglabs.swingx:swingx-core:jar:1.6.4-SNAPSHOT').from('lib/swingx-core-1.6.4-SNAPSHOT.jar'),
-                          artifact('org.swinglabs.swingx:swingx-painters:jar:1.6.4-SNAPSHOT').from('lib/swingx-painters-1.6.4-SNAPSHOT.jar'),
-                          artifact('org.swinglabs.swingx:swingx-plaf:jar:1.6.4-SNAPSHOT').from('lib/swingx-plaf-1.6.4-SNAPSHOT.jar')]
+SWINGX                = [ artifact('org.swinglabs.swingx:swingx-action:jar:1.6.6-SNAPSHOT'),
+                          artifact('org.swinglabs.swingx:swingx-common:jar:1.6.6-SNAPSHOT'),
+                          artifact('org.swinglabs.swingx:swingx-core:jar:1.6.6-SNAPSHOT'),
+                          artifact('org.swinglabs.swingx:swingx-painters:jar:1.6.6-SNAPSHOT'),
+                          artifact('org.swinglabs.swingx:swingx-plaf:jar:1.6.6-SNAPSHOT') ]
 JRUBY                 =   artifact('org.jruby:jruby-complete:jar:1.7.12')
 HEX_COMPONENTS        = [ artifact('org.trypticon.hex:hex-anno:jar:0.6').from('lib/hex-anno-0.6.jar'),
                           artifact('org.trypticon.hex:hex-binary:jar:0.6').from('lib/hex-binary-0.6.jar'),
@@ -26,7 +26,18 @@ HAQUA                 =   artifact('org.trypticon.haqua:haqua:jar:0.1-SNAPSHOT')
 ICU4J                 = [ artifact('com.ibm.icu:icu4j:jar:53.1'),
                           artifact('com.ibm.icu:icu4j-charsets:jar:53.1') ]
 
-download artifact("com.ibm.icu:icu4j-charsets:jar:53.1") => 'http://download.icu-project.org/files/icu4j/53.1/icu4j-charset-53_1.jar'
+download artifact('org.swinglabs.swingx:swingx-action:jar:1.6.6-SNAPSHOT') =>
+  'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-action-1.6.6-SNAPSHOT.jar'
+download artifact('org.swinglabs.swingx:swingx-common:jar:1.6.6-SNAPSHOT') =>
+  'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-common-1.6.6-SNAPSHOT.jar'
+download artifact('org.swinglabs.swingx:swingx-core:jar:1.6.6-SNAPSHOT') =>
+  'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-core-1.6.6-SNAPSHOT.jar'
+download artifact('org.swinglabs.swingx:swingx-painters:jar:1.6.6-SNAPSHOT') =>
+  'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-painters-1.6.6-SNAPSHOT.jar'
+download artifact('org.swinglabs.swingx:swingx-plaf:jar:1.6.6-SNAPSHOT') =>
+  'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-plaf-1.6.6-SNAPSHOT.jar'
+download artifact("com.ibm.icu:icu4j-charsets:jar:53.1") =>
+  'http://download.icu-project.org/files/icu4j/53.1/icu4j-charset-53_1.jar'
 
 SNAKEYAML             =   artifact('org.yaml:snakeyaml:jar:1.13')
 
