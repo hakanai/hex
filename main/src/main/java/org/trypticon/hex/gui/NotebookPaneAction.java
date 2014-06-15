@@ -42,9 +42,9 @@ public abstract class NotebookPaneAction extends BaseAction {
         updateEnabled();
 
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        focusManager.addPropertyChangeListener("focusedWindow", (event) -> {
-            Window focusedWindow = (Window) event.getNewValue();
-            setHexFrame(focusedWindow instanceof HexFrame ? (HexFrame) focusedWindow : null);
+        focusManager.addPropertyChangeListener("activeWindow", (event) -> {
+            Window activeWindow = (Window) event.getNewValue();
+            setHexFrame(activeWindow instanceof HexFrame ? (HexFrame) activeWindow : null);
         });
     }
 

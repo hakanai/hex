@@ -50,7 +50,7 @@ public class SourceWindowFinder {
 
         // Occurs on Mac OS when running actions from the main menu, because the main menu's parent window
         // is some kind of special hidden window.
-        return KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
+        return KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
     }
 
     /**

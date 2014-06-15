@@ -109,7 +109,7 @@ public abstract class HexFrame extends JFrame {
      * @return the active hex viewer.
      */
     public static HexFrame findActiveFrame() {
-        Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
+        Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
         if (window == null) {
             return null;
         }

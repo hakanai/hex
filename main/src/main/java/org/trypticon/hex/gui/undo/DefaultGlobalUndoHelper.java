@@ -26,6 +26,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.NotebookPaneAction;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.NotebookPane;
@@ -60,9 +61,24 @@ public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
         redoAction.updateEnabled();
     }
 
+    /**
+     * Finds an Undo manager. If no frame is current, returns a throw-away one.
+     *
+     * @return the Undo manager.
+     */
+    private UndoManager findUndoManager() {
+        HexFrame frame = HexFrame.findActiveFrame();
+        if (frame == null) {
+            return new UndoManager();
+        } else {
+            return frame.getNotebookPane().getUndoHelper().getUndoManager();
+        }
+    }
+
     private class UndoAction extends NotebookPaneAction {
         private UndoAction() {
             Resources.localiseAction(this, "Undo");
+            putValue(NAME, new UndoManager().getUndoPresentationName());
         }
 
         @Override
@@ -79,15 +95,20 @@ public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
 
         @Override
         protected boolean shouldBeEnabled(NotebookPane notebookPane) {
-            UndoManager undoManager = notebookPane.getUndoHelper().getUndoManager();
-            putValue(NAME, undoManager.getUndoPresentationName());
-            return undoManager.canUndo();
+            return notebookPane.getUndoHelper().getUndoManager().canUndo();
+        }
+
+        @Override
+        public void setEnabled(boolean newValue) {
+            super.setEnabled(newValue);
+            putValue(NAME, findUndoManager().getUndoPresentationName());
         }
     }
 
     private class RedoAction extends NotebookPaneAction {
         private RedoAction() {
             Resources.localiseAction(this, "Redo");
+            putValue(NAME, new UndoManager().getRedoPresentationName());
         }
 
         @Override
@@ -104,9 +125,13 @@ public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
 
         @Override
         protected boolean shouldBeEnabled(NotebookPane notebookPane) {
-            UndoManager undoManager = notebookPane.getUndoHelper().getUndoManager();
-            putValue(NAME, undoManager.getRedoPresentationName());
-            return undoManager.canRedo();
+            return notebookPane.getUndoHelper().getUndoManager().canRedo();
+        }
+
+        @Override
+        public void setEnabled(boolean newValue) {
+            super.setEnabled(newValue);
+            putValue(NAME, findUndoManager().getRedoPresentationName());
         }
     }
 }
