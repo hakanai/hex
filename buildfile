@@ -25,6 +25,7 @@ GUM                   =   artifact('org.trypticon.gum:gum:jar:0.1')
 HAQUA                 =   artifact('org.trypticon.haqua:haqua:jar:0.1')
 ICU4J                 = [ artifact('com.ibm.icu:icu4j:jar:53.1'),
                           artifact('com.ibm.icu:icu4j-charsets:jar:53.1') ]
+SNAKEYAML             =   artifact('org.yaml:snakeyaml:jar:1.13')
 
 download artifact('org.swinglabs.swingx:swingx-action:jar:1.6.6-SNAPSHOT') =>
   'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-action-1.6.6-SNAPSHOT.jar'
@@ -43,8 +44,6 @@ download artifact('org.trypticon.gum:gum:jar:0.1') =>
 download artifact('org.trypticon.haqua:haqua:jar:0.1') =>
   'https://github.com/trejkaz/haqua/releases/download/v0.1/haqua-0.1.jar'
 
-
-SNAKEYAML             =   artifact('org.yaml:snakeyaml:jar:1.13')
 
 desc 'Hex'
 define 'hex' do
