@@ -24,8 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
+import javax.swing.SwingUtilities;
 
 /**
  * Convenience methods for showing option panes.
@@ -52,22 +51,10 @@ public class OptionPanes {
                                           String affirmativeVerb,
                                           String negativeVerb) {
 
-        initiallyFocusedComponent.addAncestorListener(new AncestorListener() {
-            @Override
-            public void ancestorAdded(AncestorEvent event) {
-                JComponent component = event.getComponent();
-                component.requestFocusInWindow();
-                component.removeAncestorListener( this );
-            }
-
-            @Override
-            public void ancestorRemoved(AncestorEvent event) {
-            }
-
-            @Override
-            public void ancestorMoved(AncestorEvent event) {
-            }
-        });
+        // The first invokeLater block runs after the dialog pops up but before the dialog sets the focus
+        // to the default button, so we do a second invokeLater to get our code to run after that.
+        SwingUtilities.invokeLater(() ->
+            SwingUtilities.invokeLater(initiallyFocusedComponent::requestFocusInWindow));
 
         JButton affirmativeButton = new JButton(affirmativeVerb);
         JButton negativeButton = new JButton(negativeVerb);
