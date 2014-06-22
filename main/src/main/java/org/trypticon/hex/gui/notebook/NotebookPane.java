@@ -19,19 +19,23 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jetbrains.annotations.NotNull;
 
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.HexViewer;
-import org.trypticon.hex.accessory.AccessoryBar;
 import org.trypticon.hex.accessory.ExpandableAccessoryBar;
+import org.trypticon.hex.accessory.LocationAccessoryBar;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.gui.anno.AnnotationPane;
 import org.trypticon.hex.gui.anno.CustomAnnotationStyleScheme;
@@ -50,8 +54,9 @@ import org.trypticon.hex.gui.util.Callback;
 public class NotebookPane extends JPanel {
     private final UndoHelper undoHelper;
     private final HexViewer viewer;
+    private final JXCollapsiblePane findBarCollapser;
     private final FindBar findBar;
-    private final AccessoryBar accessoryBar;
+    private final ExpandableAccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
 
     PropertyChangeListener nameListener = event ->
@@ -78,10 +83,16 @@ public class NotebookPane extends JPanel {
         viewer.setAnnotationStyleScheme(annotationStyleScheme);
 
         findBar = new FindBar(viewer);
+        findBar.setVisible(false);
+
+        findBarCollapser = new JXCollapsiblePane(JXCollapsiblePane.Direction.START);
+        findBarCollapser.setCollapsed(true);
+        findBarCollapser.setContentPane(findBar);
+
         accessoryBar = new ExpandableAccessoryBar(viewer);
 
         JPanel viewerWrapper = new JPanel(new BorderLayout());
-        viewerWrapper.add(findBar, BorderLayout.PAGE_START);
+        viewerWrapper.add(findBarCollapser, BorderLayout.PAGE_START);
         viewerWrapper.add(viewer, BorderLayout.CENTER);
         viewerWrapper.add(accessoryBar, BorderLayout.PAGE_END);
 
@@ -108,6 +119,16 @@ public class NotebookPane extends JPanel {
         addHierarchyListener(hierarchyEvent -> viewer.requestFocusInWindow());
 
         setNotebook(notebook);
+
+        // Esc closes the find bar and returns focus to the viewer.
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "close-find-bar");
+        getActionMap().put("close-find-bar", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                hideFindBar();
+                viewer.requestFocusInWindow();
+            }
+        });
     }
 
     /**
@@ -155,6 +176,39 @@ public class NotebookPane extends JPanel {
     private void attachListeners() {
         notebook.addPropertyChangeListener("name", nameListener);
         notebook.addPropertyChangeListener("dirty", dirtyListener);
+    }
+
+    /**
+     * Gets the find bar.
+     *
+     * @return the find bar.
+     */
+    public FindBar getFindBar() {
+        return findBar;
+    }
+
+    /**
+     * Shows the find bar.
+     */
+    public void showFindBar() {
+        findBarCollapser.setCollapsed(false);
+        findBar.requestFocusInWindow();
+    }
+
+    /**
+     * Hides the find bar.
+     */
+    public void hideFindBar() {
+        findBarCollapser.setCollapsed(true);
+    }
+
+    /**
+     * Gets the location accessory bar.
+     *
+     * @return the location accessory bar.
+     */
+    public LocationAccessoryBar getLocationAccessoryBar() {
+        return accessoryBar.getFirstAccessoryBar(LocationAccessoryBar.class);
     }
 
     /**

@@ -22,12 +22,14 @@ import java.awt.Insets;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.LayoutStyle;
 
 import org.trypticon.hex.HexViewer;
+import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
@@ -66,9 +68,9 @@ public class FindBar extends JPanel {
         modeButtonGroup.add(hexButton);
         modeButtonGroup.add(textButton);
 
-        hexTextField = new HexTextField("", 40);
+        hexTextField = new HexTextField("", 8);
         hexTextField.addActionListener(event -> findNext());
-        textField = new JTextField("", 40);
+        textField = new JTextField("", 8);
         textField.addActionListener(event -> findNext());
 
         encodingButton = new SelectEncodingButton();
@@ -120,6 +122,18 @@ public class FindBar extends JPanel {
         switchToHex();
     }
 
+    @Override
+    public boolean requestFocusInWindow() {
+        // Redirect focus to the text field.
+        JComponent mainFocus;
+        if (hexButton.isSelected()) {
+            mainFocus = hexTextField;
+        } else { // textButton.isSelected()
+            mainFocus = textField;
+        }
+        return mainFocus.requestFocusInWindow();
+    }
+
     private void switchToHex() {
         encodingButton.setVisible(false);
         textField.setVisible(false);
@@ -134,11 +148,11 @@ public class FindBar extends JPanel {
         textField.requestFocusInWindow();
     }
 
-    private void findNext() {
+    void findNext() {
         find(false);
     }
 
-    private void findPrevious() {
+    void findPrevious() {
         find(true);
     }
 
@@ -146,9 +160,17 @@ public class FindBar extends JPanel {
         Searcher searcher;
 
         if (hexButton.isSelected()) {
-            searcher = new BinarySearcher(hexTextField.getBinary());
+            Binary binary = hexTextField.getBinary();
+            if (binary.length() == 0) {
+                return;
+            }
+            searcher = new BinarySearcher(binary);
         } else {
-            searcher = new TextSearcher(textField.getText(), encodingButton.getEncoding());
+            String text = textField.getText();
+            if (text.isEmpty()) {
+                return;
+            }
+            searcher = new TextSearcher(text, encodingButton.getEncoding());
         }
 
         //XXX: Option not to wrap? Doesn't seem particularly crucial.
