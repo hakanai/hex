@@ -176,7 +176,9 @@ public class FindBar extends JPanel {
         //XXX: Option not to wrap? Doesn't seem particularly crucial.
         SearchParams params = new SearchParams(true, backwards);
 
-        Match match = searcher.find(viewer.getBinary(), viewer.getSelectionModel().getCursor(), params);
+        long startPosition = viewer.getSelectionModel().getCursor() + (backwards ? -1 : 1);
+
+        Match match = searcher.find(viewer.getBinary(), startPosition, params);
         if (match != null) {
             viewer.getSelectionModel().setSelection(match.offset, match.endOffset());
         }
