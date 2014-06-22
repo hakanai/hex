@@ -34,6 +34,7 @@ import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.gui.undo.UndoHelper;
+import org.trypticon.hex.gui.util.FilteredActionMap;
 import org.trypticon.hex.gui.util.NullTreeTableModel;
 
 /**
@@ -56,6 +57,8 @@ public class AnnotationPane extends JPanel {
     public AnnotationPane(AnnotationStyleScheme annotationStyleScheme, UndoHelper undoHelper) {
         annoTreeTable = new AnnotationTreeTable(annotationStyleScheme);
         this.undoHelper = undoHelper;
+
+        annoTreeTable.setActionMap(new FilteredActionMap(annoTreeTable.getActionMap(), "find"));
 
         annoTreeTable.addTreeSelectionListener(treeSelectionEvent -> {
             TreePath treePath = annoTreeTable.getTreeSelectionModel().getSelectionPath();
