@@ -5,6 +5,7 @@ COPYRIGHT = "Copyright \u00A9 2009-2014  Hex Project"
 
 ENV['JAVA_HOME'] = ENV['JAVA_HOME_8']
 
+repositories.remote << 'https://oss.sonatype.org/content/repositories/releases'
 repositories.remote << 'http://www.ibiblio.org/maven2/'
 repositories.remote << 'http://mirrors.ibiblio.org/pub/mirrors/maven2/'
 repositories.remote << 'http://repo1.maven.org/maven2/'
@@ -39,10 +40,6 @@ download artifact('org.swinglabs.swingx:swingx-plaf:jar:1.6.6-SNAPSHOT') =>
   'https://github.com/trejkaz/swingx/releases/download/v1.6.6-SNAPSHOT.2014.06.15/swingx-plaf-1.6.6-SNAPSHOT.jar'
 download artifact('com.ibm.icu:icu4j-charsets:jar:53.1') =>
   'http://download.icu-project.org/files/icu4j/53.1/icu4j-charset-53_1.jar'
-download artifact('org.trypticon.gum:gum:jar:0.1') =>
-  'https://github.com/trejkaz/gum/releases/download/v0.1/gum-0.1.jar'
-download artifact('org.trypticon.haqua:haqua:jar:0.1') =>
-  'https://github.com/trejkaz/haqua/releases/download/v0.1/haqua-0.1.jar'
 
 
 desc 'Hex'
