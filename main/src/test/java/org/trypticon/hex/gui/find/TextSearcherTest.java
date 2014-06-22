@@ -124,6 +124,9 @@ public class TextSearcherTest {
             // Normalisation forms
             { "caf\u00E9", "UTF-8", "cafe\u0301", 0, false, false, new Match(0, 6) },
             { "cafe\u0301", "UTF-8", "caf\u00E9", 0, false, false, new Match(0, 5) },
+
+            // Binary junk before the match
+            { "cake", "UTF-8", "\u0001\u0000\u0004cake", 0, false, false, new Match(3, 4) },
         };
 
         return Arrays.asList(data);

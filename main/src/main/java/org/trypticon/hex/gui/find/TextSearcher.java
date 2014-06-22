@@ -49,6 +49,7 @@ class TextSearcher implements Searcher {
 
         // ICU does this cast itself so it must be safe.
         collator = (RuleBasedCollator) Collator.getInstance();
+        collator.setStrength(Collator.IDENTICAL);
 
         needleIterator = collator.getCollationElementIterator(needle);
 
@@ -123,6 +124,14 @@ class TextSearcher implements Searcher {
             CollationElementIterator haystackIterator = collator.getCollationElementIterator(
                 UCharacterIterator.getInstance(charBuffer.array(), 0, charBuffer.limit()));
 
+            int firstOrder = haystackIterator.next();
+            if (firstOrder == CollationElementIterator.NULLORDER ||
+                firstOrder == CollationElementIterator.IGNORABLE) {
+                // Special case of having ignorable stuff at the front of the match (e.g. NULs.)
+                return null;
+            }
+
+            haystackIterator.reset();
             while (true) {
                 int matchCharCount = haystackIterator.getOffset();
                 int needleOrder = nextNonNullElement(needleIterator);
