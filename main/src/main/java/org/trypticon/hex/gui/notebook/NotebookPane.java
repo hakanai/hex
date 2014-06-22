@@ -37,6 +37,7 @@ import org.trypticon.hex.gui.anno.AnnotationPane;
 import org.trypticon.hex.gui.anno.CustomAnnotationStyleScheme;
 import org.trypticon.hex.gui.file.SaveConfirmation;
 import org.trypticon.hex.gui.file.SaveNotebookAction;
+import org.trypticon.hex.gui.find.FindBar;
 import org.trypticon.hex.gui.undo.GlobalUndoHelper;
 import org.trypticon.hex.gui.undo.UndoHelper;
 import org.trypticon.hex.gui.util.Callback;
@@ -49,6 +50,7 @@ import org.trypticon.hex.gui.util.Callback;
 public class NotebookPane extends JPanel {
     private final UndoHelper undoHelper;
     private final HexViewer viewer;
+    private final FindBar findBar;
     private final AccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
 
@@ -75,9 +77,11 @@ public class NotebookPane extends JPanel {
         viewer.setPreferredVisibleRowCount(36);
         viewer.setAnnotationStyleScheme(annotationStyleScheme);
 
+        findBar = new FindBar(viewer);
         accessoryBar = new ExpandableAccessoryBar(viewer);
 
         JPanel viewerWrapper = new JPanel(new BorderLayout());
+        viewerWrapper.add(findBar, BorderLayout.PAGE_START);
         viewerWrapper.add(viewer, BorderLayout.CENTER);
         viewerWrapper.add(accessoryBar, BorderLayout.PAGE_END);
 

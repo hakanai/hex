@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.anno;
+package org.trypticon.hex.gui.find;
 
 import java.awt.Component;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -27,38 +29,43 @@ import org.jdesktop.swingx.renderer.StringValue;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.util.SelectObjectPane;
 import org.trypticon.hex.gui.util.Strings;
-import org.trypticon.hex.interpreters.InterpreterInfo;
-import org.trypticon.hex.interpreters.MasterInterpreterStorage;
-import org.trypticon.hex.util.Format;
 
 /**
- * Pane allows selecting an annotation to add.
+ * Pane to select a character encoding.
+ *
+ * @author trejkaz
  */
-public class AddAnnotationPane extends SelectObjectPane<InterpreterInfo> {
-
+class SelectEncodingPane extends SelectObjectPane<Charset> {
     @Override
-    protected List<InterpreterInfo> createList() {
-        return new MasterInterpreterStorage().getInterpreterInfos();
+    protected List<Charset> createList() {
+        return new ArrayList<>(Charset.availableCharsets().values());
     }
 
     @Override
     protected StringValue createDisplayConverter() {
-        return element -> ((InterpreterInfo) element).toLocalisedString(Format.LONG);
+        return element -> ((Charset) element).name();
     }
 
     @Override
-    protected Predicate<InterpreterInfo> createFilterPredicate(String filterText) {
+    protected Predicate<Charset> createFilterPredicate(String filterText) {
         final String[] textFragments = Strings.splitOnWhitespace(filterText);
-        return info -> {
-            String shortName = info.toLocalisedString(Format.SHORT);
-            String longName = info.toLocalisedString(Format.LONG);
+        return charset -> {
             for (String fragment : textFragments) {
-                if (Strings.containsIgnoreCase(shortName, fragment)) {
+                if (Strings.containsIgnoreCase(charset.name(), fragment)) {
                     continue;
                 }
-                if (Strings.containsIgnoreCase(longName, fragment)) {
+
+                boolean found = false;
+                for (String alias : charset.aliases()) {
+                    if (Strings.containsIgnoreCase(alias, fragment)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
                     continue;
                 }
+
                 return false;
             }
             return true;
@@ -66,15 +73,14 @@ public class AddAnnotationPane extends SelectObjectPane<InterpreterInfo> {
     }
 
     /**
-     * Shows the annotation pane in a dialog.
+     * Shows the encoding selection pane in a dialog.
      *
      * @param parentComponent the parent component.
-     * @return the chosen interpreter.
+     * @return the chosen encoding.
      */
-    public InterpreterInfo showDialog(Component parentComponent) {
+    public Charset showDialog(Component parentComponent) {
         return showDialog(parentComponent,
-                          Resources.getString("AddAnnotation.nameWithoutEllipsis"),
-                          Resources.getString("AddAnnotation.okButton"));
+                          Resources.getString("SelectEncoding.title"),
+                          Resources.getString("SelectEncoding.okButton"));
     }
-
 }
