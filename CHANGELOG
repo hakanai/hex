@@ -7,6 +7,7 @@ Version X.X (XXXX-XX-XX)
      New: Using the more native file dialog on Mac OS X.
      New: Replaced Add Annotation menus with a dialog and filterable list to aid keyboard usage.
      New: Added Undo/Redo support.
+     New: Added Find support.
      New: Added keyboard accelerators for Add Annotation and Add Sub-Region.
      New: Added Window menu on Mac OS X.
      New: Added Open Recent menu.
