@@ -17,11 +17,11 @@ SWINGX                = [ artifact('org.swinglabs.swingx:swingx-action:jar:1.6.6
                           artifact('org.swinglabs.swingx:swingx-painters:jar:1.6.6-SNAPSHOT'),
                           artifact('org.swinglabs.swingx:swingx-plaf:jar:1.6.6-SNAPSHOT') ]
 JRUBY                 =   artifact('org.jruby:jruby-complete:jar:1.7.12')
-HEX_COMPONENTS        = [ artifact('org.trypticon.hex:hex-anno:jar:0.6').from('lib/hex-anno-0.6.jar'),
-                          artifact('org.trypticon.hex:hex-binary:jar:0.6').from('lib/hex-binary-0.6.jar'),
-                          artifact('org.trypticon.hex:hex-interpreter:jar:0.6').from('lib/hex-interpreter-0.6.jar'),
-                          artifact('org.trypticon.hex:hex-viewer:jar:0.6').from('lib/hex-viewer-0.6.jar'),
-                          artifact('org.trypticon.hex:hex-util:jar:0.6').from('lib/hex-util-0.6.jar') ]
+HEX_COMPONENTS        = [ artifact('org.trypticon.hex:hex-anno:jar:0.6'),
+                          artifact('org.trypticon.hex:hex-binary:jar:0.6'),
+                          artifact('org.trypticon.hex:hex-interpreter:jar:0.6'),
+                          artifact('org.trypticon.hex:hex-viewer:jar:0.6'),
+                          artifact('org.trypticon.hex:hex-util:jar:0.6') ]
 GUM                   =   artifact('org.trypticon.gum:gum:jar:0.1')
 HAQUA                 =   artifact('org.trypticon.haqua:haqua:jar:0.1')
 ICU4J                 = [ artifact('com.ibm.icu:icu4j:jar:53.1'),
