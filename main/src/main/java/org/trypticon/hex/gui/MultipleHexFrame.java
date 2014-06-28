@@ -120,10 +120,10 @@ public class MultipleHexFrame extends HexFrame {
      */
     public void addTab(Notebook notebook) {
         NotebookPane notebookPane = new NotebookPane(notebook, getApplication().getGlobalUndoHelper());
-        tabbedPane.add(notebookPane);
+        tabbedPane.add(notebookPane.getNotebookName(), notebookPane);
         tabbedPane.setSelectedComponent(notebookPane);
 
-        notebookPane.addPropertyChangeListener("name", tabTitleUpdater);
+        notebookPane.addPropertyChangeListener("notebookLocation", tabTitleUpdater);
         notebookPane.addPropertyChangeListener("unsaved", tabUnsavedUpdater);
         updateDocumentModified();
     }
@@ -150,7 +150,7 @@ public class MultipleHexFrame extends HexFrame {
         if (notebookPane != null) {
             notebookPane.prepareForClose(okToClose -> {
                 if (okToClose) {
-                    notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
+                    notebookPane.removePropertyChangeListener("notebookLocation", tabTitleUpdater);
                     notebookPane.removePropertyChangeListener("unsaved", tabUnsavedUpdater);
 
                     tabbedPane.remove(notebookPane);
@@ -224,9 +224,8 @@ public class MultipleHexFrame extends HexFrame {
     private class TabTitleUpdater implements PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent event) {
-            String name = (String) event.getNewValue();
             int index = tabbedPane.indexOfComponent((Component) event.getSource());
-            tabbedPane.setTitleAt(index, name);
+            tabbedPane.setTitleAt(index, notebookPane.getNotebookName());
         }
     }
 
@@ -281,12 +280,7 @@ public class MultipleHexFrame extends HexFrame {
 
         @Override
         public boolean isOpen() {
-            return false;
-        }
-
-        @Override
-        public String getName() {
-            return "";
+            return true;
         }
 
         @Override

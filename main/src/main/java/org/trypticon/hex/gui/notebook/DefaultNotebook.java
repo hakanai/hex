@@ -25,11 +25,8 @@ import java.net.URL;
 
 import org.jetbrains.annotations.NonNls;
 
-import org.trypticon.hex.anno.AnnotationCollectionEvent;
-import org.trypticon.hex.anno.AnnotationCollectionListener;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
-import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
 import org.trypticon.hex.util.LoggerUtils;
 import org.trypticon.hex.util.URLUtils;
@@ -43,7 +40,6 @@ public class DefaultNotebook implements Notebook {
 
     private PropertyChangeSupport propertyChanges;
     private URL notebookLocation;
-    private String name;
     private final URL binaryLocation;
     private ExtendedAnnotationCollection annotations;
     private Binary binary;
@@ -73,8 +69,6 @@ public class DefaultNotebook implements Notebook {
         int lastSlash = path.lastIndexOf('/');
         String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
         baseName = URLUtils.decode(baseName);
-
-        this.name = Resources.getString("Notebook.defaultName", baseName);
     }
 
     /**
@@ -145,18 +139,9 @@ public class DefaultNotebook implements Notebook {
             throw new IllegalArgumentException("notebook location cannot be null");
         }
 
-        if (!notebookLocation.equals(this.notebookLocation)) {
-            URL oldNotebookLocation = this.notebookLocation;
-            this.notebookLocation = notebookLocation;
-
-            String path = notebookLocation.getPath();
-            int lastSlash = path.lastIndexOf('/');
-            String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
-            baseName = URLUtils.decode(baseName);
-
-            setName(baseName);
-            firePropertyChange("notebookLocation", oldNotebookLocation, notebookLocation);
-        }
+        URL oldNotebookLocation = this.notebookLocation;
+        this.notebookLocation = notebookLocation;
+        firePropertyChange("notebookLocation", oldNotebookLocation, notebookLocation);
     }
 
     @Override
@@ -182,30 +167,6 @@ public class DefaultNotebook implements Notebook {
     @Override
     public boolean isOpen() {
         return binary != null;
-    }
-
-    /**
-     * <p>Gets the name of the notebook.  Currently this is derived from the location
-     *    of the notebook but it might become custom metadata later.</p>
-     *
-     * <p>This is a bound JavaBeans property.</p>
-     *
-     * @return the name of the notebook.
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    private void setName(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("name cannot be null");
-        }
-        if (!name.equals(this.name)) {
-            String oldName = this.name;
-            this.name = name;
-            firePropertyChange("name", oldName, name);
-        }
     }
 
     @Override

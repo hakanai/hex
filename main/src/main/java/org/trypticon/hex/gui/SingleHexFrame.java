@@ -21,9 +21,6 @@ package org.trypticon.hex.gui;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
@@ -85,24 +82,8 @@ public class SingleHexFrame extends HexFrame {
     }
 
     private void updateTitle() {
-        URL location = notebookPane.getNotebook().getNotebookLocation();
-        if (location == null) {
-            setTitle(Resources.getString("HexFrame.untitledFilename"));
-            getRootPane().putClientProperty("Window.documentFile", null);
-        } else if ("file".equals(location.getProtocol())) {
-            try {
-                File file = new File(location.toURI());
-                setTitle(file.getName());
-                getRootPane().putClientProperty("Window.documentFile", file);
-            } catch (URISyntaxException e) {
-                throw new IllegalStateException("Illegal URI but it came from a URL: " + location, e);
-            }
-        } else {
-            String path = location.getPath();
-            int lastSlash = path.lastIndexOf('/');
-            setTitle(path.substring(lastSlash + 1));
-            getRootPane().putClientProperty("Window.documentFile", null);
-        }
+        setTitle(notebookPane.getNotebookName());
+        getRootPane().putClientProperty("Window.documentFile", notebookPane.getNotebookFile());
     }
 
     /**

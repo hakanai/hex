@@ -81,16 +81,6 @@ public interface Notebook {
     boolean isOpen();
 
     /**
-     * <p>Gets the name of the notebook.  Currently this is derived from the location
-     *    of the notebook but it might become custom metadata later.</p>
-     *
-     * <p>This is a bound JavaBeans property.</p>
-     *
-     * @return the name of the notebook.
-     */
-    String getName();
-
-    /**
      * Adds a listener for property change events.
      *
      * @param propertyName the name of the property to listen to.

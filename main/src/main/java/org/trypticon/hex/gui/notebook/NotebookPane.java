@@ -21,6 +21,9 @@ package org.trypticon.hex.gui.notebook;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
@@ -31,12 +34,14 @@ import javax.swing.SwingUtilities;
 
 import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.accessory.ExpandableAccessoryBar;
 import org.trypticon.hex.accessory.LocationAccessoryBar;
 import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.anno.AnnotationPane;
 import org.trypticon.hex.gui.anno.CustomAnnotationStyleScheme;
 import org.trypticon.hex.gui.file.SaveConfirmation;
@@ -59,8 +64,8 @@ public class NotebookPane extends JPanel {
     private final ExpandableAccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
 
-    PropertyChangeListener nameListener = event ->
-        setName((String) event.getNewValue());
+    PropertyChangeListener notebookLocationListener = event ->
+        firePropertyChange("notebookLocation", event.getOldValue(), event.getNewValue());
     PropertyChangeListener unsavedListener = event ->
         firePropertyChange("unsaved", event.getOldValue(), event.getNewValue());
 
@@ -155,10 +160,13 @@ public class NotebookPane extends JPanel {
             detachListeners();
         }
 
+        URL oldNotebookLocation = getNotebookLocation();
+
         this.notebook = notebook;
 
         // TODO: A proper binding API would be nice here...
-        setName(notebook.getName());
+        URL newNotebookLocation = getNotebookLocation();
+        firePropertyChange("notebookLocation", oldNotebookLocation, newNotebookLocation);
 
         annoPane.setAnnotations(notebook.getAnnotations());
         annoPane.setBinary(notebook.getBinary());
@@ -169,13 +177,74 @@ public class NotebookPane extends JPanel {
         attachListeners();
     }
 
+    /**
+     * Gets the notebook location.
+     *
+     * @return the notebook location. Returns {@code null} if no notebook is open.
+     */
+    @Nullable
+    public URL getNotebookLocation() {
+        return notebook == null ? null : notebook.getNotebookLocation();
+    }
+
+    /**
+     * Gets the notebook file if it was loaded from one.
+     *
+     * @return the notebook file. Returns {@code null} if no notebook is open or if the notebook
+     *         was loaded from somewhere other than a file.
+     */
+    @Nullable
+    public File getNotebookFile() {
+        if (notebook == null) {
+            return null;
+        }
+
+        URL location = notebook.getNotebookLocation();
+        if (location != null && "file".equals(location.getProtocol())) {
+            try {
+                return new File(location.toURI());
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException("Illegal URI but it came from a URL: " + location, e);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the notebook name.
+     *
+     * @return the notebook name.
+     */
+    @NotNull
+    public String getNotebookName() {
+        if (notebook == null) {
+            return " "; // should never get here anyway, except for possibly preferred size calculation.
+        }
+
+        URL location = notebook.getNotebookLocation();
+        if (location == null) {
+            return Resources.getString("HexFrame.untitledFilename");
+        } else if ("file".equals(location.getProtocol())) {
+            try {
+                return new File(location.toURI()).getName();
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException("Illegal URI but it came from a URL: " + location, e);
+            }
+        } else {
+            String path = location.getPath();
+            int lastSlash = path.lastIndexOf('/');
+            return path.substring(lastSlash + 1);
+        }
+    }
+
     private void detachListeners() {
-        notebook.removePropertyChangeListener("name", nameListener);
+        notebook.removePropertyChangeListener("notebookLocation", notebookLocationListener);
         notebook.removePropertyChangeListener("unsaved", unsavedListener);
     }
 
     private void attachListeners() {
-        notebook.addPropertyChangeListener("name", nameListener);
+        notebook.addPropertyChangeListener("notebookLocation", notebookLocationListener);
         notebook.addPropertyChangeListener("unsaved", unsavedListener);
     }
 
