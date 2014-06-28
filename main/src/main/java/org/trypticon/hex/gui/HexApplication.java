@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.notebook.Notebook;
+import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.prefs.WorkspaceStateTracker;
@@ -128,9 +129,11 @@ public class HexApplication {
 
         // The notebook might already be open. If it is, it is customary to just focus the appropriate frame.
         for (HexFrame frame : HexFrame.findAllFrames()) {
-            if (notebookUrl.equals(frame.getNotebook().getNotebookLocation())) {
-                frame.requestFocus();
-                return frame;
+            for (NotebookPane notebookPane : frame.getAllNotebookPanes()) {
+                if (notebookUrl.equals(notebookPane.getNotebookLocation())) {
+                    frame.bringToFront(notebookPane);
+                    return frame;
+                }
             }
         }
 

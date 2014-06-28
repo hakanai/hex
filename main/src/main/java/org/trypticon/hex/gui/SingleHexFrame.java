@@ -21,6 +21,8 @@ package org.trypticon.hex.gui;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
+import java.util.List;
 
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
@@ -70,6 +72,16 @@ public class SingleHexFrame extends HexFrame {
     @Override
     public NotebookPane getNotebookPane() {
         return notebookPane;
+    }
+
+    @Override
+    public List<NotebookPane> getAllNotebookPanes() {
+        return Arrays.asList(notebookPane);
+    }
+
+    @Override
+    public void bringToFront(NotebookPane notebookPane) {
+        requestFocus();
     }
 
     @Override

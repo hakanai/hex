@@ -67,6 +67,13 @@ public abstract class HexFrame extends JFrame {
     public abstract NotebookPane getNotebookPane();
 
     /**
+     * Gets all currently-open notebook panes.
+     *
+     * @return a list of all notebook panes.
+     */
+    public abstract List<NotebookPane> getAllNotebookPanes();
+
+    /**
      * Gets the notebook being viewed. Just a convenience method for {@code getNotebookPane().getNotebook()}.
      *
      * @return the notebook being viewed.
@@ -121,4 +128,10 @@ public abstract class HexFrame extends JFrame {
         return (HexFrame) window;
     }
 
+    /**
+     * Brings the specified notebook pane to the front, as well as the frame itself.
+     *
+     * @param notebookPane the notebook pane.
+     */
+    public abstract void bringToFront(NotebookPane notebookPane);
 }

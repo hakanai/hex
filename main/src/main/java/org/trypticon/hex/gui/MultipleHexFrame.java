@@ -100,17 +100,19 @@ public class MultipleHexFrame extends HexFrame {
         firePropertyChange("notebookPane", oldNotebookPane, notebookPane);
     }
 
-    /**
-     * Gets all currently-open notebook panes.
-     *
-     * @return a list of all notebook panes.
-     */
+    @Override
     public List<NotebookPane> getAllNotebookPanes() {
         List<NotebookPane> panes = new ArrayList<>(tabbedPane.getTabCount());
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
             panes.add((NotebookPane) tabbedPane.getComponentAt(i));
         }
         return Collections.unmodifiableList(panes);
+    }
+
+    @Override
+    public void bringToFront(NotebookPane notebookPane) {
+        tabbedPane.setSelectedComponent(notebookPane);
+        requestFocus();
     }
 
     /**
