@@ -71,7 +71,11 @@ public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
         if (frame == null) {
             return new UndoManager();
         } else {
-            return frame.getNotebookPane().getUndoHelper().getUndoManager();
+            NotebookPane notebookPane = frame.getNotebookPane();
+            if (notebookPane == null) {
+                return new UndoManager();
+            }
+            return notebookPane.getUndoHelper().getUndoManager();
         }
     }
 
