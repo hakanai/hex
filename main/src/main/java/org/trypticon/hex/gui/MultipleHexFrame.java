@@ -62,7 +62,7 @@ public class MultipleHexFrame extends HexFrame {
 
         tabbedPane = new JTabbedPane();
 
-        updateDocumentModified();
+        updateDocumentModifiedForWindow();
 
         // We add a dummy pane for size computation purposes only.
         NotebookPane dummyPane = new NotebookPane(new DummyNotebook(), getApplication().getGlobalUndoHelper());
@@ -125,14 +125,14 @@ public class MultipleHexFrame extends HexFrame {
 
         notebookPane.addPropertyChangeListener("notebookLocation", tabTitleUpdater);
         notebookPane.addPropertyChangeListener("unsaved", tabUnsavedUpdater);
-        updateDocumentModified();
+        updateDocumentModifiedForTab(notebookPane);
     }
 
     /**
      * Updates the "document modified" status of the window (only visible on Aqua look and feel)
      * by looking at each notebook and testing whether it is unsaved.
      */
-    private void updateDocumentModified() {
+    private void updateDocumentModifiedForWindow() {
         boolean anyUnsaved = false;
         for (NotebookPane pane : getAllNotebookPanes()) {
             if (pane.isUnsaved()) {
@@ -142,6 +142,20 @@ public class MultipleHexFrame extends HexFrame {
         }
 
         getRootPane().putClientProperty("Window.documentModified", anyUnsaved);
+    }
+
+    /**
+     * Updates the "document modified" status of the tab.
+     * For Aqua look and feel, also update it for the window.
+     *
+     * @param updatedPane the pane which updated its status.
+     */
+    private void updateDocumentModifiedForTab(NotebookPane updatedPane) {
+        int index = tabbedPane.indexOfComponent(updatedPane);
+        String title = notebookPane.getNotebookName();
+        tabbedPane.setTitleAt(index, notebookPane.isUnsaved() ? title + "*" : title);
+
+        updateDocumentModifiedForWindow();
     }
 
     @Override
@@ -155,7 +169,7 @@ public class MultipleHexFrame extends HexFrame {
 
                     tabbedPane.remove(notebookPane);
 
-                    updateDocumentModified();
+                    updateDocumentModifiedForWindow();
 
                     notebookPane.getNotebook().close();
 
@@ -236,7 +250,7 @@ public class MultipleHexFrame extends HexFrame {
     private class TabUnsavedUpdater implements PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent event) {
-            updateDocumentModified();
+            updateDocumentModifiedForTab((NotebookPane) event.getSource());
         }
     }
 

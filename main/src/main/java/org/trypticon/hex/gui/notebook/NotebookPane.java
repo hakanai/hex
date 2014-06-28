@@ -305,7 +305,7 @@ public class NotebookPane extends JPanel {
      * @return {@code true} if the document is unsaved, {@code false} otherwise.
      */
     public boolean isUnsaved() {
-        return undoHelper.isUnsaved();
+        return notebook.getNotebookLocation() == null || undoHelper.isUnsaved();
     }
 
     /**

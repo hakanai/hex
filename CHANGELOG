@@ -15,6 +15,7 @@ Version X.X (XXXX-XX-XX)
      New: Added the ability to apply custom styles to annotations.
      New: Building on the better events from hex-components, the tree now updates only the portion which
           changed instead of updating the whole tree and losing the expansion state.
+     New: Added document unsaved (asterisk) indicators for non-Aqua look and feels.
 
    Fixed: NullPointerException for new notebooks due to a lack of annotations.
    Fixed: Various application behaviour issues for Mac OS X.
