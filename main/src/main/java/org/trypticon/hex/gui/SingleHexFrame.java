@@ -87,12 +87,12 @@ public class SingleHexFrame extends HexFrame {
     private void updateTitle() {
         URL location = notebookPane.getNotebook().getNotebookLocation();
         if (location == null) {
-            setTitle(Resources.getString("HexFrame.titleFormat", Resources.getString("HexFrame.untitledFilename")));
+            setTitle(Resources.getString("HexFrame.untitledFilename"));
             getRootPane().putClientProperty("Window.documentFile", null);
         } else if ("file".equals(location.getProtocol())) {
             try {
                 File file = new File(location.toURI());
-                setTitle(Resources.getString("HexFrame.titleFormat", file.getName()));
+                setTitle(file.getName());
                 getRootPane().putClientProperty("Window.documentFile", file);
             } catch (URISyntaxException e) {
                 throw new IllegalStateException("Illegal URI but it came from a URL: " + location, e);
@@ -100,7 +100,7 @@ public class SingleHexFrame extends HexFrame {
         } else {
             String path = location.getPath();
             int lastSlash = path.lastIndexOf('/');
-            setTitle(Resources.getString("HexFrame.titleFormat", path.substring(lastSlash + 1)));
+            setTitle(path.substring(lastSlash + 1));
             getRootPane().putClientProperty("Window.documentFile", null);
         }
     }
