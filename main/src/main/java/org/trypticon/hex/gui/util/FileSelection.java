@@ -52,12 +52,13 @@ public abstract class FileSelection {
      * @param mode indicates whether the file is being loaded or saved.
      * @param initialDirectory the directory to start at.
      * @param fileFilter a filter indicating the type of file the user is selecting.
-     * @return the selected file.
+     * @return the selected file. Returns {@code null} if the user cancels.
      */
+    @Nullable
     public abstract File selectFile(@Nullable Component parentComponent,
                                     @NotNull Mode mode,
                                     @NotNull File initialDirectory,
-                                    @NotNull FileExtensionFilter fileFilter);
+                                    @Nullable FileExtensionFilter fileFilter);
 
     /**
      * Enumeration of modes file selection can operate in.

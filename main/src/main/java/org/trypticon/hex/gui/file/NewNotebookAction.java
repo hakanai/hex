@@ -21,7 +21,6 @@ package org.trypticon.hex.gui.file;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import javax.swing.JFileChooser;
 
 import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.HexFrame;
@@ -30,6 +29,7 @@ import org.trypticon.hex.gui.notebook.DefaultNotebook;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.util.ActionException;
 import org.trypticon.hex.gui.util.BaseAction;
+import org.trypticon.hex.gui.util.FileSelection;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
@@ -53,17 +53,17 @@ public class NewNotebookAction extends BaseAction {
         // For Mac OS X, when opening files, the file chooser is *not* parented by the current window.
         Window activeWindow = PLAFUtils.isAqua() ? null : HexFrame.findActiveFrame();
 
-        JFileChooser chooser = new JFileChooser();
+        File file = FileSelection.getInstance().selectFile(
+            activeWindow, FileSelection.Mode.LOAD,
+            preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.BINARIES), null);
 
-        chooser.setCurrentDirectory(preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.BINARIES));
-
-        if (chooser.showOpenDialog(activeWindow) == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
+        if (file != null) {
             if (!file.isFile()) {
+                //XXX: Probably impossible. Or at the very least, it should be the file chooser's job.
                 throw new ActionException(Resources.getMessage("Common.Errors.notFile"));
             }
 
-            preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.BINARIES, chooser.getCurrentDirectory());
+            preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.BINARIES, file.getParentFile());
 
             application.openNotebook(new DefaultNotebook(file.toURI().toURL()));
         }

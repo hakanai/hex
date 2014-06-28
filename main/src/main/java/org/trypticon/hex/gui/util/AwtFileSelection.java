@@ -34,10 +34,11 @@ import org.jetbrains.annotations.Nullable;
  */
 public class AwtFileSelection extends FileSelection {
     @Override
+    @Nullable
     public File selectFile(@Nullable Component parentComponent,
                            @NotNull Mode mode,
                            @NotNull File initialDirectory,
-                           @NotNull FileExtensionFilter fileFilter) {
+                           @Nullable FileExtensionFilter fileFilter) {
         Window owner = parentComponent == null ? null :
                        parentComponent instanceof Window ? (Window) parentComponent :
                        SwingUtilities.getWindowAncestor(parentComponent);
@@ -50,7 +51,9 @@ public class AwtFileSelection extends FileSelection {
         }
         dialog.setMode(mode == Mode.LOAD ? FileDialog.LOAD : FileDialog.SAVE);
         dialog.setDirectory(initialDirectory.getAbsolutePath());
-        dialog.setFilenameFilter(fileFilter);
+        if (fileFilter != null) {
+            dialog.setFilenameFilter(fileFilter);
+        }
         dialog.setVisible(true);
         File[] files = dialog.getFiles();
         return files.length == 0 ? null : files[0];

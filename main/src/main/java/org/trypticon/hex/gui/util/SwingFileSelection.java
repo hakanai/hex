@@ -32,12 +32,15 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SwingFileSelection extends FileSelection {
     @Override
+    @Nullable
     public File selectFile(@Nullable Component parentComponent,
                            @NotNull Mode mode,
                            @NotNull File initialDirectory,
-                           @NotNull FileExtensionFilter fileFilter) {
+                           @Nullable FileExtensionFilter fileFilter) {
         JFileChooser chooser = new ImprovedFileChooser();
-        chooser.setFileFilter(fileFilter);
+        if (fileFilter != null) {
+            chooser.setFileFilter(fileFilter);
+        }
         chooser.setCurrentDirectory(initialDirectory);
         int result;
         if (mode == Mode.LOAD) {
