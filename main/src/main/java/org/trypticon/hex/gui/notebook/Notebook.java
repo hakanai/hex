@@ -91,13 +91,6 @@ public interface Notebook {
     String getName();
 
     /**
-     * Tests if the notebook in this pane has unsaved changes.
-     *
-     * @return {@code true} if the notebook has unsaved changes.
-     */
-    boolean isDirty();
-
-    /**
      * Adds a listener for property change events.
      *
      * @param propertyName the name of the property to listen to.

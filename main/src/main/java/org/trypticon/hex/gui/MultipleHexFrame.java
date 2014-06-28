@@ -47,7 +47,7 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
 public class MultipleHexFrame extends HexFrame {
     private final JTabbedPane tabbedPane;
     private final TabTitleUpdater tabTitleUpdater = new TabTitleUpdater();
-    private final TabDirtyUpdater tabDirtyUpdater = new TabDirtyUpdater();
+    private final TabUnsavedUpdater tabUnsavedUpdater = new TabUnsavedUpdater();
 
     private NotebookPane notebookPane;
 
@@ -124,24 +124,24 @@ public class MultipleHexFrame extends HexFrame {
         tabbedPane.setSelectedComponent(notebookPane);
 
         notebookPane.addPropertyChangeListener("name", tabTitleUpdater);
-        notebookPane.addPropertyChangeListener("dirty", tabDirtyUpdater);
+        notebookPane.addPropertyChangeListener("unsaved", tabUnsavedUpdater);
         updateDocumentModified();
     }
 
     /**
      * Updates the "document modified" status of the window (only visible on Aqua look and feel)
-     * by looking at each notebook and testing whether it is dirty.
+     * by looking at each notebook and testing whether it is unsaved.
      */
     private void updateDocumentModified() {
-        boolean dirty = false;
+        boolean anyUnsaved = false;
         for (NotebookPane pane : getAllNotebookPanes()) {
-            if (pane.getNotebook().isDirty()) {
-                dirty = true;
+            if (pane.isUnsaved()) {
+                anyUnsaved = true;
                 break;
             }
         }
 
-        getRootPane().putClientProperty("Window.documentModified", dirty);
+        getRootPane().putClientProperty("Window.documentModified", anyUnsaved);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class MultipleHexFrame extends HexFrame {
             notebookPane.prepareForClose(okToClose -> {
                 if (okToClose) {
                     notebookPane.removePropertyChangeListener("name", tabTitleUpdater);
-                    notebookPane.removePropertyChangeListener("dirty", tabDirtyUpdater);
+                    notebookPane.removePropertyChangeListener("unsaved", tabUnsavedUpdater);
 
                     tabbedPane.remove(notebookPane);
 
@@ -231,9 +231,10 @@ public class MultipleHexFrame extends HexFrame {
     }
 
     /**
-     * Updates the dirty flag on the window itself when the dirty status of one of the notebooks changes.
+     * Updates the unsaved flag on the window itself when the unsaved status of one of the notebooks
+     * changes.
      */
-    private class TabDirtyUpdater implements PropertyChangeListener {
+    private class TabUnsavedUpdater implements PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent event) {
             updateDocumentModified();
@@ -286,11 +287,6 @@ public class MultipleHexFrame extends HexFrame {
         @Override
         public String getName() {
             return "";
-        }
-
-        @Override
-        public boolean isDirty() {
-            return false;
         }
 
         @Override

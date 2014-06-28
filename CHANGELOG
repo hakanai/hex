@@ -18,6 +18,7 @@ Version X.X (XXXX-XX-XX)
 
    Fixed: NullPointerException for new notebooks due to a lack of annotations.
    Fixed: Various application behaviour issues for Mac OS X.
+   Fixed: Unsaved document indicator properly reflects the state.
 
  Changed: Document titles now show the file extension.
  Changed: Actions which require focus now disable when the required focus is not available.

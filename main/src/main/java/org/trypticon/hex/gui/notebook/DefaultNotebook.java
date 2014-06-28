@@ -51,11 +51,6 @@ public class DefaultNotebook implements Notebook {
     private final Object openLock = new Object();
 
     /**
-     * Dirty flag.  Set to {@code true} while the notebook has unsaved changes.
-     */
-    private boolean dirty;
-
-    /**
      * Constructs a new unsaved notebook with a default in-memory annotation collection.
      *
      * @param binaryLocation the location of the binary.
@@ -74,19 +69,12 @@ public class DefaultNotebook implements Notebook {
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
 
-        if (annotations != null) {
-            attachAnnotationCollectionListener();
-        }
-
         String path = binaryLocation.getPath();
         int lastSlash = path.lastIndexOf('/');
         String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
         baseName = URLUtils.decode(baseName);
 
         this.name = Resources.getString("Notebook.defaultName", baseName);
-
-        // Presumed dirty until someone sets the location.
-        setDirty(true);
     }
 
     /**
@@ -114,27 +102,7 @@ public class DefaultNotebook implements Notebook {
         if (annotations == null) {
             // Happens on first creation because we need to know the length of the file.
             annotations = new ExtendedAnnotationCollection(binary.length());
-
-            attachAnnotationCollectionListener();
         }
-    }
-
-    private void attachAnnotationCollectionListener() {
-        // Annotations changing in any way means we need to be saved.
-        annotations.addAnnotationCollectionListener(new AnnotationCollectionListener() {
-            @Override
-            public void annotationsAdded(AnnotationCollectionEvent event) {
-                setDirty(true);
-            }
-
-            @Override
-            public void annotationsRemoved(AnnotationCollectionEvent event) {
-                setDirty(true);
-            }
-
-            @Override
-            public void annotationsChanged(AnnotationCollectionEvent event) { setDirty(true); }
-        });
     }
 
     /**
@@ -189,8 +157,6 @@ public class DefaultNotebook implements Notebook {
             setName(baseName);
             firePropertyChange("notebookLocation", oldNotebookLocation, notebookLocation);
         }
-
-        setDirty(false);
     }
 
     @Override
@@ -239,25 +205,6 @@ public class DefaultNotebook implements Notebook {
             String oldName = this.name;
             this.name = name;
             firePropertyChange("name", oldName, name);
-            setDirty(true);
-        }
-    }
-
-    /**
-     * Tests if the notebook in this pane has unsaved changes.
-     *
-     * @return {@code true} if the notebook has unsaved changes.
-     */
-    @Override
-    public boolean isDirty() {
-        return dirty;
-    }
-
-    private void setDirty(boolean dirty) {
-        if (this.dirty != dirty) {
-            boolean oldDirty = this.dirty;
-            this.dirty = dirty;
-            firePropertyChange("dirty", oldDirty, dirty);
         }
     }
 

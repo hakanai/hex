@@ -63,7 +63,8 @@ public class SaveNotebookAction extends NotebookPaneAction {
 
     private void doSave() throws Exception {
         HexFrame frame = HexFrame.findActiveFrame();
-        Notebook notebook = frame.getNotebook();
+        NotebookPane notebookPane = frame.getNotebookPane();
+        Notebook notebook = notebookPane.getNotebook();
 
         URL location;
         if (!alwaysAsk && notebook.getNotebookLocation() != null) {
@@ -104,6 +105,7 @@ public class SaveNotebookAction extends NotebookPaneAction {
         new NotebookStorage().write(notebook, location);
 
         notebook.setNotebookLocation(location);
+        notebookPane.notebookWasSaved();
     }
 
     /**

@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.gui.undo;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -32,6 +34,9 @@ import javax.swing.undo.UndoManager;
 class DefaultUndoHelper implements UndoHelper {
     private final UndoManager undoManager = new UndoManager();
     private final DefaultGlobalUndoHelper globalUndoHelper;
+    private final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+
+    private int position = 0;
 
     DefaultUndoHelper(DefaultGlobalUndoHelper globalUndoHelper) {
         this.globalUndoHelper = globalUndoHelper;
@@ -41,12 +46,58 @@ class DefaultUndoHelper implements UndoHelper {
     public void perform(DryUndoableEdit edit) throws Exception {
         edit.execute();
         undoManager.addEdit(new UndoableEditAdapter(edit));
+        incPosition();
         globalUndoHelper.updateActions();
+    }
+
+    @Override
+    public void notebookWasSaved() {
+        resetPosition();
+    }
+
+    @Override
+    public boolean isUnsaved() {
+        return position != 0;
+    }
+
+    private void resetPosition() {
+        int oldPosition = position;
+        position = 0;
+        if (oldPosition != 0) {
+            changeSupport.firePropertyChange("unsaved", true, false);
+        }
+    }
+    private void decPosition() {
+        position--;
+        if (position == 0) {
+            changeSupport.firePropertyChange("unsaved", true, false);
+        } else if (position == -1) {
+            changeSupport.firePropertyChange("unsaved", false, true);
+        }
+    }
+
+    private void incPosition() {
+        position++;
+        if (position == 0) {
+            changeSupport.firePropertyChange("unsaved", true, false);
+        } else if (position == 1) {
+            changeSupport.firePropertyChange("unsaved", false, true);
+        }
     }
 
     @Override
     public UndoManager getUndoManager() {
         return undoManager;
+    }
+
+    @Override
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(propertyName, listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(propertyName, listener);
     }
 
     private class UndoableEditAdapter extends AbstractUndoableEdit {
@@ -60,6 +111,7 @@ class DefaultUndoHelper implements UndoHelper {
         public void undo() throws CannotUndoException {
             super.undo();
             edit.undo();
+            decPosition();
         }
 
         @Override
@@ -67,6 +119,7 @@ class DefaultUndoHelper implements UndoHelper {
             super.redo();
             try {
                 edit.execute();
+                incPosition();
             } catch (Exception e) {
                 // It worked the first time, so it should work the second time - the state is the same.
                 throw new RuntimeException(e);

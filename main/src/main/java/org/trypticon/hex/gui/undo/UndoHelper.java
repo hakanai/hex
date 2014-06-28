@@ -18,8 +18,11 @@
 
 package org.trypticon.hex.gui.undo;
 
+import java.beans.PropertyChangeListener;
 import java.lang.Exception;
 import javax.swing.undo.UndoManager;
+
+import org.jetbrains.annotations.NonNls;
 
 /**
  * Interface for posting undo events without the need to depend on the whole {@link UndoManager}.
@@ -36,9 +39,24 @@ public interface UndoHelper {
     void perform(DryUndoableEdit edit) throws Exception;
 
     /**
+     * Called from the outside to indicate that the notebook has been saved.
+     */
+    void notebookWasSaved();
+
+    /**
+     * Tests if the notebook is currently unsaved.
+     *
+     * @return {@code true} if the notebook is unsaved, {@code false} otherwise.
+     */
+    boolean isUnsaved();
+
+    /**
      * Gets the undo manager used by this helper.
      *
      * @return the undo manager used by this helper.
      */
     UndoManager getUndoManager();
+
+    void addPropertyChangeListener(@NonNls String propertyName, PropertyChangeListener listener);
+    void removePropertyChangeListener(@NonNls String propertyName, PropertyChangeListener listener);
 }

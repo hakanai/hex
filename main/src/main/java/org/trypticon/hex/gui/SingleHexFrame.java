@@ -46,7 +46,7 @@ public class SingleHexFrame extends HexFrame {
         super(application);
 
         notebookPane = new NotebookPane(notebook, application.getGlobalUndoHelper());
-        notebookPane.removePropertyChangeListener("dirty", event -> updateDocumentModified());
+        notebookPane.addPropertyChangeListener("unsaved", event -> updateDocumentModified());
 
         updateTitle();
         notebookPane.getNotebook().addPropertyChangeListener("notebookLocation", event -> updateTitle());
@@ -110,7 +110,7 @@ public class SingleHexFrame extends HexFrame {
      * by looking at each notebook and testing whether it is dirty.
      */
     private void updateDocumentModified() {
-        getRootPane().putClientProperty("Window.documentModified", notebookPane.getNotebook().isDirty());
+        getRootPane().putClientProperty("Window.documentModified", notebookPane.isUnsaved());
     }
 
     @Override

@@ -61,8 +61,8 @@ public class NotebookPane extends JPanel {
 
     PropertyChangeListener nameListener = event ->
         setName((String) event.getNewValue());
-    PropertyChangeListener dirtyListener = event ->
-        firePropertyChange("dirty", event.getOldValue(), event.getNewValue());
+    PropertyChangeListener unsavedListener = event ->
+        firePropertyChange("unsaved", event.getOldValue(), event.getNewValue());
 
     private Notebook notebook;
 
@@ -75,6 +75,7 @@ public class NotebookPane extends JPanel {
         AnnotationStyleScheme annotationStyleScheme = new CustomAnnotationStyleScheme();
 
         undoHelper = globalUndoHelper.createUndoHelper();
+        undoHelper.addPropertyChangeListener("unsaved", unsavedListener);
 
         annoPane = new AnnotationPane(annotationStyleScheme, undoHelper);
 
@@ -170,12 +171,12 @@ public class NotebookPane extends JPanel {
 
     private void detachListeners() {
         notebook.removePropertyChangeListener("name", nameListener);
-        notebook.removePropertyChangeListener("dirty", dirtyListener);
+        notebook.removePropertyChangeListener("unsaved", unsavedListener);
     }
 
     private void attachListeners() {
         notebook.addPropertyChangeListener("name", nameListener);
-        notebook.addPropertyChangeListener("dirty", dirtyListener);
+        notebook.addPropertyChangeListener("unsaved", unsavedListener);
     }
 
     /**
@@ -232,12 +233,17 @@ public class NotebookPane extends JPanel {
     /**
      * <p>Tests if the notebook has been modified since the last time it was saved.</p>
      *
-     * <p>This is the same as {@code getNotebook().isDirty()}, but is more convenient for tracking property changes.</p>
-     *
-     * @return {@code true} if the document is dirty, {@code false} otherwise.
+     * @return {@code true} if the document is unsaved, {@code false} otherwise.
      */
-    public boolean isDirty() {
-        return notebook.isDirty();
+    public boolean isUnsaved() {
+        return undoHelper.isUnsaved();
+    }
+
+    /**
+     * Called from the outside to indicate that the notebook has been saved.
+     */
+    public void notebookWasSaved() {
+        undoHelper.notebookWasSaved();
     }
 
     /**
@@ -248,7 +254,7 @@ public class NotebookPane extends JPanel {
      */
     public void prepareForClose(final Callback<Boolean> okToCloseCallback) {
         // On exit, some frames might be left around in the background which have their notebooks closed already.
-        if (notebook.isOpen() && notebook.isDirty()) {
+        if (notebook.isOpen() && isUnsaved()) {
             // So the user knows which one it's asking about.
             JTabbedPane tabbedPane = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
             if (tabbedPane != null) {
