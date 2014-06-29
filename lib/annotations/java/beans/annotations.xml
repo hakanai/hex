@@ -1,0 +1,5 @@
+<root>
+    <item name='java.beans.PropertyChangeSupport void firePropertyChange(java.lang.String, boolean, boolean) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+</root>
