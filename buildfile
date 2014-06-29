@@ -78,6 +78,7 @@ define 'hex' do
     mac_app.app_name = 'Hex'
     mac_app.bundle_identifier = 'org.trypticon.Hex'
     mac_app.main_class = 'org.trypticon.hex.gui.Main'
+    mac_app.bundle_jre = '1.8.0_05'
     mac_app.signing_identity = 'Trejkaz'
   end
 
