@@ -124,21 +124,21 @@ module MacAppBundle
 
   first_time do
     desc 'Create a Mac OS X app bundle'
-    Project.local_task('mac_app_bundle')
+    Project.local_task('mac_app')
   end
 
   before_define do |project|
-    mac_app_bundle = MacAppBundleTask.define_task('mac_app_bundle')
-    mac_app_bundle.send :associate_with, project
-    project.task(mac_app_bundle)
+    mac_app = MacAppBundleTask.define_task('mac_app')
+    mac_app.send :associate_with, project
+    project.task(mac_app)
   end
 
   after_define do |project|
-    task('mac_app_bundle' => project.package(:jar))
+    task('mac_app' => project.package(:jar))
   end
 
-  def mac_app_bundle
-    task('mac_app_bundle')
+  def mac_app
+    task('mac_app')
   end
 end
 

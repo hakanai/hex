@@ -1,4 +1,4 @@
-require_relative 'launcher/src/buildr/mac_app_bundle_extension'
+require_relative 'launcher/src/buildr/mac_app_extension'
 
 VERSION_NUMBER = '0.4'
 COPYRIGHT = "Copyright \u00A9 2009-2014  Hex Project"
@@ -75,10 +75,10 @@ define 'hex' do
   end
 
   if RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    mac_app_bundle.app_name = 'Hex'
-    mac_app_bundle.bundle_identifier = 'org.trypticon.Hex'
-    mac_app_bundle.main_class = 'org.trypticon.hex.gui.Main'
-    mac_app_bundle.signing_identity = 'Trejkaz'
+    mac_app.app_name = 'Hex'
+    mac_app.bundle_identifier = 'org.trypticon.Hex'
+    mac_app.main_class = 'org.trypticon.hex.gui.Main'
+    mac_app.signing_identity = 'Trejkaz'
   end
 
 end
