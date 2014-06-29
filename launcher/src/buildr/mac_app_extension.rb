@@ -150,7 +150,8 @@ module MacAppBundle
       }
 
       flight_recorder_files = %w{
-        lib/jfr/
+        lib/jfr
+        lib/jfr/*
         lib/jfr.jar
       }
 
