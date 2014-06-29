@@ -7,6 +7,8 @@ Version X.X (XXXX-XX-XX)
      New: Using the more native file dialog on Mac OS X.
      New: Replaced Add Annotation menus with a dialog and filterable list to aid keyboard usage.
      New: Added Undo/Redo support.
+     New: Added Cut and Paste to the menu. Even if the viewer itself can't use them, they're useful in
+          other places.
      New: Added Find support.
      New: Added keyboard accelerators for Add Annotation and Add Sub-Region.
      New: Added Window menu on Mac OS X.
@@ -25,6 +27,7 @@ Version X.X (XXXX-XX-XX)
  Changed: Actions which require focus now disable when the required focus is not available.
  Changed: Renamed Remove Annotation to Delete and removed Remove Sub-Region since it can be achieved
           via Remove Annotation anyway.
+ Changed: Copy now disables when there is nothing to copy.
 
 Version 0.3 (2012-11-10)
 

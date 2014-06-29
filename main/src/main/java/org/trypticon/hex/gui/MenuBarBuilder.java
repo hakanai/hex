@@ -27,16 +27,19 @@ import javax.swing.event.MenuEvent;
 
 import org.trypticon.gum.MacFactory;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
+import org.trypticon.hex.gui.datatransfer.CopyAction;
+import org.trypticon.hex.gui.datatransfer.CutAction;
+import org.trypticon.hex.gui.datatransfer.PasteAction;
 import org.trypticon.hex.gui.file.CloseNotebookAction;
 import org.trypticon.hex.gui.file.NewNotebookAction;
 import org.trypticon.hex.gui.file.OpenNotebookAction;
 import org.trypticon.hex.gui.file.RevertToSavedAction;
 import org.trypticon.hex.gui.file.SaveNotebookAction;
-import org.trypticon.hex.gui.find.ShowFindBarAction;
 import org.trypticon.hex.gui.find.FindNextAction;
 import org.trypticon.hex.gui.find.FindPreviousAction;
 import org.trypticon.hex.gui.find.JumpToOffsetAction;
 import org.trypticon.hex.gui.find.JumpToSelectionAction;
+import org.trypticon.hex.gui.find.ShowFindBarAction;
 import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.recent.OpenRecentMenu;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
@@ -83,10 +86,6 @@ public class MenuBarBuilder {
             fileMenu.add(new ExitAction(application));
         }
 
-        // TODO: Copy as:
-        //  - hex
-        //  - java source
-        //  - ?
         JMenu editMenu = new JMenu(Resources.getString("Edit.name"));
 
         GlobalUndoHelper undoHelper = application.getGlobalUndoHelper();
@@ -94,7 +93,9 @@ public class MenuBarBuilder {
         editMenu.add(undoHelper.getRedoAction());
 
         editMenu.addSeparator();
-        editMenu.add(new DelegatingAction("Copy", "copy-to-clipboard"));
+        editMenu.add(new CutAction());
+        editMenu.add(new CopyAction());
+        editMenu.add(new PasteAction());
         editMenu.add(new DeleteAction());
         editMenu.add(new DelegatingAction("SelectAll", "select-all"));
 

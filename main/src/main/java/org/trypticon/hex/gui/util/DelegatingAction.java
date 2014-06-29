@@ -18,49 +18,22 @@
 
 package org.trypticon.hex.gui.util;
 
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.JComponent;
 
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import org.trypticon.hex.gui.Resources;
 
 /**
- * <p>Tracks the current component, and forwards actions received onto that component.</p> <p/> <p>The easiest way to
- * use this is via {@link javax.swing.JMenuItem#setActionCommand(String)}. The same action listener can then be reused for multiple
- * menu items.</p>
+ * <p>Tracks the current component, and forwards actions received onto that component.</p>
  *
  * @author trejkaz
  */
-public class DelegatingAction extends BaseAction {
+public class DelegatingAction extends FocusedComponentAction {
     private final String delegateAction;
-    private JComponent focusOwner = null;
-
-    private final PropertyChangeListener listener = (event) -> {
-        Object o = event.getNewValue();
-        if (o instanceof JComponent) {
-            focusOwner = (JComponent) o;
-        } else {
-            focusOwner = null;
-        }
-    };
-
-    // Guards against this listener on a global object causing memory leaks.
-    @SuppressWarnings({"UnusedDeclaration"})
-    private final Object finalizeGuardian = new Object() {
-        @Override
-        protected void finalize() throws Throwable {
-            try {
-                KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                manager.removePropertyChangeListener("permanentFocusOwner", listener);
-            } finally {
-                super.finalize();
-            }
-        }
-    };
 
     public DelegatingAction(@NonNls String baseKey, @NonNls String delegateAction) {
         this.delegateAction = delegateAction;
@@ -68,12 +41,13 @@ public class DelegatingAction extends BaseAction {
     }
 
     @Override
-    protected void doAction(ActionEvent event) throws Exception {
-        if (focusOwner == null) {
-            return;
-        }
+    protected boolean shouldBeEnabled(@NotNull JComponent focusOwner) {
+        Action action = focusOwner.getActionMap().get(delegateAction);
+        return action != null && action.isEnabled();
+    }
 
-        //TODO: It might not be in focus.
+    @Override
+    protected void doAction(@NotNull JComponent focusOwner) throws Exception {
         Action action = focusOwner.getActionMap().get(delegateAction);
         if (action != null) {
             action.actionPerformed(new ActionEvent(focusOwner, ActionEvent.ACTION_PERFORMED, null));
