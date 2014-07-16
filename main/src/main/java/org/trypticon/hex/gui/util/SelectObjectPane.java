@@ -135,7 +135,7 @@ public abstract class SelectObjectPane<E> extends ValidatingPanel {
             if (list.getRowSorter().getViewRowCount() == 1) {
                 modelIndex = list.convertIndexToModel(0);
             } else {
-                modelIndex = list.getSelectedIndex();
+                modelIndex = list.convertIndexToModel(list.getSelectedIndex());
             }
             return safeCast(list.getModel().getElementAt(modelIndex));
         } else {
