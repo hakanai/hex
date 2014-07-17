@@ -18,6 +18,7 @@
 
 package org.trypticon.hex.formats.ruby;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class RubyStructureDSLTest {
 
         Annotation[] children = {
             createAnnotation(0, 2, new UShortInterpreterBE(), "length"),
-            createAnnotation(2, 4, new StringInterpreter("UTF-8"), "bytes"),
+            createAnnotation(2, 4, new StringInterpreter(StandardCharsets.UTF_8), "bytes"),
         };
 
         GroupAnnotation expected = createGroupAnnotation(0, 6, "string_with_length", Arrays.asList(children));

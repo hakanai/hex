@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.find;
+package org.trypticon.hex.gui.util.encoding;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -27,10 +27,10 @@ import javax.swing.JButton;
  *
  * @author trejkaz
  */
-class SelectEncodingButton extends JButton {
+public class SelectEncodingButton extends JButton {
     private Charset encoding;
 
-    SelectEncodingButton() {
+    public SelectEncodingButton() {
         setEncoding(StandardCharsets.UTF_8);
         addActionListener(event -> {
             SelectEncodingPane pane = new SelectEncodingPane();

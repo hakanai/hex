@@ -23,6 +23,8 @@ Version X.X (XXXX-XX-XX)
    Fixed: Various application behaviour issues for Mac OS X.
    Fixed: Unsaved document indicator properly reflects the state.
 
+ Changed: The Encoding option for string annotations is now chosen using a more convenient means of
+          selection.
  Changed: Document titles now show the file extension.
  Changed: Actions which require focus now disable when the required focus is not available.
  Changed: Renamed Remove Annotation to Delete and removed Remove Sub-Region since it can be achieved

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.find;
+package org.trypticon.hex.gui.util.encoding;
 
 import java.awt.Component;
 import java.nio.charset.Charset;

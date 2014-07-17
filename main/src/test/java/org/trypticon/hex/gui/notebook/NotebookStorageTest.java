@@ -27,6 +27,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -68,7 +69,7 @@ public class NotebookStorageTest {
                                                                      Color.red, Color.white));
         annotations.add(leaf1);
         annotations.add(new SimpleAnnotation(9, 4, PrimitiveInterpreters.UINT32_LE));
-        annotations.add(new SimpleAnnotation(13, 4, new StringInterpreter("utf8")));
+        annotations.add(new SimpleAnnotation(13, 4, new StringInterpreter(StandardCharsets.UTF_8)));
         Annotation group1 = new SimpleGroupAnnotation(9, 8);
         group1.set(CommonAttributes.NOTE, "Test Group");
         group1.set(CustomAttributes.CUSTOM_STYLE, new ParametricStyle(ParametricStyle.StrokeStyle.SOLID,

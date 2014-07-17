@@ -22,8 +22,7 @@ import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
@@ -31,9 +30,11 @@ import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.anno.SimpleAnnotation;
 import org.trypticon.hex.gui.anno.AddAnnotationPane;
+import org.trypticon.hex.gui.anno.AnnotationOptionsPane;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.undo.AddEdit;
 import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.gui.util.OptionPanes;
 import org.trypticon.hex.interpreters.FixedLengthInterpreter;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterInfo;
@@ -62,41 +63,12 @@ class AddAnnotationAction extends NotebookPaneAction {
             List<InterpreterInfo.Option<?>> options = info.getOptions();
             Map<String, Object> optionMap = new HashMap<>(options.size());
             if (!options.isEmpty()) {
-
-                // TODO: We should do this in a single form, I'm just lazy right now.
-
-                for (InterpreterInfo.Option option : options) {
-                    while (true) {
-                        String requiredOrOptional = option.isRequired() ?
-                                                    Resources.getString("AddAnnotation.enterValueForParameter.required") :
-                                                    Resources.getString("AddAnnotation.enterValueForParameter.optional");
-                        String message = Resources.getString("AddAnnotation.enterValueForParameter",
-                                                             option.getName(),
-                                                             requiredOrOptional);
-                        String value = JOptionPane.showInputDialog(SwingUtilities.getWindowAncestor(viewer), message);
-
-                        if (value == null) {
-                            return; // Cancelled.
-                        }
-
-                        value = value.trim();
-                        if (!value.isEmpty()) {
-
-                            // TODO: Support more types in a more generic way.  Forms will help.
-
-                            if (String.class == option.getType()) {
-                                optionMap.put(option.getName(), value);
-                                break;
-                            } else if (Integer.class == option.getType()) {
-                                optionMap.put(option.getName(), Integer.valueOf(value));
-                                break; // the while loop
-                            }
-                        } else {
-                            if (!option.isRequired()) {
-                                break;
-                            }
-                        }
-                    }
+                AnnotationOptionsPane optionsPane = new AnnotationOptionsPane(options);
+                if (OptionPanes.showInputDialog(notebookPane, optionsPane, optionsPane,
+                                                Resources.getString("AddAnnotation.nameWithoutEllipsis"),
+                                                Resources.getString("AddAnnotation.optionsOkButton"),
+                                                UIManager.getString("OptionPane.cancelButtonText"))) {
+                    optionsPane.populateOptionMap(optionMap);
                 }
             }
 
