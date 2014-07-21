@@ -1,0 +1,3 @@
+classfile/
+gif/
+jpeg/

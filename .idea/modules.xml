@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/formats/formats.iml" filepath="$PROJECT_DIR$/formats/formats.iml" />
       <module fileurl="file://$PROJECT_DIR$/launcher/launcher.iml" filepath="$PROJECT_DIR$/launcher/launcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/main/main.iml" filepath="$PROJECT_DIR$/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scripting/scripting.iml" filepath="$PROJECT_DIR$/scripting/scripting.iml" />
     </modules>
   </component>
 </project>

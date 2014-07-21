@@ -56,7 +56,7 @@ public class OpenSampleNotebookAction extends BaseAction {
         Binary binary = notebook.getBinary();
         AnnotationCollection annotations = notebook.getAnnotations();
 
-        Structure structure = RubyStructureDSL.load(getClass().getResource("/org/trypticon/hex/formats/classfile/class_file.rb"));
+        Structure structure = RubyStructureDSL.load(getClass().getResource("/org/trypticon/hex/formats/repository/classfile/class_file.rb"));
         if (structure == null) {
             throw new IllegalStateException("class_file.rb couldn't be loaded");
         }

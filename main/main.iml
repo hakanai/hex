@@ -25,7 +25,62 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6/hex-anno-0.6.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6.1-SNAPSHOT/hex-anno-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6.1-SNAPSHOT/hex-anno-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6.1-SNAPSHOT/hex-binary-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6.1-SNAPSHOT/hex-binary-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6.1-SNAPSHOT/hex-interpreter-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6.1-SNAPSHOT/hex-interpreter-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6.1-SNAPSHOT/hex-viewer-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6.1-SNAPSHOT/hex-viewer-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6.1-SNAPSHOT/hex-util-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6.1-SNAPSHOT/hex-util-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/gum/gum/0.1/gum-0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -34,7 +89,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6/hex-binary-0.6.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/haqua/haqua/0.1/haqua-0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -43,7 +98,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6/hex-interpreter-0.6.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-action/1.6.6-SNAPSHOT/swingx-action-1.6.6-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -52,7 +107,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6/hex-viewer-0.6.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-common/1.6.6-SNAPSHOT/swingx-common-1.6.6-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -61,7 +116,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6/hex-util-0.6.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-core/1.6.6-SNAPSHOT/swingx-core-1.6.6-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -70,7 +125,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/gum/gum/0.1-SNAPSHOT/gum-0.1-SNAPSHOT.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-painters/1.6.6-SNAPSHOT/swingx-painters-1.6.6-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -79,52 +134,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/haqua/haqua/0.1-SNAPSHOT/haqua-0.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-action/1.6.4-SNAPSHOT/swingx-action-1.6.4-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-common/1.6.4-SNAPSHOT/swingx-common-1.6.4-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-core/1.6.4-SNAPSHOT/swingx-core-1.6.4-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-painters/1.6.4-SNAPSHOT/swingx-painters-1.6.4-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-plaf/1.6.4-SNAPSHOT/swingx-plaf-1.6.4-SNAPSHOT.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-plaf/1.6.6-SNAPSHOT/swingx-plaf-1.6.6-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

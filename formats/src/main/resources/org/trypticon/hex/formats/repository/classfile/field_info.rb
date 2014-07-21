@@ -16,9 +16,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-structure :attribute_info do
-  uint16_be :attribute_name_index
-  uint32_be :attribute_length
+require_relative 'attribute_info'
 
-  unknown :attribute_data, :length => :attribute_length
+structure :field_info do
+  uint16_be :access_flags
+  uint16_be :name_index
+  uint16_be :descriptor_index
+  uint16_be :attributes_count
+
+  array :attributes, :size => :attributes_count, :element_type => :attribute_info
 end

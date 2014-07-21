@@ -16,13 +16,30 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require 'org/trypticon/hex/formats/classfile/attribute_info'
+require_relative 'jpeg_sof'
+require_relative 'jpeg_dht'
+require_relative 'jpeg_soi'
+require_relative 'jpeg_eoi'
+require_relative 'jpeg_sos'
+require_relative 'jpeg_dqt'
+require_relative 'jpeg_app0'
 
-structure :field_info do
-  uint16_be :access_flags
-  uint16_be :name_index
-  uint16_be :descriptor_index
-  uint16_be :attributes_count
+structure :jpeg_block do
+  uint16_be  :block_id
+  switch  :block_id, :replaces_this_structure => true do |value|
+    case value
+      when 0xFFC0 ; :sof0
+      when 0xFFC4 ; :dht
+      when 0xFFD8 ; :soi
+      when 0xFFD9 ; :eoi
+      when 0xFFDA ; :sos
+      when 0xFFDB ; :dqt
+      when 0xFFE0 ; :app0
+      else raise("Value has no mapping: #{"%04X" % value}")
+    end
+  end
+end
 
-  array :attributes, :size => :attributes_count, :element_type => :attribute_info
+structure :jpeg_image do
+  array :blocks, :size_type => :until_exception, :element_type => :jpeg_block
 end

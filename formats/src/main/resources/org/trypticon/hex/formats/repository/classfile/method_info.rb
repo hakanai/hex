@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require 'org/trypticon/hex/formats/classfile/attribute_info'
+require_relative 'attribute_info'
 
 structure :method_info do
   uint16_be :access_flags
