@@ -2,4 +2,7 @@
     <item name='org.jruby.embed.ScriptingContainer java.lang.Object put(java.lang.String, java.lang.Object) 0'>
         <annotation name='org.jetbrains.annotations.NonNls'/>
     </item>
+    <item name='org.jruby.embed.ScriptingContainer java.lang.Object setAttribute(java.lang.Object, java.lang.Object) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
 </root>

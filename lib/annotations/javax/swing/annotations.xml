@@ -5,4 +5,10 @@
     <item name='javax.swing.JComponent void firePropertyChange(java.lang.String, boolean, boolean) 0'>
         <annotation name='org.jetbrains.annotations.NonNls'/>
     </item>
+    <item name='javax.swing.JEditorPane void setContentType(java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='javax.swing.JEditorPane void setEditorKitForContentType(java.lang.String, javax.swing.text.EditorKit) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
 </root>

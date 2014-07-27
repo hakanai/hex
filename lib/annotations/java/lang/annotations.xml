@@ -11,4 +11,7 @@
     <item name='java.lang.String java.lang.String[] split(java.lang.String) 0'>
         <annotation name='org.jetbrains.annotations.NonNls'/>
     </item>
+    <item name='java.lang.System java.lang.String getenv(java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
 </root>
