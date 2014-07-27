@@ -63,7 +63,8 @@ define 'hex' do
 
   desc 'Hex Scripting'
   define 'scripting' do
-    compile.with SWINGX, MAC_WIDGETS, R_SYNTAX
+    compile.with INTELLIJ_ANNOTATIONS
+    compile.with HEX_COMPONENTS, SWINGX, MAC_WIDGETS, R_SYNTAX
     compile.with projects('formats')
   end
 
