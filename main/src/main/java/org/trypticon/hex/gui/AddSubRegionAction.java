@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui;
 
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
@@ -49,7 +50,7 @@ public class AddSubRegionAction extends NotebookPaneAction {
         int length = (int) (viewer.getSelectionModel().getSelectionEnd() - position) + 1;
 
         AnnotationCollection annotationCollection = notebookPane.getNotebook().getAnnotations();
-        Annotation annotation = new SimpleGroupAnnotation(position, length, null);
+        Annotation annotation = new SimpleGroupAnnotation(position, length, Collections.emptyList());
 
         try {
             notebookPane.getUndoHelper().perform(new AddEdit(annotationCollection, annotation));
