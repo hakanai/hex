@@ -36,6 +36,6 @@ public class FindNextAction extends NotebookPaneAction {
 
     @Override
     protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
-        notebookPane.getFindBar().findNext();
+        notebookPane.getTopBars().getFindBar().findNext();
     }
 }

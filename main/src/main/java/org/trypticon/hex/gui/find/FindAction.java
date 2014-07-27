@@ -29,13 +29,13 @@ import org.trypticon.hex.gui.notebook.NotebookPane;
  *
  * @author trejkaz
  */
-public class ShowFindBarAction extends NotebookPaneAction {
-    public ShowFindBarAction() {
+public class FindAction extends NotebookPaneAction {
+    public FindAction() {
         Resources.localiseAction(this, "Find");
     }
 
     @Override
     protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
-        notebookPane.showFindBar();
+        notebookPane.getTopBars().showFindBar();
     }
 }

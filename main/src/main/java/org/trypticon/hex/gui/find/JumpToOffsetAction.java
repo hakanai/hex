@@ -36,6 +36,6 @@ public class JumpToOffsetAction extends NotebookPaneAction {
 
     @Override
     protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
-        notebookPane.getLocationAccessoryBar().focusOffsetField();
+        notebookPane.getTopBars().showJumpToOffsetBar();
     }
 }

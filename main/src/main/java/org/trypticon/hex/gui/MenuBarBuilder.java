@@ -35,11 +35,11 @@ import org.trypticon.hex.gui.file.NewNotebookAction;
 import org.trypticon.hex.gui.file.OpenNotebookAction;
 import org.trypticon.hex.gui.file.RevertToSavedAction;
 import org.trypticon.hex.gui.file.SaveNotebookAction;
+import org.trypticon.hex.gui.find.FindAction;
 import org.trypticon.hex.gui.find.FindNextAction;
 import org.trypticon.hex.gui.find.FindPreviousAction;
 import org.trypticon.hex.gui.find.JumpToOffsetAction;
 import org.trypticon.hex.gui.find.JumpToSelectionAction;
-import org.trypticon.hex.gui.find.ShowFindBarAction;
 import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.recent.OpenRecentMenu;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
@@ -100,12 +100,14 @@ public class MenuBarBuilder {
         editMenu.add(new DelegatingAction("SelectAll", "select-all"));
 
         editMenu.addSeparator();
+        editMenu.add(new JumpToOffsetAction());
+
+        editMenu.addSeparator();
         JMenu findMenu = new JMenu(Resources.getString("FindMenu.name"));
-        findMenu.add(new ShowFindBarAction());
+        findMenu.add(new FindAction());
         findMenu.add(new FindNextAction());
         findMenu.add(new FindPreviousAction());
         findMenu.add(new JumpToSelectionAction());
-        findMenu.add(new JumpToOffsetAction());
         editMenu.add(findMenu);
 
         editMenu.addSeparator();

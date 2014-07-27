@@ -70,9 +70,7 @@ public class FindBar extends JPanel {
         modeButtonGroup.add(textButton);
 
         hexTextField = new HexTextField("", 8);
-        hexTextField.addActionListener(event -> findNext());
         textField = new JTextField("", 8);
-        textField.addActionListener(event -> findNext());
 
         encodingButton = new SelectEncodingButton();
         encodingButton.putClientProperty("JButton.buttonType", "segmentedTextured");
@@ -90,6 +88,9 @@ public class FindBar extends JPanel {
         nextButton.putClientProperty("JButton.segmentPosition", "last");
         nextButton.setMargin(new Insets(0, 0, 0, 0));
         nextButton.addActionListener(event -> findNext());
+
+        hexTextField.addActionListener(event -> nextButton.doClick());
+        textField.addActionListener(event -> nextButton.doClick());
 
         PLAFUtils.makeSmall(this, hexButton, textButton, hexTextField, textField,
                             encodingButton, previousButton, nextButton);

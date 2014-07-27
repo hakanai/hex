@@ -10,6 +10,7 @@ Version X.X (XXXX-XX-XX)
      New: Added Cut and Paste to the menu. Even if the viewer itself can't use them, they're useful in
           other places.
      New: Added Find support.
+     New: Added Jump to Offset.
      New: Added keyboard accelerators for Add Annotation and Add Sub-Region.
      New: Added Window menu on Mac OS X.
      New: Added Open Recent menu.

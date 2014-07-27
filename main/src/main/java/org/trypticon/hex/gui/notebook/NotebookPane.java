@@ -32,7 +32,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +45,7 @@ import org.trypticon.hex.gui.anno.AnnotationPane;
 import org.trypticon.hex.gui.anno.CustomAnnotationStyleScheme;
 import org.trypticon.hex.gui.file.SaveConfirmation;
 import org.trypticon.hex.gui.file.SaveNotebookAction;
-import org.trypticon.hex.gui.find.FindBar;
+import org.trypticon.hex.gui.find.TopBars;
 import org.trypticon.hex.gui.undo.GlobalUndoHelper;
 import org.trypticon.hex.gui.undo.UndoHelper;
 import org.trypticon.hex.gui.util.Callback;
@@ -59,8 +58,7 @@ import org.trypticon.hex.gui.util.Callback;
 public class NotebookPane extends JPanel {
     private final UndoHelper undoHelper;
     private final HexViewer viewer;
-    private final JXCollapsiblePane findBarCollapser;
-    private final FindBar findBar;
+    private final TopBars topBars;
     private final ExpandableAccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
 
@@ -88,17 +86,12 @@ public class NotebookPane extends JPanel {
         viewer.setPreferredVisibleRowCount(36);
         viewer.setAnnotationStyleScheme(annotationStyleScheme);
 
-        findBar = new FindBar(viewer);
-        findBar.setVisible(false);
-
-        findBarCollapser = new JXCollapsiblePane(JXCollapsiblePane.Direction.START);
-        findBarCollapser.setCollapsed(true);
-        findBarCollapser.setContentPane(findBar);
+        topBars = new TopBars(viewer);
 
         accessoryBar = new ExpandableAccessoryBar(viewer);
 
         JPanel viewerWrapper = new JPanel(new BorderLayout());
-        viewerWrapper.add(findBarCollapser, BorderLayout.PAGE_START);
+        viewerWrapper.add(topBars, BorderLayout.PAGE_START);
         viewerWrapper.add(viewer, BorderLayout.CENTER);
         viewerWrapper.add(accessoryBar, BorderLayout.PAGE_END);
 
@@ -127,11 +120,11 @@ public class NotebookPane extends JPanel {
         setNotebook(notebook);
 
         // Esc closes the find bar and returns focus to the viewer.
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "close-find-bar");
-        getActionMap().put("close-find-bar", new AbstractAction() {
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "close-top-bar");
+        getActionMap().put("close-top-bar", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                hideFindBar();
+                topBars.hideBar();
                 viewer.requestFocusInWindow();
             }
         });
@@ -249,27 +242,12 @@ public class NotebookPane extends JPanel {
     }
 
     /**
-     * Gets the find bar.
+     * Gets the container for the top bars.
      *
-     * @return the find bar.
+     * @return the top bars.
      */
-    public FindBar getFindBar() {
-        return findBar;
-    }
-
-    /**
-     * Shows the find bar.
-     */
-    public void showFindBar() {
-        findBarCollapser.setCollapsed(false);
-        findBar.requestFocusInWindow();
-    }
-
-    /**
-     * Hides the find bar.
-     */
-    public void hideFindBar() {
-        findBarCollapser.setCollapsed(true);
+    public TopBars getTopBars() {
+        return topBars;
     }
 
     /**

@@ -36,6 +36,6 @@ public class FindPreviousAction extends NotebookPaneAction {
 
     @Override
     protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
-        notebookPane.getFindBar().findPrevious();
+        notebookPane.getTopBars().getFindBar().findPrevious();
     }
 }
