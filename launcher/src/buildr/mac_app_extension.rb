@@ -128,7 +128,7 @@ module MacAppBundle
       java_root = File.dirname(File.dirname(File.realpath(ENV['JAVA_HOME'])))
       basename = File.basename(java_root)
       if "jdk#{version}.jdk" != basename
-        raise "bundle_jre specifies version (#{version}) but we are running against (#{basename}). Change JAVA_HOME."
+        raise "bundle_jre specifies version '#{version}' but we are running against '#{basename}'. Change JAVA_HOME."
       end
 
       # If I extract this plugin then others might want to specify which exclusions apply.
