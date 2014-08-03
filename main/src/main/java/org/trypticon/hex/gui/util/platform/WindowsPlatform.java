@@ -16,22 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.formats;
+package org.trypticon.hex.gui.util.platform;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Base convenience class for implementing structures.
+ * Windows platform.
  *
  * @author trejkaz
  */
-public abstract class AbstractStructure implements Structure {
-    private final String name;
-
-    protected AbstractStructure(String name) {
-        this.name = name;
-    }
-
+public class WindowsPlatform extends Platform {
     @Override
-    public String getName() {
-        return name;
+    public List<File> getScriptsDirs() {
+        return Collections.unmodifiableList(Arrays.asList(
+            new File(System.getenv("ALLUSERSAPPDATA"), "Hex/Scripts"),
+            new File(System.getenv("APPDATA"), "Hex/Scripts")));
     }
 }
