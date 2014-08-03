@@ -53,7 +53,7 @@ public class AddEdit implements DryUndoableEdit {
 
     @Override
     public void undo() throws CannotUndoException {
-        annotationCollection.remove(annotation);
+        annotationCollection.removeWithDescendants(annotation);
     }
 
     @Override

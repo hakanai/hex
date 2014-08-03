@@ -24,12 +24,14 @@ import java.nio.file.Path;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.NotebookPaneAction;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.NotebookPane;
+import org.trypticon.hex.gui.undo.AddEdit;
 import org.trypticon.hex.gui.util.ActionException;
 
 /**
@@ -59,14 +61,20 @@ public class RunScriptAction extends NotebookPaneAction {
         HexViewer viewer = notebookPane.getViewer();
 
         Binary binary = viewer.getBinary();
-        AnnotationCollection annotations = (AnnotationCollection) viewer.getAnnotations();
+        AnnotationCollection annotationCollection = viewer.getAnnotations();
         long position = viewer.getSelectionModel().getSelectionStart();
 
+        Annotation annotation;
         try {
-            Annotation annotation = structure.drop(binary, position);
-            annotations.add(annotation);
+            annotation = structure.drop(binary, position);
         } catch (Exception e) {
             throw new ActionException(Resources.getMessage("DropStructure.Errors.catchAll"), e);
+        }
+
+        try {
+            notebookPane.getUndoHelper().perform(new AddEdit(annotationCollection, annotation));
+        } catch (OverlappingAnnotationException e) {
+            throw new ActionException(Resources.getMessage("AddAnnotation.Errors.overlap"), e);
         }
     }
 }
