@@ -81,7 +81,7 @@ public class RubyStructureDSL {
         } catch (IOException | RuntimeException e) {
             throw new RuntimeException("Error loading script: \n" + scriptlet, e);
         } finally {
-//            container.terminate();
+            container.terminate();
         }
     }
 }
