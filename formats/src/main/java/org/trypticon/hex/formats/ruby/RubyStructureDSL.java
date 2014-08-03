@@ -20,6 +20,8 @@ package org.trypticon.hex.formats.ruby;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.TestOnly;
@@ -38,10 +40,18 @@ import org.trypticon.hex.interpreters.MasterInterpreterStorage;
 public class RubyStructureDSL {
     private final boolean classpath;
     private final String scriptlet;
+    private final Path scriptFile;
 
     private RubyStructureDSL(boolean classpath, @NonNls String scriptlet) {
         this.classpath = classpath;
         this.scriptlet = scriptlet;
+        this.scriptFile = null;
+    }
+
+    private RubyStructureDSL(Path scriptFile) {
+        this.classpath = false;
+        this.scriptlet = null;
+        this.scriptFile = scriptFile;
     }
 
     @TestOnly
@@ -51,6 +61,10 @@ public class RubyStructureDSL {
 
     public static Structure loadFromClasspath(@NonNls String path) {
         return new RubyStructureDSL(true, path).createStructure();
+    }
+
+    public static Structure loadFromFile(@NonNls Path file) {
+        return new RubyStructureDSL(file).createStructure();
     }
 
     private Structure createStructure() {
@@ -69,7 +83,11 @@ public class RubyStructureDSL {
 
             // Run the script itself, which should return a Structure instance.
             Object instance;
-            if (classpath) {
+            if (scriptFile != null) {
+                try (InputStream resource = Files.newInputStream(scriptFile)) {
+                    instance = container.runScriptlet(resource, scriptFile.toString());
+                }
+            } else if (classpath) {
                 try (InputStream resource = getClass().getResourceAsStream(scriptlet)) {
                     instance = container.runScriptlet(resource, "classpath:" + scriptlet);
                 }

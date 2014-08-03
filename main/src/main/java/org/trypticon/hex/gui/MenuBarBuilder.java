@@ -26,7 +26,7 @@ import javax.swing.JMenuBar;
 import javax.swing.event.MenuEvent;
 
 import org.trypticon.gum.MacFactory;
-import org.trypticon.hex.formats.ruby.RubyStructureDSL;
+import org.trypticon.hex.formats.Repository;
 import org.trypticon.hex.gui.datatransfer.CopyAction;
 import org.trypticon.hex.gui.datatransfer.CutAction;
 import org.trypticon.hex.gui.datatransfer.PasteAction;
@@ -40,9 +40,9 @@ import org.trypticon.hex.gui.find.FindNextAction;
 import org.trypticon.hex.gui.find.FindPreviousAction;
 import org.trypticon.hex.gui.find.JumpToOffsetAction;
 import org.trypticon.hex.gui.find.JumpToSelectionAction;
-import org.trypticon.hex.gui.formats.DropStructureAction;
 import org.trypticon.hex.gui.recent.OpenRecentMenu;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
+import org.trypticon.hex.gui.scripting.ScriptMenu;
 import org.trypticon.hex.gui.undo.GlobalUndoHelper;
 import org.trypticon.hex.gui.util.DelegatingAction;
 import org.trypticon.hex.gui.util.MenuAdapter;
@@ -114,10 +114,6 @@ public class MenuBarBuilder {
         editMenu.add(new AddAnnotationAction());
         editMenu.add(new AddSubRegionAction());
 
-        // Temporarily disabled until more things are sorted out.
-        //editMenu.addSeparator();
-        //editMenu.add(buildFormatsMenu());
-
         JMenu windowMenu = null;
         if (MacFactory.isMac()) {
             windowMenu = new JMenu(Resources.getString("Window.name"));
@@ -148,6 +144,8 @@ public class MenuBarBuilder {
             });
         }
 
+        JMenu scriptsMenu = new ScriptMenu(Resources.getString("Scripts.name"), Repository.getRoot());
+
         JMenu helpMenu = new JMenu(Resources.getString("Help.name"));
         // TODO: Help / User Guide
         helpMenu.add(new OpenSampleNotebookAction(application));
@@ -161,24 +159,8 @@ public class MenuBarBuilder {
         if (windowMenu != null) {
             menuBar.add(windowMenu);
         }
+        menuBar.add(scriptsMenu);
         menuBar.add(helpMenu);
         return menuBar;
     }
-
-    /**
-     * Builds the formats menu.
-     *
-     * @return the formats menu.
-     */
-    private JMenu buildFormatsMenu() {
-        JMenu menu = new JMenu(Resources.getString("Formats.name"));
-        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/classfile/class_file.rb")));
-        menu.addSeparator();
-        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/gif/gif_header.rb")));
-        menu.addSeparator();
-        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/jpeg/jpeg_image.rb")));
-        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/jpeg/jpeg_eoi.rb")));
-        return menu;
-    }
-
 }

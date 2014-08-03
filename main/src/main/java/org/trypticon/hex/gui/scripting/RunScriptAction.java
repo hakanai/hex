@@ -16,37 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.trypticon.hex.gui.formats;
+package org.trypticon.hex.gui.scripting;
 
 import java.awt.event.ActionEvent;
+import java.nio.file.Path;
 
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.formats.Structure;
+import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.NotebookPaneAction;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.util.ActionException;
 
 /**
- * Action which drops annotations for a structure at the selected position.
+ * Action to run a script.
  *
  * @author trejkaz
  */
-public class DropStructureAction extends NotebookPaneAction {
+public class RunScriptAction extends NotebookPaneAction {
+    private final Path scriptFile;
 
-    private final Structure structure;
+    public RunScriptAction(Path scriptFile) {
+        this.scriptFile = scriptFile;
 
-    public DropStructureAction(Structure structure) {
-        this.structure = structure;
+        putValue(NAME, scriptFile.getFileName().toString());
 
-        putValue(NAME, Resources.getString("DropStructure.nameFormat", structure.getName()));
+        updateEnabled();
     }
 
     @Override
     protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
+        Structure structure = RubyStructureDSL.loadFromFile(scriptFile);
+
         HexViewer viewer = notebookPane.getViewer();
 
         Binary binary = viewer.getBinary();

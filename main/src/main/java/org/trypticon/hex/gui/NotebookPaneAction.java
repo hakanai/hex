@@ -22,6 +22,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
+import java.util.function.Consumer;
 
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.util.BaseAction;
@@ -42,10 +43,11 @@ public abstract class NotebookPaneAction extends BaseAction {
         updateEnabled();
 
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        focusManager.addPropertyChangeListener("activeWindow", (event) -> {
-            Window activeWindow = (Window) event.getNewValue();
+        Consumer<Window> updateActiveWindow = activeWindow ->
             setHexFrame(activeWindow instanceof HexFrame ? (HexFrame) activeWindow : null);
-        });
+        updateActiveWindow.accept(focusManager.getActiveWindow());
+        focusManager.addPropertyChangeListener("activeWindow", (event) ->
+            updateActiveWindow.accept((Window) event.getNewValue()));
     }
 
     private void setHexFrame(HexFrame hexFrame) {
