@@ -172,12 +172,12 @@ public class MenuBarBuilder {
      */
     private JMenu buildFormatsMenu() {
         JMenu menu = new JMenu(Resources.getString("Formats.name"));
-        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("org/trypticon/hex/formats/repository/classfile/class_file.rb")));
+        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/classfile/class_file.rb")));
         menu.addSeparator();
-        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("org/trypticon/hex/formats/repository/gif/gif_header.rb")));
+        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/gif/gif_header.rb")));
         menu.addSeparator();
-        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("org/trypticon/hex/formats/repository/jpeg/jpeg_image.rb")));
-        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("org/trypticon/hex/formats/repository/jpeg/jpeg_eoi.rb")));
+        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/jpeg/jpeg_image.rb")));
+        menu.add(new DropStructureAction(RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/jpeg/jpeg_eoi.rb")));
         return menu;
     }
 

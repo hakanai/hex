@@ -64,14 +64,14 @@ public class RubyStructureDSL {
             @NonNls
             String fileName = RubyStructureDSL.class.getPackage().getName().replace('.', '/') + "/structure_dsl.rb";
             try (InputStream resource = getClass().getResourceAsStream("structure_dsl.rb")) {
-                container.runScriptlet(resource, "classpath:/" + fileName);
+                container.runScriptlet(resource, "classpath:" + fileName);
             }
 
             // Run the script itself, which should return a Structure instance.
             Object instance;
             if (classpath) {
                 try (InputStream resource = getClass().getResourceAsStream(scriptlet)) {
-                    instance = container.runScriptlet(resource, "classpath:/" + scriptlet);
+                    instance = container.runScriptlet(resource, "classpath:" + scriptlet);
                 }
             } else {
                 instance = container.runScriptlet(scriptlet);

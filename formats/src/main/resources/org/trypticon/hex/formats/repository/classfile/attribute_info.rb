@@ -22,5 +22,3 @@ structure :attribute_info do
 
   unknown :attribute_data, :length => :attribute_length
 end
-
-str = str

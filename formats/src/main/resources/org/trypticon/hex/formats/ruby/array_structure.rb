@@ -94,7 +94,7 @@ class ArrayStructure
         begin
           block_for_one_element.call(i)
         rescue => e
-          puts "#{e.message} #{e.backtrace}"
+          $stderr.puts "#{e.message} #{e.backtrace}"
           break
         end
       end

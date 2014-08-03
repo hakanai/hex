@@ -16,17 +16,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require_relative 'constantpool/CONSTANT_Utf8_info'
-require_relative 'constantpool/CONSTANT_Integer_info'
-require_relative 'constantpool/CONSTANT_Float_info'
-require_relative 'constantpool/CONSTANT_Long_info'
-require_relative 'constantpool/CONSTANT_Double_info'
-require_relative 'constantpool/CONSTANT_Class_info'
-require_relative 'constantpool/CONSTANT_String_info'
-require_relative 'constantpool/CONSTANT_Fieldref_info'
-require_relative 'constantpool/CONSTANT_Methodref_info'
-require_relative 'constantpool/CONSTANT_InterfaceMethodref_info'
-require_relative 'constantpool/CONSTANT_NameAndType_info'
+require_relative 'CONSTANT_Utf8_info'
+require_relative 'CONSTANT_Integer_info'
+require_relative 'CONSTANT_Float_info'
+require_relative 'CONSTANT_Long_info'
+require_relative 'CONSTANT_Double_info'
+require_relative 'CONSTANT_Class_info'
+require_relative 'CONSTANT_String_info'
+require_relative 'CONSTANT_Fieldref_info'
+require_relative 'CONSTANT_Methodref_info'
+require_relative 'CONSTANT_InterfaceMethodref_info'
+require_relative 'CONSTANT_NameAndType_info'
 
 structure :cp_info do
   uint8   :tag
