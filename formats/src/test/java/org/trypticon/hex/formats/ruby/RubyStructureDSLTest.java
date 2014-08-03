@@ -51,7 +51,7 @@ public class RubyStructureDSLTest {
 
     @Test
     public void testLengthUsage() {
-        Structure structure = RubyStructureDSL.load(
+        Structure structure = RubyStructureDSL.loadScriptlet(
             "structure :string_with_length do\n" +
             "  uint16_be  :length\n" +
             "  string     :bytes, :charset => 'UTF-8', :length => :length\n" +
@@ -76,7 +76,7 @@ public class RubyStructureDSLTest {
 
     @Test
     public void testArrayUsage() {
-        Structure structure = RubyStructureDSL.load(
+        Structure structure = RubyStructureDSL.loadScriptlet(
             "structure :array_with_size do\n" +
             "  uint16_be :size \n" +
             "  array     :elements, :element_type => :uint16_be, :start_index => 1, :size => :size \n" +
@@ -105,7 +105,7 @@ public class RubyStructureDSLTest {
     }
 
     private Structure createSwitchNotReplacingStructure() {
-        return RubyStructureDSL.load(
+        return RubyStructureDSL.loadScriptlet(
             "structure :option1 do\n" +
             "  uint16_be :value\n" +
             "end\n" +
@@ -173,7 +173,7 @@ public class RubyStructureDSLTest {
     }
 
     private Structure createSwitchReplacingStructure() {
-        return RubyStructureDSL.load(
+        return RubyStructureDSL.loadScriptlet(
             "structure :option1 do\n" +
             "  uint8      :tag\n" +
             "  uint16_be  :value\n" +
@@ -238,7 +238,7 @@ public class RubyStructureDSLTest {
 
     @Test
     public void testSwitchUsageForOptionalStructure() {
-        Structure structure = RubyStructureDSL.load(
+        Structure structure = RubyStructureDSL.loadScriptlet(
             "structure :optional_structure do\n" +
             "  uint32_be  :value\n" +
             "end\n" +

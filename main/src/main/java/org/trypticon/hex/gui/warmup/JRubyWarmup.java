@@ -27,7 +27,7 @@ import org.trypticon.hex.formats.ruby.RubyStructureDSL;
  */
 public class JRubyWarmup {
     public void start() {
-        Thread thread = new Thread(() -> RubyStructureDSL.load("structure :dummy do ; end"));
+        Thread thread = new Thread(() -> RubyStructureDSL.loadScriptlet("structure :dummy do ; end"));
         thread.start();
     }
 }

@@ -18,16 +18,13 @@
 
 package org.trypticon.hex.formats.ruby;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.TestOnly;
 import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.LocalVariableBehavior;
-import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 
 import org.trypticon.hex.formats.Structure;
@@ -39,38 +36,21 @@ import org.trypticon.hex.interpreters.MasterInterpreterStorage;
  * @author trejkaz
  */
 public class RubyStructureDSL {
+    private final boolean classpath;
     private final String scriptlet;
 
-    private RubyStructureDSL(@NonNls String scriptlet) {
+    private RubyStructureDSL(boolean classpath, @NonNls String scriptlet) {
+        this.classpath = classpath;
         this.scriptlet = scriptlet;
     }
 
-    private RubyStructureDSL(URL scriptLocation) {
-        // TODO: Doing it this way actually loses the link to the script when something goes wrong.
-        this(loadURL(scriptLocation));
+    @TestOnly
+    public static Structure loadScriptlet(@NonNls String scriptlet) {
+        return new RubyStructureDSL(false, scriptlet).createStructure();
     }
 
-    public static Structure load(@NonNls String scriptlet) {
-        return new RubyStructureDSL(scriptlet).createStructure();
-    }
-
-    public static Structure load(URL scriptLocation) {
-        return new RubyStructureDSL(scriptLocation).createStructure();
-    }
-
-    private static String loadURL(URL location) {
-        try {
-            InputStream stream = location.openStream();
-            ByteArrayOutputStream temp = new ByteArrayOutputStream();
-            byte[] buffer = new byte[64 * 1024];
-            int bytesRead;
-            while ((bytesRead = stream.read(buffer)) != -1) {
-                temp.write(buffer, 0, bytesRead);
-            }
-            return temp.toString(StandardCharsets.UTF_8.name());
-        } catch (IOException e) {
-            throw new RuntimeException("URL was not accessible: " + location, e);
-        }
+    public static Structure loadFromClasspath(@NonNls String path) {
+        return new RubyStructureDSL(true, path).createStructure();
     }
 
     private Structure createStructure() {
@@ -81,21 +61,27 @@ public class RubyStructureDSL {
             container.put("$interpreter_storage", new MasterInterpreterStorage());
 
             // Set up the library scripts will have by default.
-            String basePath = RubyStructureDSL.class.getPackage().getName().replace('.', '/');
             @NonNls
-            String fileName = basePath + "/structure_dsl.rb";
-            container.runScriptlet(PathType.CLASSPATH, fileName);
+            String fileName = RubyStructureDSL.class.getPackage().getName().replace('.', '/') + "/structure_dsl.rb";
+            try (InputStream resource = getClass().getResourceAsStream("structure_dsl.rb")) {
+                container.runScriptlet(resource, "classpath:/" + fileName);
+            }
 
             // Run the script itself, which should return a Structure instance.
-            try {
-                Object instance = container.runScriptlet(scriptlet);
-
-                return container.getInstance(instance, Structure.class);
-            } catch (RuntimeException e) {
-                throw new RuntimeException("Error loading script: \n" + scriptlet, e);
+            Object instance;
+            if (classpath) {
+                try (InputStream resource = getClass().getResourceAsStream(scriptlet)) {
+                    instance = container.runScriptlet(resource, "classpath:/" + scriptlet);
+                }
+            } else {
+                instance = container.runScriptlet(scriptlet);
             }
+
+            return container.getInstance(instance, Structure.class);
+        } catch (IOException | RuntimeException e) {
+            throw new RuntimeException("Error loading script: \n" + scriptlet, e);
         } finally {
-            container.terminate();
+//            container.terminate();
         }
     }
 }

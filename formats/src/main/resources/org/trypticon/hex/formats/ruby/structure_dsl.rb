@@ -22,11 +22,12 @@ java_import org.trypticon.hex.anno.CommonAttributes
 java_import org.trypticon.hex.anno.SimpleAnnotation
 java_import org.trypticon.hex.anno.SimpleGroupAnnotation
 java_import org.trypticon.hex.interpreters.FixedLengthInterpreter
+java_import org.trypticon.hex.formats.Structure
 
-require 'org/trypticon/hex/formats/ruby/drop_context'
-require 'org/trypticon/hex/formats/ruby/simple_structure'
-require 'org/trypticon/hex/formats/ruby/array_structure'
-require 'org/trypticon/hex/formats/ruby/switch_structure'
+require_relative 'drop_context'
+require_relative 'simple_structure'
+require_relative 'array_structure'
+require_relative 'switch_structure'
 
 
 # $interpreter_storage is defined by the container.  We define a local structure storage here for
