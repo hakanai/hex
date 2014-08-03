@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NonNls;
 
 import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.formats.Repository;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.HexApplication;
@@ -56,7 +57,7 @@ public class OpenSampleNotebookAction extends BaseAction {
         Binary binary = notebook.getBinary();
         AnnotationCollection annotations = notebook.getAnnotations();
 
-        Structure structure = RubyStructureDSL.loadFromClasspath("/org/trypticon/hex/formats/repository/classfile/class_file.rb");
+        Structure structure = RubyStructureDSL.loadFromFile(Repository.getRoot().resolve("classfile/class_file.rb"));
         if (structure == null) {
             throw new IllegalStateException("class_file.rb couldn't be loaded");
         }

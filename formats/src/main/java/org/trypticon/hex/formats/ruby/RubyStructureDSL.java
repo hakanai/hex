@@ -38,29 +38,22 @@ import org.trypticon.hex.interpreters.MasterInterpreterStorage;
  * @author trejkaz
  */
 public class RubyStructureDSL {
-    private final boolean classpath;
     private final String scriptlet;
     private final Path scriptFile;
 
-    private RubyStructureDSL(boolean classpath, @NonNls String scriptlet) {
-        this.classpath = classpath;
+    private RubyStructureDSL(@NonNls String scriptlet) {
         this.scriptlet = scriptlet;
         this.scriptFile = null;
     }
 
     private RubyStructureDSL(Path scriptFile) {
-        this.classpath = false;
         this.scriptlet = null;
         this.scriptFile = scriptFile;
     }
 
     @TestOnly
     public static Structure loadScriptlet(@NonNls String scriptlet) {
-        return new RubyStructureDSL(false, scriptlet).createStructure();
-    }
-
-    public static Structure loadFromClasspath(@NonNls String path) {
-        return new RubyStructureDSL(true, path).createStructure();
+        return new RubyStructureDSL(scriptlet).createStructure();
     }
 
     public static Structure loadFromFile(@NonNls Path file) {
@@ -85,11 +78,7 @@ public class RubyStructureDSL {
             Object instance;
             if (scriptFile != null) {
                 try (InputStream resource = Files.newInputStream(scriptFile)) {
-                    instance = container.runScriptlet(resource, scriptFile.toString());
-                }
-            } else if (classpath) {
-                try (InputStream resource = getClass().getResourceAsStream(scriptlet)) {
-                    instance = container.runScriptlet(resource, "classpath:" + scriptlet);
+                    instance = container.runScriptlet(resource, pathToJRubyPath(scriptFile));
                 }
             } else {
                 instance = container.runScriptlet(scriptlet);
@@ -97,9 +86,25 @@ public class RubyStructureDSL {
 
             return container.getInstance(instance, Structure.class);
         } catch (IOException | RuntimeException e) {
-            throw new RuntimeException("Error loading script: \n" + scriptlet, e);
+            String source = scriptFile != null ? scriptFile.toString() : scriptlet;
+            throw new RuntimeException("Error loading script: \n" + source, e);
         } finally {
             container.terminate();
+        }
+    }
+
+    /**
+     * Try to determine a file path which JRuby will find appropriate for use.
+     * It has a slightly different notion of how files work, when compared with Java.
+     *
+     * @param path the file path.
+     * @return the path to give JRuby.
+     */
+    private static String pathToJRubyPath(Path path) {
+        if ("file".equals(path.toUri().getScheme())) {
+            return path.toString();
+        } else {
+            return path.toUri().toString();
         }
     }
 }
