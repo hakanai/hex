@@ -20,6 +20,8 @@ package org.trypticon.hex.gui.scripting;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.nio.file.Files;
 
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.util.BaseAction;
@@ -37,6 +39,11 @@ public class OpenScriptDirectoryAction extends BaseAction {
 
     @Override
     protected void doAction(ActionEvent event) throws Exception {
-        Desktop.getDesktop().open(Platform.getCurrent().getScriptsDirs().get(0));
+        File dir = Platform.getCurrent().getScriptsDirs().get(0);
+        if (!dir.exists()) {
+            Files.createDirectories(dir.toPath());
+            //TODO: Could possibly drop a symlink in the directory linking go the docs.
+        }
+        Desktop.getDesktop().open(dir);
     }
 }

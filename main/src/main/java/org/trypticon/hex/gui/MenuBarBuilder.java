@@ -18,7 +18,10 @@
 
 package org.trypticon.hex.gui;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -42,10 +45,12 @@ import org.trypticon.hex.gui.find.JumpToOffsetAction;
 import org.trypticon.hex.gui.find.JumpToSelectionAction;
 import org.trypticon.hex.gui.recent.OpenRecentMenu;
 import org.trypticon.hex.gui.sample.OpenSampleNotebookAction;
+import org.trypticon.hex.gui.scripting.OpenScriptDirectoryAction;
 import org.trypticon.hex.gui.scripting.ScriptMenu;
 import org.trypticon.hex.gui.undo.GlobalUndoHelper;
 import org.trypticon.hex.gui.util.DelegatingAction;
 import org.trypticon.hex.gui.util.MenuAdapter;
+import org.trypticon.hex.gui.util.platform.Platform;
 
 /**
  * Builds the application menu bar.
@@ -144,10 +149,19 @@ public class MenuBarBuilder {
             });
         }
 
-        JMenu scriptsMenu = new ScriptMenu(Resources.getString("Scripts.name"), Repository.getRoot());
+        //XXX: Maybe the repo should be in the list returned from this... I'm not really sure.
+        List<Path> scriptsDirs = Platform.getCurrent().getScriptsDirs().stream()
+            .map(File::toPath)
+            .collect(Collectors.toList());
+        scriptsDirs.add(Repository.getRoot());
+        ScriptMenu scriptsMenu = new ScriptMenu(Resources.getString("Scripts.name"), scriptsDirs);
+        scriptsMenu.addSeparator();
+        scriptsMenu.add(new OpenScriptDirectoryAction());
+        scriptsMenu.useCurrentItemsAsStaticItems();
 
         JMenu helpMenu = new JMenu(Resources.getString("Help.name"));
         // TODO: Help / User Guide
+        // TODO: Help / Scripting Guide
         helpMenu.add(new OpenSampleNotebookAction(application));
         if (!MacFactory.isMac()) {
             helpMenu.add(new AboutAction());

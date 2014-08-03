@@ -62,7 +62,7 @@ public class Repository {
             throw new UnsupportedOperationException("Unsupported URL: " + here);
         }
 
-        root = pathToSomeFile.resolveSibling(".."); //NON-NLS
+        root = pathToSomeFile.resolveSibling("..").normalize(); //NON-NLS
     }
 
     /**

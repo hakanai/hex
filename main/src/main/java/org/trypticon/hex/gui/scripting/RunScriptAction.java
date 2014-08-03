@@ -40,10 +40,14 @@ import org.trypticon.hex.gui.util.ActionException;
 public class RunScriptAction extends NotebookPaneAction {
     private final Path scriptFile;
 
-    public RunScriptAction(Path scriptFile) {
+    public RunScriptAction(String fileName, Path scriptFile) {
         this.scriptFile = scriptFile;
 
-        putValue(NAME, scriptFile.getFileName().toString());
+        String scriptName = fileName;
+        if (fileName.endsWith(".rb")) { // NON-NLS
+            scriptName = fileName.substring(0, fileName.length() - 3);
+        }
+        putValue(NAME, scriptName);
 
         updateEnabled();
     }
