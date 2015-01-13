@@ -3,8 +3,8 @@ cache:
   directories:
     - $HOME/.m2
 jdk:
-  #- openjdk7
-  - oraclejdk7
+  #- openjdk8
+  - oraclejdk8
 install:
   - gem install buildr
 #TODO: Get deployment working for hex proper (ultimately requires multiplatform build)
