@@ -1,0 +1,13 @@
+language: java
+cache:
+  directories:
+    - $HOME/.m2
+jdk:
+  #- openjdk7
+  - oraclejdk7
+install:
+  - gem install buildr
+#TODO: Get deployment working for hex proper (ultimately requires multiplatform build)
+#script: buildr clean upload
+script: buildr clean package
+

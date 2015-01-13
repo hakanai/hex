@@ -3,12 +3,22 @@ require_relative 'launcher/src/buildr/mac_app_extension'
 VERSION_NUMBER = '0.4'
 COPYRIGHT = "Copyright \u00A9 2009-2014  Hex Project"
 
-ENV['JAVA_HOME'] = ENV['JAVA_HOME_8']
+if ENV['JAVA_HOME_8']
+  ENV['JAVA_HOME'] = ENV['JAVA_HOME_8']
+end
 
 repositories.remote << 'https://oss.sonatype.org/content/repositories/releases'
 repositories.remote << 'http://www.ibiblio.org/maven2/'
 repositories.remote << 'http://mirrors.ibiblio.org/pub/mirrors/maven2/'
 repositories.remote << 'http://repo1.maven.org/maven2/'
+
+if ENV['DEPLOY_USER']
+  repositories.release_to = { url: ( VERSION_NUMBER =~ /SNAPSHOT/ ?
+                                     'https://oss.sonatype.org/content/repositories/snapshots' :
+                                     'https://oss.sonatype.org/service/local/staging/deploy/maven2' ),
+                              username: ENV['DEPLOY_USER'],
+                              password: ENV['DEPLOY_PASS'] }
+end
 
 INTELLIJ_ANNOTATIONS  =   artifact('com.intellij:annotations:jar:12.0')
 SWINGX                = [ artifact('org.swinglabs.swingx:swingx-action:jar:1.6.6-SNAPSHOT'),
