@@ -31,6 +31,13 @@ You'll also need [Buildr][].
 To build, execute `buildr package` in the top directory. An executable
 jar file will be created in the top-level target directory.
 
+If you're building a snapshot version of Hex, it will depend on a
+snapshot version of [Hex Components][]. If you're lucky, a copy of this
+is still in my snapshot repository and you won't have to do anything.
+If no changes have been made to Hex Components in a while, the snapshots
+won't be found, so you will have to check out and build that project
+before you can build Hex itself.
+
 If you are a Mac user, execute `buildr mac_app_bundle` and you will get
 a proper .app bundle, but you will have to edit `buildfile` to
 reference your own code signing key before the build process will
@@ -45,4 +52,5 @@ An up-to-date list of future ideas is being maintained on the
 
 
 [Buildr]: http://buildr.apache.org/
+[Hex Components]: https://github.com/trejkaz/hex-components
 [issues]: https://github.com/trejkaz/hex/issues
