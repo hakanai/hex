@@ -8,6 +8,7 @@ if ENV['JAVA_HOME_8']
 end
 
 repositories.remote << 'https://oss.sonatype.org/content/repositories/releases'
+repositories.remote << 'https://oss.sonatype.org/content/repositories/snapshots'
 repositories.remote << 'http://www.ibiblio.org/maven2/'
 repositories.remote << 'http://mirrors.ibiblio.org/pub/mirrors/maven2/'
 repositories.remote << 'http://repo1.maven.org/maven2/'
