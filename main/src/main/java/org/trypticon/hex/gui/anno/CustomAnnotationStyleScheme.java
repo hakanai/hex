@@ -138,7 +138,7 @@ public class CustomAnnotationStyleScheme extends DefaultAnnotationStyleScheme {
         }
 
         Class<?> superclass = type.getSuperclass();
-        if (Value.class.isAssignableFrom(superclass)) {
+        if (superclass != null && Value.class.isAssignableFrom(superclass)) {
             style = computeStyle(superclass.asSubclass(Value.class));
             if (style != null) {
                 return style;
@@ -146,7 +146,7 @@ public class CustomAnnotationStyleScheme extends DefaultAnnotationStyleScheme {
         }
 
         for (Class<?> face : type.getInterfaces()) {
-            if (Value.class.isAssignableFrom(face)) {
+            if (superclass != null && Value.class.isAssignableFrom(face)) {
                 style = computeStyle(superclass.asSubclass(Value.class));
                 if (style != null) {
                     return style;

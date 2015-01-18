@@ -61,7 +61,8 @@ public class HexTextField extends JTextField {
         String text = getText();
         byte[] bytes = new byte[text.length() / 3];
         for (int i = 0, j = 0; i < bytes.length; i++, j += 3) {
-            bytes[i] = Byte.parseByte(text.substring(j, j + 2), 16);
+            bytes[i] = (byte) ((Character.digit(text.charAt(j), 16)*16)
+                + (Character.digit(text.charAt(j+1), 16)));
         }
         return BinaryFactory.wrap(bytes);
     }
