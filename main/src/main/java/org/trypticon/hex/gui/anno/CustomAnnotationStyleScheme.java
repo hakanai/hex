@@ -146,8 +146,8 @@ public class CustomAnnotationStyleScheme extends DefaultAnnotationStyleScheme {
         }
 
         for (Class<?> face : type.getInterfaces()) {
-            if (superclass != null && Value.class.isAssignableFrom(face)) {
-                style = computeStyle(superclass.asSubclass(Value.class));
+            if (Value.class.isAssignableFrom(face)) {
+                style = computeStyle(face.asSubclass(Value.class));
                 if (style != null) {
                     return style;
                 }
