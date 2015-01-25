@@ -32,10 +32,10 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
 import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.gui.util.ValidatingPanel;
-import org.trypticon.hex.gui.util.encoding.SelectEncodingButton;
 import org.trypticon.hex.interpreters.InterpreterInfo;
 import org.trypticon.hex.util.Format;
+import org.trypticon.hex.util.swingsupport.SelectEncodingButton;
+import org.trypticon.hex.util.swingsupport.ValidatingPanel;
 
 /**
  * Pane to show the options for an annotation before it is created.

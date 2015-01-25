@@ -20,16 +20,16 @@ package org.trypticon.hex.gui.anno;
 
 import java.awt.Component;
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.jdesktop.swingx.renderer.StringValue;
 
 import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.gui.util.SelectObjectPane;
-import org.trypticon.hex.gui.util.Strings;
 import org.trypticon.hex.interpreters.InterpreterInfo;
 import org.trypticon.hex.interpreters.MasterInterpreterStorage;
 import org.trypticon.hex.util.Format;
+import org.trypticon.hex.util.Predicate;
+import org.trypticon.hex.util.Strings;
+import org.trypticon.hex.util.swingsupport.SelectObjectPane;
 
 /**
  * Pane allows selecting an annotation to add.

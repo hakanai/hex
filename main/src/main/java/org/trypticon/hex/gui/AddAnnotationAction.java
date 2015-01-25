@@ -34,10 +34,10 @@ import org.trypticon.hex.gui.anno.AnnotationOptionsPane;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.undo.AddEdit;
 import org.trypticon.hex.gui.util.ActionException;
-import org.trypticon.hex.gui.util.OptionPanes;
 import org.trypticon.hex.interpreters.FixedLengthInterpreter;
 import org.trypticon.hex.interpreters.Interpreter;
 import org.trypticon.hex.interpreters.InterpreterInfo;
+import org.trypticon.hex.util.swingsupport.OptionPanes;
 
 /**
  * Action to add an annotation.  Prompts the user for any options required and then

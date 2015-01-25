@@ -31,8 +31,8 @@ import javax.swing.LayoutStyle;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.gui.util.encoding.SelectEncodingButton;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
+import org.trypticon.hex.util.swingsupport.SelectEncodingButton;
 
 /**
  * Bar allowing searching the binary.

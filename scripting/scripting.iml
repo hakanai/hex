@@ -14,6 +14,70 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/com/intellij/annotations/12.0/annotations-12.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6.1-SNAPSHOT/hex-anno-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6.1-SNAPSHOT/hex-anno-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6.1-SNAPSHOT/hex-binary-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6.1-SNAPSHOT/hex-binary-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6.1-SNAPSHOT/hex-interpreter-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6.1-SNAPSHOT/hex-interpreter-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6.1-SNAPSHOT/hex-viewer-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6.1-SNAPSHOT/hex-viewer-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6.1-SNAPSHOT/hex-util-0.6.1-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6.1-SNAPSHOT/hex-util-0.6.1-SNAPSHOT-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-action/1.6.6-SNAPSHOT/swingx-action-1.6.6-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />

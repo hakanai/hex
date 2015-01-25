@@ -1,218 +1,231 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module relativePaths="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/target/idea/classes" />
-    <output-test url="file://$MODULE_DIR$/target/test/idea/classes" />
-    <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/reports" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
-    </content>
-    <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/com/intellij/annotations/12.0/annotations-12.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6.1-SNAPSHOT/hex-anno-0.6.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6.1-SNAPSHOT/hex-anno-0.6.1-SNAPSHOT-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6.1-SNAPSHOT/hex-binary-0.6.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6.1-SNAPSHOT/hex-binary-0.6.1-SNAPSHOT-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6.1-SNAPSHOT/hex-interpreter-0.6.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6.1-SNAPSHOT/hex-interpreter-0.6.1-SNAPSHOT-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6.1-SNAPSHOT/hex-viewer-0.6.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6.1-SNAPSHOT/hex-viewer-0.6.1-SNAPSHOT-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6.1-SNAPSHOT/hex-util-0.6.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6.1-SNAPSHOT/hex-util-0.6.1-SNAPSHOT-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/gum/gum/0.1/gum-0.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/haqua/haqua/0.1/haqua-0.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-action/1.6.6-SNAPSHOT/swingx-action-1.6.6-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-common/1.6.6-SNAPSHOT/swingx-common-1.6.6-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-core/1.6.6-SNAPSHOT/swingx-core-1.6.6-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-painters/1.6.6-SNAPSHOT/swingx-painters-1.6.6-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-plaf/1.6.6-SNAPSHOT/swingx-plaf-1.6.6-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/com/ibm/icu/icu4j/53.1/icu4j-53.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/com/ibm/icu/icu4j-charsets/53.1/icu4j-charsets-53.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.13/snakeyaml-1.13.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module" module-name="formats" exported="" />
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.8.2/junit-4.8.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/jmock/jmock/2.5.1/jmock-2.5.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-  </component>
-</module>
-
+<module relativePaths="true" type="JAVA_MODULE" version="4"><component inherit-compiler-output="false" name="NewModuleRootManager">
+  <output url="file://$MODULE_DIR$/target/idea/classes" />
+  <output-test url="file://$MODULE_DIR$/target/test/idea/classes" />
+  <exclude-output />
+  <content url="file://$MODULE_DIR$">
+    <sourceFolder isTestSource="false" url="file://$MODULE_DIR$/src/main/java" />
+    <sourceFolder isTestSource="false" url="file://$MODULE_DIR$/src/main/resources" />
+    <sourceFolder isTestSource="true" url="file://$MODULE_DIR$/src/test/java" />
+    <excludeFolder url="file://$MODULE_DIR$/reports" />
+    <excludeFolder url="file://$MODULE_DIR$/target" />
+  </content>
+  <orderEntry forTests="false" type="sourceFolder" />
+  <orderEntry jdkName="1.8" jdkType="JavaSDK" type="jdk" />
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/intellij/annotations/12.0/annotations-12.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6.1-SNAPSHOT/hex-anno-0.6.1-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-anno/0.6.1-SNAPSHOT/hex-anno-0.6.1-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6.1-SNAPSHOT/hex-binary-0.6.1-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-binary/0.6.1-SNAPSHOT/hex-binary-0.6.1-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6.1-SNAPSHOT/hex-interpreter-0.6.1-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-interpreter/0.6.1-SNAPSHOT/hex-interpreter-0.6.1-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6.1-SNAPSHOT/hex-viewer-0.6.1-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-viewer/0.6.1-SNAPSHOT/hex-viewer-0.6.1-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6.1-SNAPSHOT/hex-util-0.6.1-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/hex/hex-util/0.6.1-SNAPSHOT/hex-util-0.6.1-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/gum/gum/0.1/gum-0.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/trypticon/haqua/haqua/0.1/haqua-0.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-action/1.6.6-SNAPSHOT/swingx-action-1.6.6-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-common/1.6.6-SNAPSHOT/swingx-common-1.6.6-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-core/1.6.6-SNAPSHOT/swingx-core-1.6.6-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-painters/1.6.6-SNAPSHOT/swingx-painters-1.6.6-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-plaf/1.6.6-SNAPSHOT/swingx-plaf-1.6.6-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/ibm/icu/icu4j/53.1/icu4j-53.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/ibm/icu/icu4j-charsets/53.1/icu4j-charsets-53.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.13/snakeyaml-1.13.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry exported="" module-name="formats" type="module" />
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.8.2/junit-4.8.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jmock/jmock/2.5.1/jmock-2.5.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntry scope="TEST" type="module-library">
+    <library>
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+      </SOURCES>
+    </library>
+  </orderEntry>
+  <orderEntryProperties />
+</component></module>
