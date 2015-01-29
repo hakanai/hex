@@ -47,6 +47,7 @@ import org.trypticon.hex.util.swingsupport.OptionPanes;
  */
 class AddAnnotationAction extends NotebookPaneAction {
     private final AddAnnotationPane pane = new AddAnnotationPane();
+    private final AnnotationOptionsPane optionsPane = new AnnotationOptionsPane();
 
     public AddAnnotationAction() {
         Resources.localiseAction(this, "AddAnnotation");
@@ -63,12 +64,14 @@ class AddAnnotationAction extends NotebookPaneAction {
             List<InterpreterInfo.Option<?>> options = info.getOptions();
             Map<String, Object> optionMap = new HashMap<>(options.size());
             if (!options.isEmpty()) {
-                AnnotationOptionsPane optionsPane = new AnnotationOptionsPane(options);
+                optionsPane.displayOptions(options);
                 if (OptionPanes.showInputDialog(notebookPane, optionsPane, optionsPane,
                                                 Resources.getString("AddAnnotation.nameWithoutEllipsis"),
                                                 Resources.getString("AddAnnotation.optionsOkButton"),
                                                 UIManager.getString("OptionPane.cancelButtonText"))) {
                     optionsPane.populateOptionMap(optionMap);
+                } else {
+                    return;
                 }
             }
 

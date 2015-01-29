@@ -46,7 +46,17 @@ public class AnnotationOptionsPane extends ValidatingPanel {
     private final Map<String, Supplier<?>> fieldValueSuppliers = new LinkedHashMap<>();
     private final Map<String, Boolean> required = new LinkedHashMap<>();
 
-    public AnnotationOptionsPane(List<InterpreterInfo.Option<?>> options) {
+    private final Map<Class<?>, JComponent> reusedFields = new LinkedHashMap<>();
+
+    /**
+     * Reconfigures the pane for selecting the given options.
+     *
+     * @param options the options to display.
+     */
+    public void displayOptions(List<InterpreterInfo.Option<?>> options) {
+        fieldValueSuppliers.clear();
+        required.clear();
+
         GroupLayout layout = new GroupLayout(this);
         layout.setAutoCreateGaps(true);
         setLayout(layout);
@@ -58,22 +68,22 @@ public class AnnotationOptionsPane extends ValidatingPanel {
         GroupLayout.SequentialGroup rowsGroup = layout.createSequentialGroup();
 
         rowsGroup.addContainerGap()
-                 .addComponent(explanationLabel)
-                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
+            .addComponent(explanationLabel)
+            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
 
         for (InterpreterInfo.Option option : options) {
             JLabel label = new JLabel(Resources.getString("AddAnnotation.optionFieldFormat",
                                                           option.toLocalisedString(Format.LONG)));
             labelsGroup.addComponent(label);
 
-            JComponent field = createField(option.getType());
+            JComponent field = createOrReuseField(option.getType());
             Supplier<?> fieldValueSupplier = createFieldValueSupplier(field, option.getType());
             fieldsGroup.addComponent(field);
             fieldValueSuppliers.put(option.getName(), fieldValueSupplier);
 
             rowsGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                     .addComponent(label)
-                                     .addComponent(field));
+                                   .addComponent(label)
+                                   .addComponent(field));
 
             if (option.isRequired()) {
                 required.put(option.getName(), true);
@@ -83,11 +93,11 @@ public class AnnotationOptionsPane extends ValidatingPanel {
         rowsGroup.addContainerGap();
 
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(explanationLabel)
-                                        .addGroup(layout.createSequentialGroup()
-                                                        .addGroup(labelsGroup)
-                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addGroup(fieldsGroup)));
+                                      .addComponent(explanationLabel)
+                                      .addGroup(layout.createSequentialGroup()
+                                                    .addGroup(labelsGroup)
+                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addGroup(fieldsGroup)));
         layout.setVerticalGroup(rowsGroup);
     }
 
@@ -102,7 +112,21 @@ public class AnnotationOptionsPane extends ValidatingPanel {
         return true;
     }
 
+    private JComponent createOrReuseField(Class<?> type) {
+        JComponent field = reusedFields.get(type);
+        if (field == null) {
+            field = createField(type);
+            reusedFields.put(type, field);
+        }
+        return field;
+    }
+
     private JComponent createField(Class<?> type) {
+        JComponent reused = reusedFields.get(type);
+        if (reused != null) {
+            return reused;
+        }
+
         if (type == Charset.class) {
             return new SelectEncodingButton();
         } else if (Integer.class == type) {
