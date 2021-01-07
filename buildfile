@@ -9,9 +9,9 @@ end
 
 repositories.remote << 'https://oss.sonatype.org/content/repositories/releases'
 repositories.remote << 'https://oss.sonatype.org/content/repositories/snapshots'
-repositories.remote << 'http://www.ibiblio.org/maven2/'
-repositories.remote << 'http://mirrors.ibiblio.org/pub/mirrors/maven2/'
-repositories.remote << 'http://repo1.maven.org/maven2/'
+repositories.remote << 'https://www.ibiblio.org/maven2/'
+repositories.remote << 'https://mirrors.ibiblio.org/pub/mirrors/maven2/'
+repositories.remote << 'https://repo1.maven.org/maven2/'
 
 if ENV['DEPLOY_USER']
   repositories.release_to = { url: ( VERSION_NUMBER =~ /SNAPSHOT/ ?
@@ -35,8 +35,8 @@ HEX_COMPONENTS        = [ artifact('org.trypticon.hex:hex-anno:jar:0.6.1-SNAPSHO
                           artifact('org.trypticon.hex:hex-util:jar:0.6.1-SNAPSHOT') ]
 GUM                   =   artifact('org.trypticon.gum:gum:jar:0.1')
 HAQUA                 =   artifact('org.trypticon.haqua:haqua:jar:0.1')
-ICU4J                 = [ artifact('com.ibm.icu:icu4j:jar:53.1'),
-                          artifact('com.ibm.icu:icu4j-charsets:jar:53.1') ]
+ICU4J                 = [ artifact('com.ibm.icu:icu4j:jar:68.2'),
+                          artifact('com.ibm.icu:icu4j-charset:jar:68.2') ]
 SNAKEYAML             =   artifact('org.yaml:snakeyaml:jar:1.13')
 R_SYNTAX              =   artifact('com.fifesoft:rsyntaxtextarea:jar:2.5.0')
 SYNTAX_PANE           =   artifact('de.sciss:syntaxpane:jar:1.1.2')
