@@ -29,7 +29,6 @@ import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 import org.trypticon.hex.gui.anno.ExtendedAnnotationCollection;
 import org.trypticon.hex.util.LoggerUtils;
-import org.trypticon.hex.util.URLUtils;
 
 /**
  * Holds a set of annotations along with a reference to the file the user is working on.
@@ -64,11 +63,6 @@ public class DefaultNotebook implements Notebook {
     public DefaultNotebook(URL binaryLocation, ExtendedAnnotationCollection annotations) {
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
-
-        String path = binaryLocation.getPath();
-        int lastSlash = path.lastIndexOf('/');
-        String baseName = lastSlash >= 0 ? path.substring(lastSlash + 1) : path;
-        baseName = URLUtils.decode(baseName);
     }
 
     /**
