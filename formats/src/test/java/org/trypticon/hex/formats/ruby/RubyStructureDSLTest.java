@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.CommonAttributes;
@@ -38,8 +38,8 @@ import org.trypticon.hex.interpreters.primitives.unsigned.UIntInterpreterBE;
 import org.trypticon.hex.interpreters.primitives.unsigned.UShortInterpreterBE;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.trypticon.hex.formats.ruby.AnnotationTestUtils.sameAnnotation;
 
 /**

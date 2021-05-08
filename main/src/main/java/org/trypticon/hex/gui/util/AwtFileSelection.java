@@ -24,10 +24,9 @@ import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.Window;
 import java.io.File;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.SwingUtilities;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * File selection using AWT's {@link FileDialog}.
@@ -36,8 +35,8 @@ public class AwtFileSelection extends FileSelection {
     @Override
     @Nullable
     public File selectFile(@Nullable Component parentComponent,
-                           @NotNull Mode mode,
-                           @NotNull File initialDirectory,
+                           @Nonnull Mode mode,
+                           @Nonnull File initialDirectory,
                            @Nullable FileExtensionFilter fileFilter) {
         Window owner = parentComponent == null ? null :
                        parentComponent instanceof Window ? (Window) parentComponent :

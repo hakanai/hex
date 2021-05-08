@@ -20,9 +20,8 @@ package org.trypticon.hex.gui.util;
 
 import java.awt.Component;
 import java.io.File;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
@@ -56,8 +55,8 @@ public abstract class FileSelection {
      */
     @Nullable
     public abstract File selectFile(@Nullable Component parentComponent,
-                                    @NotNull Mode mode,
-                                    @NotNull File initialDirectory,
+                                    @Nonnull Mode mode,
+                                    @Nonnull File initialDirectory,
                                     @Nullable FileExtensionFilter fileFilter);
 
     /**

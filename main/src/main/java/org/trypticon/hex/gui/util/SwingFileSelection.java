@@ -20,10 +20,9 @@ package org.trypticon.hex.gui.util;
 
 import java.awt.Component;
 import java.io.File;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.JFileChooser;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * File selection using Swing's {@link JFileChooser}.
@@ -34,8 +33,8 @@ public class SwingFileSelection extends FileSelection {
     @Override
     @Nullable
     public File selectFile(@Nullable Component parentComponent,
-                           @NotNull Mode mode,
-                           @NotNull File initialDirectory,
+                           @Nonnull Mode mode,
+                           @Nonnull File initialDirectory,
                            @Nullable FileExtensionFilter fileFilter) {
         JFileChooser chooser = new ImprovedFileChooser();
         if (fileFilter != null) {

@@ -1,7 +1,10 @@
-**/target
+**/build
 **/reports
-/.idea/out
-/.idea/workspace.xml
-/.idea/dictionaries/trejkaz.xml
+.idea/codeStyles/
+.idea/dictionaries/
+.idea/gradle.xml
+.idea/out
+.idea/workspace.xml
 .DS_Store
+.gradle
 hs_err_*.log

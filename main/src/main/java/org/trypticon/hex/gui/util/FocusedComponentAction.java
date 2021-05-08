@@ -21,9 +21,8 @@ package org.trypticon.hex.gui.util;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
+import javax.annotation.Nonnull;
 import javax.swing.JComponent;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * An action applied to the focused component.
@@ -65,7 +64,7 @@ public abstract class FocusedComponentAction extends BaseAction {
      * @param focusOwner the currently focused component.
      * @return {@code true} if the action should be enabled, {@code false} otherwise.
      */
-    protected abstract boolean shouldBeEnabled(@NotNull JComponent focusOwner);
+    protected abstract boolean shouldBeEnabled(@Nonnull JComponent focusOwner);
 
     /**
      * Called to perform the action.
@@ -73,7 +72,7 @@ public abstract class FocusedComponentAction extends BaseAction {
      * @param focusOwner the currently focused component.
      * @throws Exception if an error occurs performing the action.
      */
-    protected abstract void doAction(@NotNull JComponent focusOwner) throws Exception;
+    protected abstract void doAction(@Nonnull JComponent focusOwner) throws Exception;
 
     @Override
     protected final void doAction(ActionEvent event) throws Exception {

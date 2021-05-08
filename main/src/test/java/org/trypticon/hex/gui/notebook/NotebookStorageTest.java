@@ -29,8 +29,12 @@ import java.net.URL;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
@@ -44,9 +48,12 @@ import org.trypticon.hex.interpreters.nulls.NullInterpreter;
 import org.trypticon.hex.interpreters.primitives.PrimitiveInterpreters;
 import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trypticon.hex.formats.ruby.AnnotationTestUtils.sameAnnotation;
 
 /**
@@ -101,7 +108,7 @@ public class NotebookStorageTest {
             storage.write(notebook, tmpFileURL);
 
             Notebook churned = storage.read(tmpFileURL);
-            assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
+            assertThat(churned.getBinaryLocation(), is(notebook.getBinaryLocation()));
         } finally {
             if (!tmpFile.delete()) {
                 System.err.println("Error deleting temp file: " + tmpFile);
@@ -109,16 +116,16 @@ public class NotebookStorageTest {
         }
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testIOExceptionOnReading() throws Exception {
-        storage.read(new BrokenReader());
+        assertThrows(IOException.class, () -> storage.read(new BrokenReader()));
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testIOExceptionOnWriting() throws Exception {
         Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"),
                                                 new ExtendedAnnotationCollection(100));
-        storage.write(notebook, new BrokenWriter());
+        assertThrows(IOException.class, () -> storage.write(notebook, new BrokenWriter()));
     }
 
     private static class BrokenReader extends Reader {
@@ -128,17 +135,17 @@ public class NotebookStorageTest {
         }
 
         @Override
-        public int read(@NotNull CharBuffer target) throws IOException {
+        public int read(@Nonnull CharBuffer target) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public int read(@NotNull char[] cbuf) throws IOException {
+        public int read(@Nonnull char[] cbuf) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public int read(@NotNull char[] cbuf, int off, int len) throws IOException {
+        public int read(@Nonnull char[] cbuf, int off, int len) throws IOException {
             throw new IOException("Broken");
         }
 
@@ -155,22 +162,22 @@ public class NotebookStorageTest {
         }
 
         @Override
-        public void write(@NotNull char[] cbuf) throws IOException {
+        public void write(@Nonnull char[] cbuf) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public void write(@NotNull char[] cbuf, int off, int len) throws IOException {
+        public void write(@Nonnull char[] cbuf, int off, int len) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public void write(@NotNull String str) throws IOException {
+        public void write(@Nonnull String str) throws IOException {
             throw new IOException("Broken");
         }
 
         @Override
-        public void write(@NotNull String str, int off, int len) throws IOException {
+        public void write(@Nonnull String str, int off, int len) throws IOException {
             throw new IOException("Broken");
         }
 

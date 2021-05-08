@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui.datatransfer;
 
 import java.awt.event.ActionEvent;
+import javax.annotation.Nonnull;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -30,7 +31,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.util.FocusedComponentAction;
@@ -53,7 +53,7 @@ abstract class CutOrCopyAction extends FocusedComponentAction {
     }
 
     @Override
-    protected boolean shouldBeEnabled(@NotNull JComponent focusOwner) {
+    protected boolean shouldBeEnabled(@Nonnull JComponent focusOwner) {
         TransferHandler transferHandler = focusOwner.getTransferHandler();
         if (transferHandler == null) {
             return false;
@@ -79,7 +79,7 @@ abstract class CutOrCopyAction extends FocusedComponentAction {
     }
 
     @Override
-    protected void doAction(@NotNull JComponent focusOwner) throws Exception {
+    protected void doAction(@Nonnull JComponent focusOwner) throws Exception {
         delegateAction.actionPerformed(new ActionEvent(
             focusOwner, ActionEvent.ACTION_PERFORMED, (String) delegateAction.getValue(Action.NAME)));
     }

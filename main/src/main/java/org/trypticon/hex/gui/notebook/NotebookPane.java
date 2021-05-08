@@ -25,15 +25,14 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.HexViewer;
@@ -144,7 +143,7 @@ public class NotebookPane extends JPanel {
      *
      * @param notebook the new notebook to view.
      */
-    public void setNotebook(@NotNull Notebook notebook) {
+    public void setNotebook(@Nonnull Notebook notebook) {
         if (!notebook.isOpen()) {
             throw new IllegalStateException("The notebook should already be open but wasn't.");
         }
@@ -209,7 +208,7 @@ public class NotebookPane extends JPanel {
      *
      * @return the notebook name.
      */
-    @NotNull
+    @Nonnull
     public String getNotebookName() {
         if (notebook == null) {
             return " "; // should never get here anyway, except for possibly preferred size calculation.

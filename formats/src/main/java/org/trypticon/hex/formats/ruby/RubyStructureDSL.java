@@ -23,6 +23,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.TestOnly;
 import org.jruby.embed.LocalContextScope;
@@ -38,15 +41,19 @@ import org.trypticon.hex.interpreters.MasterInterpreterStorage;
  * @author trejkaz
  */
 public class RubyStructureDSL {
+
+    @Nullable
     private final String scriptlet;
+
+    @Nullable
     private final Path scriptFile;
 
-    private RubyStructureDSL(@NonNls String scriptlet) {
+    private RubyStructureDSL(@NonNls @Nonnull String scriptlet) {
         this.scriptlet = scriptlet;
         this.scriptFile = null;
     }
 
-    private RubyStructureDSL(Path scriptFile) {
+    private RubyStructureDSL(@Nonnull Path scriptFile) {
         this.scriptlet = null;
         this.scriptFile = scriptFile;
     }

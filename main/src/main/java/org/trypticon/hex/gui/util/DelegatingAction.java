@@ -19,11 +19,11 @@
 package org.trypticon.hex.gui.util;
 
 import java.awt.event.ActionEvent;
+import javax.annotation.Nonnull;
 import javax.swing.Action;
 import javax.swing.JComponent;
 
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
 import org.trypticon.hex.gui.Resources;
 
@@ -41,13 +41,13 @@ public class DelegatingAction extends FocusedComponentAction {
     }
 
     @Override
-    protected boolean shouldBeEnabled(@NotNull JComponent focusOwner) {
+    protected boolean shouldBeEnabled(@Nonnull JComponent focusOwner) {
         Action action = focusOwner.getActionMap().get(delegateAction);
         return action != null && action.isEnabled();
     }
 
     @Override
-    protected void doAction(@NotNull JComponent focusOwner) throws Exception {
+    protected void doAction(@Nonnull JComponent focusOwner) throws Exception {
         Action action = focusOwner.getActionMap().get(delegateAction);
         if (action != null) {
             action.actionPerformed(new ActionEvent(focusOwner, ActionEvent.ACTION_PERFORMED, null));

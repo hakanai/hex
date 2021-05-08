@@ -20,14 +20,13 @@ package org.trypticon.hex.gui.anno;
 
 import java.awt.Color;
 import java.awt.event.ItemEvent;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.GroupLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
@@ -47,7 +46,7 @@ public class ParametricStyleEditorPane extends JPanel {
     // State variables.
     private boolean custom;
 
-    @NotNull
+    @Nonnull
     private ParametricStyle workingStyle;
 
     public ParametricStyleEditorPane(@Nullable ParametricStyle style) {
@@ -159,7 +158,7 @@ public class ParametricStyleEditorPane extends JPanel {
         firePropertyChange("style", oldStyle, getStyle());
     }
 
-    private void setWorkingStyle(@NotNull ParametricStyle workingStyle) {
+    private void setWorkingStyle(@Nonnull ParametricStyle workingStyle) {
         ParametricStyle oldStyle = getStyle();
         this.workingStyle = workingStyle;
         firePropertyChange("style", oldStyle, getStyle());
