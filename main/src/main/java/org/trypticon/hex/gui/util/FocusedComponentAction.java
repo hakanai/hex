@@ -30,6 +30,8 @@ import javax.swing.JComponent;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public abstract class FocusedComponentAction extends BaseAction {
 
     @Nullable
@@ -45,7 +47,7 @@ public abstract class FocusedComponentAction extends BaseAction {
         updateEnabled();
     };
 
-    @SuppressWarnings({"UnusedDeclaration"})
+    @SuppressWarnings({"UnusedDeclaration", "UnusedVariable"})
     private final Object finalizeGuardian = new FinalizeGuardian(() -> {
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.removePropertyChangeListener("permanentFocusOwner", listener);

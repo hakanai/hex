@@ -27,6 +27,8 @@ import org.trypticon.hex.gui.util.BaseAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class BringAllToFrontAction extends BaseAction {
     public BringAllToFrontAction() {
         Resources.localiseAction(this, "BringAllToFront");

@@ -45,6 +45,8 @@ import org.trypticon.hex.util.swingsupport.OptionPanes;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 class AddAnnotationAction extends NotebookPaneAction {
     private final AddAnnotationPane pane = new AddAnnotationPane();
     private final AnnotationOptionsPane optionsPane = new AnnotationOptionsPane();
@@ -75,11 +77,11 @@ class AddAnnotationAction extends NotebookPaneAction {
                 }
             }
 
-            Interpreter interpreter = info.create(optionMap);
+            Interpreter<?> interpreter = info.create(optionMap);
 
             long length;
             if (interpreter instanceof FixedLengthInterpreter) {
-                length = ((FixedLengthInterpreter) interpreter).getValueLength();
+                length = ((FixedLengthInterpreter<?>) interpreter).getValueLength();
             } else {
                 length = (viewer.getSelectionModel().getSelectionEnd() -
                           viewer.getSelectionModel().getSelectionStart()) + 1;

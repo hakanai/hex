@@ -34,6 +34,8 @@ import org.trypticon.hex.gui.util.BaseAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public abstract class NotebookPaneAction extends BaseAction {
 
     @Nullable
@@ -45,7 +47,7 @@ public abstract class NotebookPaneAction extends BaseAction {
     private PropertyChangeListener notebookPaneListener = event ->
         setNotebookPane((NotebookPane) event.getNewValue());
 
-    public NotebookPaneAction() {
+    protected NotebookPaneAction() {
         updateEnabled();
 
         KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();

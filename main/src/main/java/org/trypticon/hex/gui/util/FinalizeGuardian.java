@@ -41,7 +41,7 @@ public final class FinalizeGuardian {
     }
 
     @Override
-    protected final void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
         try {
             cleanupLogic.run();
         } finally {

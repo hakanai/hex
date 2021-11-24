@@ -41,6 +41,8 @@ import org.trypticon.hex.gui.util.FocusedComponentAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 abstract class CutOrCopyAction extends FocusedComponentAction {
     private final int requiredActionMask;
     private final Action delegateAction;
@@ -86,7 +88,7 @@ abstract class CutOrCopyAction extends FocusedComponentAction {
             focusOwner, ActionEvent.ACTION_PERFORMED, (String) delegateAction.getValue(Action.NAME)));
     }
 
-    private abstract class SelectionEvaluator {
+    private abstract static class SelectionEvaluator {
         private final JComponent component;
 
         protected SelectionEvaluator(JComponent component) {

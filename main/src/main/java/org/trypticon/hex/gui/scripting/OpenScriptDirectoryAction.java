@@ -32,6 +32,8 @@ import org.trypticon.hex.gui.util.platform.Platform;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class OpenScriptDirectoryAction extends BaseAction {
     public OpenScriptDirectoryAction() {
         Resources.localiseAction(this, "OpenScriptDirectory");

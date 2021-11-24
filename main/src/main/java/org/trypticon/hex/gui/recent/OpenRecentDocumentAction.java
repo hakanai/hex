@@ -29,6 +29,8 @@ import org.trypticon.hex.gui.util.BaseAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 class OpenRecentDocumentAction extends BaseAction {
     private final HexApplication application;
     private final Path path;

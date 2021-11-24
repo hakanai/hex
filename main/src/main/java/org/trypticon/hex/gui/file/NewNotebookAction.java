@@ -37,6 +37,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class NewNotebookAction extends BaseAction {
     private final HexApplication application;
     private final PreferredDirectoryManager preferredDirectoryManager;

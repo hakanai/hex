@@ -39,6 +39,8 @@ import org.trypticon.hex.util.swingsupport.SelectEncodingButton;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class FindBar extends JPanel {
     private final HexViewer viewer;
 

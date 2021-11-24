@@ -35,6 +35,8 @@ import org.trypticon.hex.gui.util.Callback;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class SingleHexFrame extends HexFrame {
     private final NotebookPane notebookPane;
 

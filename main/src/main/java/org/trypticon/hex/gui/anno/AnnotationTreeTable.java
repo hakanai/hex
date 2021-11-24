@@ -31,6 +31,8 @@ import org.trypticon.hex.AnnotationStyleScheme;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class AnnotationTreeTable extends BetterTreeTable {
     public AnnotationTreeTable(AnnotationStyleScheme annotationStyleScheme) {
         // XXX: This doesn't actually work due to a "feature" in Swing.  I originally thought it was a bug in SwingX:

@@ -26,6 +26,8 @@ import javax.swing.AbstractAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 class ExitAction extends AbstractAction {
     private final HexApplication application;
 

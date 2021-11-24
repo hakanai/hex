@@ -29,6 +29,8 @@ import org.trypticon.hex.gui.notebook.NotebookPane;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class FindAction extends NotebookPaneAction {
     public FindAction() {
         Resources.localiseAction(this, "Find");

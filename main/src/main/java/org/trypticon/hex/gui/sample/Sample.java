@@ -27,8 +27,10 @@ import org.jetbrains.annotations.NonNls;
  * @author trejkaz
  */
 public class Sample {
+    @SuppressWarnings("unused")
     private static final int SECRET_CODE = 42;
 
     @NonNls
+    @SuppressWarnings("unused")
     private static final String SECRET_MESSAGE = "I am in your application, hacking your bytes.";
 }

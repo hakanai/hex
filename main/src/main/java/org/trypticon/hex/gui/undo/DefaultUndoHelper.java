@@ -100,6 +100,8 @@ class DefaultUndoHelper implements UndoHelper {
         changeSupport.removePropertyChangeListener(propertyName, listener);
     }
 
+    // Swing's own guidelines say not to use serialisation.
+    @SuppressWarnings("serial")
     private class UndoableEditAdapter extends AbstractUndoableEdit {
         private final DryUndoableEdit edit;
 

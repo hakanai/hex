@@ -35,6 +35,8 @@ import org.trypticon.hex.gui.util.ActionException;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class AddSubRegionAction extends NotebookPaneAction {
     public AddSubRegionAction() {
         Resources.localiseAction(this, "AddSubRegion");

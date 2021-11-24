@@ -55,6 +55,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class JumpToOffsetBar extends JPanel {
     private final HexViewer viewer;
 
@@ -204,6 +206,8 @@ public class JumpToOffsetBar extends JPanel {
 
     //TODO: Later, pull out common bits from similar class over in Hex Components.
     // Non-trivial because one is a StealthFormattedTextField and the other is not.
+    // Swing's own guidelines say not to use serialisation.
+    @SuppressWarnings("serial")
     private static class CustomHexFormattedTextField extends JFormattedTextField {
         private long maxValue = 1;
 
@@ -288,6 +292,8 @@ public class JumpToOffsetBar extends JPanel {
             invalidate();
         }
 
+        // Swing's own guidelines say not to use serialisation.
+        @SuppressWarnings("serial")
         private static class TrickyActionMap extends ActionMap {
             public TrickyActionMap(ActionMap realActionMap) {
                 setParent(realActionMap);
@@ -307,6 +313,8 @@ public class JumpToOffsetBar extends JPanel {
         }
 
         // Wraps the real action and pretends to be enabled at all times.
+        // Swing's own guidelines say not to use serialisation.
+        @SuppressWarnings("serial")
         private static class AlwaysEnabledAction extends TextAction {
             private final Action delegate;
 

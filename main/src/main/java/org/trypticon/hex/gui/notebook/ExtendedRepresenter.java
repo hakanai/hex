@@ -94,7 +94,7 @@ class ExtendedRepresenter extends Representer {
     private class InterpreterRepresenter implements Represent {
         @Override
         public Node representData(Object object) {
-            Interpreter interpreter = (Interpreter) object;
+            Interpreter<?> interpreter = (Interpreter<?>) object;
             Map<String, Object> fields = interpreterStorage.toMap(interpreter);
             return representMapping(YamlTags.INTERPRETER_TAG, fields, true); // true to format on one line
         }

@@ -37,12 +37,14 @@ import org.trypticon.hex.gui.util.FocusedComponentAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class PasteAction extends FocusedComponentAction {
     private final FlavorListener listener = (event) -> {
         updateEnabled();
     };
 
-    @SuppressWarnings({"UnusedDeclaration"})
+    @SuppressWarnings({"UnusedDeclaration", "UnusedVariable"})
     private final Object finalizeGuardian = new FinalizeGuardian(() -> {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.removeFlavorListener(listener);

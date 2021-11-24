@@ -43,6 +43,8 @@ import org.trypticon.hex.gui.util.NullTreeTableModel;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class AnnotationPane extends JPanel {
 
     private final UndoHelper undoHelper;

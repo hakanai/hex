@@ -42,6 +42,8 @@ import org.trypticon.hex.gui.util.Dialogs;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 class ParametricStyleEditor extends AbstractCellEditor implements TableCellEditor {
     private final ParametricStyleRendererComponent component;
 

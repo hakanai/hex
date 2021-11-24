@@ -32,6 +32,8 @@ import org.trypticon.hex.HexViewer;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class TopBars extends JPanel {
     private final JXCollapsiblePane collapser;
 

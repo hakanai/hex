@@ -27,6 +27,8 @@ import org.trypticon.hex.util.Localisable;
  * @author trejkaz
  */
 public class ActionException extends LocalisableException {
+    private static final long serialVersionUID = -8946922016584008494L;
+
     public ActionException(Localisable message) {
         super(message);
     }

@@ -33,6 +33,8 @@ import org.trypticon.hex.gui.util.BaseAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class MinimiseAction extends BaseAction {
     private final PropertyChangeListener activeWindowListener = event -> {
         currentActiveWindow = (Window) event.getNewValue();

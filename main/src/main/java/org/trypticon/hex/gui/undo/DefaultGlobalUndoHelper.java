@@ -79,6 +79,8 @@ public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
         }
     }
 
+    // Swing's own guidelines say not to use serialisation.
+    @SuppressWarnings("serial")
     private class UndoAction extends NotebookPaneAction {
         private UndoAction() {
             Resources.localiseAction(this, "Undo");
@@ -109,6 +111,8 @@ public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
         }
     }
 
+    // Swing's own guidelines say not to use serialisation.
+    @SuppressWarnings("serial")
     private class RedoAction extends NotebookPaneAction {
         private RedoAction() {
             Resources.localiseAction(this, "Redo");

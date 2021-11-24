@@ -43,6 +43,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class SaveNotebookAction extends NotebookPaneAction {
     private final PreferredDirectoryManager preferredDirectoryManager;
     private final RecentDocumentsModel recentDocumentsModel;

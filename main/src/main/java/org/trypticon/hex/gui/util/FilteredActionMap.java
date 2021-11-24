@@ -29,6 +29,8 @@ import javax.swing.ActionMap;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class FilteredActionMap extends ActionMap {
     private final Set<Object> blackList;
 

@@ -32,6 +32,8 @@ import org.trypticon.hex.gui.util.MenuAdapter;
 /**
  * Menu containing the recently-opened documents.
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class OpenRecentMenu extends JMenu {
     public OpenRecentMenu(HexApplication application) {
         setText(Resources.getString("OpenRecent.name"));

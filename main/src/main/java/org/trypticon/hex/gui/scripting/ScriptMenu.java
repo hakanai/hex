@@ -21,6 +21,7 @@ package org.trypticon.hex.gui.scripting;
 import java.awt.Component;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -28,20 +29,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
+import javax.annotation.WillNotClose;
 import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
 
 import org.trypticon.hex.gui.util.MenuAdapter;
+import org.trypticon.hex.util.swingsupport.GuiLocale;
 
 /**
  * A script menu.
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class ScriptMenu extends JMenu {
     private final List<Path> directories;
 
@@ -72,22 +78,11 @@ public class ScriptMenu extends JMenu {
     private void updateItems() {
         removeAll();
 
-        Function<Path, Stream<Path>> safeDirectoryList = d -> {
-            if (!Files.isDirectory(d)) {
-                return Stream.empty();
-            }
-            try {
-                return Files.list(d);
-            } catch (IOException e) {
-                throw new RuntimeException("Couldn't read directory: " + d, e);
-            }
-        };
-
         Map<String, List<Path>> listings = directories.parallelStream()
-            .flatMap(safeDirectoryList)
+            .flatMap(ScriptMenu::safeDirectoryList)
             .filter(p -> Files.isDirectory(p) || p.getFileName().toString().endsWith(".rb")) //NON-NLS
             .collect(Collectors.groupingBy(p -> p.getFileName().toString(),
-                                           () -> new TreeMap<>(Collator.getInstance()),
+                                           () -> new TreeMap<>(Collator.getInstance(GuiLocale.get())),
                                            Collectors.toList()));
 
         listings.entrySet().stream().forEach(entry -> {
@@ -106,6 +101,20 @@ public class ScriptMenu extends JMenu {
 
         if (staticItems != null) {
             staticItems.forEach(this::add);
+        }
+    }
+
+    @WillNotClose
+    // Closed by the caller.
+    @SuppressWarnings("StreamResourceLeak")
+    private static Stream<Path> safeDirectoryList(Path directory) {
+        try {
+            return Files.list(directory);
+        } catch (NotDirectoryException e) {
+            return Stream.empty();
+        } catch (IOException e) {
+            Logger.getLogger(ScriptMenu.class.getName()).log(Level.WARNING, "Couldn't read directory: " + directory, e);
+            return Stream.empty();
         }
     }
 }

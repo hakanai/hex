@@ -29,6 +29,8 @@ import org.trypticon.hex.gui.notebook.NotebookPane;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class FindPreviousAction extends NotebookPaneAction {
     public FindPreviousAction() {
         Resources.localiseAction(this, "FindPrevious");

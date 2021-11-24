@@ -29,6 +29,8 @@ import org.trypticon.hex.gui.util.BaseAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class CloseNotebookAction extends BaseAction {
     public CloseNotebookAction() {
         Resources.localiseAction(this, "Close");

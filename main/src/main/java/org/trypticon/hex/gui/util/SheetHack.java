@@ -24,6 +24,8 @@ import javax.swing.JDialog;
 import org.trypticon.hex.util.swingsupport.PLAFUtils;
 
 /**
+ * Workarounds for "sheet" UIs.
+ *
  * @author trejkaz
  */
 public class SheetHack {

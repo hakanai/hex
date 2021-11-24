@@ -36,6 +36,8 @@ import org.trypticon.hex.util.swingsupport.SelectObjectPane;
 /**
  * Pane allows selecting an annotation to add.
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class AddAnnotationPane extends SelectObjectPane<InterpreterInfo> {
 
     @Override

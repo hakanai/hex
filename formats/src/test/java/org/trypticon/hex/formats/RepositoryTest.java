@@ -19,6 +19,8 @@
 package org.trypticon.hex.formats;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,9 +37,12 @@ import static org.hamcrest.Matchers.notNullValue;
 public class RepositoryTest {
     @Test
     public void testReadingRoot() throws Exception {
-        String[] names = Files.list(Repository.getRoot())
-            .map(p -> p.getFileName().toString())
-            .toArray(String[]::new);
+        String[] names;
+        try (Stream<Path> children = Files.list(Repository.getRoot())) {
+            names = children
+                .map(p -> p.getFileName().toString())
+                .toArray(String[]::new);
+        }
 
         assertThat(names, hasItemInArray("classfile")); //NON-NLS
         assertThat(names, hasItemInArray("gif")); //NON-NLS

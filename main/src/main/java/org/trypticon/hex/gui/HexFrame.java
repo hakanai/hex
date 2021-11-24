@@ -21,8 +21,9 @@ package org.trypticon.hex.gui;
 import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.swing.JFrame;
 
@@ -37,6 +38,8 @@ import org.trypticon.hex.gui.util.Callback;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public abstract class HexFrame extends JFrame {
     private final HexApplication application;
 
@@ -104,13 +107,10 @@ public abstract class HexFrame extends JFrame {
      * @return all frames.
      */
     public static List<HexFrame> findAllFrames() {
-        final List<HexFrame> frames = new LinkedList<>();
-        for (Frame frame : Frame.getFrames()) {
-            if (frame instanceof HexFrame && frame.isDisplayable()) {
-                frames.add((HexFrame) frame);
-            }
-        }
-        return frames;
+        return Arrays.stream(Frame.getFrames())
+            .filter(frame -> frame instanceof HexFrame && frame.isDisplayable())
+            .map(HexFrame.class::cast)
+            .collect(Collectors.toList());
     }
 
     /**

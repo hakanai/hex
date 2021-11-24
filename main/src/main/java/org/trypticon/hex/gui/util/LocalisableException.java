@@ -24,9 +24,13 @@ import org.trypticon.hex.util.Format;
 import org.trypticon.hex.util.Localisable;
 
 /**
+ * Base class for localisable exceptions.
+ *
  * @author trejkaz
  */
 public class LocalisableException extends Exception {
+    private static final long serialVersionUID = 8330429681909770558L;
+
     private final Localisable message;
 
     public LocalisableException(Localisable message) {

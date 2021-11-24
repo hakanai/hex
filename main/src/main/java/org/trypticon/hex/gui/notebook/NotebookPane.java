@@ -55,6 +55,8 @@ import org.trypticon.hex.gui.util.Callback;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class NotebookPane extends JPanel {
     private final UndoHelper undoHelper;
     private final HexViewer viewer;

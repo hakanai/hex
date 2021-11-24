@@ -40,6 +40,8 @@ import org.trypticon.hex.anno.SimpleGroupAnnotation;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 class ParametricStyleRendererComponent extends JRendererLabel {
     private final AnnotationStyleScheme annotationStyleScheme;
 

@@ -26,6 +26,8 @@ import javax.swing.JFileChooser;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class ImprovedFileChooser extends JFileChooser {
     @Override
     public File getSelectedFile() {

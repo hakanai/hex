@@ -31,29 +31,35 @@ import org.jetbrains.annotations.NonNls;
 import org.trypticon.gum.MacFactory;
 import org.trypticon.hex.util.Format;
 import org.trypticon.hex.util.Localisable;
+import org.trypticon.hex.util.swingsupport.GuiLocale;
 
 /**
+ * Utilities for dealing with resources.
+ *
  * @author trejkaz
  */
 public class Resources {
-    @NonNls private static final String NAME_SUFFIX = ".name";
-    @NonNls private static final String MNEMONIC_SUFFIX = ".mnemonic";
-    @NonNls private static final String MAC_ACCELERATOR_SUFFIX = ".accelerator.mac";
-    @NonNls private static final String OTHER_ACCELERATOR_SUFFIX = ".accelerator.other";
+    @NonNls
+    private static final String NAME_SUFFIX = ".name";
+
+    @NonNls
+    private static final String MNEMONIC_SUFFIX = ".mnemonic";
+
+    @NonNls
+    private static final String MAC_ACCELERATOR_SUFFIX = ".accelerator.mac";
+
+    @NonNls
+    private static final String OTHER_ACCELERATOR_SUFFIX = ".accelerator.other";
 
     private Resources() {
     }
 
-    public static ResourceBundle getBundle() {
-        return ResourceBundle.getBundle("org/trypticon/hex/gui/Bundle");
-    }
-
-    public static ResourceBundle getBundle(Locale locale) {
+    private static ResourceBundle getBundle(Locale locale) {
         return ResourceBundle.getBundle("org/trypticon/hex/gui/Bundle", locale);
     }
 
     public static String getString(@NonNls String key) {
-        return getBundle().getString(key);
+        return getString(GuiLocale.get(), key);
     }
 
     public static String getString(Locale locale, @NonNls String key) {
@@ -61,11 +67,11 @@ public class Resources {
     }
 
     public static String getString(@NonNls String key, Object... params) {
-        return MessageFormat.format(getString(key), params);
+        return getString(GuiLocale.get(), key, params);
     }
 
     public static String getString(Locale locale, @NonNls String key, Object... params) {
-        return MessageFormat.format(getString(locale, key), params);
+        return new MessageFormat(getString(locale, key), locale).format(params);
     }
 
     public static Localisable getMessage(@NonNls String key) {

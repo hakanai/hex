@@ -35,6 +35,7 @@ import javax.swing.LayoutStyle;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.interpreters.InterpreterInfo;
 import org.trypticon.hex.util.Format;
+import org.trypticon.hex.util.swingsupport.GuiLocale;
 import org.trypticon.hex.util.swingsupport.SelectEncodingButton;
 import org.trypticon.hex.util.swingsupport.ValidatingPanel;
 
@@ -43,6 +44,8 @@ import org.trypticon.hex.util.swingsupport.ValidatingPanel;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class AnnotationOptionsPane extends ValidatingPanel {
     private final Map<String, Supplier<?>> fieldValueSuppliers = new LinkedHashMap<>();
     private final Map<String, Boolean> required = new LinkedHashMap<>();
@@ -72,8 +75,8 @@ public class AnnotationOptionsPane extends ValidatingPanel {
             .addComponent(explanationLabel)
             .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
 
-        for (InterpreterInfo.Option option : options) {
-            JLabel label = new JLabel(Resources.getString(getLocale(), "AddAnnotation.optionFieldFormat",
+        for (InterpreterInfo.Option<?> option : options) {
+            JLabel label = new JLabel(Resources.getString("AddAnnotation.optionFieldFormat",
                                                           option.toLocalisedString(Format.LONG)));
             labelsGroup.addComponent(label);
 
@@ -131,7 +134,7 @@ public class AnnotationOptionsPane extends ValidatingPanel {
         if (type == Charset.class) {
             return new SelectEncodingButton();
         } else if (Integer.class == type) {
-            return new JFormattedTextField(NumberFormat.getIntegerInstance(getLocale()));
+            return new JFormattedTextField(NumberFormat.getIntegerInstance(GuiLocale.get()));
         } else if (String.class == type) {
             return new JTextField(20);
         } else {

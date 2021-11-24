@@ -34,6 +34,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
 /**
  * Pane for editing parametric style values.
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class ParametricStyleEditorPane extends JPanel {
     private final JCheckBox customCheckBox;
     private final JLabel borderStrokeStyleLabel;

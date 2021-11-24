@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import javax.swing.filechooser.FileFilter;
 
+import org.trypticon.hex.util.swingsupport.GuiLocale;
+
 /**
  * Filters by file extension.
  *
@@ -55,6 +57,6 @@ public abstract class FileExtensionFilter extends FileFilter implements Filename
 
     @Override
     public String getDescription() {
-        return String.format("%s (*.%s)", getShortDescription(), getExtension());
+        return String.format(GuiLocale.get(), "%s (*.%s)", getShortDescription(), getExtension());
     }
 }

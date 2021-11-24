@@ -68,8 +68,7 @@ public class AnnotationTestUtils {
             return false;
         }
 
-        if (annotation1 instanceof GroupAnnotation && !(annotation2 instanceof GroupAnnotation) ||
-            !(annotation1 instanceof GroupAnnotation) && annotation2 instanceof GroupAnnotation) {
+        if ((annotation1 instanceof GroupAnnotation) != (annotation2 instanceof GroupAnnotation)) {
             return false;
         }
 

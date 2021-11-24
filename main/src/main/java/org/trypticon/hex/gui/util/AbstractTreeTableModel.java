@@ -32,11 +32,11 @@ import org.jdesktop.swingx.treetable.TreeTableModel;
 public abstract class AbstractTreeTableModel extends org.jdesktop.swingx.treetable.AbstractTreeTableModel
         implements TreeTableModel {
 
-    public AbstractTreeTableModel() {
+    protected AbstractTreeTableModel() {
         super();
     }
 
-    public AbstractTreeTableModel(Object root) {
+    protected AbstractTreeTableModel(Object root) {
         super(root);
     }
 

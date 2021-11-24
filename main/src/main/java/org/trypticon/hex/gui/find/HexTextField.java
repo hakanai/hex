@@ -28,12 +28,15 @@ import javax.swing.text.PlainDocument;
 
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
+import org.trypticon.hex.util.swingsupport.GuiLocale;
 
 /**
  * A text field for entering hex to search for.
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class HexTextField extends JTextField {
 
     /**
@@ -131,6 +134,9 @@ public class HexTextField extends JTextField {
         }
 
         @Override
+        // Deliberate fallthrough suppression. Note that ErrorProne would catch misuse of this too,
+        // so we have put their preferred comment in so that they don't complain either.
+        @SuppressWarnings("fallthrough")
         public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
             throws BadLocationException {
 
@@ -146,7 +152,7 @@ public class HexTextField extends JTextField {
                 case 2:
                     // Caret is at the end of a hex digit. Treat this as if inserting at the next offset.
                     offset++;
-                    // Deliberate fall-through to case 0.
+                    // fall through
 
                 case 0: {
                     // Caret is at the start of a hex digit.
@@ -155,7 +161,7 @@ public class HexTextField extends JTextField {
                             builder.append(string.charAt(i));
                             builder.append("0 ");
                         } else {
-                            builder.append(string.substring(i, i + 2));
+                            builder.append(string, i, i + 2);
                             builder.append(' ');
                         }
                     }
@@ -178,7 +184,7 @@ public class HexTextField extends JTextField {
                         if (i + 2 > string.length()) {
                             builder.append(string.charAt(i));
                         } else {
-                            builder.append(string.substring(i, i + 2));
+                            builder.append(string, i, i + 2);
                             builder.append(' ');
                         }
                     }
@@ -222,6 +228,8 @@ public class HexTextField extends JTextField {
          * @param text the text.
          * @return the stripped text.
          */
+        // Forced to use `StringBuffer` here because `Matcher`'s methods don't have overloads.
+        @SuppressWarnings({"JdkObsolete", "StringBufferMayBeStringBuilder"})
         private String strip(String text) {
             Matcher matcher = nonHex.matcher(text);
             StringBuffer replaced = new StringBuffer(text.length());
@@ -229,7 +237,7 @@ public class HexTextField extends JTextField {
                 matcher.appendReplacement(replaced, "");
             }
             matcher.appendTail(replaced);
-            return replaced.toString().toUpperCase();
+            return replaced.toString().toUpperCase(GuiLocale.get());
         }
     }
 }

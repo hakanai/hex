@@ -135,7 +135,7 @@ class ExtendedConstructor extends Constructor {
                 sanitisedMap.put((String) entry.getKey(), entry.getValue());
             }
 
-            Interpreter interpreter = interpreterStorage.fromMap(sanitisedMap);
+            Interpreter<?> interpreter = interpreterStorage.fromMap(sanitisedMap);
             if (interpreter == null) {
                 throw new IllegalArgumentException("Unknown interpreter: " + map);
             }

@@ -36,8 +36,10 @@ import org.trypticon.hex.util.LoggerUtils;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public abstract class BaseAction extends AbstractAction {
-    public BaseAction() {
+    protected BaseAction() {
         updateEnabled();
     }
 

@@ -45,6 +45,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class MultipleHexFrame extends HexFrame {
     private final JTabbedPane tabbedPane;
     private final TabTitleUpdater tabTitleUpdater = new TabTitleUpdater();
@@ -263,7 +265,7 @@ public class MultipleHexFrame extends HexFrame {
     /**
      * A dummy notebook class we can use for size computation.
      */
-    private class DummyNotebook implements Notebook {
+    private static class DummyNotebook implements Notebook {
         private final ExtendedAnnotationCollection noAnnotations = new ExtendedAnnotationCollection(1);
 
         @Override

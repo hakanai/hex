@@ -26,12 +26,10 @@ import javax.swing.JRadioButtonMenuItem;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class ActivateWindowMenuItem extends JRadioButtonMenuItem {
-    private final Frame frame;
-
     public ActivateWindowMenuItem(Frame frame) {
-        this.frame = frame;
-
         setText(frame.getTitle());
         setSelected(frame.isActive());
         addActionListener(e -> frame.requestFocus());

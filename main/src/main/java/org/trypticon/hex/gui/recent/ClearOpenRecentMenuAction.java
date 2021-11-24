@@ -28,6 +28,8 @@ import org.trypticon.hex.gui.util.BaseAction;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class ClearOpenRecentMenuAction extends BaseAction {
     private final RecentDocumentsModel model;
 
