@@ -1,17 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Main" type="Application" factoryName="Application">
-    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="emma" />
+    <option name="ALTERNATIVE_JRE_PATH" value="11" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="org.trypticon.hex.gui.Main" />
-    <option name="VM_PARAMETERS" value="-Djava.library.path=lib -Xdock:name=Hex" />
-    <option name="PROGRAM_PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-    <option name="ALTERNATIVE_JRE_PATH" value="" />
-    <option name="ENABLE_SWING_INSPECTOR" value="false" />
-    <option name="ENV_VARIABLES" />
-    <option name="PASS_PARENT_ENVS" value="true" />
-    <module name="main" />
-    <envs />
+    <module name="hex.hex-main.main" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=lib" />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="51835" />
       <option name="TRANSPORT" value="0" />
@@ -22,6 +15,8 @@
     <ConfigurationWrapper RunnerId="Debug" />
     <ConfigurationWrapper RunnerId="Run" />
     <ConfigurationWrapper RunnerId="RunWithSEClass" />
-    <method />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>

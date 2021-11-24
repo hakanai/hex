@@ -1,9 +1,12 @@
 **/build
 **/reports
 .idea/codeStyles/
+.idea/compiler.xml
 .idea/dictionaries/
 .idea/gradle.xml
+.idea/jarRepositories.xml
 .idea/out
+.idea/runConfigurations.xml
 .idea/workspace.xml
 .DS_Store
 .gradle
