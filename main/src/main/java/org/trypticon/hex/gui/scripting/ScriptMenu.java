@@ -31,6 +31,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
 
@@ -44,6 +45,7 @@ import org.trypticon.hex.gui.util.MenuAdapter;
 public class ScriptMenu extends JMenu {
     private final List<Path> directories;
 
+    @Nullable
     private List<Component> staticItems;
 
     public ScriptMenu(String text, List<Path> directories) {

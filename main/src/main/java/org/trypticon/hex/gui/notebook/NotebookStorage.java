@@ -65,7 +65,7 @@ public class NotebookStorage {
             return (Notebook) yaml.load(reader);
         } catch (YAMLException e) {
             rethrow(e);
-            return null; // actually unreachable, compiler isn't smart enough.
+            throw new AssertionError(); // actually unreachable, compiler isn't smart enough.
         }
     }
 

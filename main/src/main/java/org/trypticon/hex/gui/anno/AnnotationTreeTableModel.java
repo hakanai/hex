@@ -19,6 +19,7 @@
 package org.trypticon.hex.gui.anno;
 
 import java.util.Objects;
+import javax.annotation.Nullable;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.tree.TreePath;
 
@@ -91,6 +92,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
     }
 
     @Override
+    @Nullable
     public Object getChild(Object node, int index) {
         if (node instanceof GroupAnnotation) {
             return ((GroupAnnotation) node).getAnnotations().get(index);
@@ -145,6 +147,7 @@ public class AnnotationTreeTableModel extends AbstractTreeTableModel
     }
 
     @Override
+    @Nullable
     public Object getValueAt(Object node, int column) {
         Annotation anno = (Annotation) node;
         switch (column) {

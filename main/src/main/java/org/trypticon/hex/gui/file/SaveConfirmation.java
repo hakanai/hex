@@ -67,16 +67,16 @@ public class SaveConfirmation {
     /**
      * Results of showing the dialog.
      */
-    public static enum Option {
+    public enum Option {
         CANCEL(Resources.getString("Notebook.saveConfirmation.cancel")),
 
         SAVE(Resources.getString("Notebook.saveConfirmation.save")),
 
         DO_NOT_SAVE(Resources.getString("Notebook.saveConfirmation.doNotSave"));
 
-        private String display;
+        private final String display;
 
-        private Option(String display) {
+        Option(String display) {
             this.display = display;
         }
 

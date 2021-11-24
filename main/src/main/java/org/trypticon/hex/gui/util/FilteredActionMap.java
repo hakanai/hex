@@ -20,6 +20,7 @@ package org.trypticon.hex.gui.util;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.annotation.Nullable;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 
@@ -43,6 +44,7 @@ public class FilteredActionMap extends ActionMap {
     }
 
     @Override
+    @Nullable
     public Action get(Object key) {
         if (blackList.contains(key)) {
             return null;

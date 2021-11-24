@@ -24,6 +24,8 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.yaml.snakeyaml.constructor.Construct;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -83,7 +85,7 @@ class ExtendedConstructor extends Constructor {
                 throw new IllegalArgumentException("Invalid URL: " + binaryLocationURL);
             }
 
-            GroupAnnotation rootGroup = (GroupAnnotation) map.get("root_group");
+            GroupAnnotation rootGroup = Objects.requireNonNull((GroupAnnotation) map.get("root_group"));
 
             ExtendedAnnotationCollection annotations = new ExtendedAnnotationCollection(rootGroup);
 
@@ -99,12 +101,12 @@ class ExtendedConstructor extends Constructor {
             int length = ((Number) map.get("length")).intValue();
             String note = (String) map.get("note");
             @SuppressWarnings("unchecked")
-            List<Annotation> annotations = (List<Annotation>) map.get("annotations");
+            List<Annotation> annotations = Objects.requireNonNull((List<Annotation>) map.get("annotations"));
             ParametricStyle customStyle = (ParametricStyle) map.get("custom_style");
 
             GroupAnnotation annotation = new SimpleGroupAnnotation(position, length, annotations);
-            annotation.set(CommonAttributes.NOTE, note);
-            annotation.set(CustomAttributes.CUSTOM_STYLE, customStyle);
+            annotation.setIfNotNull(CommonAttributes.NOTE, note);
+            annotation.setIfNotNull(CustomAttributes.CUSTOM_STYLE, customStyle);
             return annotation;
         }
     }
@@ -114,7 +116,7 @@ class ExtendedConstructor extends Constructor {
         protected Object construct(Map<Object, Object> map) {
             long position = ((Number) map.get("position")).longValue();
             int length = ((Number) map.get("length")).intValue();
-            Interpreter interpreter = (Interpreter) map.get("interpreter");
+            Interpreter<?> interpreter = Objects.requireNonNull((Interpreter<?>) map.get("interpreter"));
             String note = (String) map.get("note");
             ParametricStyle customStyle = (ParametricStyle) map.get("custom_style");
 
@@ -145,20 +147,19 @@ class ExtendedConstructor extends Constructor {
     private class ParametricStyleConstructor extends SimpleConstructor {
         @Override
         protected Object construct(Map<Object, Object> map) {
-            String borderStrokeStyleString = (String) map.get("border_stroke_style");
-            ParametricStyle.StrokeStyle borderStrokeStyle =
-                borderStrokeStyleString == null ? null : ParametricStyle.StrokeStyle.valueOf(borderStrokeStyleString);
-            Color borderColor = mapToColor((Map<?, ?>) map.get("border_color"));
-            Color backgroundColor = mapToColor((Map<?, ?>) map.get("background_color"));
+            // Backwards compatibility with older files not storing stroke style
+            ParametricStyle.StrokeStyle borderStrokeStyle = Optional
+                .ofNullable((String) map.get("border_stroke_style"))
+                .map(ParametricStyle.StrokeStyle::valueOf)
+                .orElse(ParametricStyle.StrokeStyle.SOLID);
+            Color borderColor = mapToColor(Objects.requireNonNull((Map<?, ?>) map.get("border_color")));
+            Color backgroundColor = mapToColor(Objects.requireNonNull((Map<?, ?>) map.get("background_color")));
 
             return new ParametricStyle(borderStrokeStyle, borderColor, backgroundColor);
         }
     }
 
     private Color mapToColor(Map<?, ?> map) {
-        if (map == null) {
-            return null;
-        }
         int r = ((Number) map.get("r")).intValue();
         int g = ((Number) map.get("g")).intValue();
         int b = ((Number) map.get("b")).intValue();

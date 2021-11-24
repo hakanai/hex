@@ -24,6 +24,8 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.util.BaseAction;
 
@@ -33,7 +35,11 @@ import org.trypticon.hex.gui.util.BaseAction;
  * @author trejkaz
  */
 public abstract class NotebookPaneAction extends BaseAction {
+
+    @Nullable
     private HexFrame currentHexFrame;
+
+    @Nullable
     private NotebookPane currentNotebookPane;
 
     private PropertyChangeListener notebookPaneListener = event ->
@@ -50,7 +56,7 @@ public abstract class NotebookPaneAction extends BaseAction {
             updateActiveWindow.accept((Window) event.getNewValue()));
     }
 
-    private void setHexFrame(HexFrame hexFrame) {
+    private void setHexFrame(@Nullable HexFrame hexFrame) {
         if (currentHexFrame != null) {
             currentHexFrame.removePropertyChangeListener("notebookPane", notebookPaneListener);
         }
@@ -65,7 +71,7 @@ public abstract class NotebookPaneAction extends BaseAction {
         }
     }
 
-    private void setNotebookPane(NotebookPane notebookPane) {
+    private void setNotebookPane(@Nullable NotebookPane notebookPane) {
         currentNotebookPane = notebookPane;
         updateEnabled();
     }
@@ -81,6 +87,9 @@ public abstract class NotebookPaneAction extends BaseAction {
 
     @Override
     protected final void doAction(ActionEvent event) throws Exception {
+        if (currentNotebookPane == null) {
+            throw new IllegalStateException("Somehow got here despite having no notebook!");
+        }
         doAction(event, currentNotebookPane);
     }
 

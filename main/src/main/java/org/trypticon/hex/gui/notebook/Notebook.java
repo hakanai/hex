@@ -22,6 +22,8 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.NonNls;
 
 import org.trypticon.hex.binary.Binary;
@@ -54,6 +56,7 @@ public interface Notebook {
      *
      * @return the notebook location.
      */
+    @Nullable
     URL getNotebookLocation();
 
     /**
@@ -71,6 +74,7 @@ public interface Notebook {
 
     ExtendedAnnotationCollection getAnnotations();
 
+    @Nullable
     Binary getBinary();
 
     /**

@@ -27,6 +27,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import javax.annotation.Nullable;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.GroupLayout;
@@ -40,6 +41,7 @@ import javax.swing.text.TextAction;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.HexViewerSelectionModel;
 import org.trypticon.hex.anno.Annotation;
+import org.trypticon.hex.anno.AnnotationCollection;
 import org.trypticon.hex.anno.GroupAnnotation;
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.gui.Resources;
@@ -157,8 +159,13 @@ public class JumpToOffsetBar extends JPanel {
                 break;
 
             case RELATIVE_TO_SUB_REGION: {
+                AnnotationCollection annotations = viewer.getAnnotations();
+                if (annotations == null) {
+                    Toolkit.getDefaultToolkit().beep();
+                    return;
+                }
                 List<? extends Annotation> path =
-                    viewer.getAnnotations().getAnnotationPathAt(selectionModel.getCursor());
+                    annotations.getAnnotationPathAt(selectionModel.getCursor());
                 if (path == null) {
                     Toolkit.getDefaultToolkit().beep();
                     return;
@@ -179,7 +186,10 @@ public class JumpToOffsetBar extends JPanel {
             }
         }
 
-        if (offset >= 0 && offset < viewer.getBinary().length()) {
+        Binary binary = viewer.getBinary();
+        long binaryLength = binary == null ? 0L : binary.length();
+
+        if (offset >= 0 && offset < binaryLength) {
             selectionModel.setCursor(offset);
         } else {
             Toolkit.getDefaultToolkit().beep();
@@ -203,6 +213,7 @@ public class JumpToOffsetBar extends JPanel {
                 @Override
                 public AbstractFormatter getFormatter(JFormattedTextField tf) {
                     return new AbstractFormatter() {
+                        @Nullable
                         @Override
                         public Object stringToValue(String text) throws ParseException {
                             text = text.trim();

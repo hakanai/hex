@@ -23,12 +23,12 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
+import javax.annotation.Nullable;
 
 import com.ibm.icu.text.CollationElementIterator;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.RuleBasedCollator;
 import com.ibm.icu.text.UCharacterIterator;
-import org.jetbrains.annotations.Nullable;
 
 import org.trypticon.hex.binary.Binary;
 
@@ -97,6 +97,7 @@ class TextSearcher implements Searcher {
         return null;
     }
 
+    @Nullable
     private Match testForMatch(Binary haystack, long position) {
         if (position >= haystack.length()) {
             return null;

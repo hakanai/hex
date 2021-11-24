@@ -20,6 +20,8 @@ package org.trypticon.hex.gui.anno;
 
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.Attribute;
 import org.trypticon.hex.anno.GroupAnnotation;
@@ -48,7 +50,7 @@ public class ExtendedAnnotationCollection extends MemoryAnnotationCollection {
      * @param newValue the new value for the attribute.
      * @param <V> the type of the attribute.
      */
-    public <V> void changeAttributeValue(Annotation annotation, Attribute<V> attribute, V newValue) {
+    public <V> void changeAttributeValue(Annotation annotation, Attribute<V> attribute, @Nullable V newValue) {
         V oldValue = annotation.get(attribute);
         annotation.set(attribute, newValue);
         if (!Objects.equals(oldValue, newValue)) {

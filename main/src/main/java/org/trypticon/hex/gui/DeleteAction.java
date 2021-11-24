@@ -44,7 +44,9 @@ class DeleteAction extends NotebookPaneAction {
 
         long position = viewer.getSelectionModel().getCursor();
 
-        List<? extends Annotation> annotationPath = viewer.getAnnotations().getAnnotationPathAt(position);
+        AnnotationCollection annotations = viewer.getAnnotations();
+        List<? extends Annotation> annotationPath = annotations == null ? null :
+                                                    annotations.getAnnotationPathAt(position);
         if (annotationPath == null) {
             throw new ActionException(Resources.getMessage("Delete.Errors.notAtAnnotation"));
         }

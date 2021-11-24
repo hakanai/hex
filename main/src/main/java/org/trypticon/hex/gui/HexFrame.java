@@ -23,6 +23,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.swing.JFrame;
 
 import org.trypticon.hex.gui.notebook.Notebook;
@@ -62,8 +63,9 @@ public abstract class HexFrame extends JFrame {
     /**
      * Gets the currently-selected notebook pane.
      *
-     * @return the notebook pane.
+     * @return the notebook pane. Returns {@code null} if none is selected.
      */
+    @Nullable
     public abstract NotebookPane getNotebookPane();
 
     /**
@@ -78,6 +80,7 @@ public abstract class HexFrame extends JFrame {
      *
      * @return the notebook being viewed.
      */
+    @Nullable
     public Notebook getNotebook() {
         return getNotebookPane() == null ? null : getNotebookPane().getNotebook();
     }
@@ -115,6 +118,7 @@ public abstract class HexFrame extends JFrame {
      *
      * @return the active hex viewer.
      */
+    @Nullable
     public static HexFrame findActiveFrame() {
         Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
         if (window == null) {

@@ -23,6 +23,7 @@ import java.text.NumberFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 import javax.swing.GroupLayout;
 import javax.swing.JComponent;
@@ -72,7 +73,7 @@ public class AnnotationOptionsPane extends ValidatingPanel {
             .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED);
 
         for (InterpreterInfo.Option option : options) {
-            JLabel label = new JLabel(Resources.getString("AddAnnotation.optionFieldFormat",
+            JLabel label = new JLabel(Resources.getString(getLocale(), "AddAnnotation.optionFieldFormat",
                                                           option.toLocalisedString(Format.LONG)));
             labelsGroup.addComponent(label);
 
@@ -104,7 +105,7 @@ public class AnnotationOptionsPane extends ValidatingPanel {
     @Override
     protected boolean validateInput() {
         for (String key : required.keySet()) {
-            Object value = fieldValueSuppliers.get(key).get();
+            Object value = Objects.requireNonNull(fieldValueSuppliers.get(key)).get();
             if (value == null || (value instanceof String && ((String) value).trim().isEmpty())) {
                 return false;
             }
@@ -130,7 +131,7 @@ public class AnnotationOptionsPane extends ValidatingPanel {
         if (type == Charset.class) {
             return new SelectEncodingButton();
         } else if (Integer.class == type) {
-            return new JFormattedTextField(NumberFormat.getIntegerInstance());
+            return new JFormattedTextField(NumberFormat.getIntegerInstance(getLocale()));
         } else if (String.class == type) {
             return new JTextField(20);
         } else {

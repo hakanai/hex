@@ -22,6 +22,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -70,7 +71,7 @@ public class MenuBarBuilder {
      * @param frame the frame, or {@code null} if building the frameless menu.
      * @return the menu bar.
      */
-    public JMenuBar buildMenuBar(JFrame frame) {
+    public JMenuBar buildMenuBar(@Nullable JFrame frame) {
         JMenu fileMenu = new JMenu(Resources.getString(MacFactory.isMac() ? "File.name.mac" : "File.name.other"));
         fileMenu.add(new NewNotebookAction(application));
         fileMenu.add(new OpenNotebookAction(application));

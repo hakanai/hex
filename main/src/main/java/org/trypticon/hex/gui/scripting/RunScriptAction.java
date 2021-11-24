@@ -24,8 +24,10 @@ import java.nio.file.Path;
 import org.trypticon.hex.HexViewer;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
+import org.trypticon.hex.anno.EmptyAnnotationCollection;
 import org.trypticon.hex.anno.OverlappingAnnotationException;
 import org.trypticon.hex.binary.Binary;
+import org.trypticon.hex.binary.EmptyBinary;
 import org.trypticon.hex.formats.Structure;
 import org.trypticon.hex.formats.ruby.RubyStructureDSL;
 import org.trypticon.hex.gui.NotebookPaneAction;
@@ -61,8 +63,17 @@ public class RunScriptAction extends NotebookPaneAction {
         HexViewer viewer = notebookPane.getViewer();
 
         Binary binary = viewer.getBinary();
+        if (binary == null) {
+            binary = new EmptyBinary();
+        }
+
         AnnotationCollection annotationCollection = viewer.getAnnotations();
+        if (annotationCollection == null) {
+            annotationCollection = new EmptyAnnotationCollection();
+        }
+
         long position = viewer.getSelectionModel().getSelectionStart();
+
 
         Annotation annotation;
         try {

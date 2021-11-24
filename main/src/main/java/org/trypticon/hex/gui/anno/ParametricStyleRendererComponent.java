@@ -30,6 +30,7 @@ import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.CommonAttributes;
 import org.trypticon.hex.anno.GroupAnnotation;
+import org.trypticon.hex.anno.NullAnnotation;
 import org.trypticon.hex.anno.SimpleAnnotation;
 import org.trypticon.hex.anno.SimpleGroupAnnotation;
 
@@ -42,7 +43,7 @@ import org.trypticon.hex.anno.SimpleGroupAnnotation;
 class ParametricStyleRendererComponent extends JRendererLabel {
     private final AnnotationStyleScheme annotationStyleScheme;
 
-    private Annotation annotationCopy;
+    private Annotation annotationCopy = new NullAnnotation();
 
     ParametricStyleRendererComponent(AnnotationStyleScheme annotationStyleScheme) {
         setOpaque(true);
@@ -59,12 +60,12 @@ class ParametricStyleRendererComponent extends JRendererLabel {
                                                   annotation.getLength(),
                                                   annotation.getInterpreter());
         }
-        annotationCopy.set(CommonAttributes.NOTE, annotation.get(CommonAttributes.NOTE));
-        annotationCopy.set(CustomAttributes.CUSTOM_STYLE, annotation.get(CustomAttributes.CUSTOM_STYLE));
+        annotationCopy.setIfNotNull(CommonAttributes.NOTE, annotation.get(CommonAttributes.NOTE));
+        annotationCopy.setIfNotNull(CustomAttributes.CUSTOM_STYLE, annotation.get(CustomAttributes.CUSTOM_STYLE));
     }
 
     public void setParametricStyle(ParametricStyle parametricStyle) {
-        annotationCopy.set(CustomAttributes.CUSTOM_STYLE, parametricStyle);
+        annotationCopy.setIfNotNull(CustomAttributes.CUSTOM_STYLE, parametricStyle);
         // repaint() has no effect in JRendererLabel, so we paint immediately.
         paintImmediately(0, 0, getWidth(), getHeight());
     }

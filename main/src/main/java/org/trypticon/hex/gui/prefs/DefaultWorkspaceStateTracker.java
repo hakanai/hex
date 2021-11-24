@@ -100,7 +100,9 @@ class DefaultWorkspaceStateTracker extends WorkspaceStateTracker {
             }
         }
 
-        restoreFrameLocation(frame, framePrefs.node("frameLocation"));
+        if (frame != null) {
+            restoreFrameLocation(frame, framePrefs.node("frameLocation"));
+        }
 
         return true;
     }

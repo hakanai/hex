@@ -68,14 +68,14 @@ public class RevertToSavedConfirmation {
     /**
      * Results of showing the dialog.
      */
-    public static enum Option {
+    public enum Option {
         CANCEL(Resources.getString("RevertToSaved.confirmation.cancel")),
 
         REVERT(Resources.getString("RevertToSaved.confirmation.revert"));
 
-        private String display;
+        private final String display;
 
-        private Option(String display) {
+        Option(String display) {
             this.display = display;
         }
 

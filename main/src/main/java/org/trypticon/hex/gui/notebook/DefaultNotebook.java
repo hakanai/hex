@@ -23,6 +23,8 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.URL;
 
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.NonNls;
 
 import org.trypticon.hex.binary.Binary;
@@ -37,10 +39,18 @@ import org.trypticon.hex.util.LoggerUtils;
  */
 public class DefaultNotebook implements Notebook {
 
-    private PropertyChangeSupport propertyChanges;
+    @Nullable
     private URL notebookLocation;
+
     private final URL binaryLocation;
+
+    @Nullable
     private ExtendedAnnotationCollection annotations;
+
+    @Nullable
+    private PropertyChangeSupport propertyChanges;
+
+    @Nullable
     private Binary binary;
 
     private final Object openLock = new Object();
@@ -60,7 +70,7 @@ public class DefaultNotebook implements Notebook {
      * @param binaryLocation the location of the binary.
      * @param annotations the annotation collection.
      */
-    public DefaultNotebook(URL binaryLocation, ExtendedAnnotationCollection annotations) {
+    public DefaultNotebook(URL binaryLocation, @Nullable ExtendedAnnotationCollection annotations) {
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
     }
@@ -114,6 +124,7 @@ public class DefaultNotebook implements Notebook {
      * @return the notebook location.
      */
     @Override
+    @Nullable
     public URL getNotebookLocation() {
         return notebookLocation;
     }
@@ -145,10 +156,14 @@ public class DefaultNotebook implements Notebook {
 
     @Override
     public ExtendedAnnotationCollection getAnnotations() {
+        if (annotations == null) {
+            throw new IllegalStateException("Notebook has not been opened yet");
+        }
         return annotations;
     }
 
     @Override
+    @Nullable
     public Binary getBinary() {
         return binary;
     }
@@ -178,7 +193,7 @@ public class DefaultNotebook implements Notebook {
         }
     }
 
-    private void firePropertyChange(@NonNls String propertyName, Object oldValue, Object newValue) {
+    private void firePropertyChange(@NonNls String propertyName, @Nullable Object oldValue, @Nullable Object newValue) {
         if (propertyChanges != null) {
             propertyChanges.firePropertyChange(propertyName, oldValue, newValue);
         }

@@ -18,6 +18,8 @@
 
 package org.trypticon.hex.gui.find;
 
+import javax.annotation.Nullable;
+
 import org.trypticon.hex.binary.Binary;
 
 /**
@@ -34,6 +36,7 @@ class BinarySearcher implements Searcher {
         table = precomputeTable(needle);
     }
 
+    @Nullable
     @Override
     public Match find(Binary haystack, long startPosition, SearchParams params) {
         Binary needle = this.needle;
@@ -66,6 +69,7 @@ class BinarySearcher implements Searcher {
      * @param stopPosition the index to stop at.
      * @return the next offset found, or {@code null} if no match is found by the end.
      */
+    @Nullable
     private Match kmpSearch(Binary needle, Binary haystack, long startPosition, long stopPosition) {
         int needleIndex = 0;
         int needleLength = (int) needle.length();

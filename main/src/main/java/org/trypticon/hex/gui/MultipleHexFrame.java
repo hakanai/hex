@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
@@ -49,6 +50,7 @@ public class MultipleHexFrame extends HexFrame {
     private final TabTitleUpdater tabTitleUpdater = new TabTitleUpdater();
     private final TabUnsavedUpdater tabUnsavedUpdater = new TabUnsavedUpdater();
 
+    @Nullable
     private NotebookPane notebookPane;
 
     /**
@@ -90,6 +92,7 @@ public class MultipleHexFrame extends HexFrame {
     }
 
     @Override
+    @Nullable
     public NotebookPane getNotebookPane() {
         return notebookPane;
     }
@@ -154,8 +157,8 @@ public class MultipleHexFrame extends HexFrame {
      */
     private void updateDocumentModifiedForTab(NotebookPane updatedPane) {
         int index = tabbedPane.indexOfComponent(updatedPane);
-        String title = notebookPane.getNotebookName();
-        tabbedPane.setTitleAt(index, notebookPane.isUnsaved() ? title + "*" : title);
+        String title = updatedPane.getNotebookName();
+        tabbedPane.setTitleAt(index, updatedPane.isUnsaved() ? title + "*" : title);
 
         updateDocumentModifiedForWindow();
     }
@@ -240,8 +243,9 @@ public class MultipleHexFrame extends HexFrame {
     private class TabTitleUpdater implements PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent event) {
-            int index = tabbedPane.indexOfComponent((Component) event.getSource());
-            tabbedPane.setTitleAt(index, notebookPane.getNotebookName());
+            NotebookPane updatedPane = (NotebookPane) event.getSource();
+            int index = tabbedPane.indexOfComponent(updatedPane);
+            tabbedPane.setTitleAt(index, updatedPane.getNotebookName());
         }
     }
 
@@ -272,7 +276,7 @@ public class MultipleHexFrame extends HexFrame {
 
         @Override
         public URL getNotebookLocation() {
-            return null;
+            throw new UnsupportedOperationException("Cannot get notebook location for dummy pane");
         }
 
         @Override
@@ -281,7 +285,7 @@ public class MultipleHexFrame extends HexFrame {
 
         @Override
         public URL getBinaryLocation() {
-            return null;
+            throw new UnsupportedOperationException("Cannot get binary location for dummy pane");
         }
 
         @Override

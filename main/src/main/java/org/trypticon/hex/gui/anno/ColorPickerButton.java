@@ -43,7 +43,7 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
 public class ColorPickerButton extends JButton {
     private final AbstractColorChooserPanel chooserPanel;
 
-    private Color color;
+    private Color color = Color.BLACK;
 
     public ColorPickerButton() {
         setIcon(new WellIcon());

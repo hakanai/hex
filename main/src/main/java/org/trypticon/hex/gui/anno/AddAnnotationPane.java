@@ -21,6 +21,8 @@ package org.trypticon.hex.gui.anno;
 import java.awt.Component;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.jdesktop.swingx.renderer.StringValue;
 
 import org.trypticon.hex.gui.Resources;
@@ -71,6 +73,7 @@ public class AddAnnotationPane extends SelectObjectPane<InterpreterInfo> {
      * @param parentComponent the parent component.
      * @return the chosen interpreter.
      */
+    @Nullable
     public InterpreterInfo showDialog(Component parentComponent) {
         return showDialog(parentComponent,
                           Resources.getString("AddAnnotation.nameWithoutEllipsis"),

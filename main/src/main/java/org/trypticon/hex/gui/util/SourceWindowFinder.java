@@ -22,6 +22,7 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import javax.annotation.Nullable;
 import javax.swing.JPopupMenu;
 
 import org.trypticon.hex.util.LoggerUtils;
@@ -60,6 +61,7 @@ public class SourceWindowFinder {
      * @return the root window for that component.  Returns {@code null} if the root is not a window, but
      *         this would suggest the need for a fix to the code.
      */
+    @Nullable
     private Window getRootWindow(Component component) {
         Component root = getRoot(component);
 

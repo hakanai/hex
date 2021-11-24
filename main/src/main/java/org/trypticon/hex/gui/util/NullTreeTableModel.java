@@ -18,6 +18,7 @@
 
 package org.trypticon.hex.gui.util;
 
+import javax.annotation.Nullable;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
@@ -41,6 +42,7 @@ public class NullTreeTableModel implements TreeTableModel {
     }
 
     @Override
+    @Nullable
     public String getColumnName(int i) {
         return null;
     }
@@ -51,6 +53,7 @@ public class NullTreeTableModel implements TreeTableModel {
     }
 
     @Override
+    @Nullable
     public Object getValueAt(Object o, int i) {
         return null;
     }
@@ -65,11 +68,13 @@ public class NullTreeTableModel implements TreeTableModel {
     }
 
     @Override
+    @Nullable
     public Object getRoot() {
         return null;
     }
 
     @Override
+    @Nullable
     public Object getChild(Object parent, int index) {
         return null;
     }

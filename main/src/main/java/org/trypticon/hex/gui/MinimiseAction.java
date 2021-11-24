@@ -24,6 +24,8 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.annotation.Nullable;
+
 import org.trypticon.hex.gui.util.BaseAction;
 
 /**
@@ -37,6 +39,7 @@ public class MinimiseAction extends BaseAction {
         updateEnabled();
     };
 
+    @Nullable
     private Window currentActiveWindow;
 
     public MinimiseAction() {

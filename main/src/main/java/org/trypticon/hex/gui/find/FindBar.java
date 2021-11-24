@@ -180,7 +180,12 @@ public class FindBar extends JPanel {
 
         long startPosition = viewer.getSelectionModel().getCursor() + (backwards ? -1 : 1);
 
-        Match match = searcher.find(viewer.getBinary(), startPosition, params);
+        Binary binary = viewer.getBinary();
+        if (binary == null) {
+            return;
+        }
+
+        Match match = searcher.find(binary, startPosition, params);
         if (match != null) {
             viewer.getSelectionModel().setSelection(match.offset, match.endOffset());
         }

@@ -24,6 +24,8 @@ import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.trypticon.hex.gui.notebook.Notebook;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.util.Callback;
@@ -70,6 +72,7 @@ public class SingleHexFrame extends HexFrame {
     }
 
     @Override
+    @Nullable
     public NotebookPane getNotebookPane() {
         return notebookPane;
     }

@@ -20,11 +20,14 @@ package org.trypticon.hex.gui.anno;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTreeTable;
+import org.jetbrains.annotations.Contract;
 
 import org.trypticon.hex.anno.AbstractAnnotationCollection;
 import org.trypticon.hex.anno.Annotation;
@@ -104,11 +107,13 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
         });
     }
 
+    @Nonnull
     @Override
     public GroupAnnotation getRootGroup() {
         return delegate.getRootGroup();
     }
 
+    @Nonnull
     @Override
     public List<? extends Annotation> getTopLevel() {
         return delegate.getTopLevel();
@@ -116,17 +121,21 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
 
     // TODO: Methods to get the children of a node, so that it can be intercepted.
 
+    @Nullable
     @Override
     public List<? extends Annotation> getAnnotationPathAt(long position) {
         return getExpandedAnnotationPath(delegate.getAnnotationPathAt(position));
     }
 
+    @Nonnull
     @Override
     public List<? extends Annotation> getAnnotationPathFor(Annotation annotation) {
         return getExpandedAnnotationPath(delegate.getAnnotationPathFor(annotation));
     }
 
-    private List<? extends Annotation> getExpandedAnnotationPath(List<? extends Annotation> fullPath) {
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    private List<? extends Annotation> getExpandedAnnotationPath(@Nullable List<? extends Annotation> fullPath) {
         if (fullPath == null) {
             return null;
         }
@@ -147,12 +156,12 @@ public class ExpansionTrackingAnnotationCollection extends AbstractAnnotationCol
     }
 
     @Override
-    public void add(Annotation annotation) throws OverlappingAnnotationException {
+    public void add(@Nonnull Annotation annotation) throws OverlappingAnnotationException {
         delegate.add(annotation);
     }
 
     @Override
-    public void remove(Annotation annotation) {
+    public void remove(@Nonnull Annotation annotation) {
         delegate.remove(annotation);
     }
 }

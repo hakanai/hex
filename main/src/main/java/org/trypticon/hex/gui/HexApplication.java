@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.swing.Action;
 import javax.swing.DefaultFocusManager;
 import javax.swing.JFrame;
@@ -118,6 +119,7 @@ public class HexApplication {
      * @return the frame the notebook was opened in, or {@code null} if there was a problem opening it
      *         (in this situation the user would have been alerted already.)
      */
+    @Nullable
     public HexFrame openNotebook(Path notebookPath) {
         //TODO: Just switch to path...
         URL notebookUrl;
@@ -161,6 +163,7 @@ public class HexApplication {
      * @return the frame the notebook was opened in, or {@code null} if there was a problem opening it
      *         (in this situation the user would have been alerted already.)
      */
+    @Nullable
     public HexFrame openNotebook(Notebook notebook) {
         return openNotebook(notebook, true);
     }
@@ -176,6 +179,7 @@ public class HexApplication {
      * @return the frame the notebook was opened in, or {@code null} if there was a problem opening it
      *         (in this situation the user would have been alerted already.)
      */
+    @Nullable
     public HexFrame openNotebook(Notebook notebook, boolean openFrameImmediately) {
         Window activeWindow = DefaultFocusManager.getCurrentManager().getActiveWindow();
 
@@ -198,6 +202,12 @@ public class HexApplication {
             return frame;
         } else {
             MultipleHexFrame frame = (MultipleHexFrame) HexFrame.findActiveFrame();
+            if (frame == null) {
+                // Probably impossible to get here but I can't think of a way to guarantee that
+                // a frame was found.
+                frame = new MultipleHexFrame(this);
+                frame.setVisible(true);
+            }
             frame.addTab(notebook);
             return frame;
         }

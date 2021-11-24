@@ -20,6 +20,7 @@ package org.trypticon.hex.gui.datatransfer;
 
 import java.awt.event.ActionEvent;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -44,6 +45,7 @@ abstract class CutOrCopyAction extends FocusedComponentAction {
     private final int requiredActionMask;
     private final Action delegateAction;
 
+    @Nullable
     private SelectionEvaluator selectionEvaluator;
 
     CutOrCopyAction(@NonNls String baseKey, int requiredActionMask, Action delegateAction) {

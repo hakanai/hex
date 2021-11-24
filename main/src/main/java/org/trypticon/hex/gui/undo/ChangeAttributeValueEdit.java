@@ -18,6 +18,7 @@
 
 package org.trypticon.hex.gui.undo;
 
+import javax.annotation.Nullable;
 import javax.swing.undo.CannotUndoException;
 
 import org.trypticon.hex.anno.Annotation;
@@ -34,8 +35,13 @@ public class ChangeAttributeValueEdit<V> implements DryUndoableEdit {
     private final ExtendedAnnotationCollection annotationCollection;
     private final Annotation annotation;
     private final Attribute<V> attribute;
+
+    @Nullable
     private final V oldValue;
+
+    @Nullable
     private final V newValue;
+
     private final String presentationName;
 
     /**
@@ -50,7 +56,7 @@ public class ChangeAttributeValueEdit<V> implements DryUndoableEdit {
      */
     public ChangeAttributeValueEdit(ExtendedAnnotationCollection annotationCollection,
                                     Annotation annotation, Attribute<V> attribute,
-                                    V oldValue, V newValue,
+                                    @Nullable V oldValue, @Nullable V newValue,
                                     String presentationName) {
         this.annotationCollection = annotationCollection;
         this.annotation = annotation;

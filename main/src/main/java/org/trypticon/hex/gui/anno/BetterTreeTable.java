@@ -18,6 +18,7 @@
 
 package org.trypticon.hex.gui.anno;
 
+import javax.annotation.Nullable;
 import javax.swing.UIManager;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -30,6 +31,8 @@ import org.jdesktop.swingx.decorator.HighlighterFactory;
  * @author trejkaz
  */
 public class BetterTreeTable extends JXTreeTable {
+
+    @Nullable
     private Highlighter oddRowHighlighter;
 
     @Override

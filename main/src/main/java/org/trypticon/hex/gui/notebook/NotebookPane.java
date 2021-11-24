@@ -25,6 +25,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.AbstractAction;
@@ -134,7 +135,7 @@ public class NotebookPane extends JPanel {
      *
      * @return the notebook being viewed.
      */
-    public Notebook getNotebook() {
+    public final Notebook getNotebook() {
         return notebook;
     }
 
@@ -143,7 +144,7 @@ public class NotebookPane extends JPanel {
      *
      * @param notebook the new notebook to view.
      */
-    public void setNotebook(@Nonnull Notebook notebook) {
+    public final void setNotebook(@Nonnull Notebook notebook) {
         if (!notebook.isOpen()) {
             throw new IllegalStateException("The notebook should already be open but wasn't.");
         }
@@ -255,7 +256,8 @@ public class NotebookPane extends JPanel {
      * @return the location accessory bar.
      */
     public LocationAccessoryBar getLocationAccessoryBar() {
-        return accessoryBar.getFirstAccessoryBar(LocationAccessoryBar.class);
+        return Objects.requireNonNull(
+            accessoryBar.getFirstAccessoryBar(LocationAccessoryBar.class));
     }
 
     /**
@@ -317,7 +319,7 @@ public class NotebookPane extends JPanel {
                         break;
                     case SAVE:
                         SaveNotebookAction saveAction = (SaveNotebookAction) getRootPane().getActionMap().get("save");
-                        boolean saveSucceeded = saveAction.save(getRootPane());
+                        boolean saveSucceeded = saveAction.save(NotebookPane.this);
                         okToCloseCallback.execute(saveSucceeded);
                         break;
                     default:

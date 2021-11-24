@@ -18,11 +18,11 @@
 
 package org.trypticon.hex.gui.file;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URL;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.HexFrame;
@@ -58,12 +58,14 @@ public class SaveNotebookAction extends NotebookPaneAction {
 
     @Override
     protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
-        doSave();
+        doSave(notebookPane);
     }
 
-    private void doSave() throws Exception {
-        HexFrame frame = HexFrame.findActiveFrame();
-        NotebookPane notebookPane = frame.getNotebookPane();
+    private void doSave(NotebookPane notebookPane) throws Exception {
+        doSave((HexFrame) SwingUtilities.getWindowAncestor(notebookPane), notebookPane);
+    }
+
+    private void doSave(HexFrame frame, NotebookPane notebookPane) throws Exception {
         Notebook notebook = notebookPane.getNotebook();
 
         URL location;
@@ -115,9 +117,9 @@ public class SaveNotebookAction extends NotebookPaneAction {
      * @param owner the owner to use in the event that dialogs need to be displayed.
      * @return {@code true} if the save was successful.
      */
-    public boolean save(Component owner) {
+    public boolean save(NotebookPane owner) {
         try {
-            doSave();
+            doSave(owner);
             return true;
         } catch (Throwable t) {
             handleError(owner, t);

@@ -24,6 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.annotation.Nullable;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JDialog;
 import javax.swing.JTable;
@@ -31,7 +32,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.swingx.JXTreeTable;
-import org.jetbrains.annotations.Nullable;
 
 import org.trypticon.hex.AnnotationStyleScheme;
 import org.trypticon.hex.anno.Annotation;
@@ -74,6 +74,7 @@ class ParametricStyleEditor extends AbstractCellEditor implements TableCellEdito
     }
 
     @Override
+    @Nullable
     public Object getCellEditorValue() {
         return currentValue;
     }

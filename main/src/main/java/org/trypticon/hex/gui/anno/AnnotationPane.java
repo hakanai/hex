@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.tree.TreePath;
@@ -47,11 +48,15 @@ public class AnnotationPane extends JPanel {
     private final UndoHelper undoHelper;
 
     private JXTreeTable annoTreeTable;
-    private TreeTableModel annoTreeTableModel;
+    private TreeTableModel annoTreeTableModel = new NullTreeTableModel();
 
+    @Nullable
     private ExtendedAnnotationCollection annotations;
+
+    @Nullable
     private Binary binary;
 
+    @Nullable
     private List<Annotation> selectedAnnotationPath;
 
     public AnnotationPane(AnnotationStyleScheme annotationStyleScheme, UndoHelper undoHelper) {
@@ -78,6 +83,7 @@ public class AnnotationPane extends JPanel {
         add(new JScrollPane(annoTreeTable), BorderLayout.CENTER);
     }
 
+    @Nullable
     public AnnotationCollection getAnnotations() {
         if (annoTreeTableModel instanceof AnnotationTreeTableModel) {
             return ((AnnotationTreeTableModel) annoTreeTableModel).getAnnotations();
@@ -91,17 +97,18 @@ public class AnnotationPane extends JPanel {
         createModelIfComplete();
     }
 
+    @Nullable
     public List<Annotation> getSelectedAnnotationPath() {
         return selectedAnnotationPath;
     }
 
-    private void setSelectedAnnotationPath(List<Annotation> selectedAnnotationPath) {
+    private void setSelectedAnnotationPath(@Nullable List<Annotation> selectedAnnotationPath) {
         List<Annotation> oldSelectedAnnotationPath = this.selectedAnnotationPath;
         this.selectedAnnotationPath = selectedAnnotationPath == null ? null : Collections.unmodifiableList(selectedAnnotationPath);
         firePropertyChange("selectedAnnotationPath", oldSelectedAnnotationPath, selectedAnnotationPath);
     }
 
-    public void setBinary(Binary binary) {
+    public void setBinary(@Nullable Binary binary) {
         this.binary = binary;
         createModelIfComplete();
     }
@@ -121,6 +128,10 @@ public class AnnotationPane extends JPanel {
      * @return the annotation collection.
      */
     public AnnotationCollection getExpandedAnnotations() {
+        if (annotations == null) {
+            throw new IllegalStateException("Expected a call to setAnnotations " +
+                                            "before calling getExpandedAnnotations!");
+        }
         return new ExpansionTrackingAnnotationCollection(annoTreeTable, annotations);
     }
 }

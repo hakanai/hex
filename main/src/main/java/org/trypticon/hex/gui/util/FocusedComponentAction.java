@@ -22,6 +22,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.JComponent;
 
 /**
@@ -30,6 +31,8 @@ import javax.swing.JComponent;
  * @author trejkaz
  */
 public abstract class FocusedComponentAction extends BaseAction {
+
+    @Nullable
     private JComponent focusOwner = null;
 
     private final PropertyChangeListener listener = (event) -> {

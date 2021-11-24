@@ -48,7 +48,12 @@ class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
         int count = 0;
 
         for (HexFrame frame : HexFrame.findAllFrames()) {
-            URL notebookLocation = frame.getNotebook().getNotebookLocation();
+            Notebook notebook = frame.getNotebook();
+            if (notebook == null) {
+                continue;
+            }
+
+            URL notebookLocation = notebook.getNotebookLocation();
             if (notebookLocation == null) {
                 // User must have explicitly chosen *not* to save the notebook, so toss it.
                 //TODO: Modern Mac apps even restore unsaved documents. That would be nice to add.
