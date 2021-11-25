@@ -39,11 +39,11 @@ $local_structure_storage ||= {}
 class SimpleAnnotation
   def note
     # Workaround here for weird JRuby behaviour. Somehow this method returns Symbol
-    self.get(CommonAttributes.NOTE).to_s
+    self.get(CommonAttributes::NOTE).to_s
   end
 
   def note=(note)
-    self.set(CommonAttributes.NOTE, note)
+    self.set(CommonAttributes::NOTE, note)
   end
 end
 
