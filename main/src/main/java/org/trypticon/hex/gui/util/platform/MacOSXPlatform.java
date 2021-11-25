@@ -19,8 +19,6 @@
 package org.trypticon.hex.gui.util.platform;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,9 +29,9 @@ import java.util.List;
 public class MacOSXPlatform extends Platform {
     @Override
     public List<File> getScriptsDirs() {
-        return Collections.unmodifiableList(Arrays.asList(
+        return List.of(
             new File(System.getProperty("user.home"), "Library/Scripts/Hex"),
             new File("/Library/Scripts/Hex"),
-            new File("/Network/Library/Scripts/Hex")));
+            new File("/Network/Library/Scripts/Hex"));
     }
 }

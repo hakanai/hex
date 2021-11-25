@@ -19,8 +19,6 @@
 package org.trypticon.hex.gui.util.platform;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,8 +29,8 @@ import java.util.List;
 public class WindowsPlatform extends Platform {
     @Override
     public List<File> getScriptsDirs() {
-        return Collections.unmodifiableList(Arrays.asList(
+        return List.of(
             new File(System.getenv("ALLUSERSAPPDATA"), "Hex/Scripts"),
-            new File(System.getenv("APPDATA"), "Hex/Scripts")));
+            new File(System.getenv("APPDATA"), "Hex/Scripts"));
     }
 }

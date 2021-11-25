@@ -19,8 +19,6 @@
 package org.trypticon.hex.gui.util.platform;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +29,7 @@ import java.util.List;
 public class UnknownPlatform extends Platform {
     @Override
     public List<File> getScriptsDirs() {
-        return Collections.unmodifiableList(Arrays.asList(
-            new File(System.getProperty("user.home"), ".hex/Scripts")));
+        return List.of(
+            new File(System.getProperty("user.home"), ".hex/Scripts"));
     }
 }
