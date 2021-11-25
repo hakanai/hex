@@ -20,7 +20,9 @@ package org.trypticon.hex.gui.util;
 
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.ref.WeakReference;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.JComponent;
@@ -37,25 +39,9 @@ public abstract class FocusedComponentAction extends BaseAction {
     @Nullable
     private JComponent focusOwner = null;
 
-    private final PropertyChangeListener listener = (event) -> {
-        Object o = event.getNewValue();
-        if (o instanceof JComponent) {
-            focusOwner = (JComponent) o;
-        } else {
-            focusOwner = null;
-        }
-        updateEnabled();
-    };
-
-    @SuppressWarnings({"UnusedDeclaration", "UnusedVariable"})
-    private final Object finalizeGuardian = new FinalizeGuardian(() -> {
-        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        manager.removePropertyChangeListener("permanentFocusOwner", listener);
-    });
-
     protected FocusedComponentAction() {
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        manager.addPropertyChangeListener("permanentFocusOwner", listener);
+        manager.addPropertyChangeListener("permanentFocusOwner", new WeakPropertyChangeListener(this));
     }
 
     @Override
@@ -84,6 +70,31 @@ public abstract class FocusedComponentAction extends BaseAction {
         if (focusOwner != null) {
             //TODO: It might not be in focus.
             doAction(focusOwner);
+        }
+    }
+
+    private static class WeakPropertyChangeListener implements PropertyChangeListener {
+        private final WeakReference<FocusedComponentAction> reference;
+
+        private WeakPropertyChangeListener(FocusedComponentAction action) {
+            reference = new WeakReference<>(action);
+        }
+
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            FocusedComponentAction action = reference.get();
+            if (action == null) {
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().removePropertyChangeListener(this);
+                return;
+            }
+
+            Object o = event.getNewValue();
+            if (o instanceof JComponent) {
+                action.focusOwner = (JComponent) o;
+            } else {
+                action.focusOwner = null;
+            }
+            action.updateEnabled();
         }
     }
 }

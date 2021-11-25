@@ -21,15 +21,16 @@ package org.trypticon.hex.gui.datatransfer;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.FlavorEvent;
 import java.awt.datatransfer.FlavorListener;
 import java.awt.event.ActionEvent;
+import java.lang.ref.WeakReference;
 import javax.annotation.Nonnull;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import org.trypticon.hex.gui.Resources;
-import org.trypticon.hex.gui.util.FinalizeGuardian;
 import org.trypticon.hex.gui.util.FocusedComponentAction;
 
 /**
@@ -40,21 +41,10 @@ import org.trypticon.hex.gui.util.FocusedComponentAction;
 // Swing's own guidelines say not to use serialisation.
 @SuppressWarnings("serial")
 public class PasteAction extends FocusedComponentAction {
-    private final FlavorListener listener = (event) -> {
-        updateEnabled();
-    };
-
-    @SuppressWarnings({"UnusedDeclaration", "UnusedVariable"})
-    private final Object finalizeGuardian = new FinalizeGuardian(() -> {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.removeFlavorListener(listener);
-    });
-
     public PasteAction() {
         Resources.localiseAction(this, "Paste");
 
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.addFlavorListener(listener);
+        Toolkit.getDefaultToolkit().getSystemClipboard().addFlavorListener(new WeakFlavorListener(this));
     }
 
     @Override
@@ -74,5 +64,24 @@ public class PasteAction extends FocusedComponentAction {
         Action action = TransferHandler.getPasteAction();
         action.actionPerformed(new ActionEvent(
             focusOwner, ActionEvent.ACTION_PERFORMED, (String) action.getValue(Action.NAME)));
+    }
+
+    private static class WeakFlavorListener implements FlavorListener {
+        private final WeakReference<FocusedComponentAction> reference;
+
+        private WeakFlavorListener(FocusedComponentAction action) {
+            reference = new WeakReference<>(action);
+        }
+
+        @Override
+        public void flavorsChanged(FlavorEvent event) {
+            FocusedComponentAction action = reference.get();
+            if (action == null) {
+                Toolkit.getDefaultToolkit().getSystemClipboard().removeFlavorListener(this);
+                return;
+            }
+
+            action.updateEnabled();
+        }
     }
 }
