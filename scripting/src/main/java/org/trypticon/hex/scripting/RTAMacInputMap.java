@@ -30,6 +30,8 @@ import org.fife.ui.rtextarea.RTextAreaEditorKit;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class RTAMacInputMap extends InputMap {
     public RTAMacInputMap() {
 

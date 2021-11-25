@@ -18,40 +18,24 @@
 
 package org.trypticon.hex.gui.find;
 
-import java.util.Arrays;
-import java.util.List;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link HexTextField}.
  *
  * @author trejkaz
  */
-@RunWith(Parameterized.class)
 @SuppressWarnings("HardCodedStringLiteral")
 public class HexTextFieldTest {
-    private final String startState;
-    private final String typed;
-    private final String expectedEndState;
+    private HexTextField textField;
 
-    HexTextField textField;
-
-    public HexTextFieldTest(String startState, String typed, String expectedEndState) {
-        this.startState = startState;
-        this.typed = typed;
-        this.expectedEndState = expectedEndState;
-    }
-
-    @Parameterized.Parameters()
-    public static List<Object[]> parameters() {
-        Object[][] data = {
+    public static Object[][] parameters() {
+        return new Object[][] {
             // Single character typing at the end.
             { "|", "a", "A[0] " },
             { "A[0] ", "b", "AB |" },
@@ -103,20 +87,19 @@ public class HexTextFieldTest {
             //XXX: This would be good to improve but seems hard because of how we're handling non-hex chars.
 //            { "A[0] ", "g", "A[0] " },
         };
-
-        return Arrays.asList(data);
     }
 
-    @Test
-    public void test() throws Exception {
-        setupInitialState();
+    @ParameterizedTest
+    @MethodSource("parameters")
+    public void test(String startState, String typed, String expectedEndState) {
+        setupInitialState(startState);
 
         textField.replaceSelection(typed);
 
-        checkEndState();
+        checkEndState(expectedEndState);
     }
 
-    private void setupInitialState() {
+    private void setupInitialState(String startState) {
         // Initial state
         int caretPosition = startState.indexOf('|');
         int selectionStart = startState.indexOf('[');
@@ -131,7 +114,7 @@ public class HexTextFieldTest {
         }
     }
 
-    private void checkEndState() {
+    private void checkEndState(String expectedEndState) {
         String text = textField.getText();
         int selectionStart = textField.getSelectionStart();
         int selectionEnd = textField.getSelectionEnd();

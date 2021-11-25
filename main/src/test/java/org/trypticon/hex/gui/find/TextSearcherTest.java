@@ -19,52 +19,28 @@
 package org.trypticon.hex.gui.find;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.List;
 
 import org.jetbrains.annotations.NonNls;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link TextSearcher}.
  *
  * @author trejkaz
  */
-@RunWith(Parameterized.class)
 @SuppressWarnings("HardCodedStringLiteral")
 public class TextSearcherTest {
 
-    private final String needle;
-    private final Charset charset;
-    private final String haystack;
-    private final long start;
-    private final boolean wrapping;
-    private final boolean backwards;
-    private final Match expectedResult;
-
-    public TextSearcherTest(@NonNls String needle, @NonNls String charset, @NonNls String haystack,
-                            long start, boolean wrapping, boolean backwards, Match expectedResult) {
-        this.needle = needle;
-        this.charset = Charset.forName(charset);
-        this.haystack = haystack;
-        this.start = start;
-        this.backwards = backwards;
-        this.wrapping = wrapping;
-        this.expectedResult = expectedResult;
-    }
-
-    @Parameterized.Parameters()
-    public static List<Object[]> parameters() {
-        Object[][] data = {
+    public static Object[][] parameters() {
+        return new Object[][] {
             // No match.
             { "where", "US-ASCII", "not here", 0, false, false, null },
 
@@ -128,12 +104,13 @@ public class TextSearcherTest {
             // Binary junk before the match
             { "cake", "UTF-8", "\u0001\u0000\u0004cake", 0, false, false, new Match(3, 4) },
         };
-
-        return Arrays.asList(data);
     }
 
-    @Test
-    public void test() {
+    @ParameterizedTest
+    @MethodSource("parameters")
+    public void test(@NonNls String needle, @NonNls String charsetName, @NonNls String haystack,
+                     long start, boolean wrapping, boolean backwards, Match expectedResult) {
+        Charset charset = Charset.forName(charsetName);
         Searcher searcher = new TextSearcher(needle, charset);
         Binary binary = BinaryFactory.wrap(haystack.getBytes(charset));
         Match result = searcher.find(binary, start, new SearchParams(wrapping, backwards));

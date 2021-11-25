@@ -35,5 +35,6 @@ public class CustomAttributes {
      * A custom style to use when rendering the attribute.
      */
     @NonNls
-    public static Attribute<ParametricStyle> CUSTOM_STYLE = Attribute.named("org.trypticon.hex.gui.anno.customStyle");
+    public static final Attribute<ParametricStyle> CUSTOM_STYLE =
+        Attribute.named("org.trypticon.hex.gui.anno.customStyle");
 }

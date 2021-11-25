@@ -44,7 +44,7 @@ public abstract class NotebookPaneAction extends BaseAction {
     @Nullable
     private NotebookPane currentNotebookPane;
 
-    private PropertyChangeListener notebookPaneListener = event ->
+    private final PropertyChangeListener notebookPaneListener = event ->
         setNotebookPane((NotebookPane) event.getNewValue());
 
     protected NotebookPaneAction() {

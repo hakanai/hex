@@ -34,7 +34,7 @@ dependencies {
         api("com.jtechdev:macwidgets:1.0.1")
         api("de.sciss:syntaxpane:1.1.2")
         api("org.hamcrest:hamcrest:2.2")
-        api("org.jetbrains:annotations:20.1.0")
+        api("org.jetbrains:annotations:23.0.0")
         api("org.jruby:jruby-complete:9.2.17.0")
         api("org.trypticon.gum:gum:0.1")
         api("org.trypticon.haqua:haqua:0.1")

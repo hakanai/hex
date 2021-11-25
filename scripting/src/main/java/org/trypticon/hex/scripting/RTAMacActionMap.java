@@ -20,6 +20,7 @@ package org.trypticon.hex.scripting;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Rectangle2D;
 import javax.swing.ActionMap;
 import javax.swing.text.BadLocationException;
 
@@ -32,6 +33,8 @@ import org.jetbrains.annotations.NonNls;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class RTAMacActionMap extends ActionMap {
     @NonNls
     public static final String rtaScrollBeginAction = "RTA.ScrollBeginAction";
@@ -53,9 +56,10 @@ public class RTAMacActionMap extends ActionMap {
         @Override
         public void actionPerformedImpl(ActionEvent event, RTextArea textArea) {
             try {
-                Rectangle view = textArea.modelToView(0);
+                Rectangle2D view = textArea.modelToView2D(0);
                 if (view != null) {
-                    textArea.scrollRectToVisible(view);
+                    textArea.scrollRectToVisible(new Rectangle((int) view.getX(), (int) view.getY(),
+                                                               (int) view.getWidth(), (int) view.getHeight()));
                 }
             } catch (BadLocationException e) {
                 // Just ignore it, I guess.
@@ -77,9 +81,10 @@ public class RTAMacActionMap extends ActionMap {
         @Override
         public void actionPerformedImpl(ActionEvent event, RTextArea textArea) {
             try {
-                Rectangle view = textArea.modelToView(textArea.getDocument().getLength() - 1);
+                Rectangle2D view = textArea.modelToView2D(textArea.getDocument().getLength() - 1);
                 if (view != null) {
-                    textArea.scrollRectToVisible(view);
+                    textArea.scrollRectToVisible(new Rectangle((int) view.getX(), (int) view.getY(),
+                                                               (int) view.getWidth(), (int) view.getHeight()));
                 }
             } catch (BadLocationException e) {
                 // Just ignore it, I guess.

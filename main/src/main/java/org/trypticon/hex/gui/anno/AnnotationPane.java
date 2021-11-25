@@ -49,7 +49,7 @@ public class AnnotationPane extends JPanel {
 
     private final UndoHelper undoHelper;
 
-    private JXTreeTable annoTreeTable;
+    private final JXTreeTable annoTreeTable;
     private TreeTableModel annoTreeTableModel = new NullTreeTableModel();
 
     @Nullable

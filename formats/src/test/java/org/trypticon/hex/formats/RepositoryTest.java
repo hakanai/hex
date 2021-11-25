@@ -50,7 +50,7 @@ public class RepositoryTest {
     }
 
     @Test
-    public void testLoadingScript() throws Exception {
+    public void testLoadingScript() {
         Structure structure = RubyStructureDSL.loadFromFile(Repository.getRoot().resolve("classfile/class_file.rb"));
         assertThat(structure, is(notNullValue()));
         //TODO? structure.drop()

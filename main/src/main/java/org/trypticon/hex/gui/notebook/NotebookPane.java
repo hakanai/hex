@@ -64,9 +64,9 @@ public class NotebookPane extends JPanel {
     private final ExpandableAccessoryBar accessoryBar;
     private final AnnotationPane annoPane;
 
-    PropertyChangeListener notebookLocationListener = event ->
+    private final PropertyChangeListener notebookLocationListener = event ->
         firePropertyChange("notebookLocation", event.getOldValue(), event.getNewValue());
-    PropertyChangeListener unsavedListener = event ->
+    private final PropertyChangeListener unsavedListener = event ->
         firePropertyChange("unsaved", event.getOldValue(), event.getNewValue());
 
     private Notebook notebook;

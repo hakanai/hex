@@ -19,119 +19,97 @@
 package org.trypticon.hex.gui.find;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
 import org.jetbrains.annotations.NonNls;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import org.trypticon.hex.binary.Binary;
 import org.trypticon.hex.binary.BinaryFactory;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link BinarySearcher}.
  *
  * @author trejkaz
  */
-@RunWith(Parameterized.class)
 @SuppressWarnings("HardCodedStringLiteral")
 public class BinarySearcherTest {
 
-    private final String needle;
-    private final String haystack;
-    private final long start;
-    private final boolean wrapping;
-    private final boolean backwards;
-    private final Long expectedResult;
-
-    public BinarySearcherTest(@NonNls String needle, @NonNls String haystack, long start,
-                              boolean wrapping, boolean backwards, Integer expectedResult) {
-        this.needle = needle;
-        this.haystack = haystack;
-        this.start = start;
-        this.backwards = backwards;
-        this.wrapping = wrapping;
-        this.expectedResult = expectedResult == null ? null : Long.valueOf(expectedResult);
-    }
-
-    @Parameterized.Parameters()
-    public static List<Object[]> parameters() {
-        Object[][] data = {
+    public static Object[][] parameters() {
+        return new Object[][] {
             // No match.
-            { "where", "not here", 0, false, false, null },
+            { "where", "not here", 0L, false, false, null },
 
             // No match and the haystack smaller than the needle.
-            { "pretty long", "pretty", 0, false, false, null },
-            { "pretty long", "long", 0, false, false, null },
+            { "pretty long", "pretty", 0L, false, false, null },
+            { "pretty long", "long", 0L, false, false, null },
 
             // Single match at the start.
-            { "ding", "dingoes", 0, false, false, 0 },
-            { "ding", "dingoes", 1, false, false, null },
+            { "ding", "dingoes", 0L, false, false, 0L },
+            { "ding", "dingoes", 1L, false, false, null },
 
             // Single match in the middle.
-            { "rave", "travesty", 0, false, false, 1 },
-            { "rave", "travesty", 1, false, false, 1 },
-            { "rave", "travesty", 2, false, false, null },
+            { "rave", "travesty", 0L, false, false, 1L },
+            { "rave", "travesty", 1L, false, false, 1L },
+            { "rave", "travesty", 2L, false, false, null },
 
             // Single match at the end.
-            { "ding", "reading", 0, false, false, 3 },
-            { "ding", "reading", 3, false, false, 3 },
-            { "ding", "reading", 4, false, false, null },
+            { "ding", "reading", 0L, false, false, 3L },
+            { "ding", "reading", 3L, false, false, 3L },
+            { "ding", "reading", 4L, false, false, null },
 
             // Single match at the end, only one letter.
-            { "t", "biscuit", 0, false, false, 6 },
+            { "t", "biscuit", 0L, false, false, 6L },
 
             // Starting past the end.
-            { "t", "biscuit", 7, false, false, null },
+            { "t", "biscuit", 7L, false, false, null },
 
             // Contains all characters but isn't a match.
-            { "muter", "computer", 0, false, false, null },
+            { "muter", "computer", 0L, false, false, null },
 
             // Two matches, not overlapping
-            { "ingmat", "stringmatchingmatching", 0, false, false, 3 },
-            { "ingmat", "stringmatchingmatching", 3, false, false, 3 },
-            { "ingmat", "stringmatchingmatching", 4, false, false, 11 },
-            { "ingmat", "stringmatchingmatching", 11, false, false, 11 },
-            { "ingmat", "stringmatchingmatching", 12, false, false, null },
+            { "ingmat", "stringmatchingmatching", 0L, false, false, 3L },
+            { "ingmat", "stringmatchingmatching", 3L, false, false, 3L },
+            { "ingmat", "stringmatchingmatching", 4L, false, false, 11L },
+            { "ingmat", "stringmatchingmatching", 11L, false, false, 11L },
+            { "ingmat", "stringmatchingmatching", 12L, false, false, null },
 
             // Two matches, overlapping
-            { "haha", "hahaha", 0, false, false, 0 },
-            { "haha", "hahaha", 1, false, false, 2 },
-            { "haha", "hahaha", 2, false, false, 2 },
-            { "haha", "hahaha", 3, false, false, null },
+            { "haha", "hahaha", 0L, false, false, 0L },
+            { "haha", "hahaha", 1L, false, false, 2L },
+            { "haha", "hahaha", 2L, false, false, 2L },
+            { "haha", "hahaha", 3L, false, false, null },
 
             // Same string
-            { "biscuits", "biscuits", 0, false, false, 0 },
-            { "biscuits", "biscuits", 1, false, false, null },
+            { "biscuits", "biscuits", 0L, false, false, 0L },
+            { "biscuits", "biscuits", 1L, false, false, null },
 
             // Single match at the start, wrapping to find it.
-            { "ding", "dingoes", 1, true, false, 0 },
+            { "ding", "dingoes", 1L, true, false, 0L },
 
             // Single match at the start, backwards to find it.
-            { "ding", "dingoes", 6, false, true, 0 },
+            { "ding", "dingoes", 6L, false, true, 0L },
 
             // Single match at the end, wrapping backwards to find it.
-            { "ding", "reading", 2, true, true, 3 },
-
+            { "ding", "reading", 2L, true, true, 3L },
         };
-        return Arrays.asList(data);
     }
 
-    @Test
-    public void test() {
+    @ParameterizedTest
+    @MethodSource("parameters")
+    public void test(@NonNls String needle, @NonNls String haystack, long start,
+                     boolean wrapping, boolean backwards, Long expectedResult) {
         Searcher searcher = new BinarySearcher(makeBinary(needle));
         Match result = searcher.find(makeBinary(haystack), start, new SearchParams(wrapping, backwards));
         if (expectedResult == null) {
             assertThat(result, is(nullValue()));
         } else {
-            assertNotNull(result);
+            assertThat(result, is(notNullValue()));
             assertThat(result.offset, is(expectedResult));
         }
     }

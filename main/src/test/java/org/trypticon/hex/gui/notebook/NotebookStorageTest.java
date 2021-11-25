@@ -28,13 +28,11 @@ import java.io.Writer;
 import java.net.URL;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
-
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
@@ -50,8 +48,6 @@ import org.trypticon.hex.interpreters.strings.StringInterpreter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.trypticon.hex.formats.ruby.AnnotationTestUtils.sameAnnotation;
@@ -62,8 +58,14 @@ import static org.trypticon.hex.formats.ruby.AnnotationTestUtils.sameAnnotation;
  * @author trejkaz
  */
 public class NotebookStorageTest {
+    private Logger logger;
+    private NotebookStorage storage;
 
-    private NotebookStorage storage = new NotebookStorage();
+    @BeforeEach
+    public void setUp() {
+        logger = Logger.getLogger(NotebookStorageTest.class.getName());
+        storage = new NotebookStorage();
+    }
 
     @Test
     public void testRoundTrip() throws Exception {
@@ -88,12 +90,12 @@ public class NotebookStorageTest {
 
         String content = writer.toString();
 
-        System.out.println(content);
+        logger.fine(content);
 
         Reader reader = new StringReader(content);
         Notebook churned = storage.read(reader);
 
-        assertEquals("Wrong binary location", notebook.getBinaryLocation(), churned.getBinaryLocation());
+        assertEquals(notebook.getBinaryLocation(), churned.getBinaryLocation());
         assertThat(churned.getAnnotations().getRootGroup(),
                    is(sameAnnotation(notebook.getAnnotations().getRootGroup())));
     }
@@ -111,19 +113,19 @@ public class NotebookStorageTest {
             assertThat(churned.getBinaryLocation(), is(notebook.getBinaryLocation()));
         } finally {
             if (!tmpFile.delete()) {
-                System.err.println("Error deleting temp file: " + tmpFile);
+                logger.warning("Error deleting temp file: " + tmpFile);
             }
         }
     }
 
     @Test
-    public void testIOExceptionOnReading() throws Exception {
+    public void testIOExceptionOnReading() {
         assertThrows(IOException.class, () -> storage.read(new BrokenReader()));
     }
 
     @Test
     public void testIOExceptionOnWriting() throws Exception {
-        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"),
+        Notebook notebook = new DefaultNotebook(new URL("https://example.com/biscuits.dat.xml"),
                                                 new ExtendedAnnotationCollection(100));
         assertThrows(IOException.class, () -> storage.write(notebook, new BrokenWriter()));
     }

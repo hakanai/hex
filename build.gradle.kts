@@ -90,6 +90,7 @@ allprojects {
         }
         dependencies {
             "testImplementation"("org.junit.jupiter:junit-jupiter-api")
+            "testImplementation"("org.junit.jupiter:junit-jupiter-params")
             "testImplementation"("org.hamcrest:hamcrest")
             "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
             "errorprone"("com.google.errorprone:error_prone_core:2.4.0")

@@ -44,6 +44,8 @@ import org.trypticon.hex.util.swingsupport.PLAFUtils;
  *
  * @author trejkaz
  */
+// Swing's own guidelines say not to use serialisation.
+@SuppressWarnings("serial")
 public class ScriptEditor extends JFrame {
     public ScriptEditor() {
         SourceListModel sourceListModel = new SourceListModel();

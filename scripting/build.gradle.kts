@@ -23,7 +23,12 @@ plugins {
 dependencies {
     implementation(platform(project(":hex-app-dependencies")))
     implementation(project(":hex-formats"))
+    implementation("com.fifesoft:rsyntaxtextarea")
     implementation("com.google.code.findbugs:jsr305")
+    implementation("com.jgoodies:jgoodies-common")
+    implementation("com.jgoodies:jgoodies-forms")
+    implementation("com.jtechdev:macwidgets")
+    implementation("org.jetbrains:annotations")
     implementation("org.trypticon.hex:hex-anno")
     implementation("org.trypticon.hex:hex-binary")
     implementation("org.trypticon.hex:hex-interpreter")
@@ -34,8 +39,4 @@ dependencies {
     implementation("org.swinglabs.swingx:swingx-core")
     implementation("org.swinglabs.swingx:swingx-painters")
     implementation("org.swinglabs.swingx:swingx-plaf")
-    implementation("com.jtechdev:macwidgets")
-    implementation("com.jgoodies:jgoodies-forms")
-    implementation("com.jgoodies:jgoodies-common")
-    implementation("com.fifesoft:rsyntaxtextarea")
 }
