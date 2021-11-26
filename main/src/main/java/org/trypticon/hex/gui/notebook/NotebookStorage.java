@@ -18,15 +18,9 @@
 
 package org.trypticon.hex.gui.notebook;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -38,7 +32,6 @@ import org.yaml.snakeyaml.representer.Representer;
 
 import org.trypticon.hex.interpreters.InterpreterStorage;
 import org.trypticon.hex.interpreters.MasterInterpreterStorage;
-import org.trypticon.hex.util.URLUtils;
 
 /**
  * Support for reading and writing {@link DefaultNotebook}s to files.
@@ -69,12 +62,19 @@ public class NotebookStorage {
         }
     }
 
-    public Notebook read(URL url) throws IOException {
-        try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
+    public Notebook read(Path file) throws IOException {
+        try (Reader reader = Files.newBufferedReader(file)) {
             Notebook notebook = read(reader);
-            notebook.setNotebookLocation(url);
+            notebook.setNotebookLocation(file);
             return notebook;
         }
+    }
+
+    public void write(Notebook notebook, Path file) throws IOException {
+        try (Writer writer = Files.newBufferedWriter(file)) {
+            write(notebook, writer);
+        }
+        notebook.setNotebookLocation(file);
     }
 
     public void write(Notebook notebook, Writer writer) throws IOException {
@@ -83,31 +83,6 @@ public class NotebookStorage {
         } catch (YAMLException e) {
             rethrow(e);
         }
-    }
-
-    private void write(Notebook notebook, Path file) throws IOException {
-        try (Writer writer = new OutputStreamWriter(
-                new BufferedOutputStream(Files.newOutputStream(file)), StandardCharsets.UTF_8)) {
-            write(notebook, writer);
-        }
-    }
-
-    public void write(Notebook notebook, URL url) throws IOException {
-        // Workaround for Java Bug 4814217 - file protocol writing does not work.
-        // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4814217
-        if ("file".equals(url.getProtocol())) {
-            write(notebook, URLUtils.toPath(url));
-        } else {
-            URLConnection connection = url.openConnection();
-            connection.setDoInput(false);
-            connection.setDoOutput(true);
-            connection.connect();
-
-            try (Writer writer = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8)) {
-                write(notebook, writer);
-            }
-        }
-        notebook.setNotebookLocation(url);
     }
 
     /**

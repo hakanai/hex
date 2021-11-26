@@ -20,7 +20,7 @@ package org.trypticon.hex.gui.file;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.net.URL;
+import java.nio.file.Path;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -70,7 +70,7 @@ public class SaveNotebookAction extends NotebookPaneAction {
     private void doSave(HexFrame frame, NotebookPane notebookPane) throws Exception {
         Notebook notebook = notebookPane.getNotebook();
 
-        URL location;
+        Path location;
         if (!alwaysAsk && notebook.getNotebookLocation() != null) {
             location = notebook.getNotebookLocation();
         } else {
@@ -96,9 +96,9 @@ public class SaveNotebookAction extends NotebookPaneAction {
                     }
 
                     preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, directory);
-                    recentDocumentsModel.addRecentDocument(chosenFile.toPath());
-
-                    location = chosenFile.toURI().toURL();
+                    Path chosenFilePath = chosenFile.toPath();
+                    recentDocumentsModel.addRecentDocument(chosenFilePath);
+                    location = chosenFilePath;
                     break;
                 } else {
                     return;

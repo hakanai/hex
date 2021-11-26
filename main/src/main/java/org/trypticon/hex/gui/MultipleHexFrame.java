@@ -24,7 +24,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -277,16 +277,16 @@ public class MultipleHexFrame extends HexFrame {
         }
 
         @Override
-        public URL getNotebookLocation() {
+        public Path getNotebookLocation() {
             throw new UnsupportedOperationException("Cannot get notebook location for dummy pane");
         }
 
         @Override
-        public void setNotebookLocation(URL notebookLocation) {
+        public void setNotebookLocation(Path notebookLocation) {
         }
 
         @Override
-        public URL getBinaryLocation() {
+        public Path getBinaryLocation() {
             throw new UnsupportedOperationException("Cannot get binary location for dummy pane");
         }
 

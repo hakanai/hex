@@ -57,7 +57,7 @@ class ExtendedRepresenter extends Representer {
         public Node representData(Object object) {
             Notebook notebook = (Notebook) object;
             Map<String, Object> fields = new LinkedHashMap<>(2);
-            fields.put("binary_location", notebook.getBinaryLocation().toExternalForm());
+            fields.put("binary_location", notebook.getBinaryLocation().toUri().toString());
             fields.put("root_group", notebook.getAnnotations().getRootGroup());
             return representMapping(YamlTags.NOTEBOOK_TAG, fields, false);
         }

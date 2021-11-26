@@ -22,8 +22,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -155,7 +155,7 @@ public class NotebookPane extends JPanel {
             detachListeners();
         }
 
-        URL oldNotebookLocation = getNotebookLocation();
+        Path oldNotebookLocation = getNotebookLocation();
 
         this.notebook = notebook;
 
@@ -163,7 +163,7 @@ public class NotebookPane extends JPanel {
         // any listeners attached when constructing the dummy pane.
         if (getPropertyChangeListeners("notebookLocation").length > 0) {
             // TODO: A proper binding API would be nice here...
-            URL newNotebookLocation = getNotebookLocation();
+            Path newNotebookLocation = getNotebookLocation();
             firePropertyChange("notebookLocation", oldNotebookLocation, newNotebookLocation);
         }
 
@@ -182,7 +182,7 @@ public class NotebookPane extends JPanel {
      * @return the notebook location. Returns {@code null} if no notebook is open.
      */
     @Nullable
-    public URL getNotebookLocation() {
+    public Path getNotebookLocation() {
         return notebook == null ? null : notebook.getNotebookLocation();
     }
 
@@ -198,13 +198,9 @@ public class NotebookPane extends JPanel {
             return null;
         }
 
-        URL location = notebook.getNotebookLocation();
-        if (location != null && "file".equals(location.getProtocol())) {
-            try {
-                return new File(location.toURI());
-            } catch (URISyntaxException e) {
-                throw new IllegalStateException("Illegal URI but it came from a URL: " + location, e);
-            }
+        Path location = notebook.getNotebookLocation();
+        if (location != null && location.getFileSystem().equals(FileSystems.getDefault())) {
+            return new File(location.toString());
         } else {
             return null;
         }
@@ -221,19 +217,11 @@ public class NotebookPane extends JPanel {
             return " "; // should never get here anyway, except for possibly preferred size calculation.
         }
 
-        URL location = notebook.getNotebookLocation();
+        Path location = notebook.getNotebookLocation();
         if (location == null) {
             return Resources.getString("HexFrame.untitledFilename");
-        } else if ("file".equals(location.getProtocol())) {
-            try {
-                return new File(location.toURI()).getName();
-            } catch (URISyntaxException e) {
-                throw new IllegalStateException("Illegal URI but it came from a URL: " + location, e);
-            }
         } else {
-            String path = location.getPath();
-            int lastSlash = path.lastIndexOf('/');
-            return path.substring(lastSlash + 1);
+            return location.getFileName().toString();
         }
     }
 

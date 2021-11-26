@@ -19,20 +19,20 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URL;
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.annotation.Nonnull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import org.trypticon.hex.anno.Annotation;
 import org.trypticon.hex.anno.AnnotationCollection;
@@ -58,19 +58,21 @@ import static org.trypticon.hex.formats.ruby.AnnotationTestUtils.sameAnnotation;
  * @author trejkaz
  */
 public class NotebookStorageTest {
-    private Logger logger;
+    @TempDir
+    public Path temp;
+
     private NotebookStorage storage;
+    private Path dummyLocation;
 
     @BeforeEach
     public void setUp() {
-        logger = Logger.getLogger(NotebookStorageTest.class.getName());
         storage = new NotebookStorage();
+        dummyLocation = Paths.get("/tmp/biscuits.dat.xml").toAbsolutePath();
     }
 
     @Test
     public void testRoundTrip() throws Exception {
-        Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"),
-                                                new ExtendedAnnotationCollection(100));
+        Notebook notebook = new DefaultNotebook(dummyLocation, new ExtendedAnnotationCollection(100));
         AnnotationCollection annotations = notebook.getAnnotations();
         Annotation leaf1 = new SimpleAnnotation(5, 4, new NullInterpreter());
         leaf1.set(CommonAttributes.NOTE, "Test");
@@ -90,8 +92,6 @@ public class NotebookStorageTest {
 
         String content = writer.toString();
 
-        logger.fine(content);
-
         Reader reader = new StringReader(content);
         Notebook churned = storage.read(reader);
 
@@ -102,20 +102,13 @@ public class NotebookStorageTest {
 
     @Test
     public void testFileStorage() throws Exception {
-        File tmpFile = File.createTempFile("temp", ".xml");
-        try {
-            URL tmpFileURL = tmpFile.toURI().toURL();
-            Notebook notebook = new DefaultNotebook(new URL("http://example.com/biscuits.dat.xml"), new ExtendedAnnotationCollection(100));
+        Path tmpFile = temp.resolve("temp.xml");
+        Notebook notebook = new DefaultNotebook(dummyLocation, new ExtendedAnnotationCollection(100));
 
-            storage.write(notebook, tmpFileURL);
+        storage.write(notebook, tmpFile);
 
-            Notebook churned = storage.read(tmpFileURL);
-            assertThat(churned.getBinaryLocation(), is(notebook.getBinaryLocation()));
-        } finally {
-            if (!tmpFile.delete()) {
-                logger.warning("Error deleting temp file: " + tmpFile);
-            }
-        }
+        Notebook churned = storage.read(tmpFile);
+        assertThat(churned.getBinaryLocation(), is(notebook.getBinaryLocation()));
     }
 
     @Test
@@ -124,9 +117,8 @@ public class NotebookStorageTest {
     }
 
     @Test
-    public void testIOExceptionOnWriting() throws Exception {
-        Notebook notebook = new DefaultNotebook(new URL("https://example.com/biscuits.dat.xml"),
-                                                new ExtendedAnnotationCollection(100));
+    public void testIOExceptionOnWriting() {
+        Notebook notebook = new DefaultNotebook(dummyLocation, new ExtendedAnnotationCollection(100));
         assertThrows(IOException.class, () -> storage.write(notebook, new BrokenWriter()));
     }
 

@@ -67,7 +67,7 @@ public class NewNotebookAction extends BaseAction {
 
             preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.BINARIES, file.getParentFile());
 
-            application.openNotebook(new DefaultNotebook(file.toURI().toURL()));
+            application.openNotebook(new DefaultNotebook(file.toPath()));
         }
     }
 }

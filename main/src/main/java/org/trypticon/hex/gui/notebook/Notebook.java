@@ -20,8 +20,7 @@ package org.trypticon.hex.gui.notebook;
 
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.net.URL;
-
+import java.nio.file.Path;
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NonNls;
@@ -57,7 +56,7 @@ public interface Notebook {
      * @return the notebook location.
      */
     @Nullable
-    URL getNotebookLocation();
+    Path getNotebookLocation();
 
     /**
      * <p>Sets the location of the notebook.</p>
@@ -68,9 +67,9 @@ public interface Notebook {
      * @param notebookLocation the new notebook location.
      * @see #getNotebookLocation()
      */
-    void setNotebookLocation(URL notebookLocation);
+    void setNotebookLocation(Path notebookLocation);
 
-    URL getBinaryLocation();
+    Path getBinaryLocation();
 
     ExtendedAnnotationCollection getAnnotations();
 

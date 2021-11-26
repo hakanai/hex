@@ -20,7 +20,9 @@ package org.trypticon.hex.gui.prefs;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.prefs.Preferences;
 
@@ -58,13 +60,13 @@ class DefaultWorkspaceStateTracker extends WorkspaceStateTracker {
         Preferences openDocumentPrefs = framePrefs.node("openDocuments");
         int count = 0;
         for (NotebookPane pane : frame.getAllNotebookPanes()) {
-            URL notebookLocation = pane.getNotebook().getNotebookLocation();
+            Path notebookLocation = pane.getNotebook().getNotebookLocation();
             if (notebookLocation == null) {
                 // User must have explicitly chosen *not* to save the notebook, so toss it.
                 continue;
             }
 
-            openDocumentPrefs.put("location" + count, notebookLocation.toExternalForm());
+            openDocumentPrefs.put("location" + count, notebookLocation.toUri().toString());
             count++;
         }
 
@@ -89,11 +91,11 @@ class DefaultWorkspaceStateTracker extends WorkspaceStateTracker {
             }
 
             try {
-                URL url = new URL(location);
-                Notebook notebook = new NotebookStorage().read(url);
+                Path file = Paths.get(URI.create(location));
+                Notebook notebook = new NotebookStorage().read(file);
                 application.openNotebook(notebook);
             } catch (MalformedURLException e) {
-                LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
+                LoggerUtils.get().log(Level.WARNING, "Malformed URI found in preferences for document " + i + ": " +
                                                      location + ", skipping", e);
             } catch (IOException e) {
                 LoggerUtils.get().log(Level.WARNING, "Error opening previously-open notebook: " + location + ", skipping");

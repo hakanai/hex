@@ -19,6 +19,9 @@
 package org.trypticon.hex.gui.sample;
 
 import java.awt.event.ActionEvent;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -53,7 +56,8 @@ public class OpenSampleNotebookAction extends BaseAction {
     protected void doAction(ActionEvent event) throws Exception {
         @NonNls
         String resourcePath = Sample.class.getName().replace('.', '/') + ".class";
-        Notebook notebook = new DefaultNotebook(getClass().getClassLoader().getResource(resourcePath));
+        URL resource = Objects.requireNonNull(getClass().getClassLoader().getResource(resourcePath));
+        Notebook notebook = new DefaultNotebook(Paths.get(resource.toURI()));
 
         application.openNotebook(notebook);
 

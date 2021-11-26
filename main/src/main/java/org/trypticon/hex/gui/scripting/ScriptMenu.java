@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -39,6 +38,7 @@ import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
 
 import org.trypticon.hex.gui.util.MenuAdapter;
+import org.trypticon.hex.util.LoggerUtils;
 import org.trypticon.hex.util.swingsupport.GuiLocale;
 
 /**
@@ -113,7 +113,7 @@ public class ScriptMenu extends JMenu {
         } catch (NotDirectoryException e) {
             return Stream.empty();
         } catch (IOException e) {
-            Logger.getLogger(ScriptMenu.class.getName()).log(Level.WARNING, "Couldn't read directory: " + directory, e);
+            LoggerUtils.get().log(Level.WARNING, "Couldn't read directory: " + directory, e);
             return Stream.empty();
         }
     }

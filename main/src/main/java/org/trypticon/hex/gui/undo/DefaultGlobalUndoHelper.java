@@ -20,7 +20,6 @@ package org.trypticon.hex.gui.undo;
 
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -31,6 +30,7 @@ import org.trypticon.hex.gui.NotebookPaneAction;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.util.ActionException;
+import org.trypticon.hex.util.LoggerUtils;
 
 /**
  * Implements the global undo tracking.
@@ -93,7 +93,7 @@ public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
             try {
                 undoManager.undo();
             } catch (CannotUndoException e) {
-                Logger.getLogger(getClass().getName()).log(Level.WARNING, "Unable to undo", e);
+                LoggerUtils.get().log(Level.WARNING, "Unable to undo", e);
             }
 
             updateActions();
@@ -125,7 +125,7 @@ public class DefaultGlobalUndoHelper implements GlobalUndoHelper {
             try {
                 undoManager.redo();
             } catch (CannotRedoException e) {
-                Logger.getLogger(getClass().getName()).log(Level.WARNING, "Unable to redo", e);
+                LoggerUtils.get().log(Level.WARNING, "Unable to redo", e);
             }
 
             updateActions();

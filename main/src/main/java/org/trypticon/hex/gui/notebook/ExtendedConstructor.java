@@ -19,8 +19,9 @@
 package org.trypticon.hex.gui.notebook;
 
 import java.awt.Color;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,12 +79,7 @@ class ExtendedConstructor extends Constructor {
         @Override
         protected Object construct(Map<Object, Object> map) {
             String binaryLocationURL = (String) map.get("binary_location");
-            URL binaryLocation;
-            try {
-                binaryLocation = new URL(binaryLocationURL);
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("Invalid URL: " + binaryLocationURL);
-            }
+            Path binaryLocation = Paths.get(URI.create(binaryLocationURL));
 
             GroupAnnotation rootGroup = Objects.requireNonNull((GroupAnnotation) map.get("root_group"));
 

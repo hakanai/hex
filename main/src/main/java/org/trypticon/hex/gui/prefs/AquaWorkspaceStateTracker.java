@@ -20,7 +20,9 @@ package org.trypticon.hex.gui.prefs;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.prefs.Preferences;
 
@@ -53,7 +55,7 @@ class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
                 continue;
             }
 
-            URL notebookLocation = notebook.getNotebookLocation();
+            Path notebookLocation = notebook.getNotebookLocation();
             if (notebookLocation == null) {
                 // User must have explicitly chosen *not* to save the notebook, so toss it.
                 //TODO: Modern Mac apps even restore unsaved documents. That would be nice to add.
@@ -61,7 +63,7 @@ class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
             }
 
             Preferences openDocumentPrefs = topPrefs.node("document" + count);
-            openDocumentPrefs.put("location", notebookLocation.toExternalForm());
+            openDocumentPrefs.put("location", notebookLocation.toUri().toString());
             saveFrameLocation(frame, openDocumentPrefs);
             count++;
         }
@@ -87,8 +89,8 @@ class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
             }
 
             try {
-                URL url = new URL(location);
-                Notebook notebook = new NotebookStorage().read(url);
+                Path file = Paths.get(URI.create(location));
+                Notebook notebook = new NotebookStorage().read(file);
                 application.openNotebook(notebook, frame -> restoreFrameLocation(frame, openDocumentPrefs));
             } catch (MalformedURLException e) {
                 LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +

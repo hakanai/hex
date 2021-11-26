@@ -21,8 +21,7 @@ package org.trypticon.hex.gui.notebook;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
-import java.net.URL;
-
+import java.nio.file.Path;
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NonNls;
@@ -40,9 +39,9 @@ import org.trypticon.hex.util.LoggerUtils;
 public class DefaultNotebook implements Notebook {
 
     @Nullable
-    private URL notebookLocation;
+    private Path notebookLocation;
 
-    private final URL binaryLocation;
+    private final Path binaryLocation;
 
     @Nullable
     private ExtendedAnnotationCollection annotations;
@@ -60,7 +59,7 @@ public class DefaultNotebook implements Notebook {
      *
      * @param binaryLocation the location of the binary.
      */
-    public DefaultNotebook(URL binaryLocation) {
+    public DefaultNotebook(Path binaryLocation) {
         this(binaryLocation, null);
     }
 
@@ -70,7 +69,7 @@ public class DefaultNotebook implements Notebook {
      * @param binaryLocation the location of the binary.
      * @param annotations the annotation collection.
      */
-    public DefaultNotebook(URL binaryLocation, @Nullable ExtendedAnnotationCollection annotations) {
+    public DefaultNotebook(Path binaryLocation, @Nullable ExtendedAnnotationCollection annotations) {
         this.binaryLocation = binaryLocation;
         this.annotations = annotations;
     }
@@ -125,7 +124,7 @@ public class DefaultNotebook implements Notebook {
      */
     @Override
     @Nullable
-    public URL getNotebookLocation() {
+    public Path getNotebookLocation() {
         return notebookLocation;
     }
 
@@ -139,18 +138,18 @@ public class DefaultNotebook implements Notebook {
      * @see #getNotebookLocation()
      */
     @Override
-    public void setNotebookLocation(URL notebookLocation) {
+    public void setNotebookLocation(Path notebookLocation) {
         if (notebookLocation == null) {
             throw new IllegalArgumentException("notebook location cannot be null");
         }
 
-        URL oldNotebookLocation = this.notebookLocation;
+        Path oldNotebookLocation = this.notebookLocation;
         this.notebookLocation = notebookLocation;
         firePropertyChange("notebookLocation", oldNotebookLocation, notebookLocation);
     }
 
     @Override
-    public URL getBinaryLocation() {
+    public Path getBinaryLocation() {
         return binaryLocation;
     }
 

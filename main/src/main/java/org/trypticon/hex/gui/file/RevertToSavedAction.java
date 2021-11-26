@@ -20,9 +20,8 @@ package org.trypticon.hex.gui.file;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.net.URL;
+import java.nio.file.Path;
 import java.util.logging.Level;
-
 import javax.swing.JOptionPane;
 
 import org.jdesktop.swingx.JXErrorPane;
@@ -49,11 +48,9 @@ public class RevertToSavedAction extends NotebookPaneAction {
 
     @Override
     protected void doAction(ActionEvent event, NotebookPane notebookPane) throws Exception {
-        URL location = notebookPane.getNotebook().getNotebookLocation();
+        Path location = notebookPane.getNotebook().getNotebookLocation();
         if (location != null) {
-            String locationString = location.toString();
-            int lastSlash = locationString.lastIndexOf('/');
-            String name = lastSlash == -1 ? locationString : locationString.substring(lastSlash + 1);
+            String name = location.getFileName().toString();
             new RevertToSavedConfirmation().show(notebookPane, name, result -> {
                 if (result == RevertToSavedConfirmation.Option.REVERT) {
                     Notebook newNotebook;

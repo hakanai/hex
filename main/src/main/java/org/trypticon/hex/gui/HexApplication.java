@@ -22,8 +22,6 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 import javax.swing.Action;
@@ -124,18 +122,10 @@ public class HexApplication {
      * @param notebookPath the notebook path.
      */
     public void openNotebook(Path notebookPath) {
-        //TODO: Just switch to path...
-        URL notebookUrl;
-        try {
-            notebookUrl = notebookPath.toUri().toURL();
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException("The JRE created a URL which was malformed: " + notebookPath, e);
-        }
-
         // The notebook might already be open. If it is, it is customary to just focus the appropriate frame.
         for (HexFrame frame : HexFrame.findAllFrames()) {
             for (NotebookPane notebookPane : frame.getAllNotebookPanes()) {
-                if (notebookUrl.equals(notebookPane.getNotebookLocation())) {
+                if (notebookPath.equals(notebookPane.getNotebookLocation())) {
                     frame.bringToFront(notebookPane);
                     return;
                 }
@@ -143,10 +133,8 @@ public class HexApplication {
         }
 
         try {
-            Notebook notebook = new NotebookStorage().read(notebookPath.toUri().toURL());
+            Notebook notebook = new NotebookStorage().read(notebookPath);
             openNotebook(notebook);
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException("The JRE created a URL which was malformed: " + notebookPath, e);
         } catch (IOException e) {
             Window activeWindow = DefaultFocusManager.getCurrentManager().getActiveWindow();
             JOptionPane.showMessageDialog(activeWindow,

@@ -26,7 +26,6 @@ import org.trypticon.hex.gui.HexApplication;
 import org.trypticon.hex.gui.HexFrame;
 import org.trypticon.hex.gui.Resources;
 import org.trypticon.hex.gui.notebook.NotebookFileFilter;
-import org.trypticon.hex.gui.notebook.NotebookStorage;
 import org.trypticon.hex.gui.prefs.PreferredDirectoryManager;
 import org.trypticon.hex.gui.recent.RecentDocumentsModel;
 import org.trypticon.hex.gui.util.ActionException;
@@ -66,6 +65,7 @@ public class OpenNotebookAction extends BaseAction {
                 preferredDirectoryManager.getPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS),
                 new NotebookFileFilter());
         if (file != null) {
+            // XXX: This check may no longer be needed.
             if (!file.isFile()) {
                 throw new ActionException(Resources.getMessage("Common.Errors.notFile"));
             }
@@ -73,7 +73,7 @@ public class OpenNotebookAction extends BaseAction {
             preferredDirectoryManager.setPreferredDirectory(PreferredDirectoryManager.NOTEBOOKS, file.getParentFile());
             recentDocumentsModel.addRecentDocument(file.toPath());
 
-            application.openNotebook(new NotebookStorage().read(file.toURI().toURL()));
+            application.openNotebook(file.toPath());
         }
     }
 }
