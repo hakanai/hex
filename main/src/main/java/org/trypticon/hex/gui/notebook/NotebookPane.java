@@ -159,9 +159,13 @@ public class NotebookPane extends JPanel {
 
         this.notebook = notebook;
 
-        // TODO: A proper binding API would be nice here...
-        URL newNotebookLocation = getNotebookLocation();
-        firePropertyChange("notebookLocation", oldNotebookLocation, newNotebookLocation);
+        // Avoids issue calling getNotebookLocation() on DummyNotebook because we don't have
+        // any listeners attached when constructing the dummy pane.
+        if (getPropertyChangeListeners("notebookLocation").length > 0) {
+            // TODO: A proper binding API would be nice here...
+            URL newNotebookLocation = getNotebookLocation();
+            firePropertyChange("notebookLocation", oldNotebookLocation, newNotebookLocation);
+        }
 
         annoPane.setAnnotations(notebook.getAnnotations());
         annoPane.setBinary(notebook.getBinary());
