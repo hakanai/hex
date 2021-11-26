@@ -38,7 +38,7 @@ public class Repository {
         FileSystemProvider provider = FileSystemProvider.installedProviders().stream()
             .filter(p -> "jar".equals(p.getScheme())) //NON-NLS
             .findFirst()
-            .get();
+            .orElseThrow(() -> new IllegalStateException("No jar filesystem provider in JRE"));
 
         String pathWithinJar = "/org/trypticon/hex/formats/repository/classfile/class_file.rb";
         URL here = Repository.class.getResource(pathWithinJar);
