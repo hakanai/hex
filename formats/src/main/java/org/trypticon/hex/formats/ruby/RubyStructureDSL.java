@@ -20,9 +20,12 @@ package org.trypticon.hex.formats.ruby;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.net.JarURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,6 +33,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.TestOnly;
 import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.LocalVariableBehavior;
+import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 
 import org.trypticon.hex.formats.Structure;
@@ -77,9 +81,7 @@ public class RubyStructureDSL {
             // Set up the library scripts will have by default.
             @NonNls
             String fileName = RubyStructureDSL.class.getPackage().getName().replace('.', '/') + "/structure_dsl.rb";
-            try (InputStream resource = getClass().getResourceAsStream("structure_dsl.rb")) {
-                container.runScriptlet(resource, "classpath:" + fileName);
-            }
+            container.runScriptlet(PathType.CLASSPATH, fileName);
 
             // Run the script itself, which should return a Structure instance.
             Object instance;
@@ -108,10 +110,28 @@ public class RubyStructureDSL {
      * @return the path to give JRuby.
      */
     private static String pathToJRubyPath(Path path) {
-        if ("file".equals(path.toUri().getScheme())) {
-            return path.toString();
-        } else {
-            return path.toUri().toString();
+        String scheme = path.toUri().getScheme();
+        switch (scheme) {
+            case "file":
+                return path.toString();
+            case "jar": {
+                // Workaround for quirky JRuby behaviour with jar URIs
+                URL jarUrl;
+                try {
+                    jarUrl = path.toUri().toURL();
+                } catch (MalformedURLException e) {
+                    throw new IllegalStateException("Malformed URL from URI: " + path.toUri(), e);
+                }
+
+                try {
+                    JarURLConnection connection = (JarURLConnection) jarUrl.openConnection();
+                    return "uri:classloader:" + connection.getJarEntry().getName();
+                } catch (IOException e) {
+                    throw new UncheckedIOException("Couldn't open jar: " + jarUrl, e);
+                }
+            }
+            default:
+                return "uri:" + path.toUri();
         }
     }
 }

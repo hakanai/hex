@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require_relative 'constantpool/cp_info'
+require '/org/trypticon/hex/formats/repository/classfile/constantpool/cp_info'
+#require_relative 'constantpool/cp_info'
 require_relative 'field_info'
 require_relative 'method_info'
 require_relative 'attribute_info'
