@@ -89,16 +89,13 @@ class AquaWorkspaceStateTracker extends WorkspaceStateTracker {
             try {
                 URL url = new URL(location);
                 Notebook notebook = new NotebookStorage().read(url);
-                HexFrame frame = application.openNotebook(notebook, false);
-                if (frame != null) {
-                    restoreFrameLocation(frame, openDocumentPrefs);
-                    frame.setVisible(true);
-                }
+                application.openNotebook(notebook, frame -> restoreFrameLocation(frame, openDocumentPrefs));
             } catch (MalformedURLException e) {
                 LoggerUtils.get().log(Level.WARNING, "Malformed URL found in preferences for document " + i + ": " +
                                                      location + ", skipping", e);
             } catch (IOException e) {
-                LoggerUtils.get().log(Level.WARNING, "Error opening previously-open notebook: " + location + ", skipping");
+                LoggerUtils.get().log(Level.WARNING, "Error opening previously-open notebook: " + location +
+                                                     ", skipping");
             }
         }
 

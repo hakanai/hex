@@ -25,6 +25,10 @@ package org.trypticon.hex.gui.util;
  */
 public interface Callback<T> {
 
+    static <T> Callback<T> noAction() {
+        return result -> {};
+    }
+
     /**
      * Executed when the operation completes.
      *

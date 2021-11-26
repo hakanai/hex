@@ -26,7 +26,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.swing.Action;
 import javax.swing.DefaultFocusManager;
 import javax.swing.JFrame;
@@ -99,9 +98,12 @@ public class HexApplication {
         if (!PLAFUtils.isAqua()) {
             JFrame frame = new MultipleHexFrame(this);
             frame.setVisible(true);
-        }
 
-        SwingUtilities.invokeLater(this::afterInitialWindowDisplayed);
+            // Must delay opening the document until _after_ the initial window is open
+            SwingUtilities.invokeLater(this::afterInitialWindowDisplayed);
+        } else {
+            afterInitialWindowDisplayed();
+        }
     }
 
     private void afterInitialWindowDisplayed() {
@@ -120,11 +122,8 @@ public class HexApplication {
      * Opens a notebook from a file path.
      *
      * @param notebookPath the notebook path.
-     * @return the frame the notebook was opened in, or {@code null} if there was a problem opening it
-     *         (in this situation the user would have been alerted already.)
      */
-    @Nullable
-    public HexFrame openNotebook(Path notebookPath) {
+    public void openNotebook(Path notebookPath) {
         //TODO: Just switch to path...
         URL notebookUrl;
         try {
@@ -138,14 +137,14 @@ public class HexApplication {
             for (NotebookPane notebookPane : frame.getAllNotebookPanes()) {
                 if (notebookUrl.equals(notebookPane.getNotebookLocation())) {
                     frame.bringToFront(notebookPane);
-                    return frame;
+                    return;
                 }
             }
         }
 
         try {
             Notebook notebook = new NotebookStorage().read(notebookPath.toUri().toURL());
-            return openNotebook(notebook);
+            openNotebook(notebook);
         } catch (MalformedURLException e) {
             throw new IllegalStateException("The JRE created a URL which was malformed: " + notebookPath, e);
         } catch (IOException e) {
@@ -154,7 +153,6 @@ public class HexApplication {
                                           Resources.getString("Notebook.errorOpening", e.getLocalizedMessage()),
                                           Resources.getString("Notebook.errorOpeningTitle"),
                                           JOptionPane.ERROR_MESSAGE);
-            return null;
         }
     }
 
@@ -164,12 +162,9 @@ public class HexApplication {
      * <p>May open a new frame or may use an existing frame. This depends on what platform you're running on.</p>
      *
      * @param notebook the notebook.
-     * @return the frame the notebook was opened in, or {@code null} if there was a problem opening it
-     *         (in this situation the user would have been alerted already.)
      */
-    @Nullable
-    public HexFrame openNotebook(Notebook notebook) {
-        return openNotebook(notebook, true);
+    public void openNotebook(Notebook notebook) {
+        openNotebook(notebook, Callback.noAction());
     }
 
     /**
@@ -178,13 +173,9 @@ public class HexApplication {
      * <p>May open a new frame or may use an existing frame. This depends on what platform you're running on.</p>
      *
      * @param notebook the notebook.
-     * @param openFrameImmediately if {@code true}, the frame will be opened immediately. If {@code false},
-     *        it will not be opened, allowing the caller to possibly change it before making it visible.
-     * @return the frame the notebook was opened in, or {@code null} if there was a problem opening it
-     *         (in this situation the user would have been alerted already.)
+     * @param beforeSetVisibleCallback a callback called before setting the frame visible.
      */
-    @Nullable
-    public HexFrame openNotebook(Notebook notebook, boolean openFrameImmediately) {
+    public void openNotebook(Notebook notebook, Callback<HexFrame> beforeSetVisibleCallback) {
         Window activeWindow = DefaultFocusManager.getCurrentManager().getActiveWindow();
 
         try {
@@ -194,26 +185,23 @@ public class HexApplication {
                                           Resources.getString("Notebook.errorOpening", e.getLocalizedMessage()),
                                           Resources.getString("Notebook.errorOpeningTitle"),
                                           JOptionPane.ERROR_MESSAGE);
-            return null;
+            return;
         }
 
         if (PLAFUtils.isAqua()) {
             // Try to mimic document-based Mac applications better by using a separate frame per notebook.
             SingleHexFrame frame = new SingleHexFrame(this, notebook);
-            if (openFrameImmediately) {
-                frame.setVisible(true);
-            }
-            return frame;
+            beforeSetVisibleCallback.execute(frame);
+            frame.setVisible(true);
         } else {
             MultipleHexFrame frame = (MultipleHexFrame) HexFrame.findActiveFrame();
             if (frame == null) {
-                // Probably impossible to get here but I can't think of a way to guarantee that
+                // Probably impossible to get here, but I can't think of a way to guarantee that
                 // a frame was found.
                 frame = new MultipleHexFrame(this);
                 frame.setVisible(true);
             }
             frame.addTab(notebook);
-            return frame;
         }
     }
 
