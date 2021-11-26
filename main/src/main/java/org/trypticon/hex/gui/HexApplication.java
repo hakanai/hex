@@ -101,6 +101,10 @@ public class HexApplication {
             frame.setVisible(true);
         }
 
+        SwingUtilities.invokeLater(this::afterInitialWindowDisplayed);
+    }
+
+    private void afterInitialWindowDisplayed() {
         final WorkspaceStateTracker stateTracker = WorkspaceStateTracker.create(this);
         boolean restoredState = stateTracker.restore();
 
