@@ -17,7 +17,7 @@
  */
 
 plugins {
-    application
+    id("my.convention.java-application")
 }
 
 dependencies {
@@ -43,4 +43,9 @@ dependencies {
 
     testImplementation("org.hamcrest:hamcrest")
     testImplementation(testFixtures(project(":hex-formats")))
+}
+
+application {
+    mainClass.set("org.trypticon.hex.gui.Main")
+    applicationName = "Hex"
 }

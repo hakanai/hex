@@ -93,8 +93,8 @@ class ExtendedConstructor extends Constructor {
     private class ExtendedGroupAnnotationConstructor extends SimpleConstructor {
         @Override
         protected Object construct(Map<Object, Object> map) {
-            long position = ((Number) map.get("position")).longValue();
-            int length = ((Number) map.get("length")).intValue();
+            long position = Objects.requireNonNull((Number) map.get("position")).longValue();
+            int length = Objects.requireNonNull((Number) map.get("length")).intValue();
             String note = (String) map.get("note");
             @SuppressWarnings("unchecked")
             List<Annotation> annotations = Objects.requireNonNull((List<Annotation>) map.get("annotations"));
@@ -110,8 +110,8 @@ class ExtendedConstructor extends Constructor {
     private class ExtendedAnnotationConstructor extends SimpleConstructor {
         @Override
         protected Object construct(Map<Object, Object> map) {
-            long position = ((Number) map.get("position")).longValue();
-            int length = ((Number) map.get("length")).intValue();
+            long position = Objects.requireNonNull((Number) map.get("position")).longValue();
+            int length = Objects.requireNonNull((Number) map.get("length")).intValue();
             Interpreter<?> interpreter = Objects.requireNonNull((Interpreter<?>) map.get("interpreter"));
             String note = (String) map.get("note");
             ParametricStyle customStyle = (ParametricStyle) map.get("custom_style");
@@ -156,10 +156,10 @@ class ExtendedConstructor extends Constructor {
     }
 
     private Color mapToColor(Map<?, ?> map) {
-        int r = ((Number) map.get("r")).intValue();
-        int g = ((Number) map.get("g")).intValue();
-        int b = ((Number) map.get("b")).intValue();
-        int a = ((Number) map.get("a")).intValue();
+        int r = Objects.requireNonNull((Number) map.get("r")).intValue();
+        int g = Objects.requireNonNull((Number) map.get("g")).intValue();
+        int b = Objects.requireNonNull((Number) map.get("b")).intValue();
+        int a = Objects.requireNonNull((Number) map.get("a")).intValue();
         return new Color(r, g, b, a);
     }
 }

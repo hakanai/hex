@@ -17,7 +17,7 @@
  */
 
 plugins {
-    `java-library`
+    id("my.convention.java-library")
 }
 
 dependencies {

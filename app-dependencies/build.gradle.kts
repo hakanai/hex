@@ -17,7 +17,7 @@
  */
 
 plugins {
-    `java-platform`
+    id("my.convention.java-platform")
 }
 
 javaPlatform {

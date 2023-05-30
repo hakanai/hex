@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gum">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/gum.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

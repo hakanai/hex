@@ -17,7 +17,7 @@
  */
 
 plugins {
-    `java-library`
+    id("my.convention.java-library")
     `java-test-fixtures`
 }
 
@@ -37,4 +37,6 @@ dependencies {
     testFixturesImplementation("org.jetbrains:annotations")
     testFixturesImplementation("org.trypticon.hex:hex-anno")
     testFixturesImplementation("org.trypticon.hex:hex-interpreter")
+
+    testImplementation("org.hamcrest:hamcrest")
 }

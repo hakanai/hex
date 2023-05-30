@@ -16,6 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven {
+            url = uri("https://jitpack.io")
+        }
+    }
+}
+
 rootProject.name = "hex"
 setOf("app-dependencies", "formats", "launcher", "main", "scripting")
         .forEach { module ->

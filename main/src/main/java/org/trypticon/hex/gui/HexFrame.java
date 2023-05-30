@@ -32,9 +32,9 @@ import org.trypticon.hex.gui.notebook.NotebookPane;
 import org.trypticon.hex.gui.util.Callback;
 
 /**
- * A top-level application frame.
- * <p/>
- * XXX: It probably makes sense to replace this with OpenIDE or some other framework.
+ * <p>A top-level application frame.</p>
+ *
+ * <p>XXX: It probably makes sense to replace this with OpenIDE or some other framework.</p>
  *
  * @author trejkaz
  */

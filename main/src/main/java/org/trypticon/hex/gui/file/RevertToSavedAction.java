@@ -21,6 +21,7 @@ package org.trypticon.hex.gui.file;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
 
@@ -70,8 +71,9 @@ public class RevertToSavedAction extends NotebookPaneAction {
                     try {
                         newNotebook.open();
                     } catch (IOException e) {
+                        String message = Objects.requireNonNullElse(e.getLocalizedMessage(), "");
                         JOptionPane.showMessageDialog(notebookPane,
-                                                      Resources.getString("Notebook.errorOpening", e.getLocalizedMessage()),
+                                                      Resources.getString("Notebook.errorOpening", message),
                                                       Resources.getString("Notebook.errorOpeningTitle"),
                                                       JOptionPane.ERROR_MESSAGE);
                         return;
